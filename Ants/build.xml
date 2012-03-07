@@ -1,0 +1,39 @@
+<project default="runTutorial">
+	<target name="jar">
+		<jar destfile="${basedir}/TutorialBot.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="starter.MyBot" />
+			</manifest>
+			<fileset dir="${basedir}/bin" includes="**/*.class" />
+		</jar>
+	</target>
+	<target name="testBot" depends="jar">
+		<exec executable="python" failonerror="true">
+			<arg line="tools/playgame.py" />
+			<arg line="--engine_seed 42" />
+			<arg line="--player_seed 42" />
+			<arg line="--food none" />
+			<arg line="--end_wait=0.25" />
+			<arg line="--verbose" />
+			<arg line="--log_dir logs" />
+			<arg line="--turns 30" />
+			<arg line="--map_file tools/submission_test/test.map" />
+			<arg line="&quot;java -jar TutorialBot.jar&quot;" />
+			<arg line="&quot;python tools/submission_test/TestBot.py&quot;" />
+			<arg line="--nolaunch -e --strict --capture_errors" />
+		</exec>
+	</target>
+	<target name="runTutorial" depends="jar">
+		<exec executable="python" failonerror="true">
+			<arg line="tools/playgame.py" />
+			<arg line="--player_seed 42" />
+			<arg line="--end_wait=0.25" />
+			<arg line="--verbose" />
+			<arg line="--log_dir logs" />
+			<arg line="--turns 1000" />
+			<arg line="--map_file tools/maps/example/tutorial1.map" />
+			<arg line="&quot;java -jar TutorialBot.jar&quot;" />
+			<arg line="&quot;python tools/sample_bots/python/HunterBot.py&quot;" />
+		</exec>
+	</target>
+</project>
