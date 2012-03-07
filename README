@@ -1,0 +1,4 @@
+Ants implementation for Projekt 2 @ BFH
+
+Eclipse project uses build.xml ANT script to run and test bots.
+
