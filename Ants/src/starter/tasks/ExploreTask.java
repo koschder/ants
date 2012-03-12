@@ -1,0 +1,57 @@
+package starter.tasks;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import starter.Ants;
+import starter.Route;
+import starter.Tile;
+
+public class ExploreTask extends BaseTask {
+
+	private Set<Tile> unseenTiles;
+	
+	@Override
+	public void prepare(Ants ants) {
+		if (unseenTiles == null) {
+			unseenTiles = new HashSet<Tile>();
+			for (int row = 0; row < ants.getRows(); row++) {
+				for (int col = 0; col < ants.getCols(); col++) {
+					unseenTiles.add(new Tile(row, col));
+				}
+			}
+		}
+		// remove any tiles that can be seen, run each turn
+		for (Iterator<Tile> locIter = unseenTiles.iterator(); locIter.hasNext();) {
+			Tile next = locIter.next();
+			if (ants.isVisible(next)) {
+				locIter.remove();
+			}
+		}
+	}
+	@Override
+	public void perform(Ants ants, Map<Tile, Tile> orders) {
+		for (Tile antLoc : ants.getMyAnts()) {
+			if (!orders.containsValue(antLoc)) {
+				List<Route> unseenRoutes = new ArrayList<Route>();
+				for (Tile unseenLoc : unseenTiles) {
+					int distance = ants.getDistance(antLoc, unseenLoc);
+					Route route = new Route(antLoc, unseenLoc, distance);
+					unseenRoutes.add(route);
+				}
+				Collections.sort(unseenRoutes);
+				for (Route route : unseenRoutes) {
+					if (doMoveLocation(ants, route.getStart(), route.getEnd(), orders)) {
+						break;
+					}
+				}
+			}
+		}		
+	}
+	
+}

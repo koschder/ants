@@ -1,9 +1,16 @@
 package starter;
 
-
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+
+import starter.tasks.AttackHillsTask;
+import starter.tasks.ClearHillTask;
+import starter.tasks.ExploreTask;
+import starter.tasks.GatherFoodTask;
+import starter.tasks.Task;
 
 /**
  * Starter bot implementation.
@@ -24,31 +31,36 @@ public class MyBot extends Bot {
 
 	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
 
-    private boolean doMoveDirection(Tile antLoc, Aim direction) {
-        Ants ants = getAnts();
-        // Track all moves, prevent collisions
-        Tile newLoc = ants.getTile(antLoc, direction);
-        if (ants.getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
-            ants.issueOrder(antLoc, direction);
-            orders.put(newLoc, antLoc);
-            return true;
-        } else {
-            return false;
-        }
-    }
+	private List<Task> tasks = new ArrayList<Task>();
 
-    @Override
-    public void doTurn() {
-        Ants ants = getAnts();
-        orders.clear();
+	@Override
+	public void doTurn() {
 
-        //  default move
-        for (Tile myAnt : ants.getMyAnts()) {
-            for (Aim direction : Aim.values()) {
-                if (doMoveDirection(myAnt, direction)) {
-                    break;
-                }
-            }
-        }
-    }
+		initTasks();
+		for (Task task : tasks) {
+			task.perform(getAnts(), orders);
+		}
+
+		initOrders();
+	}
+
+	private void initOrders() {
+		orders.clear();
+		// prevent stepping on own hill
+		for (Tile myHill : getAnts().getMyHills()) {
+			orders.put(myHill, null);
+		}
+	}
+
+	private void initTasks() {
+		if (tasks.isEmpty()) {
+			tasks.add(new GatherFoodTask());
+			tasks.add(new AttackHillsTask());
+			tasks.add(new ExploreTask());
+			tasks.add(new ClearHillTask());
+		}
+		for (Task task : tasks) {
+			task.prepare(getAnts());
+		}
+	}
 }
