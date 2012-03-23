@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import starter.Ant;
 import starter.Ants;
 import starter.Route;
 import starter.Tile;
@@ -15,7 +16,7 @@ import starter.Tile;
 public class ExploreTask extends BaseTask {
 
 	private Set<Tile> unseenTiles;
-	
+
 	@Override
 	public void prepare(Ants ants) {
 		if (unseenTiles == null) {
@@ -34,9 +35,11 @@ public class ExploreTask extends BaseTask {
 			}
 		}
 	}
+
 	@Override
 	public void perform(Ants ants, Map<Tile, Tile> orders) {
-		for (Tile antLoc : ants.getMyAnts()) {
+		for (Ant ant : ants.getMyAnts()) {
+			final Tile antLoc = ant.getTile();
 			if (!orders.containsValue(antLoc)) {
 				List<Route> unseenRoutes = new ArrayList<Route>();
 				for (Tile unseenLoc : unseenTiles) {
@@ -46,12 +49,13 @@ public class ExploreTask extends BaseTask {
 				}
 				Collections.sort(unseenRoutes);
 				for (Route route : unseenRoutes) {
-					if (doMoveLocation(ants, route.getStart(), route.getEnd(), orders)) {
+					if (doMoveLocation(ants, route.getStart(), route.getEnd(),
+							orders)) {
 						break;
 					}
 				}
 			}
-		}		
+		}
 	}
-	
+
 }

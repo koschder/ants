@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import starter.Ant;
 import starter.Ants;
 import starter.Route;
 import starter.Tile;
@@ -32,10 +33,11 @@ public class AttackHillsTask extends BaseTask {
 		// attack hills
 		List<Route> hillRoutes = new ArrayList<Route>();
 		for (Tile hillLoc : enemyHills) {
-			for (Tile antLoc : ants.getMyAnts()) {
-				if (!orders.containsValue(antLoc)) {
-					int distance = ants.getDistance(antLoc, hillLoc);
-					Route route = new Route(antLoc, hillLoc, distance);
+			for (Ant ant : ants.getMyAnts()) {
+				final Tile tile = ant.getTile();
+				if (!orders.containsValue(tile)) {
+					int distance = ants.getDistance(tile, hillLoc);
+					Route route = new Route(tile, hillLoc, distance);
 					hillRoutes.add(route);
 				}
 			}

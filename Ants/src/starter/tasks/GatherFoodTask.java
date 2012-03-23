@@ -7,27 +7,28 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import starter.Ant;
 import starter.Ants;
 import starter.Route;
 import starter.Tile;
 
 public class GatherFoodTask extends BaseTask implements Task {
 
-	
 	@Override
 	public void perform(Ants ants, Map<Tile, Tile> orders) {
 		Map<Tile, Tile> foodTargets;
 		List<Route> foodRoutes;
 		TreeSet<Tile> sortedFood;
-		TreeSet<Tile> sortedAnts;
+		TreeSet<Ant> sortedAnts;
 		foodTargets = new HashMap<Tile, Tile>();
 		// find close food
 		foodRoutes = new ArrayList<Route>();
 		sortedFood = new TreeSet<Tile>(ants.getFoodTiles());
-		sortedAnts = new TreeSet<Tile>(ants.getMyAnts());
+		sortedAnts = new TreeSet<Ant>(ants.getMyAnts());
 
 		for (Tile foodLoc : sortedFood) {
-			for (Tile antLoc : sortedAnts) {
+			for (Ant ant : sortedAnts) {
+				final Tile antLoc = ant.getTile();
 				int distance = ants.getDistance(antLoc, foodLoc);
 				Route route = new Route(antLoc, foodLoc, distance);
 				foodRoutes.add(route);
