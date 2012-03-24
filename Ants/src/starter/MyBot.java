@@ -65,4 +65,12 @@ public class MyBot extends Bot {
 			task.prepare(getAnts());
 		}
 	}
+
+	@Override
+	protected void doFinishTurn() {
+		Logger.log("Finished in %1$s ms with %2$s ms remaining.",
+				System.currentTimeMillis() - getAnts().getTurnStartTime(),
+				getAnts().getTimeRemaining());
+
+	}
 }

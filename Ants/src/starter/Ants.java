@@ -182,6 +182,10 @@ public class Ants {
 		this.turnStartTime = turnStartTime;
 	}
 
+	public long getTurnStartTime() {
+		return turnStartTime;
+	}
+
 	/**
 	 * Returns how much time the bot has still has to take its turn before
 	 * timing out.
