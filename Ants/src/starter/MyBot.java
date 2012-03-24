@@ -29,19 +29,21 @@ public class MyBot extends Bot {
 		new MyBot().readSystemInput();
 	}
 
+	private static int turn = 0;
+
 	private Map<Tile, Tile> orders = new HashMap<Tile, Tile>();
 
 	private List<Task> tasks = new ArrayList<Task>();
 
 	@Override
 	public void doTurn() {
-
+		Logger.log("Turn %1$d", ++turn);
 		initTasks();
+		initOrders();
 		for (Task task : tasks) {
 			task.perform(getAnts(), orders);
 		}
-
-		initOrders();
+		Logger.log("Orders: %1$s", orders);
 	}
 
 	private void initOrders() {
