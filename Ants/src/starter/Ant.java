@@ -1,7 +1,9 @@
 package starter;
 
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class Ant implements Comparable<Ant> {
 	static final int MINE = 0;
@@ -9,6 +11,8 @@ public class Ant implements Comparable<Ant> {
 	private int player;
 	private Map<Tile, Integer> enemies = new HashMap<Tile, Integer>();
 	private Map<Tile, Integer> friends = new HashMap<Tile, Integer>();
+	private Map<Tile, Integer> sortedEnemies = null;
+	private Map<Tile, Integer> sortedFriends = null;
 
 	public Ant(Tile tile, int owner) {
 		this.tile = tile;
@@ -25,6 +29,18 @@ public class Ant implements Comparable<Ant> {
 
 	public void addEnemy(Tile enemy, int distance) {
 		enemies.put(enemy, distance);
+	}
+
+	public Map<Tile, Integer> getSortedEnemies() {
+		if (sortedEnemies == null)
+			sortedEnemies = new TreeMap<Tile, Integer>(new DistanceComparator(enemies));
+		return sortedEnemies;
+	}
+
+	public Map<Tile, Integer> getSortedFriends() {
+		if (sortedFriends == null)
+			sortedFriends = new TreeMap<Tile, Integer>(new DistanceComparator(friends));
+		return sortedFriends;
 	}
 
 	public Tile getTile() {
@@ -48,4 +64,18 @@ public class Ant implements Comparable<Ant> {
 	public void addFriend(Tile friendLoc, int distance) {
 		friends.put(friendLoc, distance);
 	}
+
+	class DistanceComparator implements Comparator<Tile> {
+
+		Map<Tile, Integer> base;
+
+		public DistanceComparator(Map<Tile, Integer> base) {
+			this.base = base;
+		}
+
+		public int compare(Tile a, Tile b) {
+			return base.get(a).compareTo(base.get(b));
+		}
+	}
+
 }
