@@ -43,7 +43,6 @@ public class MyBot extends Bot {
 		for (Task task : tasks) {
 			task.perform(getAnts(), orders);
 		}
-		Logger.log("Orders: %1$s", orders);
 	}
 
 	private void initOrders() {
