@@ -3,6 +3,7 @@ package starter.tasks;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -18,8 +19,11 @@ public class AttackHillsTask extends BaseTask {
 
 	@Override
 	public void prepare(Ants ants) {
-		// TODO clear destroyed hills or mark hills as invisible
-		super.prepare(ants);
+		for (Iterator<Tile> iterator = enemyHills.iterator(); iterator
+				.hasNext();) {
+			if (!ants.isVisible(iterator.next()))
+				iterator.remove();
+		}
 	}
 
 	@Override

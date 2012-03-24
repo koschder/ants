@@ -38,6 +38,7 @@ public class MyBot extends Bot {
 	@Override
 	public void doTurn() {
 		Logger.log("Turn %1$d", ++turn);
+		Logger.log("Ants: %1$d", getAnts().getMyAnts().size());
 		initTasks();
 		initOrders();
 		for (Task task : tasks) {
