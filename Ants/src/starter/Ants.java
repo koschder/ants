@@ -493,19 +493,23 @@ public class Ants {
 	 * @param tile
 	 *            location on the game map to be updated
 	 */
-	public void update(Ilk ilk, Tile tile) {
+	public void update(Ilk ilk, Tile tile, int owner) {
 		map[tile.getRow()][tile.getCol()] = ilk;
 		switch (ilk) {
 		case FOOD:
 			foodTiles.add(tile);
 			break;
 		case MY_ANT:
-			myAnts.add(new Ant(tile));
+			myAnts.add(new Ant(tile, Ant.MINE));
 			break;
 		case ENEMY_ANT:
-			enemyAnts.add(new Ant(tile));
+			enemyAnts.add(new Ant(tile, owner));
 			break;
 		}
+	}
+
+	public void update(Ilk ilk, Tile tile) {
+		update(ilk, tile, Integer.MIN_VALUE);
 	}
 
 	/**
@@ -535,5 +539,44 @@ public class Ants {
 		Order order = new Order(myAnt, direction);
 		orders.add(order);
 		System.out.println(order);
+	}
+
+	public void calculateDistances() {
+		for (Ant enemy : getEnemyAnts()) {
+			for (Ant myAnt : getMyAnts()) {
+				addEnemyPair(enemy, myAnt);
+			}
+			for (Ant other : getEnemyAnts()) {
+				if (other.equals(enemy))
+					continue;
+				if (other.getPlayer() == enemy.getPlayer())
+					addFriendPair(enemy, other);
+				else
+					addEnemyPair(enemy, other);
+			}
+		}
+		for (Ant ant : getMyAnts()) {
+			for (Ant friend : getMyAnts()) {
+				if (friend.equals(ant))
+					continue;
+				addFriendPair(ant, friend);
+			}
+		}
+	}
+
+	private void addEnemyPair(Ant anta, Ant antb) {
+		final Tile aLoc = anta.getTile();
+		final Tile bLoc = antb.getTile();
+		final int distance = getDistance(bLoc, aLoc);
+		anta.addEnemy(bLoc, distance);
+		antb.addEnemy(aLoc, distance);
+	}
+
+	private void addFriendPair(Ant anta, Ant antb) {
+		final Tile aLoc = anta.getTile();
+		final Tile bLoc = antb.getTile();
+		final int distance = getDistance(bLoc, aLoc);
+		anta.addFriend(bLoc, distance);
+		antb.addFriend(aLoc, distance);
 	}
 }
