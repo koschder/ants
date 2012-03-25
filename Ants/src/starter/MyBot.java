@@ -35,14 +35,35 @@ public class MyBot extends Bot {
 
     private List<Task> tasks = new ArrayList<Task>();
 
+    // generating a history how many ants we have in each turn
+    private List<Integer> statAntsAmountHistory = new ArrayList<Integer>();
+
+    // generates a history how our influence to the enemies is
+    // (myants/enemiesants)
+    private List<Integer> statAntsInfluenceHistory = new ArrayList<Integer>();
+
     @Override
     public void doTurn() {
         Logger.log("Turn %1$d", ++turn);
         Logger.log("Ants: %1$d", getAnts().getMyAnts().size());
         initOrders();
         initTasks();
+        doStatistics();
         for (Task task : tasks) {
             task.perform();
+        }
+    }
+
+    private void doStatistics() {
+
+        statAntsAmountHistory.add(getAnts().getMyAnts().size());
+        statAntsInfluenceHistory.add((int) Math.round(getAnts().getMyAnts().size()
+                / (getAnts().getEnemyAnts().size() + getAnts().getMyAnts().size() + 1.0) * 100.0));
+
+        // every 10 steps we write the statistic to the log
+        if (turn % 10 == 0) {
+            Logger.log("Statistics: Influence history: %s", statAntsInfluenceHistory);
+            Logger.log("Statistics: Ants amount history: %s", statAntsAmountHistory);
         }
     }
 

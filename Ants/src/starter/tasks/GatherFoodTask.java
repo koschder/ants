@@ -13,6 +13,9 @@ import starter.Tile;
 
 public class GatherFoodTask extends BaseTask implements Task {
 
+    // the maximum distance an ant can be away of a food tile to catch it.
+    private int MAXDISTANCE = 50;
+
     @Override
     public void perform() {
         Map<Tile, Tile> foodTargets;
@@ -29,6 +32,10 @@ public class GatherFoodTask extends BaseTask implements Task {
             for (Ant ant : sortedAnts) {
                 final Tile antLoc = ant.getTile();
                 int distance = ants.getDistance(antLoc, foodLoc);
+                // Logger.log("Distance is %s",distance);
+                // Todo distance verwirrlich, da nicht im pixel mass.
+                if (distance > MAXDISTANCE)
+                    continue;
                 Route route = new Route(antLoc, foodLoc, distance);
                 foodRoutes.add(route);
             }
