@@ -2,8 +2,10 @@ package starter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.SortedSet;
@@ -12,6 +14,12 @@ import java.util.TreeSet;
 public class AStarSearchStrategy implements SearchStrategy {
 
 	private Ants ants;
+	private Map<Tile, Tile> orders;
+
+	public AStarSearchStrategy(Ants ants, Map<Tile, Tile> orders) {
+		this.ants = ants;
+		this.orders = orders;
+	}
 
 	@Override
 	public List<Tile> bestPath(Tile from, Tile to) {
@@ -51,9 +59,17 @@ public class AStarSearchStrategy implements SearchStrategy {
 
 	private void addChild(Node parent, SortedSet<Node> children,
 			final Tile childState) {
-		if (ants.getIlk(childState).isUnoccupied())
+		if (ants.getIlk(childState).isUnoccupied()
+				&& !isOccupiedForNextMove(childState, parent))
 			children.add(new Node(childState, parent, getCost(parent,
 					childState)));
+	}
+
+	private boolean isOccupiedForNextMove(Tile childState, Node parent) {
+		if (parent.getParent() == null) // we are on the 2nd level of the search
+										// tree
+			return orders.containsValue(childState);
+		return false;
 	}
 
 	private int getCost(Node current, Tile dest) {
@@ -63,6 +79,7 @@ public class AStarSearchStrategy implements SearchStrategy {
 	private List<Tile> path(Node child) {
 		List<Tile> path = new ArrayList<Tile>();
 		addToPath(path, child);
+		Collections.reverse(path);
 		return path;
 	}
 

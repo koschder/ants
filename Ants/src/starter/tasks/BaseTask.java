@@ -3,19 +3,20 @@ package starter.tasks;
 import java.util.List;
 import java.util.Map;
 
+import starter.AStarSearchStrategy;
 import starter.Aim;
 import starter.Ants;
 import starter.Logger;
+import starter.SearchStrategy;
 import starter.Tile;
 
 public abstract class BaseTask implements Task {
 
-	public BaseTask() {
-		super();
-	}
+	protected Ants ants;
+	protected Map<Tile, Tile> orders;
+	protected SearchStrategy search;
 
-	protected boolean doMoveDirection(Ants ants, Tile antLoc, Aim direction,
-			Map<Tile, Tile> orders) {
+	protected boolean doMoveDirection(Tile antLoc, Aim direction) {
 		// Track all moves, prevent collisions
 		Tile newLoc = ants.getTile(antLoc, direction);
 		if (ants.getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
@@ -29,20 +30,23 @@ public abstract class BaseTask implements Task {
 		}
 	}
 
-	protected boolean doMoveLocation(Ants ants, Tile antLoc, Tile destLoc,
-			Map<Tile, Tile> orders) {
+	protected boolean doMoveLocation(Tile antLoc, Tile destLoc) {
+		List<Tile> path = search.bestPath(antLoc, destLoc);
 		// Track targets to prevent 2 ants to the same location
-		List<Aim> directions = ants.getDirections(antLoc, destLoc);
+		List<Aim> directions = ants.getDirections(antLoc,
+				path != null ? path.get(0) : destLoc);
 		for (Aim direction : directions) {
-			if (doMoveDirection(ants, antLoc, direction, orders)) {
+			if (doMoveDirection(antLoc, direction)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
-	public void prepare(Ants ants) {
-
+	@Override
+	public void setup(Ants ants, Map<Tile, Tile> orders) {
+		this.ants = ants;
+		this.orders = orders;
+		this.search = new AStarSearchStrategy(ants, orders);
 	}
-
 }

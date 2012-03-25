@@ -8,14 +8,13 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import starter.Ant;
-import starter.Ants;
 import starter.Route;
 import starter.Tile;
 
 public class GatherFoodTask extends BaseTask implements Task {
 
 	@Override
-	public void perform(Ants ants, Map<Tile, Tile> orders) {
+	public void perform() {
 		Map<Tile, Tile> foodTargets;
 		List<Route> foodRoutes;
 		TreeSet<Tile> sortedFood;
@@ -38,8 +37,7 @@ public class GatherFoodTask extends BaseTask implements Task {
 		for (Route route : foodRoutes) {
 			if (!foodTargets.containsKey(route.getEnd())
 					&& !foodTargets.containsValue(route.getStart())
-					&& doMoveLocation(ants, route.getStart(), route.getEnd(),
-							orders)) {
+					&& doMoveLocation(route.getStart(), route.getEnd())) {
 				foodTargets.put(route.getEnd(), route.getStart());
 			}
 		}

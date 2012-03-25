@@ -1,6 +1,5 @@
 package starter;
 
-
 public class Node implements Comparable<Node> {
 	private Tile state;
 	private Node parent;
@@ -60,10 +59,6 @@ public class Node implements Comparable<Node> {
 
 	@Override
 	public int compareTo(Node o) {
-		if (cost < o.cost)
-			return -1;
-		if (cost > o.cost)
-			return 1;
-		return 0;
+		return cost - o.cost;
 	}
 }

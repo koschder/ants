@@ -5,11 +5,9 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import starter.Ant;
-import starter.Ants;
 import starter.Route;
 import starter.Tile;
 
@@ -18,7 +16,7 @@ public class ExploreTask extends BaseTask {
 	private Set<Tile> unseenTiles;
 
 	@Override
-	public void prepare(Ants ants) {
+	public void perform() {
 		if (unseenTiles == null) {
 			unseenTiles = new HashSet<Tile>();
 			for (int row = 0; row < ants.getRows(); row++) {
@@ -34,10 +32,6 @@ public class ExploreTask extends BaseTask {
 				locIter.remove();
 			}
 		}
-	}
-
-	@Override
-	public void perform(Ants ants, Map<Tile, Tile> orders) {
 		for (Ant ant : ants.getMyAnts()) {
 			final Tile antLoc = ant.getTile();
 			if (!orders.containsValue(antLoc)) {
@@ -49,8 +43,7 @@ public class ExploreTask extends BaseTask {
 				}
 				Collections.sort(unseenRoutes);
 				for (Route route : unseenRoutes) {
-					if (doMoveLocation(ants, route.getStart(), route.getEnd(),
-							orders)) {
+					if (doMoveLocation(route.getStart(), route.getEnd())) {
 						break;
 					}
 				}

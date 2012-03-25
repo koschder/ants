@@ -39,10 +39,10 @@ public class MyBot extends Bot {
 	public void doTurn() {
 		Logger.log("Turn %1$d", ++turn);
 		Logger.log("Ants: %1$d", getAnts().getMyAnts().size());
-		initTasks();
 		initOrders();
+		initTasks();
 		for (Task task : tasks) {
-			task.perform(getAnts(), orders);
+			task.perform();
 		}
 	}
 
@@ -62,7 +62,7 @@ public class MyBot extends Bot {
 			tasks.add(new ClearHillTask());
 		}
 		for (Task task : tasks) {
-			task.prepare(getAnts());
+			task.setup(getAnts(), orders);
 		}
 	}
 
