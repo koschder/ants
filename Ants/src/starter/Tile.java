@@ -39,6 +39,10 @@ public class Tile implements Comparable<Tile> {
 		return col;
 	}
 
+	public int manhattanDistanceTo(Tile dest) {
+		return Math.abs(dest.col - this.col) + Math.abs(dest.row - this.row);
+	}
+
 	/**
 	 * {@inheritDoc}
 	 */
