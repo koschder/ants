@@ -13,37 +13,36 @@ import starter.Tile;
 
 public class AttackHillsTask extends BaseTask {
 
-	Set<Tile> enemyHills = new HashSet<Tile>();
+    Set<Tile> enemyHills = new HashSet<Tile>();
 
-	@Override
-	public void perform() {
-		for (Iterator<Tile> iterator = enemyHills.iterator(); iterator
-				.hasNext();) {
-			if (!ants.isVisible(iterator.next()))
-				iterator.remove();
-		}
-		// add new hills to set
-		for (Tile enemyHill : ants.getEnemyHills()) {
-			if (!enemyHills.contains(enemyHill)) {
-				enemyHills.add(enemyHill);
-			}
-		}
-		// attack hills
-		List<Route> hillRoutes = new ArrayList<Route>();
-		for (Tile hillLoc : enemyHills) {
-			for (Ant ant : ants.getMyAnts()) {
-				final Tile tile = ant.getTile();
-				if (!orders.containsValue(tile)) {
-					int distance = ants.getDistance(tile, hillLoc);
-					Route route = new Route(tile, hillLoc, distance);
-					hillRoutes.add(route);
-				}
-			}
-		}
-		Collections.sort(hillRoutes);
-		for (Route route : hillRoutes) {
-			doMoveLocation(route.getStart(), route.getEnd());
-		}
-	}
+    @Override
+    public void perform() {
+        for (Iterator<Tile> iterator = enemyHills.iterator(); iterator.hasNext();) {
+            if (!ants.isVisible(iterator.next()))
+                iterator.remove();
+        }
+        // add new hills to set
+        for (Tile enemyHill : ants.getEnemyHills()) {
+            if (!enemyHills.contains(enemyHill)) {
+                enemyHills.add(enemyHill);
+            }
+        }
+        // attack hills
+        List<Route> hillRoutes = new ArrayList<Route>();
+        for (Tile hillLoc : enemyHills) {
+            for (Ant ant : ants.getMyAnts()) {
+                final Tile tile = ant.getTile();
+                if (!orders.containsValue(tile)) {
+                    int distance = ants.getDistance(tile, hillLoc);
+                    Route route = new Route(tile, hillLoc, distance);
+                    hillRoutes.add(route);
+                }
+            }
+        }
+        Collections.sort(hillRoutes);
+        for (Route route : hillRoutes) {
+            doMoveLocation(route.getStart(), route.getEnd());
+        }
+    }
 
 }

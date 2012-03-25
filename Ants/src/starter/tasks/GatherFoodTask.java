@@ -13,34 +13,33 @@ import starter.Tile;
 
 public class GatherFoodTask extends BaseTask implements Task {
 
-	@Override
-	public void perform() {
-		Map<Tile, Tile> foodTargets;
-		List<Route> foodRoutes;
-		TreeSet<Tile> sortedFood;
-		TreeSet<Ant> sortedAnts;
-		foodTargets = new HashMap<Tile, Tile>();
-		// find close food
-		foodRoutes = new ArrayList<Route>();
-		sortedFood = new TreeSet<Tile>(ants.getFoodTiles());
-		sortedAnts = new TreeSet<Ant>(ants.getMyAnts());
+    @Override
+    public void perform() {
+        Map<Tile, Tile> foodTargets;
+        List<Route> foodRoutes;
+        TreeSet<Tile> sortedFood;
+        TreeSet<Ant> sortedAnts;
+        foodTargets = new HashMap<Tile, Tile>();
+        // find close food
+        foodRoutes = new ArrayList<Route>();
+        sortedFood = new TreeSet<Tile>(ants.getFoodTiles());
+        sortedAnts = new TreeSet<Ant>(ants.getMyAnts());
 
-		for (Tile foodLoc : sortedFood) {
-			for (Ant ant : sortedAnts) {
-				final Tile antLoc = ant.getTile();
-				int distance = ants.getDistance(antLoc, foodLoc);
-				Route route = new Route(antLoc, foodLoc, distance);
-				foodRoutes.add(route);
-			}
-		}
-		Collections.sort(foodRoutes);
-		for (Route route : foodRoutes) {
-			if (!foodTargets.containsKey(route.getEnd())
-					&& !foodTargets.containsValue(route.getStart())
-					&& doMoveLocation(route.getStart(), route.getEnd())) {
-				foodTargets.put(route.getEnd(), route.getStart());
-			}
-		}
+        for (Tile foodLoc : sortedFood) {
+            for (Ant ant : sortedAnts) {
+                final Tile antLoc = ant.getTile();
+                int distance = ants.getDistance(antLoc, foodLoc);
+                Route route = new Route(antLoc, foodLoc, distance);
+                foodRoutes.add(route);
+            }
+        }
+        Collections.sort(foodRoutes);
+        for (Route route : foodRoutes) {
+            if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())
+                    && doMoveLocation(route.getStart(), route.getEnd())) {
+                foodTargets.put(route.getEnd(), route.getStart());
+            }
+        }
 
-	}
+    }
 }
