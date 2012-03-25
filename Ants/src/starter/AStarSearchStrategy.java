@@ -13,8 +13,15 @@ public class AStarSearchStrategy implements SearchStrategy {
 
 	private Ants ants;
 
+	public AStarSearchStrategy(Ants ants2) {
+		ants = ants2;
+	}
+
 	@Override
 	public List<Tile> bestPath(Tile from, Tile to) {
+		
+		Logger.log("Astar starting from: %s to %s", from,to);
+		
 		if (from.equals(to))
 			return Arrays.asList(to);
 
@@ -24,20 +31,23 @@ public class AStarSearchStrategy implements SearchStrategy {
 		while (!frontier.isEmpty()) {
 			Node node = frontier.poll();
 			explored.add(node.getState());
+			//Logger.log("Astar: %s exand(next) %s", node,expand(node));
 			for (Node child : expand(node)) {
 				if (frontier.contains(child)
 						|| explored.contains(child.getState()))
 					continue;
-				if (child.equals(to))
+				if (child.getState().equals(to))
 					return path(child); // success
 				frontier.add(child);
+				//Logger.log("Astar frontier size: %s", frontier.size());
+				//Logger.log("Astar explored size: %s", explored.size());
 			}
 		}
 		return null; // failure
 	}
 
-	public SortedSet<Node> expand(Node node) {
-		SortedSet<Node> children = new TreeSet<Node>();
+	public List<Node> expand(Node node) {
+		List<Node> children = new ArrayList<Node>();
 		final Tile north = ants.getTile(node.getState(), Aim.NORTH);
 		final Tile south = ants.getTile(node.getState(), Aim.SOUTH);
 		final Tile west = ants.getTile(node.getState(), Aim.WEST);
@@ -46,14 +56,18 @@ public class AStarSearchStrategy implements SearchStrategy {
 		addChild(node, children, south);
 		addChild(node, children, west);
 		addChild(node, children, east);
+		//Logger.log("size of children %s",children.size());
 		return children;
 	}
 
-	private void addChild(Node parent, SortedSet<Node> children,
+	private void addChild(Node parent, List<Node> children,
 			final Tile childState) {
-		if (ants.getIlk(childState).isUnoccupied())
+		if (ants.getIlk(childState).isPassable()){
 			children.add(new Node(childState, parent, getCost(parent,
 					childState)));
+		}else{
+			//Logger.log("tile %s is not passable",childState);
+		}
 	}
 
 	private int getCost(Node current, Tile dest) {
