@@ -14,6 +14,8 @@ import starter.Tile;
 public class ExploreTask extends BaseTask {
 
     private Set<Tile> unseenTiles;
+    //max distance to follow
+    private int MAXDISTANCE = 60;
 
     @Override
     public void perform() {
@@ -38,6 +40,8 @@ public class ExploreTask extends BaseTask {
                 List<Route> unseenRoutes = new ArrayList<Route>();
                 for (Tile unseenLoc : unseenTiles) {
                     int distance = ants.getDistance(antLoc, unseenLoc);
+                    if(MAXDISTANCE< distance)
+                        continue;
                     Route route = new Route(antLoc, unseenLoc, distance);
                     unseenRoutes.add(route);
                 }
