@@ -6,6 +6,7 @@ import starter.Ants;
 import starter.Tile;
 
 public interface Task {
-	public void perform(Ants ants, Map<Tile, Tile> orders);
-	public void prepare(Ants ants);
+    public void perform();
+
+    public void setup(Ants ants, Map<Tile, Tile> orders);
 }

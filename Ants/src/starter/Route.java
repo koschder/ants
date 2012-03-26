@@ -42,7 +42,7 @@ public class Route implements Comparable<Route> {
     public boolean equals(Object o) {
         boolean result = false;
         if (o instanceof Route) {
-            Route route = (Route)o;
+            Route route = (Route) o;
             result = start.equals(route.start) && end.equals(route.end);
         }
         return result;
