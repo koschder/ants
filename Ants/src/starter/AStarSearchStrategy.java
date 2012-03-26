@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.SortedSet;
@@ -14,12 +13,10 @@ import java.util.TreeSet;
 public class AStarSearchStrategy implements SearchStrategy {
 
     private Ants ants;
-    private Map<Tile, Tile> orders;
     private int MAXCOSTS = 6;
 
-    public AStarSearchStrategy(Ants ants, Map<Tile, Tile> orders, int maxcosts) {
+    public AStarSearchStrategy(Ants ants, int maxcosts) {
         this.ants = ants;
-        this.orders = orders;
         MAXCOSTS = maxcosts;
     }
 
@@ -65,7 +62,7 @@ public class AStarSearchStrategy implements SearchStrategy {
     }
 
     private void addChild(Node parent, SortedSet<Node> children, final Tile childState) {
-        if (ants.getIlk(childState).isUnoccupied() && !isOccupiedForNextMove(childState, parent)) {
+        if (ants.getIlk(childState).isPassable() && !isOccupiedForNextMove(childState, parent)) {
             children.add(new Node(childState, parent, getCost(parent, childState)));
         } else {
             // Logger.log("tile %s is not passable",childState);
@@ -74,7 +71,7 @@ public class AStarSearchStrategy implements SearchStrategy {
 
     private boolean isOccupiedForNextMove(Tile childState, Node parent) {
         if (parent.getParent() == null) // we are on the 2nd level of the search tree
-            return orders.containsValue(childState);
+            return ants.getOrders().containsValue(childState);
         return false;
     }
 

@@ -4,16 +4,19 @@ package starter;
  * Represents a route from one tile to another.
  */
 public class Route implements Comparable<Route> {
+    private Ant ant;
+
     private final Tile start;
 
     private final Tile end;
 
     private final int distance;
 
-    public Route(Tile start, Tile end, int distance) {
+    public Route(Tile start, Tile end, int distance, Ant ant) {
         this.start = start;
         this.end = end;
         this.distance = distance;
+        this.ant = ant;
     }
 
     public Tile getStart() {
@@ -26,6 +29,10 @@ public class Route implements Comparable<Route> {
 
     public int getDistance() {
         return distance;
+    }
+
+    public Ant getAnt() {
+        return ant;
     }
 
     @Override

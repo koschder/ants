@@ -26,7 +26,7 @@ public class GatherFoodTask extends BaseTask implements Task {
         // find close food
         foodRoutes = new ArrayList<Route>();
         sortedFood = new TreeSet<Tile>(ants.getFoodTiles());
-        sortedAnts = new TreeSet<Ant>(ants.getMyAnts());
+        sortedAnts = new TreeSet<Ant>(ants.getMyUnemployedAnts());
 
         for (Tile foodLoc : sortedFood) {
             for (Ant ant : sortedAnts) {
@@ -36,14 +36,14 @@ public class GatherFoodTask extends BaseTask implements Task {
                 // Todo distance verwirrlich, da nicht im pixel mass.
                 if (distance > MAXDISTANCE)
                     continue;
-                Route route = new Route(antLoc, foodLoc, distance);
+                Route route = new Route(antLoc, foodLoc, distance, ant);
                 foodRoutes.add(route);
             }
         }
         Collections.sort(foodRoutes);
         for (Route route : foodRoutes) {
             if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())
-                    && doMoveLocation(route.getStart(), route.getEnd())) {
+                    && doMoveLocation(route.getAnt(), route.getEnd())) {
                 foodTargets.put(route.getEnd(), route.getStart());
             }
         }

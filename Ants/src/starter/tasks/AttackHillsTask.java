@@ -30,18 +30,18 @@ public class AttackHillsTask extends BaseTask {
         // attack hills
         List<Route> hillRoutes = new ArrayList<Route>();
         for (Tile hillLoc : enemyHills) {
-            for (Ant ant : ants.getMyAnts()) {
+            for (Ant ant : ants.getMyUnemployedAnts()) {
                 final Tile tile = ant.getTile();
-                if (!orders.containsValue(tile)) {
+                if (!ants.getOrders().containsValue(tile)) {
                     int distance = ants.getDistance(tile, hillLoc);
-                    Route route = new Route(tile, hillLoc, distance);
+                    Route route = new Route(tile, hillLoc, distance, ant);
                     hillRoutes.add(route);
                 }
             }
         }
         Collections.sort(hillRoutes);
         for (Route route : hillRoutes) {
-            doMoveLocation(route.getStart(), route.getEnd());
+            doMoveLocation(route.getAnt(), route.getEnd());
         }
     }
 

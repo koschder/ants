@@ -32,18 +32,18 @@ public class ExploreTask extends BaseTask {
                 locIter.remove();
             }
         }
-        for (Ant ant : ants.getMyAnts()) {
+        for (Ant ant : ants.getMyUnemployedAnts()) {
             final Tile antLoc = ant.getTile();
-            if (!orders.containsValue(antLoc)) {
+            if (!ants.getOrders().containsValue(antLoc)) {
                 List<Route> unseenRoutes = new ArrayList<Route>();
                 for (Tile unseenLoc : unseenTiles) {
                     int distance = ants.getDistance(antLoc, unseenLoc);
-                    Route route = new Route(antLoc, unseenLoc, distance);
+                    Route route = new Route(antLoc, unseenLoc, distance, ant);
                     unseenRoutes.add(route);
                 }
                 Collections.sort(unseenRoutes);
                 for (Route route : unseenRoutes) {
-                    if (doMoveLocation(route.getStart(), route.getEnd())) {
+                    if (doMoveLocation(route.getAnt(), route.getEnd())) {
                         break;
                     }
                 }
