@@ -15,12 +15,12 @@ public class AStarSearchStrategy implements SearchStrategy {
 
     private Ants ants;
     private Map<Tile, Tile> orders;
-	private int MAXCOSTS = 6;
+    private int MAXCOSTS = 6;
 
-    public AStarSearchStrategy(Ants ants, Map<Tile, Tile> orders,int maxcosts) {
+    public AStarSearchStrategy(Ants ants, Map<Tile, Tile> orders, int maxcosts) {
         this.ants = ants;
         this.orders = orders;
-		MAXCOSTS = maxcosts;
+        MAXCOSTS = maxcosts;
     }
 
     @Override

@@ -43,8 +43,7 @@ public abstract class AbstractSystemInputParser extends AbstractSystemInputReade
     }
 
     /**
-     * Collects lines read from system input stream until a keyword appears and
-     * then parses them.
+     * Collects lines read from system input stream until a keyword appears and then parses them.
      */
     @Override
     public void processLine(String line) {
@@ -197,8 +196,7 @@ public abstract class AbstractSystemInputParser extends AbstractSystemInputReade
             int attackRadius2, int spawnRadius2);
 
     /**
-     * Enables performing actions which should take place prior to updating the
-     * game state, like clearing old game data.
+     * Enables performing actions which should take place prior to updating the game state, like clearing old game data.
      */
     public abstract void beforeUpdate();
 
@@ -259,14 +257,12 @@ public abstract class AbstractSystemInputParser extends AbstractSystemInputReade
     public abstract void addHill(int row, int col, int owner);
 
     /**
-     * Enables performing actions which should take place just after the game
-     * state has been updated.
+     * Enables performing actions which should take place just after the game state has been updated.
      */
     public abstract void afterUpdate();
 
     /**
-     * Subclasses are supposed to use this method to process the game state and
-     * send orders.
+     * Subclasses are supposed to use this method to process the game state and send orders.
      */
     public abstract void doTurn();
 

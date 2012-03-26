@@ -187,11 +187,9 @@ public class Ants {
     }
 
     /**
-     * Returns how much time the bot has still has to take its turn before
-     * timing out.
+     * Returns how much time the bot has still has to take its turn before timing out.
      * 
-     * @return how much time the bot has still has to take its turn before
-     *         timing out
+     * @return how much time the bot has still has to take its turn before timing out
      */
     public int getTimeRemaining() {
         return turnTime - (int) (System.currentTimeMillis() - turnStartTime);
@@ -222,16 +220,14 @@ public class Ants {
     }
 
     /**
-     * Returns ilk at the location in the specified direction from the specified
-     * location.
+     * Returns ilk at the location in the specified direction from the specified location.
      * 
      * @param tile
      *            location on the game map
      * @param direction
      *            direction to look up
      * 
-     * @return ilk at the location in <code>direction</code> from
-     *         <cod>tile</code>
+     * @return ilk at the location in <code>direction</code> from <cod>tile</code>
      */
     public Ilk getIlk(Tile tile, Aim direction) {
         Tile newTile = getTile(tile, direction);
@@ -367,8 +363,7 @@ public class Ants {
     }
 
     /**
-     * Returns one or two orthogonal directions from one location to the
-     * another.
+     * Returns one or two orthogonal directions from one location to the another.
      * 
      * @param t1
      *            one location on the game map

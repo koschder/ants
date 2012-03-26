@@ -2,10 +2,9 @@ package starter;
 
 public class Node implements Comparable<Node> {
 
-	private Tile state;
-	private Node parent;
-	private int cost;
-
+    private Tile state;
+    private Node parent;
+    private int cost;
 
     public Node(Tile state, Node parent, int cost) {
         this.state = state;
@@ -13,13 +12,13 @@ public class Node implements Comparable<Node> {
         this.cost = cost;
     }
 
-	/***
-	 * 
-	 * @return the position of the tile
-	 */
-	public Tile getState() {
-		return state;
-	}
+    /***
+     * 
+     * @return the position of the tile
+     */
+    public Tile getState() {
+        return state;
+    }
 
     public Node getParent() {
         return parent;
@@ -28,11 +27,11 @@ public class Node implements Comparable<Node> {
     public int getCost() {
         return cost;
     }
-	@Override
-	public String toString() {
-		return "Node [state=" + state + ", parent=" + (parent != null ? parent.state : "null") + ", cost=" + cost
-				+ "]";
-	}
+
+    @Override
+    public String toString() {
+        return "Node [state=" + state + ", parent=" + (parent != null ? parent.state : "null") + ", cost=" + cost + "]";
+    }
 
     @Override
     public int hashCode() {

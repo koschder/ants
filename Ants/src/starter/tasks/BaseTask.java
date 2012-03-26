@@ -45,6 +45,6 @@ public abstract class BaseTask implements Task {
     public void setup(Ants ants, Map<Tile, Tile> orders) {
         this.ants = ants;
         this.orders = orders;
-        this.search = new AStarSearchStrategy(ants, orders,6);
+        this.search = new AStarSearchStrategy(ants, orders, 6);
     }
 }

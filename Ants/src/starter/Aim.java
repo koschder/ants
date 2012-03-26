@@ -71,8 +71,7 @@ public enum Aim {
      * Returns direction associated with specified symbol.
      * 
      * @param symbol
-     *            <code>n</code>, <code>e</code>, <code>s</code> or
-     *            <code>w</code> character
+     *            <code>n</code>, <code>e</code>, <code>s</code> or <code>w</code> character
      * 
      * @return direction associated with specified symbol
      */

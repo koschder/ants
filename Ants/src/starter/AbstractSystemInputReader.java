@@ -7,9 +7,8 @@ import java.io.IOException;
  */
 public abstract class AbstractSystemInputReader {
     /**
-     * Reads system input stream line by line. All characters are converted to
-     * lower case and each line is passed for processing to
-     * {@link #processLine(String)} method.
+     * Reads system input stream line by line. All characters are converted to lower case and each line is passed for
+     * processing to {@link #processLine(String)} method.
      * 
      * @throws IOException
      *             if an I/O error occurs
@@ -28,8 +27,7 @@ public abstract class AbstractSystemInputReader {
     }
 
     /**
-     * Process a line read out by {@link #readSystemInput()} method in a way
-     * defined by subclass implementation.
+     * Process a line read out by {@link #readSystemInput()} method in a way defined by subclass implementation.
      * 
      * @param line
      *            single, trimmed line of system input
