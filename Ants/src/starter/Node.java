@@ -2,6 +2,12 @@ package starter;
 
 
 public class Node implements Comparable<Node> {
+	@Override
+	public String toString() {
+		return "Node [state=" + state + ", parent=" + (parent != null ? parent.state : "null") + ", cost=" + cost
+				+ "]";
+	}
+
 	private Tile state;
 	private Node parent;
 	private int cost;
@@ -12,6 +18,10 @@ public class Node implements Comparable<Node> {
 		this.cost = cost;
 	}
 
+	/***
+	 * 
+	 * @return the position of the tile
+	 */
 	public Tile getState() {
 		return state;
 	}
