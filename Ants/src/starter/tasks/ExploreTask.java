@@ -15,7 +15,7 @@ public class ExploreTask extends BaseTask {
 
     private Set<Tile> unseenTiles;
     //max distance to follow
-    private int MAXDISTANCE = 60;
+    private int MAXDISTANCE = 600;
 
     @Override
     public void perform() {
