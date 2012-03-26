@@ -8,6 +8,7 @@ import java.util.TreeMap;
 public class Ant implements Comparable<Ant> {
     static final int MINE = 0;
     private Tile tile;
+    private Tile nextTile;
     private int player;
     private Map<Tile, Integer> enemies = new HashMap<Tile, Integer>();
     private Map<Tile, Integer> friends = new HashMap<Tile, Integer>();
@@ -25,6 +26,10 @@ public class Ant implements Comparable<Ant> {
 
     public int getPlayer() {
         return player;
+    }
+
+    public Tile getNextTile() {
+        return nextTile;
     }
 
     public void addEnemy(Tile enemy, int distance) {
@@ -76,6 +81,10 @@ public class Ant implements Comparable<Ant> {
         public int compare(Tile a, Tile b) {
             return base.get(a).compareTo(base.get(b));
         }
+    }
+
+    public void setNextTile(Tile nextTile) {
+        this.nextTile = nextTile;
     }
 
 }

@@ -2,8 +2,12 @@ package starter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -38,6 +42,8 @@ public class Ants {
     private final Ilk map[][];
 
     private final Set<Ant> myAnts = new HashSet<Ant>();
+    private Set<Ant> myUnemployedAnts = null;
+    private Set<Ant> employedAnts = new HashSet<Ant>();
 
     private final Set<Ant> enemyAnts = new HashSet<Ant>();
 
@@ -47,7 +53,7 @@ public class Ants {
 
     private final Set<Tile> foodTiles = new HashSet<Tile>();
 
-    private final Set<Order> orders = new HashSet<Order>();
+    private final Map<Tile, Move> orders = new HashMap<Tile, Move>();
 
     /**
      * Creates new {@link Ants} object.
@@ -287,6 +293,30 @@ public class Ants {
         return myAnts;
     }
 
+    public Collection<Ant> getMyUnemployedAnts() {
+        if (myUnemployedAnts == null)
+            myUnemployedAnts = new HashSet<Ant>(myAnts);
+        for (Iterator<Ant> it = employedAnts.iterator(); it.hasNext();) {
+            Ant ant = it.next();
+            myUnemployedAnts.remove(ant);
+            it.remove();
+        }
+        return myUnemployedAnts;
+    }
+
+    public boolean putOrder(Ant ant, Aim direction) {
+        // Track all moves, prevent collisions
+        Tile newLoc = getTile(ant.getTile(), direction);
+        if (getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
+            orders.put(newLoc, new Move(ant.getTile(), direction));
+            ant.setNextTile(newLoc);
+            employedAnts.add(ant);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     /**
      * Returns a set containing all enemy ants locations.
      * 
@@ -321,15 +351,6 @@ public class Ants {
      */
     public Set<Tile> getFoodTiles() {
         return foodTiles;
-    }
-
-    /**
-     * Returns all orders sent so far.
-     * 
-     * @return all orders sent so far
-     */
-    public Set<Order> getOrders() {
-        return orders;
     }
 
     /**
@@ -411,6 +432,7 @@ public class Ants {
             map[myAnt.getTile().getRow()][myAnt.getTile().getCol()] = Ilk.LAND;
         }
         myAnts.clear();
+        myUnemployedAnts = null;
     }
 
     /**
@@ -526,20 +548,6 @@ public class Ants {
             myHills.add(tile);
     }
 
-    /**
-     * Issues an order by sending it to the system output.
-     * 
-     * @param myAnt
-     *            map tile with my ant
-     * @param direction
-     *            direction in which to move my ant
-     */
-    public void issueOrder(Tile myAnt, Aim direction) {
-        Order order = new Order(myAnt, direction);
-        orders.add(order);
-        System.out.println(order);
-    }
-
     public void calculateDistances() {
         for (Ant enemy : getEnemyAnts()) {
             for (Ant myAnt : getMyAnts()) {
@@ -563,6 +571,25 @@ public class Ants {
         }
     }
 
+    public void initOrders() {
+        orders.clear();
+        // prevent stepping on own hill
+        for (Tile myHill : getMyHills()) {
+            orders.put(myHill, null);
+        }
+    }
+
+    public void issueOrders() {
+        for (Move move : orders.values()) {
+            if (move != null) {
+                final String order = "o " + move.getTile().getRow() + " " + move.getTile().getCol() + " "
+                        + move.getDirection().getSymbol();
+                Logger.log("Issuing order: %s", order);
+                System.out.println(order);
+            }
+        }
+    }
+
     private void addEnemyPair(Ant anta, Ant antb) {
         final Tile aLoc = anta.getTile();
         final Tile bLoc = antb.getTile();
@@ -577,5 +604,9 @@ public class Ants {
         final int distance = getDistance(bLoc, aLoc);
         anta.addFriend(bLoc, distance);
         antb.addFriend(aLoc, distance);
+    }
+
+    public Map<Tile, Move> getOrders() {
+        return orders;
     }
 }

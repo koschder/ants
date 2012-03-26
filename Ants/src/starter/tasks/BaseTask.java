@@ -1,10 +1,10 @@
 package starter.tasks;
 
 import java.util.List;
-import java.util.Map;
 
 import starter.AStarSearchStrategy;
 import starter.Aim;
+import starter.Ant;
 import starter.Ants;
 import starter.Logger;
 import starter.SearchStrategy;
@@ -13,28 +13,24 @@ import starter.Tile;
 public abstract class BaseTask implements Task {
 
     protected Ants ants;
-    protected Map<Tile, Tile> orders;
     protected SearchStrategy search;
 
-    protected boolean doMoveDirection(Tile antLoc, Aim direction) {
-        // Track all moves, prevent collisions
-        Tile newLoc = ants.getTile(antLoc, direction);
-        if (ants.getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
-            ants.issueOrder(antLoc, direction);
-            orders.put(newLoc, antLoc);
-            Logger.log("%1$s: Moving ant from %2$s to %3$s", getClass().getSimpleName(), antLoc, newLoc);
+    protected boolean doMoveDirection(Ant ant, Aim direction) {
+        if (ants.putOrder(ant, direction)) {
+            Logger.log("%1$s: Moving ant from %2$s to %3$s", getClass().getSimpleName(), ant.getTile(),
+                    ant.getNextTile());
             return true;
         } else {
             return false;
         }
     }
 
-    protected boolean doMoveLocation(Tile antLoc, Tile destLoc) {
-        List<Tile> path = search.bestPath(antLoc, destLoc);
+    protected boolean doMoveLocation(Ant ant, Tile destLoc) {
+        List<Tile> path = search.bestPath(ant.getTile(), destLoc);
         // Track targets to prevent 2 ants to the same location
-        List<Aim> directions = ants.getDirections(antLoc, path != null ? path.get(0) : destLoc);
+        List<Aim> directions = ants.getDirections(ant.getTile(), path != null ? path.get(0) : destLoc);
         for (Aim direction : directions) {
-            if (doMoveDirection(antLoc, direction)) {
+            if (doMoveDirection(ant, direction)) {
                 return true;
             }
         }
@@ -42,9 +38,8 @@ public abstract class BaseTask implements Task {
     }
 
     @Override
-    public void setup(Ants ants, Map<Tile, Tile> orders) {
+    public void setup(Ants ants) {
         this.ants = ants;
-        this.orders = orders;
-        this.search = new AStarSearchStrategy(ants, orders, 6);
+        this.search = new AStarSearchStrategy(ants, 6);
     }
 }

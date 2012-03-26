@@ -1,20 +1,16 @@
 package starter.tasks;
 
 import starter.Aim;
-import starter.Tile;
+import starter.Ant;
 
 public class ClearHillTask extends BaseTask {
 
     @Override
     public void perform() {
-        // unblock hills
-        for (Tile myHill : ants.getMyHills()) {
-            if (ants.getMyAnts().contains(myHill) && !orders.containsValue(myHill)) {
-                for (Aim direction : Aim.values()) {
-                    if (doMoveDirection(myHill, direction)) {
-                        break;
-                    }
-                }
+        for (Ant ant : ants.getMyUnemployedAnts()) {
+            for (Aim aim : Aim.values()) {
+                if (ants.putOrder(ant, aim))
+                    return;
             }
         }
 
