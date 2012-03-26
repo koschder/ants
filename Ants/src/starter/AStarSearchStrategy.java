@@ -12,9 +12,14 @@ import java.util.TreeSet;
 public class AStarSearchStrategy implements SearchStrategy {
 
 	private Ants ants;
-
+	private int MAXCOSTS = 6;
 	public AStarSearchStrategy(Ants ants2) {
 		ants = ants2;
+	}
+	
+	public AStarSearchStrategy(Ants ants2,int maxcosts) {
+		ants = ants2;
+		MAXCOSTS = maxcosts;
 	}
 
 	@Override
@@ -34,7 +39,7 @@ public class AStarSearchStrategy implements SearchStrategy {
 			//Logger.log("Astar: %s exand(next) %s", node,expand(node));
 			for (Node child : expand(node)) {
 				if (frontier.contains(child)
-						|| explored.contains(child.getState()))
+						|| explored.contains(child.getState()) || child.getCost() > MAXCOSTS)
 					continue;
 				if (child.getState().equals(to))
 					return path(child); // success
