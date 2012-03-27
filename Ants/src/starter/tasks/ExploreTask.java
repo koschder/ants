@@ -39,7 +39,7 @@ public class ExploreTask extends BaseTask {
             if (!ants.getOrders().containsValue(antLoc)) {
                 List<Route> unseenRoutes = new ArrayList<Route>();
                 for (Tile unseenLoc : unseenTiles) {
-                    int distance = ants.getDistance(antLoc, unseenLoc);
+                    int distance = ants.getSquaredDistance(antLoc, unseenLoc);
                     if(MAXDISTANCE< distance)
                         continue;
                     Route route = new Route(antLoc, unseenLoc, distance, ant);

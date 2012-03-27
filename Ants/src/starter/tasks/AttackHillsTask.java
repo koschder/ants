@@ -33,7 +33,7 @@ public class AttackHillsTask extends BaseTask {
             for (Ant ant : ants.getMyUnemployedAnts()) {
                 final Tile tile = ant.getTile();
                 if (!ants.getOrders().containsValue(tile)) {
-                    int distance = ants.getDistance(tile, hillLoc);
+                    int distance = ants.getSquaredDistance(tile, hillLoc);
                     Route route = new Route(tile, hillLoc, distance, ant);
                     hillRoutes.add(route);
                 }

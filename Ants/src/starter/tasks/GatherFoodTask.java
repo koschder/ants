@@ -31,7 +31,7 @@ public class GatherFoodTask extends BaseTask implements Task {
         for (Tile foodLoc : sortedFood) {
             for (Ant ant : sortedAnts) {
                 final Tile antLoc = ant.getTile();
-                int distance = ants.getDistance(antLoc, foodLoc);
+                int distance = ants.getSquaredDistance(antLoc, foodLoc);
                 // Logger.log("Distance is %s",distance);
                 // Todo distance verwirrlich, da nicht im pixel mass.
                 if (distance > MAXDISTANCE)

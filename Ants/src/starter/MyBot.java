@@ -8,6 +8,7 @@ import starter.tasks.AttackHillsTask;
 import starter.tasks.ClearHillTask;
 import starter.tasks.ExploreTask;
 import starter.tasks.GatherFoodTask;
+import starter.tasks.MissionTask;
 import starter.tasks.Task;
 import starter.tasks.ValidateOrdersTask;
 
@@ -67,7 +68,7 @@ public class MyBot extends Bot {
 
     private void initTasks() {
         if (tasks.isEmpty()) {
-            tasks.add(new ValidateOrdersTask());
+            tasks.add(new MissionTask());
             tasks.add(new GatherFoodTask());
             tasks.add(new AttackHillsTask());
             tasks.add(new ExploreTask());

@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import starter.mission.Mission;
+
 /**
  * Holds all game data and current game state.
  */
@@ -52,6 +54,8 @@ public class Ants {
     private final Set<Tile> enemyHills = new HashSet<Tile>();
 
     private final Set<Tile> foodTiles = new HashSet<Tile>();
+    
+    private final Set<Mission> missions = new HashSet<Mission>();
 
     private final Map<Tile, Move> orders = new HashMap<Tile, Move>();
 
@@ -375,7 +379,7 @@ public class Ants {
      * 
      * @return distance between <code>t1</code> and <code>t2</code>
      */
-    public int getDistance(Tile t1, Tile t2) {
+    public int getSquaredDistance(Tile t1, Tile t2) {
         int rowDelta = Math.abs(t1.getRow() - t2.getRow());
         int colDelta = Math.abs(t1.getCol() - t2.getCol());
         rowDelta = Math.min(rowDelta, rows - rowDelta);
@@ -593,7 +597,7 @@ public class Ants {
     private void addEnemyPair(Ant anta, Ant antb) {
         final Tile aLoc = anta.getTile();
         final Tile bLoc = antb.getTile();
-        final int distance = getDistance(bLoc, aLoc);
+        final int distance = getSquaredDistance(bLoc, aLoc);
         anta.addEnemy(bLoc, distance);
         antb.addEnemy(aLoc, distance);
     }
@@ -601,12 +605,16 @@ public class Ants {
     private void addFriendPair(Ant anta, Ant antb) {
         final Tile aLoc = anta.getTile();
         final Tile bLoc = antb.getTile();
-        final int distance = getDistance(bLoc, aLoc);
+        final int distance = getSquaredDistance(bLoc, aLoc);
         anta.addFriend(bLoc, distance);
         antb.addFriend(aLoc, distance);
     }
 
     public Map<Tile, Move> getOrders() {
         return orders;
+    }
+
+    public Set<Mission> getMissions() {
+        return missions;
     }
 }

@@ -39,4 +39,13 @@ public enum Ilk {
     public boolean isUnoccupied() {
         return this == LAND || this == DEAD;
     }
+
+    public boolean isFood() {
+        return this == FOOD;
+    }
+
+    public boolean hasFriendlyAnt() {
+        // TODO Auto-generated method stub
+        return this == MY_ANT;
+    }
 }
