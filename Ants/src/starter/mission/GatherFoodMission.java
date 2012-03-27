@@ -30,6 +30,12 @@ public class GatherFoodMission extends PathMission {
     }
 
     @Override
+    public String toString() {
+        return "GatherFoodMission: [target food=" + food + ", ant=" + ant + ", IsMissionComplete()=" + IsMissionComplete()
+                + "]";
+    }
+
+    @Override
     public void proceedMission() {
         
         Tile nextStep = path.remove(0);

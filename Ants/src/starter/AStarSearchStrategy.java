@@ -21,9 +21,20 @@ public class AStarSearchStrategy implements SearchStrategy {
     }
 
     @Override
+    /*
+     * (non-Javadoc)
+     * @see starter.SearchStrategy#bestPath(starter.Tile, starter.Tile)
+     */
     public List<Tile> bestPath(Tile from, Tile to) {
 
-        Logger.log("Astar starting from: %s to %s", from, to);
+        
+        List<Tile> list = calculateBestPath(from, to);
+        String length = list != null ? "has size of "+list.size() : "not found";
+        Logger.log("Astar from: %s to %s best path %s", from, to,length);
+        return list; // failure
+    }
+
+    private List<Tile> calculateBestPath(Tile from, Tile to) {
         if (from.equals(to))
             return Arrays.asList(to);
 
@@ -47,8 +58,8 @@ public class AStarSearchStrategy implements SearchStrategy {
         return null; // failure
     }
 
-    public SortedSet<Node> expand(Node node) {
-        SortedSet<Node> children = new TreeSet<Node>();
+    public List<Node> expand(Node node) {
+        List<Node> children = new ArrayList<Node>();
         final Tile north = ants.getTile(node.getState(), Aim.NORTH);
         final Tile south = ants.getTile(node.getState(), Aim.SOUTH);
         final Tile west = ants.getTile(node.getState(), Aim.WEST);
@@ -61,7 +72,7 @@ public class AStarSearchStrategy implements SearchStrategy {
         return children;
     }
 
-    private void addChild(Node parent, SortedSet<Node> children, final Tile childState) {
+    private void addChild(Node parent, List<Node> children, final Tile childState) {
         if (ants.getIlk(childState).isPassable() && !isOccupiedForNextMove(childState, parent)) {
             children.add(new Node(childState, parent, getCost(parent, childState)));
         } else {

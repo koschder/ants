@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import starter.mission.GatherFoodMission;
 import starter.mission.Mission;
 
 /**
@@ -616,5 +617,9 @@ public class Ants {
 
     public Set<Mission> getMissions() {
         return missions;
+    }
+
+    public void addMission(GatherFoodMission mission) {
+        missions.add(mission);
     }
 }

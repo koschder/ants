@@ -10,6 +10,7 @@ import java.util.TreeSet;
 import starter.Ant;
 import starter.Route;
 import starter.Tile;
+import starter.mission.GatherFoodMission;
 
 public class GatherFoodTask extends BaseTask implements Task {
 
@@ -42,8 +43,19 @@ public class GatherFoodTask extends BaseTask implements Task {
         }
         Collections.sort(foodRoutes);
         for (Route route : foodRoutes) {
-            if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())
-                    && doMoveLocation(route.getAnt(), route.getEnd())) {
+            if (!foodTargets.containsKey(route.getEnd())){
+                 List<Tile> list = search.bestPath(route.getStart(), route.getEnd());
+                 if(list == null)
+                     continue;
+                 if(list.size() <= 2){
+                     // food is reachable in one step, we don't need to create a task;
+                     doMoveLocation(route.getAnt(), list.get(0));
+                 }else{
+                     //Todo path for a star: first tile is position of ant and no path tile
+                     GatherFoodMission mission = new GatherFoodMission(route.getAnt(),ants);
+                     mission.proceedMission();
+                     ants.addMission(mission);
+                 }
                 foodTargets.put(route.getEnd(), route.getStart());
             }
         }
