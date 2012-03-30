@@ -1,8 +1,11 @@
 package starter.mission;
 
+import java.util.List;
+
 import starter.Aim;
 import starter.Ant;
 import starter.Ants;
+import starter.Logger;
 import starter.Move;
 import starter.Tile;
 
@@ -10,14 +13,14 @@ public class GatherFoodMission extends PathMission {
 
     Tile food = path.get(path.size()-1);
 
-    public GatherFoodMission(Ant ant, Ants ants) {
-        super(ant, ants);
+    public GatherFoodMission(Ant ant, Ants ants,List<Tile> path) {
+        super(ant, ants,path);
     }
 
     @Override
     public boolean IsMissionComplete() {
         // only the food tile is in path list (but for gather the food we don't need to move to this field)
-        return (path.size() == 1);
+        return (path == null || path.size() == 0);
     }
 
     @Override
@@ -31,19 +34,24 @@ public class GatherFoodMission extends PathMission {
 
     @Override
     public String toString() {
-        return "GatherFoodMission: [target food=" + food + ", ant=" + ant + ", IsMissionComplete()=" + IsMissionComplete()
+        return "GatherFoodMission: [ant=" + ant.getTile() + ", target food=" + food + ", Next direction:="+ant.getTile().directionTo(path.get(0))+", Path:="+GetPathString()+", IsMissionComplete()=" + IsMissionComplete()
                 + "]";
     }
 
     @Override
     public void proceedMission() {
-        
+        if(path==null)
+            return;       
         Tile nextStep = path.remove(0);
-        //todo right direction
-        if(ants.putOrder(ant, Aim.NORTH)){
+        
+        Aim aim = ant.getTile().directionTo(nextStep);
+        //Logger.log("Go to: %s direction is %s", nextStep,aim);
+        if(ants.putOrder(ant,aim)){
+            //TODO wird in putorder gemacht, aber für ant nicht übernommen?
+            ant.setNextTile(ants.getTile(ant.getTile(), aim));
             return;
         }
-        //todo what else;
+        //TODO what else;
         return;
     }
 }

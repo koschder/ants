@@ -11,8 +11,17 @@ public abstract class PathMission extends Mission {
 
     public List<Tile> path = new ArrayList<Tile>();
     
-    public PathMission(Ant ant, Ants ants) {
+    public PathMission(Ant ant, Ants ants,List<Tile> path) {
         super(ant, ants);
+        this.path = path;
+    }
+    
+    public String GetPathString(){
+        String pathString = "";
+        for(Tile t : path){
+            pathString+=t+",";
+        }
+        return pathString;
     }
 
 }

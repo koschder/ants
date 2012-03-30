@@ -77,6 +77,26 @@ public class Tile implements Comparable<Tile> {
      */
     @Override
     public String toString() {
-        return "<" + row + " " + col + ">";
+        return "<r:" + row + " c:" + col + ">";
+    }
+
+    public Aim directionTo(Tile nextStep) {
+        if(getRow() == nextStep.getRow()){
+            // changing in column east or west
+            int diff = getCol() - nextStep.getCol();
+            if(diff == getCol() || (diff < 0 && diff != -getCol())){
+                return Aim.EAST;
+            }else{
+                return Aim.WEST;
+            }
+        }else{
+            // changing in row north or south
+            int diff = getRow() - nextStep.getRow();
+            if(diff == getRow() || (diff < 0 && diff != -getRow())){
+                return Aim.SOUTH;
+            }else{
+                return Aim.NORTH;
+            }
+        }
     }
 }

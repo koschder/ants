@@ -48,7 +48,9 @@ public class MyBot extends Bot {
         initTasks();
         doStatistics();
         for (Task task : tasks) {
+            Logger.log("start task: %s", task.getClass());
             task.perform();
+            Logger.log("end task: %s", task.getClass());
         }
         getAnts().issueOrders();
     }

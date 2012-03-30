@@ -43,7 +43,8 @@ public class GatherFoodTask extends BaseTask implements Task {
         }
         Collections.sort(foodRoutes);
         for (Route route : foodRoutes) {
-            if (!foodTargets.containsKey(route.getEnd())){
+            // food not already targeted && ant not used
+            if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())){
                  List<Tile> list = search.bestPath(route.getStart(), route.getEnd());
                  if(list == null)
                      continue;
@@ -52,7 +53,9 @@ public class GatherFoodTask extends BaseTask implements Task {
                      doMoveLocation(route.getAnt(), list.get(0));
                  }else{
                      //Todo path for a star: first tile is position of ant and no path tile
-                     GatherFoodMission mission = new GatherFoodMission(route.getAnt(),ants);
+                     // remove first position, its the position of the ant and not of path.
+                     list.remove(0);
+                     GatherFoodMission mission = new GatherFoodMission(route.getAnt(),ants,list);
                      mission.proceedMission();
                      ants.addMission(mission);
                  }

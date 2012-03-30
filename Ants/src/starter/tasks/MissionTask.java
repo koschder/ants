@@ -16,14 +16,17 @@ public class MissionTask extends BaseTask {
        Logger.log("Current mission count: %s", missions.size());
        for (Iterator<Mission> it = missions.iterator(); it.hasNext();) {
            Mission mission = it.next();
+           Logger.log("mission: %s", mission);
            if(mission.IsMissionValid()){
-               mission.proceedMission();
+               it.remove();
                Logger.log("Mission proceeded: %s",mission);
                if(mission.IsMissionComplete()){
                    missions.remove(mission);
                }
+           }else{
+               Logger.log("Mission not vaild: %s. Mission is removed.",mission);
+               it.remove();
            }
-           missions.remove(mission);
        }
 
     }
