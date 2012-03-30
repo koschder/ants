@@ -12,7 +12,7 @@ public abstract class Mission {
     protected abstract boolean IsSpecificMissionValid();
     public abstract void proceedMission();
     
-    public final boolean IsMissionValid(){
+    public final boolean isMissionValid(){
         //TODO check if ant is alive.
         boolean antIsAlive = (ants.getIlk(ant.getTile()).hasFriendlyAnt());
         return (antIsAlive && IsSpecificMissionValid());
