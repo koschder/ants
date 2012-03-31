@@ -27,7 +27,7 @@ public class MissionTask extends BaseTask {
             Logger.log("mission: %s", mission);
             if (mission.isMissionValid()) {
                 mission.perform();
-                Logger.log("Mission proceeded: %s", mission);
+                Logger.log("Mission performed: %s", mission);
                 if (mission.IsMissionComplete()) {
                     it.remove();
                 }
