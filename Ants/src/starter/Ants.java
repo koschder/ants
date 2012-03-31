@@ -302,11 +302,11 @@ public class Ants {
             myUnemployedAnts = new HashSet<Ant>(myAnts);
         for (Iterator<Ant> it = employedAnts.iterator(); it.hasNext();) {
             Ant ant = it.next();
-
             if (!myUnemployedAnts.remove(ant)) {
-                Logger.log("Could not remove ant %s Tile: %s of unemployedAnts", ant, ant.getTile());
+                Logger.log("Could not remove ant %s Tile: %s of unemployedAnts size: %s", ant, ant.getTile(),
+                        myUnemployedAnts.size());
             } else {
-                Logger.log("Ant %s marked as employed", ant);
+                Logger.log("Ant %s Tile: %s marked as employed", ant, ant.getTile());
             }
             it.remove();
         }
