@@ -7,8 +7,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 public class AStarSearchStrategy implements SearchStrategy {
 
@@ -23,15 +21,17 @@ public class AStarSearchStrategy implements SearchStrategy {
     @Override
     /*
      * (non-Javadoc)
+     * 
      * @see starter.SearchStrategy#bestPath(starter.Tile, starter.Tile)
      */
     public List<Tile> bestPath(Tile from, Tile to) {
 
-        
         List<Tile> list = calculateBestPath(from, to);
-        String length = list != null ? "has size of "+list.size() : "not found";
-        Logger.log("Astar from: %s to %s best path %s", from, to,length);
-        return list; // failure
+        if (list != null && list.size() > 0)
+            list.remove(0); // first path-tile is position of ant (not the next step)
+        String length = list != null ? "has size of " + list.size() : "not found";
+        Logger.log("Astar from: %s to %s best path size: %s path: %s", from, to, length, list);
+        return list;
     }
 
     private List<Tile> calculateBestPath(Tile from, Tile to) {
