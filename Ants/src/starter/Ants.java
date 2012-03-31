@@ -10,7 +10,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import starter.mission.GatherFoodMission;
 import starter.mission.Mission;
 
 /**
@@ -55,7 +54,7 @@ public class Ants {
     private final Set<Tile> enemyHills = new HashSet<Tile>();
 
     private final Set<Tile> foodTiles = new HashSet<Tile>();
-    
+
     private final Set<Mission> missions = new HashSet<Mission>();
 
     private final Map<Tile, Move> orders = new HashMap<Tile, Move>();
@@ -619,7 +618,8 @@ public class Ants {
         return missions;
     }
 
-    public void addMission(GatherFoodMission mission) {
-        missions.add(mission);
+    public void addMission(Mission newMission) {
+        Logger.log("New mission created: %s", newMission);
+        missions.add(newMission);
     }
 }
