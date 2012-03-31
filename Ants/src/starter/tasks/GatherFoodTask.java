@@ -8,11 +8,12 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import starter.Ant;
+import starter.Logger;
 import starter.Route;
 import starter.Tile;
 import starter.mission.GatherFoodMission;
 
-public class GatherFoodTask extends BaseTask implements Task {
+public class GatherFoodTask extends BaseTask {
 
     // the maximum distance an ant can be away of a food tile to catch it.
     private int MAXDISTANCE = 50;
@@ -25,6 +26,7 @@ public class GatherFoodTask extends BaseTask implements Task {
         TreeSet<Ant> sortedAnts;
         foodTargets = new HashMap<Tile, Tile>();
         // find close food
+        Logger.log("unemployed ants %s", ants.getMyUnemployedAnts().size());
         foodRoutes = new ArrayList<Route>();
         sortedFood = new TreeSet<Tile>(ants.getFoodTiles());
         sortedAnts = new TreeSet<Ant>(ants.getMyUnemployedAnts());
@@ -44,21 +46,18 @@ public class GatherFoodTask extends BaseTask implements Task {
         Collections.sort(foodRoutes);
         for (Route route : foodRoutes) {
             // food not already targeted && ant not used
-            if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())){
-                 List<Tile> list = search.bestPath(route.getStart(), route.getEnd());
-                 if(list == null)
-                     continue;
-                 if(list.size() <= 2){
-                     // food is reachable in one step, we don't need to create a task;
-                     doMoveLocation(route.getAnt(), list.get(0));
-                 }else{
-                     //Todo path for a star: first tile is position of ant and no path tile
-                     // remove first position, its the position of the ant and not of path.
-                     list.remove(0);
-                     GatherFoodMission mission = new GatherFoodMission(route.getAnt(),ants,list);
-                     mission.proceedMission();
-                     ants.addMission(mission);
-                 }
+            if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())) {
+                List<Tile> list = search.bestPath(route.getStart(), route.getEnd());
+                if (list == null)
+                    continue;
+                if (list.size() <= 2) {
+                    // food is reachable in one step, we don't need to create a task;
+                    doMoveLocation(route.getAnt(), list.get(0));
+                } else {
+                    GatherFoodMission mission = new GatherFoodMission(route.getAnt(), ants, list);
+                    mission.perform();
+                    ants.addMission(mission);
+                }
                 foodTargets.put(route.getEnd(), route.getStart());
             }
         }

@@ -302,7 +302,12 @@ public class Ants {
             myUnemployedAnts = new HashSet<Ant>(myAnts);
         for (Iterator<Ant> it = employedAnts.iterator(); it.hasNext();) {
             Ant ant = it.next();
-            myUnemployedAnts.remove(ant);
+
+            if (!myUnemployedAnts.remove(ant)) {
+                Logger.log("Could not remove ant %s Tile: %s of unemployedAnts", ant, ant.getTile());
+            } else {
+                Logger.log("Ant %s marked as employed", ant);
+            }
             it.remove();
         }
         return myUnemployedAnts;

@@ -7,10 +7,10 @@ import java.util.List;
 import starter.tasks.AttackHillsTask;
 import starter.tasks.ClearHillTask;
 import starter.tasks.ExploreTask;
+import starter.tasks.FollowTask;
 import starter.tasks.GatherFoodTask;
 import starter.tasks.MissionTask;
 import starter.tasks.Task;
-import starter.tasks.ValidateOrdersTask;
 
 /**
  * Starter bot implementation.
@@ -42,15 +42,15 @@ public class MyBot extends Bot {
 
     @Override
     public void doTurn() {
-        Logger.log("Turn %1$d", ++turn);
-        Logger.log("Ants: %1$d", getAnts().getMyAnts().size());
+        Logger.log("------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------",
+                turn++, getAnts().getMyAnts().size(), getAnts().getMissions().size());
         getAnts().initOrders();
         initTasks();
         doStatistics();
         for (Task task : tasks) {
-            Logger.log("start task: %s", task.getClass());
+            Logger.log("task started:: %s", task.getClass());
             task.perform();
-            Logger.log("end task: %s", task.getClass());
+            Logger.log("task ended  :: %s", task.getClass());
         }
         getAnts().issueOrders();
     }
@@ -73,6 +73,7 @@ public class MyBot extends Bot {
             tasks.add(new MissionTask());
             tasks.add(new GatherFoodTask());
             tasks.add(new AttackHillsTask());
+            tasks.add(new FollowTask());
             tasks.add(new ExploreTask());
             tasks.add(new ClearHillTask());
         }

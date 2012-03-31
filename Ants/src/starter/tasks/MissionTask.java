@@ -3,10 +3,19 @@ package starter.tasks;
 import java.util.Iterator;
 import java.util.Set;
 
+import starter.Ants;
 import starter.Logger;
 import starter.mission.Mission;
 
 public class MissionTask extends BaseTask {
+
+    @Override
+    public void setup(Ants ants) {
+        super.setup(ants);
+        for (Mission m : ants.getMissions()) {
+            m.getAnt().setup();
+        }
+    }
 
     @Override
     public void perform() {
@@ -17,7 +26,7 @@ public class MissionTask extends BaseTask {
             Mission mission = it.next();
             Logger.log("mission: %s", mission);
             if (mission.isMissionValid()) {
-                mission.proceedMission();
+                mission.perform();
                 Logger.log("Mission proceeded: %s", mission);
                 if (mission.IsMissionComplete()) {
                     it.remove();
