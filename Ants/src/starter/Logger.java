@@ -17,4 +17,8 @@ public class Logger {
     public static void log(String message, Object... parameters) {
         log.println(String.format(message, parameters));
     }
+
+    public static void exception(String message, Object... parameters) {
+        log.println(String.format("EXCEPTION: " + message, parameters));
+    }
 }
