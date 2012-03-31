@@ -81,20 +81,20 @@ public class Tile implements Comparable<Tile> {
     }
 
     public Aim directionTo(Tile nextStep) {
-        if(getRow() == nextStep.getRow()){
+        if (getRow() == nextStep.getRow()) {
             // changing in column east or west
             int diff = getCol() - nextStep.getCol();
-            if(diff == getCol() || (diff < 0 && diff != -getCol())){
+            if (diff == getCol() || (diff < 0 && diff != -getCol())) {
                 return Aim.EAST;
-            }else{
+            } else {
                 return Aim.WEST;
             }
-        }else{
+        } else {
             // changing in row north or south
             int diff = getRow() - nextStep.getRow();
-            if(diff == getRow() || (diff < 0 && diff != -getRow())){
+            if (diff == getRow() || (diff < 0 && diff != -getRow())) {
                 return Aim.SOUTH;
-            }else{
+            } else {
                 return Aim.NORTH;
             }
         }
