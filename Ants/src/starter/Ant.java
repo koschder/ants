@@ -87,4 +87,12 @@ public class Ant implements Comparable<Ant> {
         this.nextTile = nextTile;
     }
 
+    public void setup() {
+        if (nextTile != null) {
+            tile = new Tile(nextTile.getRow(), nextTile.getCol());
+            nextTile = null;
+        }
+
+    }
+
 }
