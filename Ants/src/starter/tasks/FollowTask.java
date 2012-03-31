@@ -23,6 +23,7 @@ public class FollowTask extends BaseTask {
                 int distance = antLoc.manhattanDistanceTo(a.getTile());
                 if (MAX_DISTANCE_TO_START_FOLLOW > distance) {
                     Mission mFollow = new FollowMission(ant, ants, m);
+                    mFollow.setup(ants);
                     ants.addMission(mFollow);
                     mFollow.perform();
                     return;

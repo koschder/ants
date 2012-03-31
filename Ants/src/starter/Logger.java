@@ -18,7 +18,10 @@ public class Logger {
         log.println(String.format(message, parameters));
     }
 
-    public static void exception(String message, Object... parameters) {
-        log.println(String.format("EXCEPTION: " + message, parameters));
+    public static void exception(String message, Exception ex, Object... parameters) {
+        String logMsg = String.format(message, parameters);
+        String error = String.format("EXCEPTION: %s stacktrace:  ", ex);
+        log("%s Log %s ", error, logMsg);
+        ex.printStackTrace(log);
     }
 }

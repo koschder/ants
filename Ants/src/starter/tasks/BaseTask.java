@@ -26,6 +26,7 @@ public abstract class BaseTask implements Task {
     }
 
     protected boolean doMoveLocation(Ant ant, Tile destLoc) {
+
         try {
             List<Tile> path = search.bestPath(ant.getTile(), destLoc);
             // Track targets to prevent 2 ants to the same location
@@ -36,7 +37,7 @@ public abstract class BaseTask implements Task {
                 }
             }
         } catch (Exception ex) {
-            Logger.exception("ex: %s ant: %s tile: %s", ex, ant, destLoc);
+            Logger.exception("ant: %s tile: %s", ex, ant, destLoc);
         }
         return false;
     }

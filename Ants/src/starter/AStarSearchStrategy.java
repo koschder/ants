@@ -27,8 +27,10 @@ public class AStarSearchStrategy implements SearchStrategy {
     public List<Tile> bestPath(Tile from, Tile to) {
 
         List<Tile> list = calculateBestPath(from, to);
-        if (list != null && list.size() > 0)
+        if (list != null && list.size() > 1) {
+            Logger.log("list size() %s", list.size());
             list.remove(0); // first path-tile is position of ant (not the next step)
+        }
         String length = list != null ? "has size of " + list.size() : "not found";
         Logger.log("Astar from: %s to %s best path size: %s path: %s", from, to, length, list);
         return list;

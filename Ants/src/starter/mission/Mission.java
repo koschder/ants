@@ -35,13 +35,14 @@ public abstract class Mission extends BaseTask {
     }
 
     public Mission(Ant ant, Ants ants) {
-        this.ant = ant;
+        super();
         this.ants = ants;
+        this.ant = ant;
     }
 
     /***
      * 
-     * @return Last move of this mission or null if no move is preformed yet.
+     * @return Last move of this mission or null if no move is performed yet.
      */
     public Move getLastMove() {
         if (lastMoves.size() == 0)
