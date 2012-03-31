@@ -62,8 +62,22 @@ public class Ant implements Comparable<Ant> {
     }
 
     @Override
+    public int hashCode() {
+        // TODO darf man das so machen
+        return tile.hashCode();
+    }
+
+    @Override
     public boolean equals(Object obj) {
-        return tile.equals(obj);
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Ant other = (Ant) obj;
+
+        return other.getTile().equals(getTile());
     }
 
     public void addFriend(Tile friendLoc, int distance) {
