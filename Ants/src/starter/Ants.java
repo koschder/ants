@@ -600,19 +600,15 @@ public class Ants {
     }
 
     private void addEnemyPair(Ant anta, Ant antb) {
-        final Tile aLoc = anta.getTile();
-        final Tile bLoc = antb.getTile();
-        final int distance = getSquaredDistance(bLoc, aLoc);
-        anta.addEnemy(bLoc, distance);
-        antb.addEnemy(aLoc, distance);
+        final int distance = getSquaredDistance(antb.getTile(), anta.getTile());
+        anta.addEnemy(antb, distance);
+        antb.addEnemy(anta, distance);
     }
 
     private void addFriendPair(Ant anta, Ant antb) {
-        final Tile aLoc = anta.getTile();
-        final Tile bLoc = antb.getTile();
-        final int distance = getSquaredDistance(bLoc, aLoc);
-        anta.addFriend(bLoc, distance);
-        antb.addFriend(aLoc, distance);
+        final int distance = getSquaredDistance(antb.getTile(), anta.getTile());
+        anta.addFriend(antb, distance);
+        antb.addFriend(anta, distance);
     }
 
     public Map<Tile, Move> getOrders() {

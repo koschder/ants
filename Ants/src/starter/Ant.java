@@ -1,8 +1,10 @@
 package starter;
 
-import java.util.Comparator;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.TreeMap;
 
 public class Ant implements Comparable<Ant> {
@@ -10,10 +12,10 @@ public class Ant implements Comparable<Ant> {
     private Tile tile;
     private Tile nextTile;
     private int player;
-    private Map<Tile, Integer> enemies = new HashMap<Tile, Integer>();
-    private Map<Tile, Integer> friends = new HashMap<Tile, Integer>();
-    private Map<Tile, Integer> sortedEnemies = null;
-    private Map<Tile, Integer> sortedFriends = null;
+    private Map<Ant, Integer> enemies = new HashMap<Ant, Integer>();
+    private Map<Ant, Integer> friends = new HashMap<Ant, Integer>();
+    private Map<Ant, Integer> sortedEnemies = null;
+    private Map<Ant, Integer> sortedFriends = null;
 
     public Ant(Tile tile, int owner) {
         this.tile = tile;
@@ -32,20 +34,45 @@ public class Ant implements Comparable<Ant> {
         return nextTile;
     }
 
-    public void addEnemy(Tile enemy, int distance) {
+    public void addEnemy(Ant enemy, int distance) {
         enemies.put(enemy, distance);
     }
 
-    public Map<Tile, Integer> getSortedEnemies() {
+    public void addFriend(Ant friend, int distance) {
+        friends.put(friend, distance);
+    }
+
+    private Map<Ant, Integer> getSortedEnemies() {
         if (sortedEnemies == null)
-            sortedEnemies = new TreeMap<Tile, Integer>(new DistanceComparator(enemies));
+            sortedEnemies = new TreeMap<Ant, Integer>(new DistanceComparator(enemies));
         return sortedEnemies;
     }
 
-    public Map<Tile, Integer> getSortedFriends() {
+    private Map<Ant, Integer> getSortedFriends() {
         if (sortedFriends == null)
-            sortedFriends = new TreeMap<Tile, Integer>(new DistanceComparator(friends));
+            sortedFriends = new TreeMap<Ant, Integer>(new DistanceComparator(friends));
         return sortedFriends;
+    }
+
+    public List<Ant> getFriendsInRadius(int radius) {
+        final List<Ant> friends = new ArrayList<Ant>();
+        for (Entry<Ant, Integer> entry : getSortedFriends().entrySet()) {
+            if (entry.getValue() > radius)
+                break;
+            friends.add(entry.getKey());
+        }
+        return friends;
+    }
+
+    public List<Ant> getEnemiesInRadius(int radius, boolean onlyMyAnts) {
+        final List<Ant> enemies = new ArrayList<Ant>();
+        for (Entry<Ant, Integer> entry : getSortedEnemies().entrySet()) {
+            if (entry.getValue() > radius)
+                break;
+            if (!onlyMyAnts || entry.getKey().isMine())
+                enemies.add(entry.getKey());
+        }
+        return enemies;
     }
 
     public Tile getTile() {
@@ -54,6 +81,18 @@ public class Ant implements Comparable<Ant> {
 
     public void setTile(Tile tile) {
         this.tile = tile;
+    }
+
+    public void setNextTile(Tile nextTile) {
+        this.nextTile = nextTile;
+    }
+
+    public void setup() {
+        if (nextTile != null) {
+            tile = new Tile(nextTile.getRow(), nextTile.getCol());
+            nextTile = null;
+        }
+
     }
 
     @Override
@@ -78,35 +117,6 @@ public class Ant implements Comparable<Ant> {
         Ant other = (Ant) obj;
 
         return other.getTile().equals(getTile());
-    }
-
-    public void addFriend(Tile friendLoc, int distance) {
-        friends.put(friendLoc, distance);
-    }
-
-    class DistanceComparator implements Comparator<Tile> {
-
-        Map<Tile, Integer> base;
-
-        public DistanceComparator(Map<Tile, Integer> base) {
-            this.base = base;
-        }
-
-        public int compare(Tile a, Tile b) {
-            return base.get(a).compareTo(base.get(b));
-        }
-    }
-
-    public void setNextTile(Tile nextTile) {
-        this.nextTile = nextTile;
-    }
-
-    public void setup() {
-        if (nextTile != null) {
-            tile = new Tile(nextTile.getRow(), nextTile.getCol());
-            nextTile = null;
-        }
-
     }
 
 }

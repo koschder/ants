@@ -73,6 +73,7 @@ public class MyBot extends Bot {
             tasks.add(new MissionTask());
             tasks.add(new GatherFoodTask());
             tasks.add(new AttackHillsTask());
+            // tasks.add(new CombatTask());
             tasks.add(new FollowTask());
             tasks.add(new ExploreTask());
             tasks.add(new ClearHillTask());
