@@ -44,6 +44,8 @@ public class Ants {
 
     private final Ilk map[][];
 
+    private int turn = 0;
+
     private final Set<Ant> myAnts = new HashSet<Ant>();
     private Set<Ant> myUnemployedAnts = null;
     private Set<Ant> employedAnts = new HashSet<Ant>();
@@ -623,5 +625,13 @@ public class Ants {
     public void addMission(Mission newMission) {
         Logger.log(LogCategory.EXECUTE_MISSIONS, "New mission created: %s", newMission);
         missions.add(newMission);
+    }
+
+    public int getTurn() {
+        return turn;
+    }
+
+    public void updateTurn() {
+        turn++;
     }
 }

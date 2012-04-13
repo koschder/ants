@@ -29,6 +29,7 @@ public class Logger {
 
     private static Set<LogCategory> enabledCategories;
     private static PrintStream log;
+    private static PrintStream liveInfo;
 
     private static void configure() {
         enabledCategories = new HashSet<Logger.LogCategory>();
@@ -55,6 +56,7 @@ public class Logger {
         configure();
         try {
             log = new PrintStream(new File("logs/debug.log"));
+            liveInfo = new PrintStream(new File("logs/additionalInfo0.json"));
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -71,4 +73,11 @@ public class Logger {
         log(LogCategory.ERROR, "%s Log %s ", error, logMsg);
         ex.printStackTrace(log);
     }
+
+    public static void liveInfo(int turn, Tile tile, String message, Object... parameters) {
+        String msg = String.format(message, parameters).replace("\"", "'");
+        String sLiveInfo = String.format("\"%s#%s#%s\": \"%s\",", turn, tile.getRow(), tile.getCol(), msg);
+        liveInfo.println(sLiveInfo);
+    }
+
 }

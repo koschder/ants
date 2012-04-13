@@ -31,8 +31,6 @@ public class MyBot extends Bot {
         new MyBot().readSystemInput();
     }
 
-    private static int turn = 0;
-
     private List<Task> tasks = new ArrayList<Task>();
 
     // generating a history how many ants we have in each turn
@@ -46,7 +44,8 @@ public class MyBot extends Bot {
     public void doTurn() {
         Logger.log(LogCategory.TURN,
                 "------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------",
-                turn++, getAnts().getMyAnts().size(), getAnts().getMissions().size());
+                getAnts().getTurn(), getAnts().getMyAnts().size(), getAnts().getMissions().size());
+        getAnts().updateTurn();
         getAnts().initOrders();
         initTasks();
         doStatistics();
@@ -67,7 +66,7 @@ public class MyBot extends Bot {
                 / (getAnts().getEnemyAnts().size() + getAnts().getMyAnts().size() + 1.0) * 100.0));
 
         // every 10 steps we write the statistic to the log
-        if (turn % 10 == 0) {
+        if (getAnts().getTurn() % 10 == 0) {
             Logger.log(LogCategory.STATISTICS, "Statistics: Influence history: %s", statAntsInfluenceHistory);
             Logger.log(LogCategory.STATISTICS, "Statistics: Ants amount history: %s", statAntsAmountHistory);
         }
