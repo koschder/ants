@@ -13,12 +13,12 @@ import starter.Tile;
 
 public abstract class BaseTask implements Task {
 
-    protected Ants ants;
     protected SearchStrategy search;
 
     protected boolean doMoveDirection(Ant ant, Aim direction) {
-        if (ants.putOrder(ant, direction)) {
-            Logger.liveInfo(ants.getTurn(), ant.getTile(), "Task: %s ant: %s", getClass().getSimpleName(), ant);
+        if (Ants.getAnts().putOrder(ant, direction)) {
+            Logger.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s ant: %s", getClass().getSimpleName(),
+                    ant);
             Logger.debug(LogCategory.EXECUTE_TASKS, "%1$s: Moving ant from %2$s to %3$s", getClass().getSimpleName(),
                     ant.getTile(), ant.getNextTile());
             return true;
@@ -33,7 +33,7 @@ public abstract class BaseTask implements Task {
             List<Tile> path = search.bestPath(ant.getTile(), destLoc);
             if (path == null)
                 return false;
-            List<Aim> directions = ants.getDirections(ant.getTile(), path != null ? path.get(0) : destLoc);
+            List<Aim> directions = Ants.getAnts().getDirections(ant.getTile(), path != null ? path.get(0) : destLoc);
             for (Aim direction : directions) {
                 if (doMoveDirection(ant, direction)) {
                     return true;
@@ -46,8 +46,7 @@ public abstract class BaseTask implements Task {
     }
 
     @Override
-    public void setup(Ants ants) {
-        this.ants = ants;
-        this.search = new AStarSearchStrategy(ants, 6);
+    public void setup() {
+        this.search = new AStarSearchStrategy(6);
     }
 }

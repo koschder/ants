@@ -43,10 +43,10 @@ public class MyBot extends Bot {
     @Override
     public void doTurn() {
         Logger.info(LogCategory.TURN,
-                "------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------",
-                getAnts().getTurn(), getAnts().getMyAnts().size(), getAnts().getMissions().size());
-        getAnts().updateTurn();
-        getAnts().initOrders();
+                "------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------", Ants
+                        .getAnts().getTurn(), Ants.getAnts().getMyAnts().size(), Ants.getAnts().getMissions().size());
+        Ants.getAnts().updateTurn();
+        Ants.getAnts().initOrders();
         initTasks();
         doStatistics();
         for (Task task : tasks) {
@@ -56,17 +56,17 @@ public class MyBot extends Bot {
             Logger.info(LogCategory.PERFORMANCE, "task ended  :: %s, took %s ms", task.getClass(),
                     System.currentTimeMillis() - start);
         }
-        getAnts().issueOrders();
+        Ants.getAnts().issueOrders();
     }
 
     private void doStatistics() {
 
-        statAntsAmountHistory.add(getAnts().getMyAnts().size());
-        statAntsInfluenceHistory.add((int) Math.round(getAnts().getMyAnts().size()
-                / (getAnts().getEnemyAnts().size() + getAnts().getMyAnts().size() + 1.0) * 100.0));
+        statAntsAmountHistory.add(Ants.getAnts().getMyAnts().size());
+        statAntsInfluenceHistory.add((int) Math.round(Ants.getAnts().getMyAnts().size()
+                / (Ants.getAnts().getEnemyAnts().size() + Ants.getAnts().getMyAnts().size() + 1.0) * 100.0));
 
         // every 10 steps we write the statistic to the log
-        if (getAnts().getTurn() % 10 == 0) {
+        if (Ants.getAnts().getTurn() % 10 == 0) {
             Logger.info(LogCategory.STATISTICS, "Statistics: Influence history: %s", statAntsInfluenceHistory);
             Logger.info(LogCategory.STATISTICS, "Statistics: Ants amount history: %s", statAntsAmountHistory);
         }
@@ -83,14 +83,14 @@ public class MyBot extends Bot {
             tasks.add(new ClearHillTask());
         }
         for (Task task : tasks) {
-            task.setup(getAnts());
+            task.setup();
         }
     }
 
     @Override
     protected void doFinishTurn() {
         Logger.info(LogCategory.TURN, "Finished in %1$s ms with %2$s ms remaining.", System.currentTimeMillis()
-                - getAnts().getTurnStartTime(), getAnts().getTimeRemaining());
+                - Ants.getAnts().getTurnStartTime(), Ants.getAnts().getTimeRemaining());
 
     }
 }

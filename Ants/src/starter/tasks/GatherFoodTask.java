@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.TreeSet;
 
 import starter.Ant;
+import starter.Ants;
 import starter.Logger;
 import starter.Logger.LogCategory;
 import starter.Route;
@@ -27,15 +28,15 @@ public class GatherFoodTask extends BaseTask {
         TreeSet<Ant> sortedAnts;
         foodTargets = new HashMap<Tile, Tile>();
         // find close food
-        Logger.debug(LogCategory.FOOD, "unemployed ants %s", ants.getMyUnemployedAnts().size());
+        Logger.debug(LogCategory.FOOD, "unemployed ants %s", Ants.getAnts().getMyUnemployedAnts().size());
         foodRoutes = new ArrayList<Route>();
-        sortedFood = new TreeSet<Tile>(ants.getFoodTiles());
-        sortedAnts = new TreeSet<Ant>(ants.getMyUnemployedAnts());
+        sortedFood = new TreeSet<Tile>(Ants.getAnts().getFoodTiles());
+        sortedAnts = new TreeSet<Ant>(Ants.getAnts().getMyUnemployedAnts());
 
         for (Tile foodLoc : sortedFood) {
             for (Ant ant : sortedAnts) {
                 final Tile antLoc = ant.getTile();
-                int distance = ants.getSquaredDistance(antLoc, foodLoc);
+                int distance = Ants.getAnts().getSquaredDistance(antLoc, foodLoc);
                 Logger.debug(LogCategory.FOOD, "Distance is %s", distance);
                 // Todo distance verwirrlich, da nicht im pixel mass.
                 if (distance > MAXDISTANCE)
@@ -55,8 +56,8 @@ public class GatherFoodTask extends BaseTask {
                     // food is reachable in one step, we don't need to create a task;
                     doMoveLocation(route.getAnt(), list.get(0));
                 } else {
-                    GatherFoodMission mission = new GatherFoodMission(route.getAnt(), ants, list);
-                    ants.addMission(mission);
+                    GatherFoodMission mission = new GatherFoodMission(route.getAnt(), list);
+                    Ants.getAnts().addMission(mission);
                     mission.perform();
                 }
                 foodTargets.put(route.getEnd(), route.getStart());

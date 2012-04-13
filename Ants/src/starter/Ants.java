@@ -16,51 +16,52 @@ import starter.mission.Mission;
 /**
  * Holds all game data and current game state.
  */
-public class Ants {
+public enum Ants {
+    INSTANCE;
     /** Maximum map size. */
     public static final int MAX_MAP_SIZE = 256 * 2;
 
-    private final int loadTime;
+    private int loadTime;
 
-    private final int turnTime;
+    private int turnTime;
 
-    private final int rows;
+    private int rows;
 
-    private final int cols;
+    private int cols;
 
-    private final int turns;
+    private int turns;
 
-    private final int viewRadius2;
+    private int viewRadius2;
 
-    private final int attackRadius2;
+    private int attackRadius2;
 
-    private final int spawnRadius2;
+    private int spawnRadius2;
 
-    private final boolean visible[][];
+    private boolean visible[][];
 
-    private final Set<Tile> visionOffsets;
+    private Set<Tile> visionOffsets;
 
     private long turnStartTime;
 
-    private final Ilk map[][];
+    private Ilk map[][];
 
     private int turn = 0;
 
-    private final Set<Ant> myAnts = new HashSet<Ant>();
+    private Set<Ant> myAnts = new HashSet<Ant>();
     private Set<Ant> myUnemployedAnts = null;
     private Set<Ant> employedAnts = new HashSet<Ant>();
 
-    private final Set<Ant> enemyAnts = new HashSet<Ant>();
+    private Set<Ant> enemyAnts = new HashSet<Ant>();
 
-    private final Set<Tile> myHills = new HashSet<Tile>();
+    private Set<Tile> myHills = new HashSet<Tile>();
 
-    private final Set<Tile> enemyHills = new HashSet<Tile>();
+    private Set<Tile> enemyHills = new HashSet<Tile>();
 
-    private final Set<Tile> foodTiles = new HashSet<Tile>();
+    private Set<Tile> foodTiles = new HashSet<Tile>();
 
-    private final Set<Mission> missions = new HashSet<Mission>();
+    private Set<Mission> missions = new HashSet<Mission>();
 
-    private final Map<Tile, Move> orders = new HashMap<Tile, Move>();
+    private Map<Tile, Move> orders = new HashMap<Tile, Move>();
 
     /**
      * Creates new {@link Ants} object.
@@ -82,7 +83,7 @@ public class Ants {
      * @param spawnRadius2
      *            squared spawn radius of each ant
      */
-    public Ants(int loadTime, int turnTime, int rows, int cols, int turns, int viewRadius2, int attackRadius2,
+    public void setup(int loadTime, int turnTime, int rows, int cols, int turns, int viewRadius2, int attackRadius2,
             int spawnRadius2) {
         this.loadTime = loadTime;
         this.turnTime = turnTime;
@@ -111,6 +112,10 @@ public class Ants {
                 }
             }
         }
+    }
+
+    public static Ants getAnts() {
+        return INSTANCE;
     }
 
     /**

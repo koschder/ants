@@ -1,7 +1,6 @@
 package starter.mission;
 
 import starter.Ant;
-import starter.Ants;
 import starter.Logger;
 import starter.Logger.LogCategory;
 import starter.Move;
@@ -17,8 +16,8 @@ public class FollowMission extends Mission {
     private Mission mastermission;
     private final int MAX_DISTANCE_TO_MASTER = 6;
 
-    public FollowMission(Ant ant, Ants ants, Mission m) {
-        super(ant, ants);
+    public FollowMission(Ant ant, Mission m) {
+        super(ant);
         mastermission = m;
     }
 

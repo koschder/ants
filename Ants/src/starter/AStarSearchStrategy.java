@@ -12,11 +12,9 @@ import starter.Logger.LogCategory;
 
 public class AStarSearchStrategy implements SearchStrategy {
 
-    private Ants ants;
     private int MAXCOSTS = 6;
 
-    public AStarSearchStrategy(Ants ants, int maxcosts) {
-        this.ants = ants;
+    public AStarSearchStrategy(int maxcosts) {
         MAXCOSTS = maxcosts;
     }
 
@@ -65,10 +63,10 @@ public class AStarSearchStrategy implements SearchStrategy {
 
     public List<Node> expand(Node node) {
         List<Node> children = new ArrayList<Node>();
-        final Tile north = ants.getTile(node.getState(), Aim.NORTH);
-        final Tile south = ants.getTile(node.getState(), Aim.SOUTH);
-        final Tile west = ants.getTile(node.getState(), Aim.WEST);
-        final Tile east = ants.getTile(node.getState(), Aim.EAST);
+        final Tile north = Ants.getAnts().getTile(node.getState(), Aim.NORTH);
+        final Tile south = Ants.getAnts().getTile(node.getState(), Aim.SOUTH);
+        final Tile west = Ants.getAnts().getTile(node.getState(), Aim.WEST);
+        final Tile east = Ants.getAnts().getTile(node.getState(), Aim.EAST);
         addChild(node, children, north);
         addChild(node, children, south);
         addChild(node, children, west);
@@ -78,7 +76,7 @@ public class AStarSearchStrategy implements SearchStrategy {
     }
 
     private void addChild(Node parent, List<Node> children, final Tile childState) {
-        if (ants.getIlk(childState).isPassable() && !isOccupiedForNextMove(childState, parent)) {
+        if (Ants.getAnts().getIlk(childState).isPassable() && !isOccupiedForNextMove(childState, parent)) {
             children.add(new Node(childState, parent, getCost(parent, childState)));
         } else {
             Logger.debug(LogCategory.PATHFINDING, "tile %s is not passable", childState);
@@ -87,7 +85,7 @@ public class AStarSearchStrategy implements SearchStrategy {
 
     private boolean isOccupiedForNextMove(Tile childState, Node parent) {
         if (parent.getParent() == null) // we are on the 2nd level of the search tree
-            return ants.getOrders().containsValue(childState);
+            return Ants.getAnts().getOrders().containsValue(childState);
         return false;
     }
 

@@ -5,6 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import starter.Ant;
+import starter.Ants;
 import starter.Tile;
 import starter.mission.AttackMission;
 import starter.mission.Mission;
@@ -13,12 +14,12 @@ public class CombatTask extends BaseTask {
 
     @Override
     public void perform() {
-        Collection<Ant> myUnemployed = ants.getMyUnemployedAnts();
-        for (Ant enemy : ants.getEnemyAnts()) {
+        Collection<Ant> myUnemployed = Ants.getAnts().getMyUnemployedAnts();
+        for (Ant enemy : Ants.getAnts().getEnemyAnts()) {
             // TODO getXXInRadius expects manhattan, not r^2
-            List<Ant> myAntsInRange = enemy.getEnemiesInRadius(ants.getViewRadius2(), true);
+            List<Ant> myAntsInRange = enemy.getEnemiesInRadius(Ants.getAnts().getViewRadius2(), true);
             removeEmployedAnts(myUnemployed, myAntsInRange);
-            List<Ant> friends = enemy.getFriendsInRadius(ants.getViewRadius2());
+            List<Ant> friends = enemy.getFriendsInRadius(Ants.getAnts().getViewRadius2());
             if (myAntsInRange.size() > friends.size())
                 attackEnemy(enemy, friends);
         }
@@ -37,8 +38,8 @@ public class CombatTask extends BaseTask {
             if (path.size() <= 2) {
                 doMoveLocation(ant, path.get(0));
             } else {
-                Mission mission = new AttackMission(ant, ants, path);
-                ants.addMission(mission);
+                Mission mission = new AttackMission(ant, path);
+                Ants.getAnts().addMission(mission);
                 mission.perform();
             }
         }

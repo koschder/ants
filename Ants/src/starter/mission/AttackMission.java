@@ -4,15 +4,14 @@ import java.util.List;
 
 import starter.Aim;
 import starter.Ant;
-import starter.Ants;
 import starter.Logger;
 import starter.Logger.LogCategory;
 import starter.Tile;
 
 public class AttackMission extends PathMission {
 
-    public AttackMission(Ant ant, Ants ants, List<Tile> path) {
-        super(ant, ants, path);
+    public AttackMission(Ant ant, List<Tile> path) {
+        super(ant, path);
     }
 
     @Override

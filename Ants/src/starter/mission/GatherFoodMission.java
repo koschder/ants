@@ -13,8 +13,8 @@ public class GatherFoodMission extends PathMission {
 
     Tile food = path.get(path.size() - 1);
 
-    public GatherFoodMission(Ant ant, Ants ants, List<Tile> path) {
-        super(ant, ants, path);
+    public GatherFoodMission(Ant ant, List<Tile> path) {
+        super(ant, path);
     }
 
     @Override
@@ -26,7 +26,7 @@ public class GatherFoodMission extends PathMission {
     @Override
     public boolean IsSpecificMissionValid() {
         // if food to gather isn't there the mission is not vaild.
-        if (!ants.getIlk(food).isFood())
+        if (!Ants.getAnts().getIlk(food).isFood())
             return false;
         // TODO other checks here
         return true;

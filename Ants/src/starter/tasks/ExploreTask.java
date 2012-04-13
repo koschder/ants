@@ -23,18 +23,16 @@ public class ExploreTask extends BaseTask {
     private int MAXDISTANCE = 600;
 
     @Override
-    public void setup(Ants ants) {
+    public void setup() {
 
-        super.setup(ants);
-
-        this.search = new SimpleSearchStrategy(ants);
+        this.search = new SimpleSearchStrategy();
     }
 
     @Override
     public void perform() {
         invisibleTiles = new HashSet<Tile>();
-        for (int row = 0; row < ants.getRows(); row++) {
-            for (int col = 0; col < ants.getCols(); col++) {
+        for (int row = 0; row < Ants.getAnts().getRows(); row++) {
+            for (int col = 0; col < Ants.getAnts().getCols(); col++) {
                 invisibleTiles.add(new Tile(row, col));
             }
         }
@@ -47,7 +45,7 @@ public class ExploreTask extends BaseTask {
         Logger.info(LogCategory.EXPLORE, "Invisible tiles: %s, Unseen tiles: %s", invisibleTiles.size(),
                 unseenTiles.size());
         long start = System.currentTimeMillis();
-        int totalTiles = ants.getCols() * ants.getRows();
+        int totalTiles = Ants.getAnts().getCols() * Ants.getAnts().getRows();
         if ((unseenTiles.size() / totalTiles) < 0.1)
             explore(invisibleTiles);
         else
@@ -56,13 +54,13 @@ public class ExploreTask extends BaseTask {
     }
 
     private void explore(Set<Tile> tiles) {
-        for (Ant ant : ants.getMyUnemployedAnts()) {
+        for (Ant ant : Ants.getAnts().getMyUnemployedAnts()) {
             final Tile antLoc = ant.getTile();
-            if (!ants.getOrders().containsValue(antLoc)) {
+            if (!Ants.getAnts().getOrders().containsValue(antLoc)) {
                 List<Route> unseenRoutes = new ArrayList<Route>();
                 int minDistance = Integer.MAX_VALUE;
                 for (Tile unseenLoc : tiles) {
-                    int distance = ants.getSquaredDistance(antLoc, unseenLoc);
+                    int distance = Ants.getAnts().getSquaredDistance(antLoc, unseenLoc);
                     if (distance > MAXDISTANCE)
                         continue;
                     if (distance < minDistance)
@@ -86,7 +84,7 @@ public class ExploreTask extends BaseTask {
     private void removeVisibleTiles(Set<Tile> tiles) {
         for (Iterator<Tile> locIter = tiles.iterator(); locIter.hasNext();) {
             Tile next = locIter.next();
-            if (ants.isVisible(next)) {
+            if (Ants.getAnts().isVisible(next)) {
                 locIter.remove();
             }
         }

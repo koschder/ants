@@ -24,20 +24,14 @@ public abstract class Mission extends BaseTask {
     // public abstract void proceedMission();
 
     public final boolean isMissionValid() {
-        boolean antIsAlive = (ants.getIlk(ant.getTile()).hasFriendlyAnt());
+        boolean antIsAlive = (Ants.getAnts().getIlk(ant.getTile()).hasFriendlyAnt());
         if (!antIsAlive) {
             Logger.debug(LogCategory.EXECUTE_MISSIONS, "isMissionValid(): no ant at %s", ant.getTile());
         }
         return (antIsAlive && IsSpecificMissionValid());
     }
 
-    public void InitMission(Ants ants) {
-        this.ants = ants;
-    }
-
-    public Mission(Ant ant, Ants ants) {
-        super();
-        this.ants = ants;
+    public Mission(Ant ant) {
         this.ant = ant;
     }
 
@@ -52,9 +46,9 @@ public abstract class Mission extends BaseTask {
     }
 
     protected boolean putMissionOrder(Ant ant, Aim aim) {
-        if (ants.putOrder(ant, aim)) {
+        if (Ants.getAnts().putOrder(ant, aim)) {
             // TODO wird in putorder gemacht, aber f�r ant nicht �bernommen?
-            ant.setNextTile(ants.getTile(ant.getTile(), aim));
+            ant.setNextTile(Ants.getAnts().getTile(ant.getTile(), aim));
             lastMoves.add(new Move(ant.getTile(), aim));
             return true;
         }

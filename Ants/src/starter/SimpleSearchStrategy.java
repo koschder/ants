@@ -6,11 +6,6 @@ import java.util.List;
 import starter.Logger.LogCategory;
 
 public class SimpleSearchStrategy implements SearchStrategy {
-    private Ants ants;
-
-    public SimpleSearchStrategy(Ants ants) {
-        this.ants = ants;
-    }
 
     @Override
     public List<Tile> bestPath(Tile from, Tile to) {
@@ -42,19 +37,19 @@ public class SimpleSearchStrategy implements SearchStrategy {
     private List<Tile> getStraightPath(Tile from, Tile to) {
         List<Tile> path = new ArrayList<Tile>();
 
-        List<Aim> directions = ants.getDirections(from, to);
+        List<Aim> directions = Ants.getAnts().getDirections(from, to);
         if (!(directions.size() == 1))
             Logger.error(LogCategory.PATHFINDING, "more than 1 direction from %s to %s", from, to);
         Aim aim = directions.get(0);
 
-        if (!ants.getIlk(from, aim).isUnoccupied())
+        if (!Ants.getAnts().getIlk(from, aim).isUnoccupied())
             return null;
 
         Tile t = from;
         while (!t.equals(to)) {
-            if (!ants.getIlk(t, aim).isPassable())
+            if (!Ants.getAnts().getIlk(t, aim).isPassable())
                 return null; // straight path is blocked
-            t = ants.getTile(t, aim);
+            t = Ants.getAnts().getTile(t, aim);
             path.add(t);
         }
         path.add(to);

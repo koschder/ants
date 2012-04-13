@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Set;
 
 import starter.Ant;
+import starter.Ants;
 import starter.Route;
 import starter.Tile;
 
@@ -18,11 +19,11 @@ public class AttackHillsTask extends BaseTask {
     @Override
     public void perform() {
         for (Iterator<Tile> iterator = enemyHills.iterator(); iterator.hasNext();) {
-            if (!ants.isVisible(iterator.next()))
+            if (!Ants.getAnts().isVisible(iterator.next()))
                 iterator.remove();
         }
         // add new hills to set
-        for (Tile enemyHill : ants.getEnemyHills()) {
+        for (Tile enemyHill : Ants.getAnts().getEnemyHills()) {
             if (!enemyHills.contains(enemyHill)) {
                 enemyHills.add(enemyHill);
             }
@@ -30,10 +31,10 @@ public class AttackHillsTask extends BaseTask {
         // attack hills
         List<Route> hillRoutes = new ArrayList<Route>();
         for (Tile hillLoc : enemyHills) {
-            for (Ant ant : ants.getMyUnemployedAnts()) {
+            for (Ant ant : Ants.getAnts().getMyUnemployedAnts()) {
                 final Tile tile = ant.getTile();
-                if (!ants.getOrders().containsValue(tile)) {
-                    int distance = ants.getSquaredDistance(tile, hillLoc);
+                if (!Ants.getAnts().getOrders().containsValue(tile)) {
+                    int distance = Ants.getAnts().getSquaredDistance(tile, hillLoc);
                     Route route = new Route(tile, hillLoc, distance, ant);
                     hillRoutes.add(route);
                 }
