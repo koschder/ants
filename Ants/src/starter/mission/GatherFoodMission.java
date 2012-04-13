@@ -6,6 +6,7 @@ import starter.Aim;
 import starter.Ant;
 import starter.Ants;
 import starter.Logger;
+import starter.Logger.LogCategory;
 import starter.Tile;
 
 public class GatherFoodMission extends PathMission {
@@ -45,11 +46,11 @@ public class GatherFoodMission extends PathMission {
         Tile nextStep = path.remove(0);
 
         Aim aim = ant.getTile().directionTo(nextStep);
-        Logger.log("Go to: %s direction is %s", nextStep, aim);
+        Logger.log(LogCategory.FOOD, "Go to: %s direction is %s", nextStep, aim);
         if (putMissionOrder(ant, aim)) {
         } else {
             // TODO what else
-            Logger.log("no move done for Mission %s ", this);
+            Logger.log(LogCategory.FOOD, "no move done for Mission %s ", this);
         }
         return;
     }

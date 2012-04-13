@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import starter.Logger.LogCategory;
 import starter.tasks.AttackHillsTask;
 import starter.tasks.ClearHillTask;
+import starter.tasks.CombatTask;
 import starter.tasks.ExploreTask;
 import starter.tasks.FollowTask;
 import starter.tasks.GatherFoodTask;
@@ -42,15 +44,18 @@ public class MyBot extends Bot {
 
     @Override
     public void doTurn() {
-        Logger.log("------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------",
+        Logger.log(LogCategory.TURN,
+                "------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------",
                 turn++, getAnts().getMyAnts().size(), getAnts().getMissions().size());
         getAnts().initOrders();
         initTasks();
         doStatistics();
         for (Task task : tasks) {
-            Logger.log("task started:: %s", task.getClass());
+            long start = System.currentTimeMillis();
+            Logger.log(LogCategory.PERFORMANCE, "task started:: %s at %s", task.getClass(), start);
             task.perform();
-            Logger.log("task ended  :: %s", task.getClass());
+            Logger.log(LogCategory.PERFORMANCE, "task ended  :: %s, took %s ms", task.getClass(),
+                    System.currentTimeMillis() - start);
         }
         getAnts().issueOrders();
     }
@@ -63,8 +68,8 @@ public class MyBot extends Bot {
 
         // every 10 steps we write the statistic to the log
         if (turn % 10 == 0) {
-            Logger.log("Statistics: Influence history: %s", statAntsInfluenceHistory);
-            Logger.log("Statistics: Ants amount history: %s", statAntsAmountHistory);
+            Logger.log(LogCategory.STATISTICS, "Statistics: Influence history: %s", statAntsInfluenceHistory);
+            Logger.log(LogCategory.STATISTICS, "Statistics: Ants amount history: %s", statAntsAmountHistory);
         }
     }
 
@@ -73,7 +78,7 @@ public class MyBot extends Bot {
             tasks.add(new MissionTask());
             tasks.add(new GatherFoodTask());
             tasks.add(new AttackHillsTask());
-            // tasks.add(new CombatTask());
+            tasks.add(new CombatTask());
             tasks.add(new FollowTask());
             tasks.add(new ExploreTask());
             tasks.add(new ClearHillTask());
@@ -85,7 +90,7 @@ public class MyBot extends Bot {
 
     @Override
     protected void doFinishTurn() {
-        Logger.log("Finished in %1$s ms with %2$s ms remaining.", System.currentTimeMillis()
+        Logger.log(LogCategory.TURN, "Finished in %1$s ms with %2$s ms remaining.", System.currentTimeMillis()
                 - getAnts().getTurnStartTime(), getAnts().getTimeRemaining());
 
     }

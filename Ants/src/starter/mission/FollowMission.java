@@ -3,6 +3,7 @@ package starter.mission;
 import starter.Ant;
 import starter.Ants;
 import starter.Logger;
+import starter.Logger.LogCategory;
 import starter.Move;
 
 /***
@@ -35,7 +36,7 @@ public class FollowMission extends Mission {
 
         int distance = m.getTile().manhattanDistanceTo(ant.getTile());
         if (distance > MAX_DISTANCE_TO_MASTER) {
-            Logger.log("FollowMission cancelled, master is to far away : %s max is: %s)", distance,
+            Logger.log(LogCategory.FOLLOW, "FollowMission cancelled, master is to far away : %s max is: %s)", distance,
                     MAX_DISTANCE_TO_MASTER);
             return false;
 

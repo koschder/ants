@@ -7,6 +7,7 @@ import starter.Aim;
 import starter.Ant;
 import starter.Ants;
 import starter.Logger;
+import starter.Logger.LogCategory;
 import starter.Move;
 import starter.tasks.BaseTask;
 
@@ -25,7 +26,7 @@ public abstract class Mission extends BaseTask {
     public final boolean isMissionValid() {
         boolean antIsAlive = (ants.getIlk(ant.getTile()).hasFriendlyAnt());
         if (!antIsAlive) {
-            Logger.log("isMissionValid(): no ant at %s", ant.getTile());
+            Logger.log(LogCategory.EXECUTE_MISSIONS, "isMissionValid(): no ant at %s", ant.getTile());
         }
         return (antIsAlive && IsSpecificMissionValid());
     }
@@ -52,7 +53,7 @@ public abstract class Mission extends BaseTask {
 
     protected boolean putMissionOrder(Ant ant, Aim aim) {
         if (ants.putOrder(ant, aim)) {
-            // TODO wird in putorder gemacht, aber für ant nicht übernommen?
+            // TODO wird in putorder gemacht, aber fï¿½r ant nicht ï¿½bernommen?
             ant.setNextTile(ants.getTile(ant.getTile(), aim));
             lastMoves.add(new Move(ant.getTile(), aim));
             return true;

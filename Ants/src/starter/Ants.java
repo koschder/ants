@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import starter.Logger.LogCategory;
 import starter.mission.Mission;
 
 /**
@@ -303,10 +304,10 @@ public class Ants {
         for (Iterator<Ant> it = employedAnts.iterator(); it.hasNext();) {
             Ant ant = it.next();
             if (!myUnemployedAnts.remove(ant)) {
-                Logger.log("Could not remove ant %s Tile: %s of unemployedAnts size: %s", ant, ant.getTile(),
-                        myUnemployedAnts.size());
+                Logger.log(LogCategory.ERROR, "Could not remove ant %s Tile: %s of unemployedAnts size: %s", ant,
+                        ant.getTile(), myUnemployedAnts.size());
             } else {
-                Logger.log("Ant %s Tile: %s marked as employed", ant, ant.getTile());
+                Logger.log(LogCategory.TRACE, "Ant %s Tile: %s marked as employed", ant, ant.getTile());
             }
             it.remove();
         }
@@ -593,7 +594,7 @@ public class Ants {
             if (move != null) {
                 final String order = "o " + move.getTile().getRow() + " " + move.getTile().getCol() + " "
                         + move.getDirection().getSymbol();
-                Logger.log("Issuing order: %s", order);
+                Logger.log(LogCategory.ORDERS, "Issuing order: %s", order);
                 System.out.println(order);
             }
         }
@@ -620,7 +621,7 @@ public class Ants {
     }
 
     public void addMission(Mission newMission) {
-        Logger.log("New mission created: %s", newMission);
+        Logger.log(LogCategory.EXECUTE_MISSIONS, "New mission created: %s", newMission);
         missions.add(newMission);
     }
 }
