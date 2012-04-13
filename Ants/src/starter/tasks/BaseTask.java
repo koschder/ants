@@ -18,6 +18,7 @@ public abstract class BaseTask implements Task {
 
     protected boolean doMoveDirection(Ant ant, Aim direction) {
         if (ants.putOrder(ant, direction)) {
+            Logger.liveInfo(ants.getTurn(), ant.getTile(), "Task: %s ant: %s", getClass().getSimpleName(), ant);
             Logger.log(LogCategory.EXECUTE_TASKS, "%1$s: Moving ant from %2$s to %3$s", getClass().getSimpleName(),
                     ant.getTile(), ant.getNextTile());
             return true;
