@@ -14,6 +14,11 @@ $import('Director');
 $import('ImageManager');
 $import('Replay');
 $import('CanvasElement');
+$import('jquery');
+$import('jqueryui');
+
+
+document.write('<script src="'+$import_base.replace('tools/visualizer/js/','')+'logs/AdditionalInformation.js"></script>');
 
 var $import_base;
 
@@ -37,6 +42,7 @@ function $import(file) {
 			}
 		}
 	}
+
 	file = $import_base + file.replace(/[.]/g, '/') + '.js';
 	for ( var i = 0; i < scripts.length; i++) {
 		if (scripts[i].src === file) {
@@ -44,4 +50,5 @@ function $import(file) {
 		}
 	}
 	document.write('<script src="' + file + '"></script>');
+    //document.write('<script src=".js"></script>');
 }

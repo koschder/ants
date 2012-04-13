@@ -801,6 +801,8 @@ Visualizer.prototype.tryStart = function() {
 		this.main.canvas.onmouseup = function(event) {
 			if (event.which === 1) {
 				vis.mouseReleased();
+                try{ displayAdditionalInformation(vis); } catch(e){}
+                //alert('clicked at col: '+vis.antsMap.mouseCol+' row:'+vis.antsMap.mouseRow+' turn:'+vis.antsMap.turn);
 			}
 		};
 		/**
