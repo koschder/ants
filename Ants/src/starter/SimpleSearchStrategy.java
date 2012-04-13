@@ -25,7 +25,7 @@ public class SimpleSearchStrategy implements SearchStrategy {
 
     private List<Tile> getSimpleViaPath(Tile from, Tile to, Tile via) {
         List<Tile> path = new ArrayList<Tile>();
-        Logger.log(LogCategory.TRACE, "calling simpleViaPath with from %s to %s via %s", from, to, via);
+        Logger.debug(LogCategory.PATHFINDING, "calling simpleViaPath with from %s to %s via %s", from, to, via);
 
         List<Tile> firstLeg = getStraightPath(from, via);
         if (firstLeg == null)
@@ -44,7 +44,7 @@ public class SimpleSearchStrategy implements SearchStrategy {
 
         List<Aim> directions = ants.getDirections(from, to);
         if (!(directions.size() == 1))
-            Logger.log(LogCategory.ERROR, "more than 1 direction from %s to %s", from, to);
+            Logger.error(LogCategory.PATHFINDING, "more than 1 direction from %s to %s", from, to);
         Aim aim = directions.get(0);
 
         if (!ants.getIlk(from, aim).isUnoccupied())

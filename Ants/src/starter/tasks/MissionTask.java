@@ -22,18 +22,18 @@ public class MissionTask extends BaseTask {
     public void perform() {
 
         Set<Mission> missions = ants.getMissions();
-        Logger.log(LogCategory.EXECUTE_MISSIONS, "Current mission count: %s", missions.size());
+        Logger.debug(LogCategory.EXECUTE_MISSIONS, "Current mission count: %s", missions.size());
         for (Iterator<Mission> it = missions.iterator(); it.hasNext();) {
             Mission mission = it.next();
-            Logger.log(LogCategory.EXECUTE_MISSIONS, "mission: %s", mission);
+            Logger.debug(LogCategory.EXECUTE_MISSIONS, "mission: %s", mission);
             if (mission.isMissionValid()) {
                 mission.perform();
-                Logger.log(LogCategory.EXECUTE_MISSIONS, "Mission performed: %s", mission);
+                Logger.debug(LogCategory.EXECUTE_MISSIONS, "Mission performed: %s", mission);
                 if (mission.IsMissionComplete()) {
                     it.remove();
                 }
             } else {
-                Logger.log(LogCategory.EXECUTE_MISSIONS, "Mission not vaild: %s. Mission is removed.", mission);
+                Logger.debug(LogCategory.EXECUTE_MISSIONS, "Mission not vaild: %s. Mission is removed.", mission);
                 it.remove();
             }
         }

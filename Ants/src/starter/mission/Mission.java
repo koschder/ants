@@ -26,7 +26,7 @@ public abstract class Mission extends BaseTask {
     public final boolean isMissionValid() {
         boolean antIsAlive = (ants.getIlk(ant.getTile()).hasFriendlyAnt());
         if (!antIsAlive) {
-            Logger.log(LogCategory.EXECUTE_MISSIONS, "isMissionValid(): no ant at %s", ant.getTile());
+            Logger.debug(LogCategory.EXECUTE_MISSIONS, "isMissionValid(): no ant at %s", ant.getTile());
         }
         return (antIsAlive && IsSpecificMissionValid());
     }

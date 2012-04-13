@@ -3,57 +3,43 @@ package starter;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
-import java.util.HashSet;
-import java.util.Set;
 
 public class Logger {
     public enum LogCategory {
-        ATTACK_HILLS,
-        CLEAR_HILL,
-        COMBAT,
-        DEFEND,
-        ERROR,
-        EXECUTE_TASKS,
-        EXECUTE_MISSIONS,
-        EXPLORE,
-        FOLLOW,
-        FOOD,
-        ORDERS,
-        PATHFINDING,
-        PERFORMANCE,
-        SETUP,
-        STATISTICS,
-        TRACE,
-        TURN;
+        ATTACK_HILLS(INFO),
+        CLEAR_HILL(INFO),
+        COMBAT(INFO),
+        DEFEND(INFO),
+        ERROR(INFO),
+        EXECUTE_TASKS(INFO),
+        EXECUTE_MISSIONS(INFO),
+        EXPLORE(INFO),
+        FOLLOW(INFO),
+        FOOD(INFO),
+        ORDERS(INFO),
+        PATHFINDING(OFF),
+        PERFORMANCE(INFO),
+        SETUP(INFO),
+        STATISTICS(INFO),
+        TURN(INFO);
+
+        int level;
+
+        private LogCategory(int level) {
+            this.level = level;
+        }
+
     }
 
-    private static Set<LogCategory> enabledCategories;
+    private static final int DEBUG = 3;
+    private static final int INFO = 2;
+    private static final int ERROR = 1;
+    private static final int OFF = 0;
+
     private static PrintStream log;
     private static PrintStream liveInfo;
 
-    private static void configure() {
-        enabledCategories = new HashSet<Logger.LogCategory>();
-        enabledCategories.add(LogCategory.ATTACK_HILLS);
-        enabledCategories.add(LogCategory.CLEAR_HILL);
-        enabledCategories.add(LogCategory.COMBAT);
-        enabledCategories.add(LogCategory.DEFEND);
-        enabledCategories.add(LogCategory.ERROR);
-        enabledCategories.add(LogCategory.EXECUTE_TASKS);
-        enabledCategories.add(LogCategory.EXECUTE_MISSIONS);
-        enabledCategories.add(LogCategory.EXPLORE);
-        enabledCategories.add(LogCategory.FOLLOW);
-        enabledCategories.add(LogCategory.FOOD);
-        // enabledCategories.add(LogCategory.ORDERS);
-        // enabledCategories.add(LogCategory.PATHFINDING);
-        enabledCategories.add(LogCategory.PERFORMANCE);
-        enabledCategories.add(LogCategory.SETUP);
-        enabledCategories.add(LogCategory.STATISTICS);
-        // enabledCategories.add(LogCategory.TRACE);
-        enabledCategories.add(LogCategory.TURN);
-    }
-
     static {
-        configure();
         try {
             log = new PrintStream(new File("logs/debug.log"));
             liveInfo = new PrintStream(new File("logs/additionalInfo0.json"));
@@ -62,15 +48,27 @@ public class Logger {
         }
     }
 
-    public static void log(LogCategory category, String message, Object... parameters) {
-        if (enabledCategories.contains(category))
+    public static void debug(LogCategory category, String message, Object... parameters) {
+        log(DEBUG, category, message, parameters);
+    }
+
+    public static void info(LogCategory category, String message, Object... parameters) {
+        log(INFO, category, message, parameters);
+    }
+
+    public static void error(LogCategory category, String message, Object... parameters) {
+        log(ERROR, category, message, parameters);
+    }
+
+    private static void log(int logLevel, LogCategory category, String message, Object... parameters) {
+        if (category.level >= logLevel)
             log.println(String.format(message, parameters));
     }
 
     public static void exception(String message, Exception ex, Object... parameters) {
         String logMsg = String.format(message, parameters);
         String error = String.format("EXCEPTION: %s stacktrace:  ", ex);
-        log(LogCategory.ERROR, "%s Log %s ", error, logMsg);
+        info(LogCategory.ERROR, "%s Log %s ", error, logMsg);
         ex.printStackTrace(log);
     }
 

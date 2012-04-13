@@ -44,7 +44,7 @@ public class ExploreTask extends BaseTask {
         // remove any tiles that can be seen, run each turn
         removeVisibleTiles(unseenTiles);
         removeVisibleTiles(invisibleTiles);
-        Logger.log(LogCategory.EXPLORE, "Invisible tiles: %s, Unseen tiles: %s", invisibleTiles.size(),
+        Logger.info(LogCategory.EXPLORE, "Invisible tiles: %s, Unseen tiles: %s", invisibleTiles.size(),
                 unseenTiles.size());
         long start = System.currentTimeMillis();
         int totalTiles = ants.getCols() * ants.getRows();
@@ -52,7 +52,7 @@ public class ExploreTask extends BaseTask {
             explore(invisibleTiles);
         else
             explore(unseenTiles);
-        Logger.log(LogCategory.EXPLORE, "explore main loop took %s ms", System.currentTimeMillis() - start);
+        Logger.info(LogCategory.EXPLORE, "explore main loop took %s ms", System.currentTimeMillis() - start);
     }
 
     private void explore(Set<Tile> tiles) {

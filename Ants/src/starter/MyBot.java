@@ -42,7 +42,7 @@ public class MyBot extends Bot {
 
     @Override
     public void doTurn() {
-        Logger.log(LogCategory.TURN,
+        Logger.info(LogCategory.TURN,
                 "------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------",
                 getAnts().getTurn(), getAnts().getMyAnts().size(), getAnts().getMissions().size());
         getAnts().updateTurn();
@@ -51,9 +51,9 @@ public class MyBot extends Bot {
         doStatistics();
         for (Task task : tasks) {
             long start = System.currentTimeMillis();
-            Logger.log(LogCategory.PERFORMANCE, "task started:: %s at %s", task.getClass(), start);
+            Logger.info(LogCategory.PERFORMANCE, "task started:: %s at %s", task.getClass(), start);
             task.perform();
-            Logger.log(LogCategory.PERFORMANCE, "task ended  :: %s, took %s ms", task.getClass(),
+            Logger.info(LogCategory.PERFORMANCE, "task ended  :: %s, took %s ms", task.getClass(),
                     System.currentTimeMillis() - start);
         }
         getAnts().issueOrders();
@@ -67,8 +67,8 @@ public class MyBot extends Bot {
 
         // every 10 steps we write the statistic to the log
         if (getAnts().getTurn() % 10 == 0) {
-            Logger.log(LogCategory.STATISTICS, "Statistics: Influence history: %s", statAntsInfluenceHistory);
-            Logger.log(LogCategory.STATISTICS, "Statistics: Ants amount history: %s", statAntsAmountHistory);
+            Logger.info(LogCategory.STATISTICS, "Statistics: Influence history: %s", statAntsInfluenceHistory);
+            Logger.info(LogCategory.STATISTICS, "Statistics: Ants amount history: %s", statAntsAmountHistory);
         }
     }
 
@@ -89,7 +89,7 @@ public class MyBot extends Bot {
 
     @Override
     protected void doFinishTurn() {
-        Logger.log(LogCategory.TURN, "Finished in %1$s ms with %2$s ms remaining.", System.currentTimeMillis()
+        Logger.info(LogCategory.TURN, "Finished in %1$s ms with %2$s ms remaining.", System.currentTimeMillis()
                 - getAnts().getTurnStartTime(), getAnts().getTimeRemaining());
 
     }

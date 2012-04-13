@@ -22,11 +22,11 @@ public class ExploreMission extends PathMission {
         Tile nextStep = path.remove(0);
 
         Aim aim = ant.getTile().directionTo(nextStep);
-        Logger.log(LogCategory.EXPLORE, "Go to: %s direction is %s", nextStep, aim);
+        Logger.debug(LogCategory.EXPLORE, "Go to: %s direction is %s", nextStep, aim);
         if (putMissionOrder(ant, aim)) {
         } else {
             // TODO what else
-            Logger.log(LogCategory.EXPLORE, "no move done for Mission %s ", this);
+            Logger.debug(LogCategory.EXPLORE, "no move done for Mission %s ", this);
         }
         return;
     }

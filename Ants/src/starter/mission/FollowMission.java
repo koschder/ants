@@ -36,8 +36,8 @@ public class FollowMission extends Mission {
 
         int distance = m.getTile().manhattanDistanceTo(ant.getTile());
         if (distance > MAX_DISTANCE_TO_MASTER) {
-            Logger.log(LogCategory.FOLLOW, "FollowMission cancelled, master is to far away : %s max is: %s)", distance,
-                    MAX_DISTANCE_TO_MASTER);
+            Logger.debug(LogCategory.FOLLOW, "FollowMission cancelled, master is to far away : %s max is: %s)",
+                    distance, MAX_DISTANCE_TO_MASTER);
             return false;
 
         }

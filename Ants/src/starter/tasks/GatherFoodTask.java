@@ -27,7 +27,7 @@ public class GatherFoodTask extends BaseTask {
         TreeSet<Ant> sortedAnts;
         foodTargets = new HashMap<Tile, Tile>();
         // find close food
-        Logger.log(LogCategory.FOOD, "unemployed ants %s", ants.getMyUnemployedAnts().size());
+        Logger.debug(LogCategory.FOOD, "unemployed ants %s", ants.getMyUnemployedAnts().size());
         foodRoutes = new ArrayList<Route>();
         sortedFood = new TreeSet<Tile>(ants.getFoodTiles());
         sortedAnts = new TreeSet<Ant>(ants.getMyUnemployedAnts());
@@ -36,7 +36,7 @@ public class GatherFoodTask extends BaseTask {
             for (Ant ant : sortedAnts) {
                 final Tile antLoc = ant.getTile();
                 int distance = ants.getSquaredDistance(antLoc, foodLoc);
-                Logger.log(LogCategory.FOOD, "Distance is %s", distance);
+                Logger.debug(LogCategory.FOOD, "Distance is %s", distance);
                 // Todo distance verwirrlich, da nicht im pixel mass.
                 if (distance > MAXDISTANCE)
                     continue;

@@ -30,11 +30,12 @@ public class AStarSearchStrategy implements SearchStrategy {
 
         List<Tile> list = calculateBestPath(from, to);
         if (list != null && list.size() > 1) {
-            Logger.log(LogCategory.PATHFINDING, "list size() %s", list.size());
+            Logger.debug(LogCategory.PATHFINDING, "list size() %s", list.size());
             list.remove(0); // first path-tile is position of ant (not the next step)
         }
         String length = list != null ? "has size of " + list.size() : "not found";
-        Logger.log(LogCategory.PATHFINDING, "Astar from: %s to %s best path size: %s path: %s", from, to, length, list);
+        Logger.debug(LogCategory.PATHFINDING, "Astar from: %s to %s best path size: %s path: %s", from, to, length,
+                list);
         return list;
     }
 
@@ -48,15 +49,15 @@ public class AStarSearchStrategy implements SearchStrategy {
         while (!frontier.isEmpty()) {
             Node node = frontier.poll();
             explored.add(node.getState());
-            Logger.log(LogCategory.PATHFINDING, "Astar: %s exand(next) %s", node, expand(node));
+            Logger.debug(LogCategory.PATHFINDING, "Astar: %s exand(next) %s", node, expand(node));
             for (Node child : expand(node)) {
                 if (frontier.contains(child) || explored.contains(child.getState()) || child.getCost() > MAXCOSTS)
                     continue;
                 if (child.getState().equals(to))
                     return path(child); // success
                 frontier.add(child);
-                Logger.log(LogCategory.PATHFINDING, "Astar frontier size: %s", frontier.size());
-                Logger.log(LogCategory.PATHFINDING, "Astar explored size: %s", explored.size());
+                Logger.debug(LogCategory.PATHFINDING, "Astar frontier size: %s", frontier.size());
+                Logger.debug(LogCategory.PATHFINDING, "Astar explored size: %s", explored.size());
             }
         }
         return null; // failure
@@ -72,7 +73,7 @@ public class AStarSearchStrategy implements SearchStrategy {
         addChild(node, children, south);
         addChild(node, children, west);
         addChild(node, children, east);
-        Logger.log(LogCategory.PATHFINDING, "size of children %s", children.size());
+        Logger.debug(LogCategory.PATHFINDING, "size of children %s", children.size());
         return children;
     }
 
@@ -80,7 +81,7 @@ public class AStarSearchStrategy implements SearchStrategy {
         if (ants.getIlk(childState).isPassable() && !isOccupiedForNextMove(childState, parent)) {
             children.add(new Node(childState, parent, getCost(parent, childState)));
         } else {
-            Logger.log(LogCategory.PATHFINDING, "tile %s is not passable", childState);
+            Logger.debug(LogCategory.PATHFINDING, "tile %s is not passable", childState);
         }
     }
 
