@@ -2,7 +2,7 @@
 	<target name="jar">
 		<jar destfile="${basedir}/TutorialBot.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
-				<attribute name="Main-Class" value="starter.MyBot" />
+				<attribute name="Main-Class" value="ants.bot.MyBot" />
 			</manifest>
 			<fileset dir="${basedir}/bin" includes="**/*.class" />
 		</jar>
