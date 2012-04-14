@@ -1,6 +1,5 @@
 package ants.state;
 
-import ants.entities.Aim;
 import ants.entities.Ant;
 import ants.entities.Ilk;
 import ants.entities.Tile;
@@ -57,10 +56,6 @@ public enum Ants {
         this.world = new World(rows, cols, viewRadius2, attackRadius2, spawnRadius2);
         this.population = new Population();
         this.orders = new Orders();
-    }
-
-    public boolean putOrder(Ant ant, Aim direction) {
-        return getOrders().putOrder(ant, direction);
     }
 
     public void clearState() {

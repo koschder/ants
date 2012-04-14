@@ -11,10 +11,11 @@ import ants.entities.Ant;
 import ants.entities.Route;
 import ants.entities.Tile;
 import ants.missions.GatherFoodMission;
+import ants.missions.Mission;
+import ants.search.PathFinder;
 import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
-
 
 public class GatherFoodTask extends BaseTask {
 
@@ -50,16 +51,16 @@ public class GatherFoodTask extends BaseTask {
         for (Route route : foodRoutes) {
             // food not already targeted && ant not used
             if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())) {
-                List<Tile> list = search.bestPath(route.getStart(), route.getEnd());
-                if (list == null)
+                List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, route.getStart(), route.getEnd());
+                if (path == null)
                     continue;
-                if (list.size() <= 2) {
+                if (path.size() <= 2) {
                     // food is reachable in one step, we don't need to create a task;
-                    doMoveLocation(route.getAnt(), list.get(0));
+                    Ants.getOrders().doMoveLocation(route.getAnt(), path);
                 } else {
-                    GatherFoodMission mission = new GatherFoodMission(route.getAnt(), list);
+                    Mission mission = new GatherFoodMission(route.getAnt(), path);
                     Ants.getOrders().addMission(mission);
-                    mission.perform();
+                    mission.execute();
                 }
                 foodTargets.put(route.getEnd(), route.getStart());
             }

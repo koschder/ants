@@ -8,7 +8,6 @@ import ants.entities.Tile;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
-
 public class AttackMission extends PathMission {
 
     public AttackMission(Ant ant, List<Tile> path) {
@@ -16,7 +15,7 @@ public class AttackMission extends PathMission {
     }
 
     @Override
-    public void perform() {
+    public void execute() {
         if (path == null)
             return;
         Tile nextStep = path.remove(0);
@@ -33,7 +32,7 @@ public class AttackMission extends PathMission {
     }
 
     @Override
-    public boolean IsMissionComplete() {
+    public boolean isComplete() {
         return (path == null || path.size() == 0);
     }
 

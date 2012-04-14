@@ -2,6 +2,7 @@ package ants.state;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -12,7 +13,6 @@ import ants.entities.Tile;
 import ants.missions.Mission;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
-
 
 public class Orders {
 
@@ -39,6 +39,30 @@ public class Orders {
         } else {
             return false;
         }
+    }
+
+    public boolean doMoveDirection(Ant ant, Aim direction) {
+        if (putOrder(ant, direction)) {
+            Logger.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s ant: %s", getClass().getSimpleName(),
+                    ant);
+            Logger.debug(LogCategory.EXECUTE_TASKS, "%1$s: Moving ant from %2$s to %3$s", getClass().getSimpleName(),
+                    ant.getTile(), ant.getNextTile());
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean doMoveLocation(Ant ant, List<Tile> path) {
+        if (path == null || path.isEmpty())
+            throw new IllegalArgumentException("Path must not be null or empty!");
+        List<Aim> directions = Ants.getWorld().getDirections(ant.getTile(), path.get(0));
+        for (Aim direction : directions) {
+            if (Ants.getOrders().doMoveDirection(ant, direction)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public Map<Tile, Move> getOrders() {

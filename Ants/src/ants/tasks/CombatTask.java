@@ -8,8 +8,8 @@ import ants.entities.Ant;
 import ants.entities.Tile;
 import ants.missions.AttackMission;
 import ants.missions.Mission;
+import ants.search.PathFinder;
 import ants.state.Ants;
-
 
 public class CombatTask extends BaseTask {
 
@@ -35,13 +35,13 @@ public class CombatTask extends BaseTask {
 
     private void attackEnemy(Ant enemy, List<Ant> friends) {
         for (Ant ant : friends) {
-            List<Tile> path = search.bestPath(ant.getTile(), enemy.getTile());
+            List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, ant.getTile(), enemy.getTile());
             if (path.size() <= 2) {
-                doMoveLocation(ant, path.get(0));
+                Ants.getOrders().doMoveLocation(ant, path);
             } else {
                 Mission mission = new AttackMission(ant, path);
                 Ants.getOrders().addMission(mission);
-                mission.perform();
+                mission.execute();
             }
         }
 

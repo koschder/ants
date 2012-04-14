@@ -10,11 +10,10 @@ import java.util.Set;
 import ants.entities.Ant;
 import ants.entities.Route;
 import ants.entities.Tile;
-import ants.search.SimpleSearchStrategy;
+import ants.search.PathFinder;
 import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
-
 
 public class ExploreTask extends BaseTask {
 
@@ -22,12 +21,6 @@ public class ExploreTask extends BaseTask {
     private Set<Tile> invisibleTiles;
     // max distance to follow
     private int MAXDISTANCE = 600;
-
-    @Override
-    public void setup() {
-
-        this.search = new SimpleSearchStrategy();
-    }
 
     @Override
     public void perform() {
@@ -72,11 +65,14 @@ public class ExploreTask extends BaseTask {
                 Collections.sort(unseenRoutes);
 
                 for (Route route : unseenRoutes) {
-                    if (doMoveLocation(route.getAnt(), route.getEnd())) {
-                        break;
-                    }
                     if (route.getDistance() > minDistance * 2)
                         break;
+                    List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, route.getStart(), route.getEnd());
+                    if (path == null)
+                        continue;
+                    if (Ants.getOrders().doMoveLocation(ant, path)) {
+                        break;
+                    }
                 }
             }
         }

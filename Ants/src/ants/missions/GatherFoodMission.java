@@ -9,7 +9,6 @@ import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
-
 public class GatherFoodMission extends PathMission {
 
     Tile food = path.get(path.size() - 1);
@@ -19,7 +18,7 @@ public class GatherFoodMission extends PathMission {
     }
 
     @Override
-    public boolean IsMissionComplete() {
+    public boolean isComplete() {
         // only the food tile is in path list (but for gather the food we don't need to move to this field)
         return (path == null || path.size() == 0);
     }
@@ -37,11 +36,11 @@ public class GatherFoodMission extends PathMission {
     public String toString() {
         String direction = ((path.size() > 0) ? ant.getTile().directionTo(path.get(0)).toString() : "-");
         return "GatherFoodMission: [ant=" + ant.getTile() + ", target food=" + food + ", Next direction:=" + direction
-                + ", Path:=" + getPathString() + ", IsMissionComplete()=" + IsMissionComplete() + "]";
+                + ", Path:=" + getPathString() + ", IsMissionComplete()=" + isComplete() + "]";
     }
 
     @Override
-    public void perform() {
+    public void execute() {
         if (path == null)
             return;
         Tile nextStep = path.remove(0);

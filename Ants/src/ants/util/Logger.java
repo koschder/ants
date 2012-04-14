@@ -12,14 +12,14 @@ public class Logger {
         CLEAR_HILL(INFO),
         COMBAT(INFO),
         DEFEND(INFO),
-        ERROR(INFO),
+        EXCEPTION(INFO),
         EXECUTE_TASKS(INFO),
         EXECUTE_MISSIONS(INFO),
         EXPLORE(INFO),
         FOLLOW(INFO),
         FOOD(INFO),
         ORDERS(INFO),
-        PATHFINDING(OFF),
+        PATHFINDING(ERROR),
         PERFORMANCE(INFO),
         SETUP(INFO),
         STATISTICS(INFO),
@@ -36,6 +36,7 @@ public class Logger {
     private static final int DEBUG = 3;
     private static final int INFO = 2;
     private static final int ERROR = 1;
+    @SuppressWarnings("unused")
     private static final int OFF = 0;
 
     private static PrintStream log;
@@ -70,7 +71,7 @@ public class Logger {
     public static void exception(String message, Exception ex, Object... parameters) {
         String logMsg = String.format(message, parameters);
         String error = String.format("EXCEPTION: %s stacktrace:  ", ex);
-        info(LogCategory.ERROR, "%s Log %s ", error, logMsg);
+        info(LogCategory.EXCEPTION, "%s Log %s ", error, logMsg);
         ex.printStackTrace(log);
     }
 

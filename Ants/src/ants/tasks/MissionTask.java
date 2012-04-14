@@ -8,7 +8,6 @@ import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
-
 public class MissionTask extends BaseTask {
 
     @Override
@@ -27,10 +26,10 @@ public class MissionTask extends BaseTask {
         for (Iterator<Mission> it = missions.iterator(); it.hasNext();) {
             Mission mission = it.next();
             Logger.debug(LogCategory.EXECUTE_MISSIONS, "mission: %s", mission);
-            if (mission.isMissionValid()) {
-                mission.perform();
+            if (mission.isValid()) {
+                mission.execute();
                 Logger.debug(LogCategory.EXECUTE_MISSIONS, "Mission performed: %s", mission);
-                if (mission.IsMissionComplete()) {
+                if (mission.isComplete()) {
                     it.remove();
                 }
             } else {

@@ -1,7 +1,12 @@
 package ants.missions;
 
+import java.util.List;
+
 import ants.entities.Ant;
 import ants.entities.Move;
+import ants.entities.Tile;
+import ants.search.PathFinder;
+import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
@@ -11,7 +16,7 @@ import ants.util.Logger.LogCategory;
  * @author kaeserst
  * 
  */
-public class FollowMission extends Mission {
+public class FollowMission extends BaseMission {
 
     private Mission mastermission;
     private final int MAX_DISTANCE_TO_MASTER = 6;
@@ -22,8 +27,8 @@ public class FollowMission extends Mission {
     }
 
     @Override
-    public boolean IsMissionComplete() {
-        return (mastermission == null || mastermission.IsMissionComplete());
+    public boolean isComplete() {
+        return (mastermission == null || mastermission.isComplete());
     }
 
     @Override
@@ -44,12 +49,17 @@ public class FollowMission extends Mission {
     }
 
     @Override
-    public void perform() {
+    public void execute() {
 
         Move m = mastermission.getLastMove();
-        if (m == null) // no move done yet, wait to the next round;
+        if (m == null || m.getTile().equals(ant.getTile())) // no move done yet, wait to the next round;
             return;
-        doMoveLocation(ant, m.getTile());
+        List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, ant.getTile(), m.getTile());
+        if (path == null) {
+            abandonMission();
+            return;
+        }
+        Ants.getOrders().doMoveLocation(ant, path);
     }
 
     @Override

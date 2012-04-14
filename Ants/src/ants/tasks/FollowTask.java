@@ -8,7 +8,6 @@ import ants.missions.FollowMission;
 import ants.missions.Mission;
 import ants.state.Ants;
 
-
 public class FollowTask extends BaseTask {
 
     private final int MAX_DISTANCE_TO_START_FOLLOW = 6;
@@ -24,10 +23,9 @@ public class FollowTask extends BaseTask {
                 Ant a = m.getAnt();
                 int distance = antLoc.manhattanDistanceTo(a.getTile());
                 if (MAX_DISTANCE_TO_START_FOLLOW > distance) {
-                    Mission mFollow = new FollowMission(ant, m);
-                    mFollow.setup();
-                    Ants.getOrders().addMission(mFollow);
-                    mFollow.perform();
+                    Mission followMission = new FollowMission(ant, m);
+                    Ants.getOrders().addMission(followMission);
+                    followMission.execute();
                     return;
                 }
             }
