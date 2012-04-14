@@ -24,7 +24,7 @@ public abstract class Mission extends BaseTask {
     // public abstract void proceedMission();
 
     public final boolean isMissionValid() {
-        boolean antIsAlive = (Ants.getAnts().getIlk(ant.getTile()).hasFriendlyAnt());
+        boolean antIsAlive = (Ants.getWorld().getIlk(ant.getTile()).hasFriendlyAnt());
         if (!antIsAlive) {
             Logger.debug(LogCategory.EXECUTE_MISSIONS, "isMissionValid(): no ant at %s", ant.getTile());
         }
@@ -48,7 +48,7 @@ public abstract class Mission extends BaseTask {
     protected boolean putMissionOrder(Ant ant, Aim aim) {
         if (Ants.getAnts().putOrder(ant, aim)) {
             // TODO wird in putorder gemacht, aber f�r ant nicht �bernommen?
-            ant.setNextTile(Ants.getAnts().getTile(ant.getTile(), aim));
+            ant.setNextTile(Ants.getWorld().getTile(ant.getTile(), aim));
             lastMoves.add(new Move(ant.getTile(), aim));
             return true;
         }

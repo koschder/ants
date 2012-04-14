@@ -26,7 +26,7 @@ public class GatherFoodMission extends PathMission {
     @Override
     public boolean IsSpecificMissionValid() {
         // if food to gather isn't there the mission is not vaild.
-        if (!Ants.getAnts().getIlk(food).isFood())
+        if (!Ants.getWorld().getIlk(food).isFood())
             return false;
         // TODO other checks here
         return true;

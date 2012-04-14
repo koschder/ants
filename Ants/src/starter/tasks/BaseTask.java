@@ -33,7 +33,7 @@ public abstract class BaseTask implements Task {
             List<Tile> path = search.bestPath(ant.getTile(), destLoc);
             if (path == null)
                 return false;
-            List<Aim> directions = Ants.getAnts().getDirections(ant.getTile(), path != null ? path.get(0) : destLoc);
+            List<Aim> directions = Ants.getWorld().getDirections(ant.getTile(), path != null ? path.get(0) : destLoc);
             for (Aim direction : directions) {
                 if (doMoveDirection(ant, direction)) {
                     return true;

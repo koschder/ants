@@ -17,9 +17,9 @@ public class CombatTask extends BaseTask {
         Collection<Ant> myUnemployed = Ants.getAnts().getMyUnemployedAnts();
         for (Ant enemy : Ants.getAnts().getEnemyAnts()) {
             // TODO getXXInRadius expects manhattan, not r^2
-            List<Ant> myAntsInRange = enemy.getEnemiesInRadius(Ants.getAnts().getViewRadius2(), true);
+            List<Ant> myAntsInRange = enemy.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), true);
             removeEmployedAnts(myUnemployed, myAntsInRange);
-            List<Ant> friends = enemy.getFriendsInRadius(Ants.getAnts().getViewRadius2());
+            List<Ant> friends = enemy.getFriendsInRadius(Ants.getWorld().getViewRadius2());
             if (myAntsInRange.size() > friends.size())
                 attackEnemy(enemy, friends);
         }

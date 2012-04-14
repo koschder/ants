@@ -66,7 +66,7 @@ public abstract class Bot extends AbstractSystemInputParser {
      */
     @Override
     public void addHill(int row, int col, int owner) {
-        Ants.getAnts().updateHills(owner, new Tile(row, col));
+        Ants.getWorld().updateHills(owner, new Tile(row, col));
     }
 
     /**

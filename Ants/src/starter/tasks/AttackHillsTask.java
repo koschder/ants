@@ -19,11 +19,11 @@ public class AttackHillsTask extends BaseTask {
     @Override
     public void perform() {
         for (Iterator<Tile> iterator = enemyHills.iterator(); iterator.hasNext();) {
-            if (!Ants.getAnts().isVisible(iterator.next()))
+            if (!Ants.getWorld().isVisible(iterator.next()))
                 iterator.remove();
         }
         // add new hills to set
-        for (Tile enemyHill : Ants.getAnts().getEnemyHills()) {
+        for (Tile enemyHill : Ants.getWorld().getEnemyHills()) {
             if (!enemyHills.contains(enemyHill)) {
                 enemyHills.add(enemyHill);
             }
@@ -34,7 +34,7 @@ public class AttackHillsTask extends BaseTask {
             for (Ant ant : Ants.getAnts().getMyUnemployedAnts()) {
                 final Tile tile = ant.getTile();
                 if (!Ants.getAnts().getOrders().containsValue(tile)) {
-                    int distance = Ants.getAnts().getSquaredDistance(tile, hillLoc);
+                    int distance = Ants.getWorld().getSquaredDistance(tile, hillLoc);
                     Route route = new Route(tile, hillLoc, distance, ant);
                     hillRoutes.add(route);
                 }

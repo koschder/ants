@@ -31,8 +31,8 @@ public class ExploreTask extends BaseTask {
     @Override
     public void perform() {
         invisibleTiles = new HashSet<Tile>();
-        for (int row = 0; row < Ants.getAnts().getRows(); row++) {
-            for (int col = 0; col < Ants.getAnts().getCols(); col++) {
+        for (int row = 0; row < Ants.getWorld().getRows(); row++) {
+            for (int col = 0; col < Ants.getWorld().getCols(); col++) {
                 invisibleTiles.add(new Tile(row, col));
             }
         }
@@ -45,7 +45,7 @@ public class ExploreTask extends BaseTask {
         Logger.info(LogCategory.EXPLORE, "Invisible tiles: %s, Unseen tiles: %s", invisibleTiles.size(),
                 unseenTiles.size());
         long start = System.currentTimeMillis();
-        int totalTiles = Ants.getAnts().getCols() * Ants.getAnts().getRows();
+        int totalTiles = Ants.getWorld().getCols() * Ants.getWorld().getRows();
         if ((unseenTiles.size() / totalTiles) < 0.1)
             explore(invisibleTiles);
         else
@@ -60,7 +60,7 @@ public class ExploreTask extends BaseTask {
                 List<Route> unseenRoutes = new ArrayList<Route>();
                 int minDistance = Integer.MAX_VALUE;
                 for (Tile unseenLoc : tiles) {
-                    int distance = Ants.getAnts().getSquaredDistance(antLoc, unseenLoc);
+                    int distance = Ants.getWorld().getSquaredDistance(antLoc, unseenLoc);
                     if (distance > MAXDISTANCE)
                         continue;
                     if (distance < minDistance)
@@ -84,7 +84,7 @@ public class ExploreTask extends BaseTask {
     private void removeVisibleTiles(Set<Tile> tiles) {
         for (Iterator<Tile> locIter = tiles.iterator(); locIter.hasNext();) {
             Tile next = locIter.next();
-            if (Ants.getAnts().isVisible(next)) {
+            if (Ants.getWorld().isVisible(next)) {
                 locIter.remove();
             }
         }

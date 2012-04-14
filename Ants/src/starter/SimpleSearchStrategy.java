@@ -37,19 +37,19 @@ public class SimpleSearchStrategy implements SearchStrategy {
     private List<Tile> getStraightPath(Tile from, Tile to) {
         List<Tile> path = new ArrayList<Tile>();
 
-        List<Aim> directions = Ants.getAnts().getDirections(from, to);
+        List<Aim> directions = Ants.getWorld().getDirections(from, to);
         if (!(directions.size() == 1))
             Logger.error(LogCategory.PATHFINDING, "more than 1 direction from %s to %s", from, to);
         Aim aim = directions.get(0);
 
-        if (!Ants.getAnts().getIlk(from, aim).isUnoccupied())
+        if (!Ants.getWorld().getIlk(from, aim).isUnoccupied())
             return null;
 
         Tile t = from;
         while (!t.equals(to)) {
-            if (!Ants.getAnts().getIlk(t, aim).isPassable())
+            if (!Ants.getWorld().getIlk(t, aim).isPassable())
                 return null; // straight path is blocked
-            t = Ants.getAnts().getTile(t, aim);
+            t = Ants.getWorld().getTile(t, aim);
             path.add(t);
         }
         path.add(to);
