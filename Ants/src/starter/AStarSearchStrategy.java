@@ -85,7 +85,7 @@ public class AStarSearchStrategy implements SearchStrategy {
 
     private boolean isOccupiedForNextMove(Tile childState, Node parent) {
         if (parent.getParent() == null) // we are on the 2nd level of the search tree
-            return Ants.getAnts().getOrders().containsValue(childState);
+            return Ants.getOrders().getOrders().containsValue(childState);
         return false;
     }
 

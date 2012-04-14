@@ -18,14 +18,14 @@ public class FollowTask extends BaseTask {
             final Tile antLoc = ant.getTile();
 
             // remove any tiles that can be seen, run each turn
-            for (Iterator<Mission> locIter = Ants.getAnts().getMissions().iterator(); locIter.hasNext();) {
+            for (Iterator<Mission> locIter = Ants.getOrders().getMissions().iterator(); locIter.hasNext();) {
                 Mission m = locIter.next();
                 Ant a = m.getAnt();
                 int distance = antLoc.manhattanDistanceTo(a.getTile());
                 if (MAX_DISTANCE_TO_START_FOLLOW > distance) {
                     Mission mFollow = new FollowMission(ant, m);
                     mFollow.setup();
-                    Ants.getAnts().addMission(mFollow);
+                    Ants.getOrders().addMission(mFollow);
                     mFollow.perform();
                     return;
                 }

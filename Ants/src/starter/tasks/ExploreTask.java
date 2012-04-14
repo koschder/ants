@@ -56,7 +56,7 @@ public class ExploreTask extends BaseTask {
     private void explore(Set<Tile> tiles) {
         for (Ant ant : Ants.getPopulation().getMyUnemployedAnts()) {
             final Tile antLoc = ant.getTile();
-            if (!Ants.getAnts().getOrders().containsValue(antLoc)) {
+            if (!Ants.getOrders().getOrders().containsValue(antLoc)) {
                 List<Route> unseenRoutes = new ArrayList<Route>();
                 int minDistance = Integer.MAX_VALUE;
                 for (Tile unseenLoc : tiles) {

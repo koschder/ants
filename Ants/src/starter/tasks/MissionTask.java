@@ -13,7 +13,7 @@ public class MissionTask extends BaseTask {
     @Override
     public void setup() {
         super.setup();
-        for (Mission m : Ants.getAnts().getMissions()) {
+        for (Mission m : Ants.getOrders().getMissions()) {
             m.getAnt().setup();
         }
     }
@@ -21,7 +21,7 @@ public class MissionTask extends BaseTask {
     @Override
     public void perform() {
 
-        Set<Mission> missions = Ants.getAnts().getMissions();
+        Set<Mission> missions = Ants.getOrders().getMissions();
         Logger.debug(LogCategory.EXECUTE_MISSIONS, "Current mission count: %s", missions.size());
         for (Iterator<Mission> it = missions.iterator(); it.hasNext();) {
             Mission mission = it.next();

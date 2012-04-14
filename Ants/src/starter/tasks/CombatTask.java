@@ -39,7 +39,7 @@ public class CombatTask extends BaseTask {
                 doMoveLocation(ant, path.get(0));
             } else {
                 Mission mission = new AttackMission(ant, path);
-                Ants.getAnts().addMission(mission);
+                Ants.getOrders().addMission(mission);
                 mission.perform();
             }
         }

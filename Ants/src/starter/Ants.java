@@ -1,12 +1,5 @@
 package starter;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-
-import starter.Logger.LogCategory;
-import starter.mission.Mission;
 
 /**
  * Holds all game data and current game state.
@@ -30,9 +23,7 @@ public enum Ants {
 
     private Population population;
 
-    private Set<Mission> missions = new HashSet<Mission>();
-
-    private Map<Tile, Move> orders = new HashMap<Tile, Move>();
+    private Orders orders;
 
     /**
      * Creates new {@link Ants} object.
@@ -61,6 +52,7 @@ public enum Ants {
         this.turns = turns;
         this.world = new World(rows, cols, viewRadius2, attackRadius2, spawnRadius2);
         this.population = new Population();
+        this.orders = new Orders();
     }
 
     public static Ants getAnts() {
@@ -73,6 +65,10 @@ public enum Ants {
 
     public static Population getPopulation() {
         return INSTANCE.population;
+    }
+
+    public static Orders getOrders() {
+        return INSTANCE.orders;
     }
 
     /**
@@ -126,16 +122,7 @@ public enum Ants {
     }
 
     public boolean putOrder(Ant ant, Aim direction) {
-        // Track all moves, prevent collisions
-        Tile newLoc = getWorld().getTile(ant.getTile(), direction);
-        if (getWorld().getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
-            orders.put(newLoc, new Move(ant.getTile(), direction));
-            ant.setNextTile(newLoc);
-            getPopulation().addEmployedAnt(ant);
-            return true;
-        } else {
-            return false;
-        }
+        return getOrders().putOrder(ant, direction);
     }
 
     /**
@@ -254,22 +241,11 @@ public enum Ants {
     }
 
     public void initOrders() {
-        orders.clear();
-        // prevent stepping on own hill
-        for (Tile myHill : getWorld().getMyHills()) {
-            orders.put(myHill, null);
-        }
+        getOrders().initOrders();
     }
 
     public void issueOrders() {
-        for (Move move : orders.values()) {
-            if (move != null) {
-                final String order = "o " + move.getTile().getRow() + " " + move.getTile().getCol() + " "
-                        + move.getDirection().getSymbol();
-                Logger.debug(LogCategory.ORDERS, "Issuing order: %s", order);
-                System.out.println(order);
-            }
-        }
+        getOrders().issueOrders();
     }
 
     private void addEnemyPair(Ant anta, Ant antb) {
@@ -282,19 +258,6 @@ public enum Ants {
         final int distance = getWorld().getSquaredDistance(antb.getTile(), anta.getTile());
         anta.addFriend(antb, distance);
         antb.addFriend(anta, distance);
-    }
-
-    public Map<Tile, Move> getOrders() {
-        return orders;
-    }
-
-    public Set<Mission> getMissions() {
-        return missions;
-    }
-
-    public void addMission(Mission newMission) {
-        Logger.debug(LogCategory.EXECUTE_MISSIONS, "New mission created: %s", newMission);
-        missions.add(newMission);
     }
 
     public int getTurn() {

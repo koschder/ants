@@ -44,7 +44,8 @@ public class MyBot extends Bot {
     public void doTurn() {
         Logger.info(LogCategory.TURN,
                 "------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------", Ants
-                        .getAnts().getTurn(), Ants.getPopulation().getMyAnts().size(), Ants.getAnts().getMissions().size());
+                        .getAnts().getTurn(), Ants.getPopulation().getMyAnts().size(), Ants.getOrders().getMissions()
+                        .size());
         Ants.getAnts().updateTurn();
         Ants.getAnts().initOrders();
         initTasks();
@@ -62,8 +63,10 @@ public class MyBot extends Bot {
     private void doStatistics() {
 
         statAntsAmountHistory.add(Ants.getPopulation().getMyAnts().size());
-        statAntsInfluenceHistory.add((int) Math.round(Ants.getPopulation().getMyAnts().size()
-                / (Ants.getPopulation().getEnemyAnts().size() + Ants.getPopulation().getMyAnts().size() + 1.0) * 100.0));
+        statAntsInfluenceHistory
+                .add((int) Math.round(Ants.getPopulation().getMyAnts().size()
+                        / (Ants.getPopulation().getEnemyAnts().size() + Ants.getPopulation().getMyAnts().size() + 1.0)
+                        * 100.0));
 
         // every 10 steps we write the statistic to the log
         if (Ants.getAnts().getTurn() % 10 == 0) {

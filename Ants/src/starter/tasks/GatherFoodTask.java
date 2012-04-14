@@ -57,7 +57,7 @@ public class GatherFoodTask extends BaseTask {
                     doMoveLocation(route.getAnt(), list.get(0));
                 } else {
                     GatherFoodMission mission = new GatherFoodMission(route.getAnt(), list);
-                    Ants.getAnts().addMission(mission);
+                    Ants.getOrders().addMission(mission);
                     mission.perform();
                 }
                 foodTargets.put(route.getEnd(), route.getStart());
