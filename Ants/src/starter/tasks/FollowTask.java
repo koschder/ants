@@ -14,7 +14,7 @@ public class FollowTask extends BaseTask {
 
     @Override
     public void perform() {
-        for (Ant ant : Ants.getAnts().getMyUnemployedAnts()) {
+        for (Ant ant : Ants.getPopulation().getMyUnemployedAnts()) {
             final Tile antLoc = ant.getTile();
 
             // remove any tiles that can be seen, run each turn

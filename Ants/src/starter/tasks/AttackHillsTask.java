@@ -31,7 +31,7 @@ public class AttackHillsTask extends BaseTask {
         // attack hills
         List<Route> hillRoutes = new ArrayList<Route>();
         for (Tile hillLoc : enemyHills) {
-            for (Ant ant : Ants.getAnts().getMyUnemployedAnts()) {
+            for (Ant ant : Ants.getPopulation().getMyUnemployedAnts()) {
                 final Tile tile = ant.getTile();
                 if (!Ants.getAnts().getOrders().containsValue(tile)) {
                     int distance = Ants.getWorld().getSquaredDistance(tile, hillLoc);

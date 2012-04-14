@@ -1,9 +1,7 @@
 package starter;
 
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -30,11 +28,7 @@ public enum Ants {
 
     private int turn = 0;
 
-    private Set<Ant> myAnts = new HashSet<Ant>();
-    private Set<Ant> myUnemployedAnts = null;
-    private Set<Ant> employedAnts = new HashSet<Ant>();
-
-    private Set<Ant> enemyAnts = new HashSet<Ant>();
+    private Population population;
 
     private Set<Mission> missions = new HashSet<Mission>();
 
@@ -66,6 +60,7 @@ public enum Ants {
         this.turnTime = turnTime;
         this.turns = turns;
         this.world = new World(rows, cols, viewRadius2, attackRadius2, spawnRadius2);
+        this.population = new Population();
     }
 
     public static Ants getAnts() {
@@ -74,6 +69,10 @@ public enum Ants {
 
     public static World getWorld() {
         return INSTANCE.world;
+    }
+
+    public static Population getPopulation() {
+        return INSTANCE.population;
     }
 
     /**
@@ -126,38 +125,13 @@ public enum Ants {
         return turnTime - (int) (System.currentTimeMillis() - turnStartTime);
     }
 
-    /**
-     * Returns a set containing all my ants locations.
-     * 
-     * @return a set containing all my ants locations
-     */
-    public Set<Ant> getMyAnts() {
-        return myAnts;
-    }
-
-    public Collection<Ant> getMyUnemployedAnts() {
-        if (myUnemployedAnts == null)
-            myUnemployedAnts = new HashSet<Ant>(myAnts);
-        for (Iterator<Ant> it = employedAnts.iterator(); it.hasNext();) {
-            Ant ant = it.next();
-            if (!myUnemployedAnts.remove(ant)) {
-                Logger.error(LogCategory.SETUP, "Could not remove ant %s Tile: %s of unemployedAnts size: %s", ant,
-                        ant.getTile(), myUnemployedAnts.size());
-            } else {
-                Logger.debug(LogCategory.SETUP, "Ant %s Tile: %s marked as employed", ant, ant.getTile());
-            }
-            it.remove();
-        }
-        return myUnemployedAnts;
-    }
-
     public boolean putOrder(Ant ant, Aim direction) {
         // Track all moves, prevent collisions
         Tile newLoc = getWorld().getTile(ant.getTile(), direction);
         if (getWorld().getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
             orders.put(newLoc, new Move(ant.getTile(), direction));
             ant.setNextTile(newLoc);
-            employedAnts.add(ant);
+            getPopulation().addEmployedAnt(ant);
             return true;
         } else {
             return false;
@@ -165,33 +139,23 @@ public enum Ants {
     }
 
     /**
-     * Returns a set containing all enemy ants locations.
-     * 
-     * @return a set containing all enemy ants locations
-     */
-    public Set<Ant> getEnemyAnts() {
-        return enemyAnts;
-    }
-
-    /**
      * Clears game state information about my ants locations.
      */
     public void clearMyAnts() {
-        for (Ant myAnt : myAnts) {
+        for (Ant myAnt : getPopulation().getMyAnts()) {
             getWorld().setIlk(myAnt.getTile(), Ilk.LAND);
         }
-        myAnts.clear();
-        myUnemployedAnts = null;
+        getPopulation().clearMyAnts();
     }
 
     /**
      * Clears game state information about enemy ants locations.
      */
     public void clearEnemyAnts() {
-        for (Ant enemyAnt : enemyAnts) {
+        for (Ant enemyAnt : getPopulation().getEnemyAnts()) {
             getWorld().setIlk(enemyAnt.getTile(), Ilk.LAND);
         }
-        enemyAnts.clear();
+        getPopulation().getEnemyAnts().clear();
     }
 
     /**
@@ -236,7 +200,7 @@ public enum Ants {
      * Calculates visible information
      */
     public void setVision() {
-        getWorld().updateVision(myAnts);
+        getWorld().updateVision(getPopulation().getMyAnts());
     }
 
     /**
@@ -254,10 +218,10 @@ public enum Ants {
             getWorld().getFoodTiles().add(tile);
             break;
         case MY_ANT:
-            myAnts.add(new Ant(tile, Ant.MINE));
+            getPopulation().getMyAnts().add(new Ant(tile, Ant.MINE));
             break;
         case ENEMY_ANT:
-            enemyAnts.add(new Ant(tile, owner));
+            getPopulation().getEnemyAnts().add(new Ant(tile, owner));
             break;
         }
     }
@@ -267,11 +231,11 @@ public enum Ants {
     }
 
     public void calculateDistances() {
-        for (Ant enemy : getEnemyAnts()) {
-            for (Ant myAnt : getMyAnts()) {
+        for (Ant enemy : getPopulation().getEnemyAnts()) {
+            for (Ant myAnt : getPopulation().getMyAnts()) {
                 addEnemyPair(enemy, myAnt);
             }
-            for (Ant other : getEnemyAnts()) {
+            for (Ant other : getPopulation().getEnemyAnts()) {
                 if (other.equals(enemy))
                     continue;
                 if (other.getPlayer() == enemy.getPlayer())
@@ -280,8 +244,8 @@ public enum Ants {
                     addEnemyPair(enemy, other);
             }
         }
-        for (Ant ant : getMyAnts()) {
-            for (Ant friend : getMyAnts()) {
+        for (Ant ant : getPopulation().getMyAnts()) {
+            for (Ant friend : getPopulation().getMyAnts()) {
                 if (friend.equals(ant))
                     continue;
                 addFriendPair(ant, friend);

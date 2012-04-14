@@ -14,8 +14,8 @@ public class CombatTask extends BaseTask {
 
     @Override
     public void perform() {
-        Collection<Ant> myUnemployed = Ants.getAnts().getMyUnemployedAnts();
-        for (Ant enemy : Ants.getAnts().getEnemyAnts()) {
+        Collection<Ant> myUnemployed = Ants.getPopulation().getMyUnemployedAnts();
+        for (Ant enemy : Ants.getPopulation().getEnemyAnts()) {
             // TODO getXXInRadius expects manhattan, not r^2
             List<Ant> myAntsInRange = enemy.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), true);
             removeEmployedAnts(myUnemployed, myAntsInRange);

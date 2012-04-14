@@ -28,10 +28,10 @@ public class GatherFoodTask extends BaseTask {
         TreeSet<Ant> sortedAnts;
         foodTargets = new HashMap<Tile, Tile>();
         // find close food
-        Logger.debug(LogCategory.FOOD, "unemployed ants %s", Ants.getAnts().getMyUnemployedAnts().size());
+        Logger.debug(LogCategory.FOOD, "unemployed ants %s", Ants.getPopulation().getMyUnemployedAnts().size());
         foodRoutes = new ArrayList<Route>();
         sortedFood = new TreeSet<Tile>(Ants.getWorld().getFoodTiles());
-        sortedAnts = new TreeSet<Ant>(Ants.getAnts().getMyUnemployedAnts());
+        sortedAnts = new TreeSet<Ant>(Ants.getPopulation().getMyUnemployedAnts());
 
         for (Tile foodLoc : sortedFood) {
             for (Ant ant : sortedAnts) {
