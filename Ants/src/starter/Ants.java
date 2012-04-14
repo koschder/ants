@@ -1,6 +1,5 @@
 package starter;
 
-
 /**
  * Holds all game data and current game state.
  */
@@ -13,13 +12,13 @@ public enum Ants {
 
     private int turnTime;
 
-    private World world;
-
     private int turns;
 
     private long turnStartTime;
 
     private int turn = 0;
+
+    private World world;
 
     private Population population;
 
@@ -53,6 +52,99 @@ public enum Ants {
         this.world = new World(rows, cols, viewRadius2, attackRadius2, spawnRadius2);
         this.population = new Population();
         this.orders = new Orders();
+    }
+
+    public boolean putOrder(Ant ant, Aim direction) {
+        return getOrders().putOrder(ant, direction);
+    }
+
+    public void clearState() {
+        getWorld().clearState(getPopulation().getMyAnts(), getPopulation().getEnemyAnts());
+        getPopulation().clearState();
+        getOrders().clearState();
+    }
+
+    /**
+     * Calculates visible information
+     */
+    public void setVision() {
+        getWorld().updateVision(getPopulation().getMyAnts());
+    }
+
+    /**
+     * Updates game state information about new ants and food locations.
+     * 
+     * @param ilk
+     *            ilk to be updated
+     * @param tile
+     *            location on the game map to be updated
+     */
+    public void update(Ilk ilk, Tile tile, int owner) {
+        getWorld().setIlk(tile, ilk);
+        switch (ilk) {
+        case FOOD:
+            getWorld().getFoodTiles().add(tile);
+            break;
+        case MY_ANT:
+        case ENEMY_ANT:
+            getPopulation().addAnt(tile, owner);
+            break;
+        }
+    }
+
+    public void update(Ilk ilk, Tile tile) {
+        update(ilk, tile, Integer.MIN_VALUE);
+    }
+
+    public void calculateDistances() {
+        for (Ant enemy : getPopulation().getEnemyAnts()) {
+            for (Ant myAnt : getPopulation().getMyAnts()) {
+                addEnemyPair(enemy, myAnt);
+            }
+            for (Ant other : getPopulation().getEnemyAnts()) {
+                if (other.equals(enemy))
+                    continue;
+                if (other.getPlayer() == enemy.getPlayer())
+                    addFriendPair(enemy, other);
+                else
+                    addEnemyPair(enemy, other);
+            }
+        }
+        for (Ant ant : getPopulation().getMyAnts()) {
+            for (Ant friend : getPopulation().getMyAnts()) {
+                if (friend.equals(ant))
+                    continue;
+                addFriendPair(ant, friend);
+            }
+        }
+    }
+
+    private void addEnemyPair(Ant anta, Ant antb) {
+        final int distance = getWorld().getSquaredDistance(antb.getTile(), anta.getTile());
+        anta.addEnemy(antb, distance);
+        antb.addEnemy(anta, distance);
+    }
+
+    private void addFriendPair(Ant anta, Ant antb) {
+        final int distance = getWorld().getSquaredDistance(antb.getTile(), anta.getTile());
+        anta.addFriend(antb, distance);
+        antb.addFriend(anta, distance);
+    }
+
+    /**
+     * Increment turn counter and set turn start time.
+     */
+    public void nextTurn() {
+        turn++;
+        turnStartTime = System.currentTimeMillis();
+    }
+
+    /*
+     * Accessors
+     */
+
+    public int getTurn() {
+        return turn;
     }
 
     public static Ants getAnts() {
@@ -99,15 +191,10 @@ public enum Ants {
     }
 
     /**
-     * Sets turn start time.
+     * Returns the start time of the current turn.
      * 
-     * @param turnStartTime
-     *            turn start time
+     * @return start time of the current turn.
      */
-    public void setTurnStartTime(long turnStartTime) {
-        this.turnStartTime = turnStartTime;
-    }
-
     public long getTurnStartTime() {
         return turnStartTime;
     }
@@ -119,152 +206,5 @@ public enum Ants {
      */
     public int getTimeRemaining() {
         return turnTime - (int) (System.currentTimeMillis() - turnStartTime);
-    }
-
-    public boolean putOrder(Ant ant, Aim direction) {
-        return getOrders().putOrder(ant, direction);
-    }
-
-    /**
-     * Clears game state information about my ants locations.
-     */
-    public void clearMyAnts() {
-        for (Ant myAnt : getPopulation().getMyAnts()) {
-            getWorld().setIlk(myAnt.getTile(), Ilk.LAND);
-        }
-        getPopulation().clearMyAnts();
-    }
-
-    /**
-     * Clears game state information about enemy ants locations.
-     */
-    public void clearEnemyAnts() {
-        for (Ant enemyAnt : getPopulation().getEnemyAnts()) {
-            getWorld().setIlk(enemyAnt.getTile(), Ilk.LAND);
-        }
-        getPopulation().getEnemyAnts().clear();
-    }
-
-    /**
-     * Clears game state information about food locations.
-     */
-    public void clearFood() {
-        for (Tile food : getWorld().getFoodTiles()) {
-            getWorld().setIlk(food, Ilk.LAND);
-        }
-        getWorld().getFoodTiles().clear();
-    }
-
-    /**
-     * Clears game state information about my hills locations.
-     */
-    public void clearMyHills() {
-        getWorld().getMyHills().clear();
-    }
-
-    /**
-     * Clears game state information about enemy hills locations.
-     */
-    public void clearEnemyHills() {
-        getWorld().getEnemyHills().clear();
-    }
-
-    /**
-     * Clears game state information about dead ants locations.
-     */
-    public void clearDeadAnts() {
-        getWorld().clearDeadAnts();
-    }
-
-    /**
-     * Clears visible information
-     */
-    public void clearVision() {
-        // TODO included in world.updateVision, do we still need it?
-    }
-
-    /**
-     * Calculates visible information
-     */
-    public void setVision() {
-        getWorld().updateVision(getPopulation().getMyAnts());
-    }
-
-    /**
-     * Updates game state information about new ants and food locations.
-     * 
-     * @param ilk
-     *            ilk to be updated
-     * @param tile
-     *            location on the game map to be updated
-     */
-    public void update(Ilk ilk, Tile tile, int owner) {
-        getWorld().setIlk(tile, ilk);
-        switch (ilk) {
-        case FOOD:
-            getWorld().getFoodTiles().add(tile);
-            break;
-        case MY_ANT:
-            getPopulation().getMyAnts().add(new Ant(tile, Ant.MINE));
-            break;
-        case ENEMY_ANT:
-            getPopulation().getEnemyAnts().add(new Ant(tile, owner));
-            break;
-        }
-    }
-
-    public void update(Ilk ilk, Tile tile) {
-        update(ilk, tile, Integer.MIN_VALUE);
-    }
-
-    public void calculateDistances() {
-        for (Ant enemy : getPopulation().getEnemyAnts()) {
-            for (Ant myAnt : getPopulation().getMyAnts()) {
-                addEnemyPair(enemy, myAnt);
-            }
-            for (Ant other : getPopulation().getEnemyAnts()) {
-                if (other.equals(enemy))
-                    continue;
-                if (other.getPlayer() == enemy.getPlayer())
-                    addFriendPair(enemy, other);
-                else
-                    addEnemyPair(enemy, other);
-            }
-        }
-        for (Ant ant : getPopulation().getMyAnts()) {
-            for (Ant friend : getPopulation().getMyAnts()) {
-                if (friend.equals(ant))
-                    continue;
-                addFriendPair(ant, friend);
-            }
-        }
-    }
-
-    public void initOrders() {
-        getOrders().initOrders();
-    }
-
-    public void issueOrders() {
-        getOrders().issueOrders();
-    }
-
-    private void addEnemyPair(Ant anta, Ant antb) {
-        final int distance = getWorld().getSquaredDistance(antb.getTile(), anta.getTile());
-        anta.addEnemy(antb, distance);
-        antb.addEnemy(anta, distance);
-    }
-
-    private void addFriendPair(Ant anta, Ant antb) {
-        final int distance = getWorld().getSquaredDistance(antb.getTile(), anta.getTile());
-        anta.addFriend(antb, distance);
-        antb.addFriend(anta, distance);
-    }
-
-    public int getTurn() {
-        return turn;
-    }
-
-    public void updateTurn() {
-        turn++;
     }
 }

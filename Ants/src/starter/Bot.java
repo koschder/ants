@@ -19,14 +19,8 @@ public abstract class Bot extends AbstractSystemInputParser {
      */
     @Override
     public void beforeUpdate() {
-        Ants.getAnts().setTurnStartTime(System.currentTimeMillis());
-        Ants.getAnts().clearMyAnts();
-        Ants.getAnts().clearEnemyAnts();
-        Ants.getAnts().clearMyHills();
-        Ants.getAnts().clearEnemyHills();
-        Ants.getAnts().clearFood();
-        Ants.getAnts().clearDeadAnts();
-        Ants.getAnts().clearVision();
+        Ants.getAnts().nextTurn();
+        Ants.getAnts().clearState();
     }
 
     /**

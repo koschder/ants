@@ -14,17 +14,26 @@ public class Population {
 
     private Set<Ant> enemyAnts = new HashSet<Ant>();
 
+    public void clearState() {
+        myAnts.clear();
+        employedAnts.clear();
+        enemyAnts.clear();
+        myUnemployedAnts = null;
+    }
+
+    public void addAnt(Tile tile, int owner) {
+        if (owner == Ant.MINE)
+            myAnts.add(new Ant(tile, owner));
+        else
+            enemyAnts.add(new Ant(tile, owner));
+    }
+
     public Set<Ant> getMyAnts() {
         return myAnts;
     }
 
     public Set<Ant> getEnemyAnts() {
         return enemyAnts;
-    }
-
-    public void clearMyAnts() {
-        myAnts.clear();
-        myUnemployedAnts = null;
     }
 
     public Collection<Ant> getMyUnemployedAnts() {

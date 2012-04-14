@@ -14,6 +14,14 @@ public class Orders {
 
     private Map<Tile, Move> orders = new HashMap<Tile, Move>();
 
+    public void clearState() {
+        orders.clear();
+        // prevent stepping on own hill
+        for (Tile myHill : Ants.getWorld().getMyHills()) {
+            orders.put(myHill, null);
+        }
+    }
+
     public boolean putOrder(Ant ant, Aim direction) {
         // Track all moves, prevent collisions
         Tile newLoc = Ants.getWorld().getTile(ant.getTile(), direction);
@@ -38,14 +46,6 @@ public class Orders {
     public void addMission(Mission newMission) {
         Logger.debug(LogCategory.EXECUTE_MISSIONS, "New mission created: %s", newMission);
         missions.add(newMission);
-    }
-
-    public void initOrders() {
-        orders.clear();
-        // prevent stepping on own hill
-        for (Tile myHill : Ants.getWorld().getMyHills()) {
-            orders.put(myHill, null);
-        }
     }
 
     public void issueOrders() {

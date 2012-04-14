@@ -60,6 +60,47 @@ public class World {
         }
     }
 
+    /**
+     * Clear the game state
+     * 
+     * @param myAnts
+     *            my Ants from last turn
+     * @param enemyAnts
+     *            enemy Ants from last turn
+     */
+    public void clearState(Collection<Ant> myAnts, Collection<Ant> enemyAnts) {
+        clearIlk(myAnts);
+        clearIlk(enemyAnts);
+        clearDeadAnts();
+        myHills.clear();
+        enemyHills.clear();
+        clearFood();
+    }
+
+    private void clearIlk(Collection<Ant> ants) {
+        for (Ant myAnt : ants) {
+            setIlk(myAnt.getTile(), Ilk.LAND);
+        }
+    }
+
+    private void clearFood() {
+        for (Tile food : foodTiles) {
+            setIlk(food, Ilk.LAND);
+        }
+        foodTiles.clear();
+    }
+
+    private void clearDeadAnts() {
+        // currently we do not have list of dead ants, so iterate over all map
+        for (int row = 0; row < rows; row++) {
+            for (int col = 0; col < cols; col++) {
+                if (map[row][col] == Ilk.DEAD) {
+                    map[row][col] = Ilk.LAND;
+                }
+            }
+        }
+    }
+
     public int getRows() {
         return rows;
     }
@@ -237,20 +278,6 @@ public class World {
             }
         }
         return directions;
-    }
-
-    /**
-     * Clears game state information about dead ants locations.
-     */
-    public void clearDeadAnts() {
-        // currently we do not have list of dead ants, so iterate over all map
-        for (int row = 0; row < rows; row++) {
-            for (int col = 0; col < cols; col++) {
-                if (map[row][col] == Ilk.DEAD) {
-                    map[row][col] = Ilk.LAND;
-                }
-            }
-        }
     }
 
     /**

@@ -46,8 +46,6 @@ public class MyBot extends Bot {
                 "------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------", Ants
                         .getAnts().getTurn(), Ants.getPopulation().getMyAnts().size(), Ants.getOrders().getMissions()
                         .size());
-        Ants.getAnts().updateTurn();
-        Ants.getAnts().initOrders();
         initTasks();
         doStatistics();
         for (Task task : tasks) {
@@ -57,7 +55,7 @@ public class MyBot extends Bot {
             Logger.info(LogCategory.PERFORMANCE, "task ended  :: %s, took %s ms", task.getClass(),
                     System.currentTimeMillis() - start);
         }
-        Ants.getAnts().issueOrders();
+        Ants.getOrders().issueOrders();
     }
 
     private void doStatistics() {
