@@ -55,11 +55,10 @@ public class FollowMission extends BaseMission {
         if (m == null || m.getTile().equals(ant.getTile())) // no move done yet, wait to the next round;
             return;
         List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, ant.getTile(), m.getTile());
-        if (path == null) {
+        if (path == null)
             abandonMission();
-            return;
-        }
-        Ants.getOrders().doMoveLocation(ant, path);
+        else
+            Ants.getOrders().doMoveLocation(ant, path);
     }
 
     @Override

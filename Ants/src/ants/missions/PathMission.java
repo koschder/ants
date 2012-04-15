@@ -6,7 +6,6 @@ import java.util.List;
 import ants.entities.Ant;
 import ants.entities.Tile;
 
-
 public abstract class PathMission extends BaseMission {
 
     public List<Tile> path = new ArrayList<Tile>();

@@ -11,10 +11,11 @@ import ants.util.Logger.LogCategory;
 
 public class GatherFoodMission extends PathMission {
 
-    Tile food = path.get(path.size() - 1);
+    Tile food;
 
     public GatherFoodMission(Ant ant, List<Tile> path) {
         super(ant, path);
+        food = path.get(path.size() - 1);
     }
 
     @Override
@@ -47,11 +48,7 @@ public class GatherFoodMission extends PathMission {
 
         Aim aim = ant.getTile().directionTo(nextStep);
         Logger.debug(LogCategory.FOOD, "Go to: %s direction is %s", nextStep, aim);
-        if (putMissionOrder(ant, aim)) {
-        } else {
-            // TODO what else
-            Logger.debug(LogCategory.FOOD, "no move done for Mission %s ", this);
-        }
-        return;
+        if (!putMissionOrder(ant, aim))
+            abandonMission();
     }
 }

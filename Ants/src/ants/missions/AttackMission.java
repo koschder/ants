@@ -22,11 +22,8 @@ public class AttackMission extends PathMission {
 
         Aim aim = ant.getTile().directionTo(nextStep);
         Logger.debug(LogCategory.COMBAT, "Go to: %s direction is %s", nextStep, aim);
-        if (putMissionOrder(ant, aim)) {
-        } else {
-            // TODO what else
-            Logger.debug(LogCategory.COMBAT, "no move done for Mission %s ", this);
-        }
+        if (!putMissionOrder(ant, aim))
+            abandonMission();
         return;
 
     }

@@ -15,8 +15,6 @@ public abstract class BaseMission implements Mission {
     protected Deque<Move> previousMoves = new ArrayDeque<Move>();
     private boolean abandon = false;
 
-    protected abstract boolean isSpecificMissionValid();
-
     public BaseMission(Ant ant) {
         this.ant = ant;
     }
@@ -32,17 +30,17 @@ public abstract class BaseMission implements Mission {
         return (antIsAlive && isSpecificMissionValid());
     }
 
-    protected void abandonMission() {
-        Logger.debug(LogCategory.EXECUTE_MISSIONS, "Abandoning mission of type %s", getClass().getSimpleName());
-        abandon = true;
-    }
-
     /***
      * 
      * @return Last move of this mission or null if no move is performed yet.
      */
     public Move getLastMove() {
         return previousMoves.isEmpty() ? null : previousMoves.getLast();
+    }
+
+    protected void abandonMission() {
+        Logger.debug(LogCategory.EXECUTE_MISSIONS, "Abandoning mission of type %s", getClass().getSimpleName());
+        abandon = true;
     }
 
     protected boolean putMissionOrder(Ant ant, Aim aim) {
@@ -52,6 +50,8 @@ public abstract class BaseMission implements Mission {
         }
         return false;
     }
+
+    protected abstract boolean isSpecificMissionValid();
 
     public Ant getAnt() {
         return ant;

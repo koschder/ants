@@ -23,11 +23,8 @@ public class ExploreMission extends PathMission {
 
         Aim aim = ant.getTile().directionTo(nextStep);
         Logger.debug(LogCategory.EXPLORE, "Go to: %s direction is %s", nextStep, aim);
-        if (putMissionOrder(ant, aim)) {
-        } else {
+        if (!putMissionOrder(ant, aim))
             abandonMission();
-        }
-        return;
     }
 
     @Override
