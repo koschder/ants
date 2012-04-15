@@ -26,12 +26,13 @@ public class MissionTask extends BaseTask {
         for (Iterator<Mission> it = missions.iterator(); it.hasNext();) {
             Mission mission = it.next();
             Logger.debug(LogCategory.EXECUTE_MISSIONS, "mission: %s", mission);
+            if (mission.isComplete()) {
+                it.remove();
+                continue;
+            }
             if (mission.isValid()) {
                 mission.execute();
                 Logger.debug(LogCategory.EXECUTE_MISSIONS, "Mission performed: %s", mission);
-                if (mission.isComplete()) {
-                    it.remove();
-                }
             } else {
                 Logger.debug(LogCategory.EXECUTE_MISSIONS, "Mission not vaild: %s. Mission is removed.", mission);
                 it.remove();

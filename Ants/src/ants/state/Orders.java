@@ -10,7 +10,6 @@ import ants.entities.Ant;
 import ants.entities.Move;
 import ants.entities.Tile;
 import ants.missions.Mission;
-import ants.tasks.Task;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
@@ -37,30 +36,22 @@ public class Orders {
      * 
      * @param ant
      * @param direction
+     * @param issuer
+     *            who gave the order? for logging purposes only
      * @return true if the order was successfully placed
      */
-    public boolean putOrder(Ant ant, Aim direction) {
+    public boolean issueOrder(Ant ant, Aim direction, String issuer) {
         // Track all moves, prevent collisions
         Tile newLoc = Ants.getWorld().getTile(ant.getTile(), direction);
         if (Ants.getWorld().getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
-            Logger.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s ant: %s", getTaskName(), ant);
-            Logger.debug(LogCategory.EXECUTE_TASKS, "%1$s: Moving ant from %2$s to %3$s", getTaskName(), ant.getTile(),
-                    newLoc);
+            Logger.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s ant: %s", issuer, ant);
+            Logger.debug(LogCategory.EXECUTE_TASKS, "%1$s: Moving ant from %2$s to %3$s", issuer, ant.getTile(), newLoc);
             orders.put(newLoc, new Move(ant.getTile(), direction));
             ant.setNextTile(newLoc);
             Ants.getPopulation().addEmployedAnt(ant);
             return true;
         }
         return false;
-    }
-
-    private String getTaskName() {
-        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        for (int i = 0; i < stackTrace.length; i++) {
-            if (stackTrace[i].getClassName().startsWith(Task.class.getPackage().getName()))
-                return stackTrace[i].getClassName();
-        }
-        return null; // should never happen
     }
 
     public Map<Tile, Move> getOrders() {

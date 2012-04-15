@@ -44,7 +44,7 @@ public abstract class BaseMission implements Mission {
     }
 
     protected boolean putMissionOrder(Ant ant, Aim aim) {
-        if (Ants.getOrders().putOrder(ant, aim)) {
+        if (Ants.getOrders().issueOrder(ant, aim, getClass().getSimpleName())) {
             previousMoves.add(new Move(ant.getTile(), aim));
             return true;
         }
