@@ -36,7 +36,7 @@ public class ExploreMission extends PathMission {
     }
 
     @Override
-    protected boolean IsSpecificMissionValid() {
+    protected boolean isSpecificMissionValid() {
         return true;
     }
 

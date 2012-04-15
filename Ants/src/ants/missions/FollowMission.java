@@ -32,7 +32,7 @@ public class FollowMission extends BaseMission {
     }
 
     @Override
-    protected boolean IsSpecificMissionValid() {
+    protected boolean isSpecificMissionValid() {
 
         Move m = mastermission.getLastMove();
         if (m == null) // no move done yet, wait to the next round;

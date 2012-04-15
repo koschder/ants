@@ -37,7 +37,7 @@ public class AttackMission extends PathMission {
     }
 
     @Override
-    protected boolean IsSpecificMissionValid() {
+    protected boolean isSpecificMissionValid() {
         // TODO check if enemy is still there
         return true;
     }

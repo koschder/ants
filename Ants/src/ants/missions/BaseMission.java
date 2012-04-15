@@ -1,7 +1,7 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 import ants.entities.Aim;
 import ants.entities.Ant;
@@ -12,11 +12,14 @@ import ants.util.Logger.LogCategory;
 
 public abstract class BaseMission implements Mission {
     protected Ant ant;
-    // stores the last moves of the mission
-    protected List<Move> lastMoves = new ArrayList<Move>();
+    protected Deque<Move> previousMoves = new ArrayDeque<Move>();
     private boolean abandon = false;
 
-    protected abstract boolean IsSpecificMissionValid();
+    protected abstract boolean isSpecificMissionValid();
+
+    public BaseMission(Ant ant) {
+        this.ant = ant;
+    }
 
     @Override
     public final boolean isValid() {
@@ -26,11 +29,7 @@ public abstract class BaseMission implements Mission {
         if (!antIsAlive) {
             Logger.debug(LogCategory.EXECUTE_MISSIONS, "isMissionValid(): no ant at %s", ant.getTile());
         }
-        return (antIsAlive && IsSpecificMissionValid());
-    }
-
-    public BaseMission(Ant ant) {
-        this.ant = ant;
+        return (antIsAlive && isSpecificMissionValid());
     }
 
     protected void abandonMission() {
@@ -43,14 +42,12 @@ public abstract class BaseMission implements Mission {
      * @return Last move of this mission or null if no move is performed yet.
      */
     public Move getLastMove() {
-        if (lastMoves.size() == 0)
-            return null;
-        return lastMoves.get(this.lastMoves.size() - 1);
+        return previousMoves.isEmpty() ? null : previousMoves.getLast();
     }
 
     protected boolean putMissionOrder(Ant ant, Aim aim) {
         if (Ants.getOrders().putOrder(ant, aim)) {
-            lastMoves.add(new Move(ant.getTile(), aim));
+            previousMoves.add(new Move(ant.getTile(), aim));
             return true;
         }
         return false;

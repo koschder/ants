@@ -31,10 +31,6 @@ public class Ant implements Comparable<Ant> {
         return player;
     }
 
-    public Tile getNextTile() {
-        return nextTile;
-    }
-
     public void addEnemy(Ant enemy, int distance) {
         enemies.put(enemy, distance);
     }
