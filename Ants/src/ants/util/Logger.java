@@ -13,7 +13,7 @@ public class Logger {
         COMBAT(INFO),
         DEFEND(INFO),
         EXCEPTION(INFO),
-        EXECUTE_TASKS(INFO),
+        EXECUTE_TASKS(DEBUG),
         EXECUTE_MISSIONS(INFO),
         EXPLORE(INFO),
         FOLLOW(INFO),

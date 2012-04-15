@@ -54,9 +54,12 @@ public class MyBot extends Bot {
         doStatistics();
         for (Task task : tasks) {
             long start = System.currentTimeMillis();
-            Logger.info(LogCategory.PERFORMANCE, "task started:: %s at %s", task.getClass(), start);
+            int unemployed = Ants.getPopulation().getMyUnemployedAnts().size();
+            Logger.info(LogCategory.PERFORMANCE, "task started:: %s at %s", task.getClass().getSimpleName(), start);
             task.perform();
-            Logger.info(LogCategory.PERFORMANCE, "task ended  :: %s, took %s ms", task.getClass(),
+            Logger.debug(LogCategory.EXECUTE_TASKS, "Task %s found jobs for %s of %s unemployed ants", task.getClass()
+                    .getSimpleName(), unemployed - Ants.getPopulation().getMyUnemployedAnts().size(), unemployed);
+            Logger.info(LogCategory.PERFORMANCE, "task ended  :: %s, took %s ms", task.getClass().getSimpleName(),
                     System.currentTimeMillis() - start);
         }
         final Collection<Ant> myUnemployedAnts = Ants.getPopulation().getMyUnemployedAnts();
