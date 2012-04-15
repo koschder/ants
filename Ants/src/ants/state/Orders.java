@@ -2,7 +2,6 @@ package ants.state;
 
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -53,19 +52,6 @@ public class Orders {
             return true;
         }
         return false;
-    }
-
-    /**
-     * Move the ant to the next tile in the path.
-     * 
-     * @param ant
-     * @param path
-     * @return true if the order was successfully placed
-     */
-    public boolean moveToNextTile(Ant ant, List<Tile> path) {
-        if (path == null || path.isEmpty())
-            throw new IllegalArgumentException("Path must not be null or empty!");
-        return Ants.getOrders().putOrder(ant, ant.getTile().directionTo(path.get(0)));
     }
 
     private String getTaskName() {
