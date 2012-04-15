@@ -9,7 +9,6 @@ import java.util.PriorityQueue;
 import java.util.Set;
 
 import ants.entities.Aim;
-import ants.entities.Node;
 import ants.entities.Tile;
 import ants.state.Ants;
 import ants.util.Logger;

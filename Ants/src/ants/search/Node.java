@@ -1,4 +1,6 @@
-package ants.entities;
+package ants.search;
+
+import ants.entities.Tile;
 
 public class Node implements Comparable<Node> {
 
