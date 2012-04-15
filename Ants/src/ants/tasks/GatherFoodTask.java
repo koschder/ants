@@ -58,7 +58,7 @@ public class GatherFoodTask extends BaseTask {
                     continue;
                 if (path.size() <= 2) {
                     // food is reachable in one step, we don't need to create a task;
-                    Ants.getOrders().doMoveLocation(route.getAnt(), path);
+                    Ants.getOrders().moveToNextTile(route.getAnt(), path);
                 } else {
                     Mission mission = new GatherFoodMission(route.getAnt(), path);
                     Ants.getOrders().addMission(mission);

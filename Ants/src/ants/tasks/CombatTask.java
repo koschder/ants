@@ -37,7 +37,7 @@ public class CombatTask extends BaseTask {
         for (Ant ant : friends) {
             List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, ant.getTile(), enemy.getTile());
             if (path.size() <= 2) {
-                Ants.getOrders().doMoveLocation(ant, path);
+                Ants.getOrders().moveToNextTile(ant, path);
             } else {
                 Mission mission = new AttackMission(ant, path);
                 Ants.getOrders().addMission(mission);

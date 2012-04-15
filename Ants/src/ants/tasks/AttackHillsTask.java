@@ -51,7 +51,7 @@ public class AttackHillsTask extends BaseTask {
             List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, route.getStart(), route.getEnd());
             if (path == null)
                 continue;
-            Ants.getOrders().doMoveLocation(route.getAnt(), path);
+            Ants.getOrders().moveToNextTile(route.getAnt(), path);
         }
     }
 

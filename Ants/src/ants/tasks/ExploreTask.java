@@ -38,45 +38,42 @@ public class ExploreTask extends BaseTask {
         // remove any tiles that can be seen, run each turn
         removeVisibleTiles(unseenTiles);
         removeVisibleTiles(invisibleTiles);
-        Logger.info(LogCategory.EXPLORE, "Invisible tiles: %s, Unseen tiles: %s", invisibleTiles.size(),
+        Logger.debug(LogCategory.EXPLORE, "Invisible tiles: %s, Unseen tiles: %s", invisibleTiles.size(),
                 unseenTiles.size());
-        long start = System.currentTimeMillis();
+
         int totalTiles = Ants.getWorld().getCols() * Ants.getWorld().getRows();
         if ((unseenTiles.size() / totalTiles) < 0.1)
             explore(invisibleTiles);
         else
             explore(unseenTiles);
-        Logger.info(LogCategory.EXPLORE, "explore main loop took %s ms", System.currentTimeMillis() - start);
     }
 
     private void explore(Set<Tile> tiles) {
         for (Ant ant : Ants.getPopulation().getMyUnemployedAnts()) {
             final Tile antLoc = ant.getTile();
-            if (!Ants.getOrders().getOrders().containsValue(antLoc)) {
-                List<Route> unseenRoutes = new ArrayList<Route>();
-                int minDistance = Integer.MAX_VALUE;
-                for (Tile unseenLoc : tiles) {
-                    int distance = Ants.getWorld().getSquaredDistance(antLoc, unseenLoc);
-                    if (distance > MAXDISTANCE)
-                        continue;
-                    if (distance < minDistance)
-                        minDistance = distance;
-                    Route route = new Route(antLoc, unseenLoc, distance, ant);
-                    unseenRoutes.add(route);
-                }
-                Collections.sort(unseenRoutes);
+            List<Route> unseenRoutes = new ArrayList<Route>();
+            int minDistance = Integer.MAX_VALUE;
+            for (Tile unseenLoc : tiles) {
+                int distance = Ants.getWorld().getSquaredDistance(antLoc, unseenLoc);
+                if (distance > MAXDISTANCE)
+                    continue;
+                if (distance < minDistance)
+                    minDistance = distance;
+                Route route = new Route(antLoc, unseenLoc, distance, ant);
+                unseenRoutes.add(route);
+            }
+            Collections.sort(unseenRoutes);
 
-                for (Route route : unseenRoutes) {
-                    if (route.getDistance() > minDistance * 2)
-                        break;
-                    List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, route.getStart(), route.getEnd());
-                    if (path == null)
-                        continue;
-                    Mission mission = new ExploreMission(route.getAnt(), path);
-                    Ants.getOrders().addMission(mission);
-                    mission.execute();
+            for (Route route : unseenRoutes) {
+                if (route.getDistance() > minDistance * 2)
                     break;
-                }
+                List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, route.getStart(), route.getEnd());
+                if (path == null)
+                    continue;
+                Mission mission = new ExploreMission(route.getAnt(), path);
+                Ants.getOrders().addMission(mission);
+                mission.execute();
+                break;
             }
         }
     }

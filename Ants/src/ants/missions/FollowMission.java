@@ -58,7 +58,7 @@ public class FollowMission extends BaseMission {
         if (path == null)
             abandonMission();
         else
-            Ants.getOrders().doMoveLocation(ant, path);
+            Ants.getOrders().moveToNextTile(ant, path);
     }
 
     @Override

@@ -51,21 +51,21 @@ public class Orders {
             ant.setNextTile(newLoc);
             Ants.getPopulation().addEmployedAnt(ant);
             return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean doMoveLocation(Ant ant, List<Tile> path) {
-        if (path == null || path.isEmpty())
-            throw new IllegalArgumentException("Path must not be null or empty!");
-        List<Aim> directions = Ants.getWorld().getDirections(ant.getTile(), path.get(0));
-        for (Aim direction : directions) {
-            if (Ants.getOrders().putOrder(ant, direction)) {
-                return true;
-            }
         }
         return false;
+    }
+
+    /**
+     * Move the ant to the next tile in the path.
+     * 
+     * @param ant
+     * @param path
+     * @return true if the order was successfully placed
+     */
+    public boolean moveToNextTile(Ant ant, List<Tile> path) {
+        if (path == null || path.isEmpty())
+            throw new IllegalArgumentException("Path must not be null or empty!");
+        return Ants.getOrders().putOrder(ant, ant.getTile().directionTo(path.get(0)));
     }
 
     private String getTaskName() {
