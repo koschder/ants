@@ -12,14 +12,12 @@ import ants.util.Logger.LogCategory;
 
 public abstract class BaseMission implements Mission {
     protected Ant ant;
-    // protected Ants ants;
     // stores the last moves of the mission
     protected List<Move> lastMoves = new ArrayList<Move>();
     private boolean abandon = false;
 
     protected abstract boolean IsSpecificMissionValid();
 
-    // public abstract void proceedMission();
     @Override
     public final boolean isValid() {
         if (abandon)
@@ -52,8 +50,6 @@ public abstract class BaseMission implements Mission {
 
     protected boolean putMissionOrder(Ant ant, Aim aim) {
         if (Ants.getOrders().putOrder(ant, aim)) {
-            // TODO wird in putorder gemacht, aber f�r ant nicht �bernommen?
-            ant.setNextTile(Ants.getWorld().getTile(ant.getTile(), aim));
             lastMoves.add(new Move(ant.getTile(), aim));
             return true;
         }
