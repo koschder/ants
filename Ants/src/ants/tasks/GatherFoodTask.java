@@ -51,7 +51,9 @@ public class GatherFoodTask extends BaseTask {
         for (Route route : foodRoutes) {
             // food not already targeted && ant not used
             if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())) {
-                List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, route.getStart(), route.getEnd());
+                List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, route.getStart(), route.getEnd());
+                if (path == null)
+                    path = PathFinder.bestPath(PathFinder.A_STAR, route.getStart(), route.getEnd());
                 if (path == null)
                     continue;
                 if (path.size() <= 2) {

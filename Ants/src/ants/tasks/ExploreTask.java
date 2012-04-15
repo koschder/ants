@@ -10,6 +10,8 @@ import java.util.Set;
 import ants.entities.Ant;
 import ants.entities.Route;
 import ants.entities.Tile;
+import ants.missions.ExploreMission;
+import ants.missions.Mission;
 import ants.search.PathFinder;
 import ants.state.Ants;
 import ants.util.Logger;
@@ -70,9 +72,10 @@ public class ExploreTask extends BaseTask {
                     List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, route.getStart(), route.getEnd());
                     if (path == null)
                         continue;
-                    if (Ants.getOrders().doMoveLocation(ant, path)) {
-                        break;
-                    }
+                    Mission mission = new ExploreMission(route.getAnt(), path);
+                    Ants.getOrders().addMission(mission);
+                    mission.execute();
+                    break;
                 }
             }
         }

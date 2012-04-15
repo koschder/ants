@@ -5,6 +5,7 @@ import java.util.List;
 import ants.entities.Aim;
 import ants.entities.Ant;
 import ants.entities.Tile;
+import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
@@ -24,8 +25,7 @@ public class ExploreMission extends PathMission {
         Logger.debug(LogCategory.EXPLORE, "Go to: %s direction is %s", nextStep, aim);
         if (putMissionOrder(ant, aim)) {
         } else {
-            // TODO what else
-            Logger.debug(LogCategory.EXPLORE, "no move done for Mission %s ", this);
+            abandonMission();
         }
         return;
     }
@@ -37,7 +37,9 @@ public class ExploreMission extends PathMission {
 
     @Override
     protected boolean isSpecificMissionValid() {
-        return true;
+        final boolean foodNearby = Ants.getWorld().isFoodNearby(ant.getTile());
+        final boolean enemyInRange = !ant.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), false).isEmpty();
+        return (!foodNearby && !enemyInRange);
     }
 
 }

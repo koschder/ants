@@ -187,6 +187,14 @@ public class World {
         }
     }
 
+    public boolean isFoodNearby(Tile tile) {
+        for (Tile foodTile : foodTiles) {
+            if (getSquaredDistance(foodTile, tile) < viewRadius2)
+                return true;
+        }
+        return false;
+    }
+
     /**
      * Returns a set containing all my hills locations.
      * 
