@@ -7,7 +7,6 @@ import java.util.List;
 import ants.entities.Ant;
 import ants.entities.Tile;
 import ants.missions.AttackMission;
-import ants.missions.Mission;
 import ants.search.PathFinder;
 import ants.state.Ants;
 
@@ -39,9 +38,7 @@ public class CombatTask extends BaseTask {
             if (path.size() <= 2) {
                 Ants.getOrders().moveToNextTile(ant, path);
             } else {
-                Mission mission = new AttackMission(ant, path);
-                Ants.getOrders().addMission(mission);
-                mission.execute();
+                Ants.getOrders().addMission(new AttackMission(ant, path));
             }
         }
 

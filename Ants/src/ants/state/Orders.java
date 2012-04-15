@@ -86,8 +86,10 @@ public class Orders {
     }
 
     public void addMission(Mission newMission) {
-        Logger.debug(LogCategory.EXECUTE_MISSIONS, "New mission created: %s", newMission);
-        missions.add(newMission);
+        if (missions.add(newMission)) {
+            newMission.execute();
+            Logger.debug(LogCategory.EXECUTE_MISSIONS, "New mission created: %s", newMission);
+        }
     }
 
     public void issueOrders() {

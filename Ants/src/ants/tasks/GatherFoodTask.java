@@ -11,7 +11,6 @@ import ants.entities.Ant;
 import ants.entities.Route;
 import ants.entities.Tile;
 import ants.missions.GatherFoodMission;
-import ants.missions.Mission;
 import ants.search.PathFinder;
 import ants.state.Ants;
 import ants.util.Logger;
@@ -60,9 +59,7 @@ public class GatherFoodTask extends BaseTask {
                     // food is reachable in one step, we don't need to create a task;
                     Ants.getOrders().moveToNextTile(route.getAnt(), path);
                 } else {
-                    Mission mission = new GatherFoodMission(route.getAnt(), path);
-                    Ants.getOrders().addMission(mission);
-                    mission.execute();
+                    Ants.getOrders().addMission(new GatherFoodMission(route.getAnt(), path));
                 }
                 foodTargets.put(route.getEnd(), route.getStart());
             }
