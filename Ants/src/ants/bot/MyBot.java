@@ -2,8 +2,10 @@ package ants.bot;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
+import ants.entities.Ant;
 import ants.state.Ants;
 import ants.tasks.AttackHillsTask;
 import ants.tasks.ClearHillTask;
@@ -15,7 +17,6 @@ import ants.tasks.MissionTask;
 import ants.tasks.Task;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
-
 
 /**
  * Starter bot implementation.
@@ -58,6 +59,9 @@ public class MyBot extends Bot {
             Logger.info(LogCategory.PERFORMANCE, "task ended  :: %s, took %s ms", task.getClass(),
                     System.currentTimeMillis() - start);
         }
+        final Collection<Ant> myUnemployedAnts = Ants.getPopulation().getMyUnemployedAnts();
+        Logger.debug(LogCategory.EXECUTE_TASKS, "Unemployed Ants (%s total): %s", myUnemployedAnts.size(),
+                myUnemployedAnts);
         Ants.getOrders().issueOrders();
     }
 

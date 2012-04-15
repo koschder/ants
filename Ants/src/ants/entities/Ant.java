@@ -133,4 +133,9 @@ public class Ant implements Comparable<Ant> {
         return other.getTile().equals(getTile());
     }
 
+    @Override
+    public String toString() {
+        return tile.toString() + ", Player=" + player;
+    }
+
 }
