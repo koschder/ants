@@ -11,7 +11,7 @@ public class ClearHillTask extends BaseTask {
         for (Ant ant : Ants.getPopulation().getMyUnemployedAnts()) {
             for (Aim aim : Aim.values()) {
                 if (Ants.getOrders().putOrder(ant, aim))
-                    return;
+                    break;
             }
         }
 
