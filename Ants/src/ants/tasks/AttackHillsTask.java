@@ -10,6 +10,7 @@ import java.util.Set;
 import ants.entities.Ant;
 import ants.entities.Route;
 import ants.entities.Tile;
+import ants.missions.AttackHillMission;
 import ants.search.PathFinder;
 import ants.state.Ants;
 
@@ -49,9 +50,8 @@ public class AttackHillsTask extends BaseTask {
         Collections.sort(hillRoutes);
         for (Route route : hillRoutes) {
             List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, route.getStart(), route.getEnd());
-            if (path == null)
-                continue;
-            Ants.getOrders().moveToNextTile(route.getAnt(), path);
+            if (path != null)
+                Ants.getOrders().addMission(new AttackHillMission(route.getAnt(), path));
         }
     }
 

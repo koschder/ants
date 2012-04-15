@@ -6,7 +6,6 @@ import ants.entities.Ant;
 import ants.entities.Move;
 import ants.entities.Tile;
 import ants.search.PathFinder;
-import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
@@ -33,7 +32,8 @@ public class FollowMission extends BaseMission {
 
     @Override
     protected boolean isSpecificMissionValid() {
-
+        if (!mastermission.isValid())
+            return false;
         Move m = mastermission.getLastMove();
         if (m == null) // no move done yet, wait to the next round;
             return true;
@@ -58,7 +58,7 @@ public class FollowMission extends BaseMission {
         if (path == null)
             abandonMission();
         else
-            Ants.getOrders().moveToNextTile(ant, path);
+            putMissionOrder(ant, ant.getTile().directionTo(path.get(0)));
     }
 
     @Override

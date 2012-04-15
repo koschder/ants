@@ -78,6 +78,8 @@ public class World {
         clearIlk(enemyAnts);
         clearDeadAnts();
         myHills.clear();
+        // TODO we should remember hills, but doublecheck with the visible tiles so we can remove a hill when we can see
+        // it's been razed
         enemyHills.clear();
         clearFood();
     }
