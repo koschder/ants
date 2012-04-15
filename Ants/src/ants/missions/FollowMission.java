@@ -35,8 +35,8 @@ public class FollowMission extends BaseMission {
         if (!mastermission.isValid())
             return false;
         Move m = mastermission.getLastMove();
-        if (m == null) // no move done yet, wait to the next round;
-            return true;
+        if (m == null)
+            return false;
 
         int distance = m.getTile().manhattanDistanceTo(ant.getTile());
         if (distance > MAX_DISTANCE_TO_MASTER) {
