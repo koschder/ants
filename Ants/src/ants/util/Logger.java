@@ -3,6 +3,7 @@ package ants.util;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.PrintStream;
+import java.io.RandomAccessFile;
 
 import ants.entities.Tile;
 
@@ -33,6 +34,7 @@ public class Logger {
 
     }
 
+    private static boolean isFirst = true;
     private static final int DEBUG = 3;
     private static final int INFO = 2;
     private static final int ERROR = 1;
@@ -40,12 +42,16 @@ public class Logger {
     private static final int OFF = 0;
 
     private static PrintStream log;
-    private static PrintStream liveInfo;
+    private static RandomAccessFile liveInfo;
 
     static {
         try {
             log = new PrintStream(new File("logs/debug.log"));
-            liveInfo = new PrintStream(new File("logs/additionalInfo0.json"));
+            String jsonfile = "logs/additionalInfo.json";
+            File f = new File(jsonfile);
+            if (f.exists())
+                f.delete();
+            liveInfo = new RandomAccessFile(new File(jsonfile), "rw");
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -76,9 +82,30 @@ public class Logger {
     }
 
     public static void liveInfo(int turn, Tile tile, String message, Object... parameters) {
-        String msg = String.format(message, parameters).replace("\"", "'");
-        String sLiveInfo = String.format("\"%s#%s#%s\": \"%s\",", turn, tile.getRow(), tile.getCol(), msg);
-        liveInfo.println(sLiveInfo);
+        try {
+            String delimiter = "";
+            if (isFirst) {
+                liveInfo.write("{".getBytes());
+                isFirst = false;
+            } else {
+                liveInfo.seek(0);
+                delimiter = ",";
+                liveInfo.seek(liveInfo.length() - 1); // this basically reads n bytes in the file
+            }
+            String msg = String.format(message, parameters).replace("\"", "'");
+            // TODO turn - 1 ist unschön
+            String sLiveInfo = String.format("%s\n\"%s#%s#%s\" : \"%s\"", delimiter, turn, tile.getRow(),
+                    tile.getCol(), msg);
+            // liveInfo.write("\n".getBytes());
+            liveInfo.write(sLiveInfo.getBytes());
+            liveInfo.write("}".getBytes());
+
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            Logger.debug(LogCategory.EXCEPTION, e.getMessage());
+        }
+
     }
 
 }
