@@ -92,8 +92,8 @@ public class Logger {
                 delimiter = ",";
                 liveInfo.seek(liveInfo.length() - 1); // this basically reads n bytes in the file
             }
-            String msg = String.format(message, parameters).replace("\"", "'").replace("<r", "&lt;r");
-            // TODO turn - 1 ist unschön
+            String msg = String.format(message, parameters).replace("\"", "'").replace("<r", "&lt;r")
+                    .replace("\n", "<br/>");
             String sLiveInfo = String.format("%s\n\"%s#%s#%s\" : \"%s\"", delimiter, turn, tile.getRow(),
                     tile.getCol(), msg);
             // liveInfo.write("\n".getBytes());

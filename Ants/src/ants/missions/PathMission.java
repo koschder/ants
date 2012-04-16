@@ -22,10 +22,16 @@ public abstract class PathMission extends BaseMission {
         if (path == null)
             return "path is null";
         String pathString = "";
+        Tile previos = null;
+        String aims = "";
         for (Tile t : path) {
             pathString += t + ",";
+            if (previos != null) {
+                aims += previos.directionTo(t).name().charAt(0);
+            }
+            previos = t;
         }
-        return pathString;
+        return pathString + "\n Aims: " + aims + " \n";
     }
 
     @Override
