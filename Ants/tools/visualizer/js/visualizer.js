@@ -17,7 +17,10 @@ $import('CanvasElement');
 $import('jquery');
 $import('jqueryui');
 
-var $liveInfoFile = $import_base.replace('tools/visualizer/js/','')+'logs/additionalInfo.json';
+//prevent caching
+var d = new Date();
+var n = d.getUTCMilliseconds(); 
+var $liveInfoFile = $import_base.replace('tools/visualizer/js/','')+'logs/additionalInfo.json?q='+n;
 $import('AdditionalInformation');
 
 var $import_base;

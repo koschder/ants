@@ -30,4 +30,9 @@ public class GatherFoodMission extends PathMission {
         return "GatherFoodMission: [ant=" + ant.getTile() + ", target food=" + food + ", Next direction:=" + direction
                 + ", Path:=" + getPathString() + ", IsMissionComplete()=" + isComplete() + "]";
     }
+
+    @Override
+    protected String getVisualizeInfos() {
+        return super.getVisualizeInfos() + "<br/>Food: " + food;
+    }
 }

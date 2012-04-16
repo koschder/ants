@@ -44,11 +44,15 @@ public abstract class BaseMission implements Mission {
     }
 
     protected boolean putMissionOrder(Ant ant, Aim aim) {
-        if (Ants.getOrders().issueOrder(ant, aim, getClass().getSimpleName())) {
+        if (Ants.getOrders().issueOrder(ant, aim, getVisualizeInfos())) {
             previousMoves.add(new Move(ant.getTile(), aim));
             return true;
         }
         return false;
+    }
+
+    protected String getVisualizeInfos() {
+        return getClass().getSimpleName();
     }
 
     protected abstract boolean isSpecificMissionValid();
