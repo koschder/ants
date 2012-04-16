@@ -17,8 +17,8 @@ $import('CanvasElement');
 $import('jquery');
 $import('jqueryui');
 
-
-document.write('<script src="'+$import_base.replace('tools/visualizer/js/','')+'logs/AdditionalInformation.js"></script>');
+var $liveInfoFile = $import_base.replace('tools/visualizer/js/','')+'logs/additionalInfo.json';
+$import('AdditionalInformation');
 
 var $import_base;
 

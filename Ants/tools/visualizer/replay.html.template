@@ -11,7 +11,7 @@
             options.embedded = true;
 			var visualizer = new Visualizer(document.body, options);
 			visualizer.loadReplayData('## REPLAY PLACEHOLDER ##');
-            $('body').append('<div id="dialog" style="top:20px;position:absolute;">divDialog</div>');
+            $('body').append('<div id="container" style="position:absolute;display:inline"><div id="dialog">divDialog<br/>asdfasdf<br/>adfa</div></div>');
 		}
 	</script>
 	<style type="text/css">
