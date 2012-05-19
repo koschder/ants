@@ -77,7 +77,7 @@ public class ClusteringTask implements Task {
 
         for (int r = 0; r < clusters.getRows(); r++) {
             for (int c = 0; c < clusters.getCols(); c++) {
-                Logger.debug(LogCategory.CLUSTERING_Detail, "Cluster_afterview:" + clusters.getClusters()[r][c]);
+                Logger.debug(LogCategory.CLUSTERING, clusters.getClusters()[r][c].toString());
             }
         }
     }

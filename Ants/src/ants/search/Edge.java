@@ -22,14 +22,19 @@ public class Edge {
         boolean result = false;
         if (o instanceof Edge) {
             Edge e = (Edge) o;
-            result = v1 == e.v1 && v2 == e.v2;
-            result |= v2 == e.v1 && v1 == e.v2;
+            result = v1.equals(e.v1) && v2.equals(e.v2);
+            result |= v2.equals(e.v1) && v1.equals(e.v2);
         }
         return result;
     }
 
     public void setPath(List<Tile> path) {
         this.path = path;
+    }
+
+    @Override
+    public String toString() {
+        return v1 + "-" + v2;
     }
 
 }

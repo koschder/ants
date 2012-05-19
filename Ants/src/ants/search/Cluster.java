@@ -16,12 +16,13 @@ public class Cluster {
     public List<Edge> edges = new ArrayList<Edge>();
     public List<Vertex> vertices = new ArrayList<Vertex>();
     public String name;
-
+    public int index;
     public Set<Aim> aims = new HashSet<Aim>();
 
     public Cluster(int r, int c, int clusterSize) {
-        name = "Cluster Index R:" + r + "C:" + c + " Space R:" + r * clusterSize + " C:" + c * clusterSize + "xR:"
-                + (r + 1) * clusterSize + " C:" + (c + 1) * clusterSize;
+        index = r * clusterSize + c;
+        name = "Cluster Idx:" + index + " Dimension R:" + r * clusterSize + " C:" + c * clusterSize + "xR:" + (r + 1)
+                * clusterSize + " C:" + (c + 1) * clusterSize;
     }
 
     public boolean isClustered() {
@@ -43,11 +44,13 @@ public class Cluster {
     public void SetCluster(Aim newaim, List<Edge> newEdges) {
         aims.add(newaim);
         edges.addAll(newEdges);
+        Logger.debug(LogCategory.CLUSTERING_Detail, "%s: New edges arrived from aim %s E: %s", name, newaim, newEdges);
         processNewEdgesVertices(newEdges);
         createNewPath(newEdges);
-
+        debugEdges();
         if (isClustered()) {
-            Logger.debug(LogCategory.CLUSTERING, "Cluster %s is clustered now!", name);
+            Logger.debug(LogCategory.CLUSTERING, "%s is clustered_now! Vertices: %s Edges: %s", name, vertices.size(),
+                    edges.size());
         }
 
     }
@@ -69,6 +72,7 @@ public class Cluster {
 
     private void createNewPath(List<Edge> newEdges) {
         for (Edge e : newEdges) {
+            Logger.debug(LogCategory.CLUSTERING_Detail, "%s: createNewPath for e: %s", name, e);
             createNewPath(e);
         }
 
@@ -86,7 +90,7 @@ public class Cluster {
     }
 
     private void FindNewEdge(Tile tStart, Tile tEnd) {
-
+        Logger.debug(LogCategory.CLUSTERING_Detail, "%s: Find new path between %s and %s", name, tStart, tEnd);
         if (tStart.equals(tEnd))
             return;
 
@@ -100,6 +104,7 @@ public class Cluster {
         if (path == null)
             return;
 
+        Logger.debug(LogCategory.CLUSTERING_Detail, "%s: found!!", name);
         edge.setPath(path);
         edges.add(edge);
         processVertex(edge, edge.v1);
@@ -113,7 +118,7 @@ public class Cluster {
 
     @Override
     public String toString() {
-        return name + "Scanned aims: " + aims + " Edge count:" + edges.size();
+        return name + " Scanned aims: " + aims + " Edge: " + edges.size() + " Vertices: " + vertices.size();
     }
 
 }
