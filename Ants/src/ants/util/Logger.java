@@ -20,11 +20,13 @@ public class Logger {
         FOLLOW(INFO),
         FOOD(INFO),
         ORDERS(INFO),
-        PATHFINDING(ERROR),
+        PATHFINDING(INFO),
         PERFORMANCE(INFO),
         SETUP(INFO),
         STATISTICS(INFO),
-        TURN(INFO);
+        TURN(INFO),
+        CLUSTERING(DEBUG),
+        CLUSTERING_Detail(INFO);
 
         int level;
 

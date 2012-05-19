@@ -14,7 +14,6 @@ import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
-
 public class AStarSearchStrategy implements SearchStrategy {
 
     private int MAXCOSTS = 6;
@@ -30,15 +29,15 @@ public class AStarSearchStrategy implements SearchStrategy {
      * @see starter.SearchStrategy#bestPath(starter.Tile, starter.Tile)
      */
     public List<Tile> bestPath(Tile from, Tile to) {
-
+        Logger.debug(LogCategory.PATHFINDING, "Astar_start: %s to %s", from, to);
         List<Tile> list = calculateBestPath(from, to);
         if (list != null && list.size() > 1) {
             Logger.debug(LogCategory.PATHFINDING, "list size() %s", list.size());
             list.remove(0); // first path-tile is position of ant (not the next step)
         }
         String length = list != null ? "has size of " + list.size() : "not found";
-        Logger.debug(LogCategory.PATHFINDING, "Astar from: %s to %s best path size: %s path: %s", from, to, length,
-                list);
+        Logger.debug(LogCategory.PATHFINDING, "Astar_end: from: %s to %s best path size: %s path: %s", from, to,
+                length, list);
         return list;
     }
 
@@ -54,7 +53,7 @@ public class AStarSearchStrategy implements SearchStrategy {
             explored.add(node.getState());
             Logger.debug(LogCategory.PATHFINDING, "Astar: %s exand(next) %s", node, expand(node));
             for (Node child : expand(node)) {
-                if (frontier.contains(child) || explored.contains(child.getState()) || child.getCost() > MAXCOSTS)
+                if (frontier.contains(child) || explored.contains(child.getState()) || maxCostReached(child, to))
                     continue;
                 if (child.getState().equals(to))
                     return path(child); // success
@@ -64,6 +63,10 @@ public class AStarSearchStrategy implements SearchStrategy {
             }
         }
         return null; // failure
+    }
+
+    private boolean maxCostReached(Node child, Tile to) {
+        return child.getCost() + child.getState().manhattanDistanceTo(to) > MAXCOSTS;
     }
 
     public List<Node> expand(Node node) {
@@ -110,5 +113,10 @@ public class AStarSearchStrategy implements SearchStrategy {
             return;
         path.add(child.getState());
         addToPath(path, child.getParent());
+    }
+
+    @Override
+    public void setMaxCost(int i) {
+        this.MAXCOSTS = i;
     }
 }

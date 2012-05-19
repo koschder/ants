@@ -1,6 +1,7 @@
 package ants.state;
 
 import ants.entities.Ant;
+import ants.entities.Clustering;
 import ants.entities.Ilk;
 import ants.entities.Tile;
 
@@ -27,6 +28,11 @@ public enum Ants {
     private Population population;
 
     private Orders orders;
+
+    /*
+     * clusters for hierarcical grah pathfidning.
+     */
+    private Clustering clustering;
 
     /**
      * Creates new {@link Ants} object.
@@ -56,6 +62,7 @@ public enum Ants {
         this.world = new World(rows, cols, viewRadius2, attackRadius2, spawnRadius2);
         this.population = new Population();
         this.orders = new Orders();
+        this.clustering = new Clustering(7);
     }
 
     public void clearState() {
@@ -161,6 +168,10 @@ public enum Ants {
 
     public static Orders getOrders() {
         return INSTANCE.orders;
+    }
+
+    public Clustering getClusters() {
+        return INSTANCE.clustering;
     }
 
     /**

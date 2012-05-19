@@ -9,6 +9,7 @@ import ants.entities.Ant;
 import ants.state.Ants;
 import ants.tasks.AttackHillsTask;
 import ants.tasks.ClearHillTask;
+import ants.tasks.ClusteringTask;
 import ants.tasks.CombatTask;
 import ants.tasks.ExploreTask;
 import ants.tasks.FollowTask;
@@ -92,6 +93,7 @@ public class MyBot extends Bot {
             tasks.add(new ExploreTask());
             tasks.add(new FollowTask());
             tasks.add(new ClearHillTask());
+            tasks.add(new ClusteringTask());
         }
         for (Task task : tasks) {
             task.setup();

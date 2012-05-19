@@ -27,4 +27,9 @@ public abstract class PathFinder {
     public static List<Tile> bestPath(Integer strategy, Tile from, Tile to) {
         return searchStrategies.get(strategy).bestPath(from, to);
     }
+
+    public static List<Tile> bestPath(Integer strategy, Tile from, Tile to, int maxCost) {
+        searchStrategies.get(strategy).setMaxCost(maxCost);
+        return searchStrategies.get(strategy).bestPath(from, to);
+    }
 }

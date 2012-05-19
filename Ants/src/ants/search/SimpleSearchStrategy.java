@@ -9,7 +9,6 @@ import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
-
 public class SimpleSearchStrategy implements SearchStrategy {
 
     @Override
@@ -59,5 +58,10 @@ public class SimpleSearchStrategy implements SearchStrategy {
         }
         path.add(to);
         return path;
+    }
+
+    @Override
+    public void setMaxCost(int i) {
+        // no maxcost for this SearchStratey
     }
 }
