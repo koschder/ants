@@ -6,8 +6,12 @@ import java.util.List;
 import java.util.Set;
 
 import ants.entities.Aim;
+import ants.entities.DirectedEdge;
+import ants.entities.Edge;
+import ants.entities.SearchTarget;
 import ants.entities.Tile;
 import ants.entities.Vertex;
+import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
@@ -17,10 +21,16 @@ public class Cluster {
     public List<Vertex> vertices = new ArrayList<Vertex>();
     public String name;
     public int index;
+    private int row;
+    private int col;
+    private int clusterSize;
     public Set<Aim> aims = new HashSet<Aim>();
 
-    public Cluster(int r, int c, int clusterSize) {
-        index = r * clusterSize + c;
+    public Cluster(int r, int c, int csize) {
+        index = r * csize + c;
+        clusterSize = csize;
+        row = r;
+        col = c;
         name = "Cluster Idx:" + index + " Dimension R:" + r * clusterSize + " C:" + c * clusterSize + "xR:" + (r + 1)
                 * clusterSize + " C:" + (c + 1) * clusterSize;
     }
@@ -57,6 +67,7 @@ public class Cluster {
 
     private void processNewEdgesVertices(List<Edge> newEdges) {
         for (Edge e : newEdges) {
+            e.setCluster(this);
             processVertex(e, e.v1);
             processVertex(e, e.v2);
         }
@@ -94,13 +105,18 @@ public class Cluster {
         if (tStart.equals(tEnd))
             return;
 
-        Edge edge = new Edge(tStart, tEnd);
+        Edge edge = new Edge(tStart, tEnd, this);
         if (edges.contains(edge))
             return;
 
         // path limit costs are the manhattanDistance plus a factor for a maybe way around
         int costs = tStart.manhattanDistanceTo(tEnd) + 3;
-        List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, tStart, tEnd, costs);
+        // List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, tStart, tEnd, costs);
+        Tile searchSpace0 = new Tile(row * clusterSize, col * clusterSize);
+        // todo is +1 correct?
+        Tile searchSpace1 = new Tile((row + 1) * clusterSize + 1, (col + 1) * clusterSize + 1);
+        List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, tStart, tEnd, searchSpace0, searchSpace1, costs);
+        // List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, tStart, tEnd);
         if (path == null)
             return;
 
@@ -119,6 +135,47 @@ public class Cluster {
     @Override
     public String toString() {
         return name + " Scanned aims: " + aims + " Edge: " + edges.size() + " Vertices: " + vertices.size();
+    }
+
+    public List<SearchTarget> getEdgeWithNeighbourCluster(DirectedEdge e) {
+        List<SearchTarget> list = new ArrayList<SearchTarget>();
+        // Logger.debug(LogCategory.CLUSTERED_ASTAR, "Looki looki at %s", e);
+        if (e.getEnd().getRow() >= e.getStart().getRow()) // south todo wrap around
+            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.INSTANCE.getClusters().getWithWrapAround(row + 1,
+                    col)));
+        if (e.getEnd().getRow() <= e.getStart().getRow()) // north todo wrap around
+            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.INSTANCE.getClusters().getWithWrapAround(row - 1,
+                    col)));
+
+        if (e.getEnd().getCol() >= e.getStart().getCol()) // west todo wrap around
+            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.INSTANCE.getClusters().getWithWrapAround(row,
+                    col + 1)));
+        if (e.getEnd().getCol() <= e.getStart().getCol()) // east todo wrap around
+            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.INSTANCE.getClusters().getWithWrapAround(row,
+                    col - 1)));
+
+        Logger.debug(LogCategory.CLUSTERED_ASTAR, "%s neighbour cluster found. %s", list.size(), list);
+        return list;
+    }
+
+    public Vertex getVertex(Tile start) {
+
+        if (vertices.contains(start))
+            return vertices.get(vertices.indexOf(start));
+
+        return null;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Cluster other = (Cluster) obj;
+        return other.name == name;
     }
 
 }

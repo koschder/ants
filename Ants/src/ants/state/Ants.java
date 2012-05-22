@@ -1,9 +1,9 @@
 package ants.state;
 
 import ants.entities.Ant;
-import ants.entities.Clustering;
 import ants.entities.Ilk;
 import ants.entities.Tile;
+import ants.search.Clustering;
 
 /**
  * Holds all game data and current game state.

@@ -3,7 +3,6 @@ package ants.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import ants.search.Edge;
 
 public class Vertex extends Tile {
 

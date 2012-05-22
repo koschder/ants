@@ -1,14 +1,14 @@
 package ants.search;
 
-import ants.entities.Tile;
+import ants.entities.SearchTarget;
 
 public class Node implements Comparable<Node> {
 
-    private Tile state;
+    private SearchTarget state;
     private Node parent;
     private int cost;
 
-    public Node(Tile state, Node parent, int cost) {
+    public Node(SearchTarget state, Node parent, int cost) {
         this.state = state;
         this.parent = parent;
         this.cost = cost;
@@ -18,7 +18,7 @@ public class Node implements Comparable<Node> {
      * 
      * @return the position of the tile
      */
-    public Tile getState() {
+    public SearchTarget getState() {
         return state;
     }
 
@@ -54,13 +54,10 @@ public class Node implements Comparable<Node> {
         if (getClass() != obj.getClass())
             return false;
         Node other = (Node) obj;
-        if (cost != other.cost)
-            return false;
-        if (parent == null) {
-            if (other.parent != null)
-                return false;
-        } else if (!parent.equals(other.parent))
-            return false;
+        /*
+         * if (cost != other.cost) return false; if (parent == null) { if (other.parent != null) return false; } else if
+         * (!parent.equals(other.parent)) return false;
+         */
         if (state == null) {
             if (other.state != null)
                 return false;

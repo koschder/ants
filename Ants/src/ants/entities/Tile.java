@@ -1,11 +1,15 @@
 package ants.entities;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import ants.state.Ants;
 
 /**
  * Represents a tile of the game map.
  */
-public class Tile implements Comparable<Tile> {
+public class Tile implements Comparable<Tile>, SearchTarget {
     private final int row;
 
     private final int col;
@@ -69,7 +73,7 @@ public class Tile implements Comparable<Tile> {
         boolean result = false;
         if (o instanceof Tile) {
             Tile tile = (Tile) o;
-            result = row == tile.row && col == tile.col;
+            result = (row == tile.row && col == tile.col);
         }
         return result;
     }
@@ -101,4 +105,64 @@ public class Tile implements Comparable<Tile> {
             }
         }
     }
+
+    @Override
+    public List<SearchTarget> getSuccessors() {
+        List<SearchTarget> list = new ArrayList<SearchTarget>();
+        list.add(Ants.getWorld().getTile(this, Aim.NORTH));
+        list.add(Ants.getWorld().getTile(this, Aim.SOUTH));
+        list.add(Ants.getWorld().getTile(this, Aim.WEST));
+        list.add(Ants.getWorld().getTile(this, Aim.EAST));
+        return list;
+    }
+
+    @Override
+    public boolean isSearchable(boolean bParentNode) {
+
+        return Ants.getWorld().getIlk(this).isPassable() && !isOccupiedForNextMove(bParentNode);
+    }
+
+    private boolean isOccupiedForNextMove(boolean bParentNode) {
+        if (!bParentNode) // we are on the 2nd level of the search tree
+            return Ants.getOrders().getOrders().containsValue(this);
+        return false;
+    }
+
+    @Override
+    public int distanceTo(SearchTarget dest) {
+        if (dest instanceof Tile)
+            return manhattanDistanceTo((Tile) dest);
+
+        throw new RuntimeException("distanceTo for a Tile to a " + dest.getClass() + "not implemented");
+    }
+
+    @Override
+    public List<Tile> getPath() {
+        return Arrays.asList(this);
+    }
+
+    @Override
+    public boolean isInSearchSpace(Tile searchSpace1, Tile searchSpace2) {
+
+        if (searchSpace1 == null || searchSpace2 == null)
+            return true; // no searchspace defined.
+
+        if (searchSpace1.getRow() <= this.getRow() && searchSpace1.getCol() <= this.getCol())
+            if (searchSpace2.getRow() >= this.getRow() && searchSpace2.getCol() >= this.getCol())
+                return true;
+
+        return false;
+    }
+
+    @Override
+    public Tile getTargetTile() {
+        return this;
+
+    }
+
+    @Override
+    public String toShortString() {
+        return toString();
+    }
+
 }

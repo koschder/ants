@@ -1,6 +1,5 @@
-package ants.entities;
+package ants.search;
 
-import ants.search.Cluster;
 import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
@@ -44,4 +43,16 @@ public class Clustering {
     public Cluster[][] getClusters() {
         return clusters;
     }
+
+    public Cluster getWithWrapAround(int row, int col) {
+
+        int r = row % rows;
+        int c = col % cols;
+
+        // Logger.debug(LogCategory.CLUSTERED_ASTAR, "getWithWrapAround row %s col %s wrapped %s:%s %s", row, col, r, c,
+        // clusters[r][c]);
+
+        return clusters[r][c];
+    }
+
 }

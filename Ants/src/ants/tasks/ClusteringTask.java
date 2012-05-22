@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ants.entities.Aim;
-import ants.entities.Clustering;
+import ants.entities.Edge;
 import ants.entities.Tile;
 import ants.search.Cluster;
-import ants.search.Edge;
+import ants.search.Clustering;
 import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
@@ -80,6 +80,15 @@ public class ClusteringTask implements Task {
                 Logger.debug(LogCategory.CLUSTERING, clusters.getClusters()[r][c].toString());
             }
         }
+        /*
+         * if (completedClusters > 14) { Cluster cStart = Ants.INSTANCE.getClusters().getClusters()[2][2]; Cluster cEnd
+         * = Ants.INSTANCE.getClusters().getClusters()[5][2]; DirectedEdge eStart = new
+         * DirectedEdge(cStart.edges.get(0).v1, cStart.edges.get(0).v2, cStart); DirectedEdge eEnd = new
+         * DirectedEdge(cEnd.edges.get(0).v1, cEnd.edges.get(0).v2, cEnd); Logger.debug(LogCategory.CLUSTERED_ASTAR,
+         * "Find hpa* path from edge to edge %s", eStart, eEnd); PathFinder.bestPath(PathFinder.A_STAR, eStart, eEnd,
+         * null, null, eStart.getStart() .distanceTo(eEnd.getEnd()) + 10); Logger.debug(LogCategory.CLUSTERED_ASTAR,
+         * "Find hpa* ended"); }
+         */
     }
 
     private List<Edge> horizontalScan(int r, int c, int clusterSize) {
@@ -111,7 +120,7 @@ public class ClusteringTask implements Task {
                     if (lastVertices == null) {
                         // todo what to do?
                     } else {
-                        edges.add(new Edge(vertices, lastVertices));
+                        edges.add(new Edge(vertices, lastVertices, null));
                     }
                     vertices = null;
                     lastVertices = null;
@@ -124,7 +133,7 @@ public class ClusteringTask implements Task {
             }
         }
         if (vertices != null && lastVertices != null) {
-            edges.add(new Edge(vertices, lastVertices));
+            edges.add(new Edge(vertices, lastVertices, null));
         } else if (vertices != null) {
             // todo what to do?
         }
@@ -160,7 +169,7 @@ public class ClusteringTask implements Task {
                     if (lastVertices == null) {
                         // todo what to do?
                     } else {
-                        edges.add(new Edge(vertices, lastVertices));
+                        edges.add(new Edge(vertices, lastVertices, null));
                     }
                     vertices = null;
                     lastVertices = null;
@@ -173,7 +182,7 @@ public class ClusteringTask implements Task {
             }
         }
         if (vertices != null && lastVertices != null) {
-            edges.add(new Edge(vertices, lastVertices));
+            edges.add(new Edge(vertices, lastVertices, null));
         } else if (vertices != null) {
             // todo what to do?
         }

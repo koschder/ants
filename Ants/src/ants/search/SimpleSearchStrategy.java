@@ -3,7 +3,10 @@ package ants.search;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.RuntimeErrorException;
+
 import ants.entities.Aim;
+import ants.entities.SearchTarget;
 import ants.entities.Tile;
 import ants.state.Ants;
 import ants.util.Logger;
@@ -12,7 +15,14 @@ import ants.util.Logger.LogCategory;
 public class SimpleSearchStrategy implements SearchStrategy {
 
     @Override
-    public List<Tile> bestPath(Tile from, Tile to) {
+    public List<Tile> bestPath(SearchTarget areaFrom, SearchTarget areaTo) {
+
+        if (!(areaFrom instanceof Tile && areaTo instanceof Tile))
+            throw new RuntimeException("SimpleSearchStrategy not implmented for class" + areaTo.getClass());
+
+        Tile from = (Tile) areaFrom;
+        Tile to = (Tile) areaTo;
+
         if (from.getCol() == to.getCol() || from.getRow() == to.getRow())
             return getStraightPath(from, to);
         List<Tile> path = getSimpleViaPath(from, to, new Tile(from.getRow(), to.getCol()));
@@ -63,5 +73,11 @@ public class SimpleSearchStrategy implements SearchStrategy {
     @Override
     public void setMaxCost(int i) {
         // no maxcost for this SearchStratey
+        throw new RuntimeErrorException(null, "this function is not implemented yet");
+    }
+
+    @Override
+    public void setSearchSpace(Tile p1, Tile p2) {
+        throw new RuntimeErrorException(null, "this function is not implemented yet");
     }
 }

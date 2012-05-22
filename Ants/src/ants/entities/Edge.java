@@ -1,20 +1,22 @@
-package ants.search;
+package ants.entities;
 
 import java.util.List;
 
-import ants.entities.Tile;
+import ants.search.Cluster;
 
 public class Edge {
 
     public Tile v1;
     public Tile v2;
+    private Cluster cluster;
 
     // if no path defined the tiles can reached staright
     public List<Tile> path;
 
-    public Edge(Tile vertices, Tile lastVertices) {
+    public Edge(Tile vertices, Tile lastVertices, Cluster c) {
         v1 = vertices;
         v2 = lastVertices;
+        cluster = c;
     }
 
     @Override
@@ -35,6 +37,16 @@ public class Edge {
     @Override
     public String toString() {
         return v1 + "-" + v2;
+    }
+
+    public void setCluster(Cluster c) {
+        cluster = c;
+
+    }
+
+    public Cluster getCluster() {
+        return cluster;
+
     }
 
 }
