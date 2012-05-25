@@ -14,7 +14,7 @@ import ants.util.Logger.LogCategory;
 
 public class ClusteringTask implements Task {
 
-    Clustering clusters = Ants.INSTANCE.getClusters();
+    Clustering clusters = Ants.getClusters();
 
     @Override
     public void perform() {

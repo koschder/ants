@@ -141,18 +141,14 @@ public class Cluster {
         List<SearchTarget> list = new ArrayList<SearchTarget>();
         // Logger.debug(LogCategory.CLUSTERED_ASTAR, "Looki looki at %s", e);
         if (e.getEnd().getRow() >= e.getStart().getRow()) // south todo wrap around
-            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.INSTANCE.getClusters().getWithWrapAround(row + 1,
-                    col)));
+            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.getClusters().getWithWrapAround(row + 1, col)));
         if (e.getEnd().getRow() <= e.getStart().getRow()) // north todo wrap around
-            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.INSTANCE.getClusters().getWithWrapAround(row - 1,
-                    col)));
+            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.getClusters().getWithWrapAround(row - 1, col)));
 
         if (e.getEnd().getCol() >= e.getStart().getCol()) // west todo wrap around
-            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.INSTANCE.getClusters().getWithWrapAround(row,
-                    col + 1)));
+            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.getClusters().getWithWrapAround(row, col + 1)));
         if (e.getEnd().getCol() <= e.getStart().getCol()) // east todo wrap around
-            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.INSTANCE.getClusters().getWithWrapAround(row,
-                    col - 1)));
+            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.getClusters().getWithWrapAround(row, col - 1)));
 
         Logger.debug(LogCategory.CLUSTERED_ASTAR, "%s neighbour cluster found. %s", list.size(), list);
         return list;

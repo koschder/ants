@@ -170,7 +170,7 @@ public enum Ants {
         return INSTANCE.orders;
     }
 
-    public Clustering getClusters() {
+    public static Clustering getClusters() {
         return INSTANCE.clustering;
     }
 
