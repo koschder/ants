@@ -1,6 +1,7 @@
 package ants.search;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -24,13 +25,15 @@ public class Cluster {
     private int row;
     private int col;
     private int clusterSize;
+    private Clustering clustering;
     public Set<Aim> aims = new HashSet<Aim>();
 
-    public Cluster(int r, int c, int csize) {
+    public Cluster(int r, int c, int csize, Clustering clstering) {
         index = r * csize + c;
         clusterSize = csize;
         row = r;
         col = c;
+        clustering = clstering;
         name = "Cluster Idx:" + index + " Dimension R:" + r * clusterSize + " C:" + c * clusterSize + "xR:" + (r + 1)
                 * clusterSize + " C:" + (c + 1) * clusterSize;
     }
@@ -44,10 +47,10 @@ public class Cluster {
     }
 
     public void debugEdges() {
-        Logger.debug(LogCategory.CLUSTERING_Detail, "Edges of %s", name);
-        Logger.debug(LogCategory.CLUSTERING_Detail, "Done_aims_of_%s", aims.toString());
+        Logger.debug(LogCategory.PATHFINDING, "Edges of %s", name);
+        Logger.debug(LogCategory.PATHFINDING, "Done_aims_of_%s", aims.toString());
         for (Edge e : edges) {
-            Logger.debug(LogCategory.CLUSTERING_Detail, "xx: Edge from %s to %s", e.v1, e.v2);
+            Logger.debug(LogCategory.PATHFINDING, "xx: Edge from %s to %s", e.v1, e.v2);
         }
     }
 
@@ -139,19 +142,62 @@ public class Cluster {
 
     public List<SearchTarget> getEdgeWithNeighbourCluster(DirectedEdge e) {
         List<SearchTarget> list = new ArrayList<SearchTarget>();
-        // Logger.debug(LogCategory.CLUSTERED_ASTAR, "Looki looki at %s", e);
-        if (e.getEnd().getRow() >= e.getStart().getRow()) // south todo wrap around
-            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.getClusters().getWithWrapAround(row + 1, col)));
-        if (e.getEnd().getRow() <= e.getStart().getRow()) // north todo wrap around
-            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.getClusters().getWithWrapAround(row - 1, col)));
 
-        if (e.getEnd().getCol() >= e.getStart().getCol()) // west todo wrap around
-            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.getClusters().getWithWrapAround(row, col + 1)));
-        if (e.getEnd().getCol() <= e.getStart().getCol()) // east todo wrap around
-            list.add(new DirectedEdge(e.getStart(), e.getEnd(), Ants.getClusters().getWithWrapAround(row, col - 1)));
+        if (e.getEnd().getRow() == getBottomFrontier()) // south todo wrap around
 
-        Logger.debug(LogCategory.CLUSTERED_ASTAR, "%s neighbour cluster found. %s", list.size(), list);
+            list.addAll(getWithWrapAround(e.getEnd(), row + 1, col));
+
+        if (e.getEnd().getRow() == getTopFrontier()) // north todo wrap around
+
+            list.addAll(getWithWrapAround(e.getEnd(), row - 1, col));
+
+        if (e.getEnd().getCol() == getLeftFrontier()) // west todo wrap around
+
+            list.addAll(getWithWrapAround(e.getEnd(), row, col - 1));
+
+        if (e.getEnd().getCol() == getRightFrontier()) // east todo wrap around
+
+            list.addAll(getWithWrapAround(e.getEnd(), row, col + 1));
+
+        Logger.debug(LogCategory.CLUSTERED_ASTAR, "%s neighbour cluster found", list.size());
+        for (SearchTarget t : list)
+            Logger.debug(LogCategory.CLUSTERED_ASTAR, "      => %s", t);
         return list;
+    }
+
+    private List<SearchTarget> getWithWrapAround(Tile start, int row, int col2) {
+        Cluster c = clustering.getWithWrapAround(row, col2);
+        Logger.debug(LogCategory.PATHFINDING, "search edge starts with %s in %s", start, c);
+        List<SearchTarget> list = new ArrayList<SearchTarget>();
+        for (Edge e : c.edges) {
+            Logger.debug(LogCategory.PATHFINDING, "scan edge %s ", e);
+            if (e.v1.equals(start)) {
+                list.add(new DirectedEdge(e.v1, e.v2, c));
+            } else if (e.v2.equals(start)) {
+                list.add(new DirectedEdge(e.v2, e.v1, c));
+            }
+        }
+        Logger.debug(LogCategory.PATHFINDING, "edge found %s they are: %s", list.size(), list);
+        // c.debugEdges();
+        // Logger.debug(LogCategory.PATHFINDING,);
+        return list;
+    }
+
+    private int getRightFrontier() {
+
+        return (col + 1) * clusterSize;
+    }
+
+    private int getLeftFrontier() {
+        return col * clusterSize;
+    }
+
+    private int getBottomFrontier() {
+        return (row + 1) * clusterSize;
+    }
+
+    private int getTopFrontier() {
+        return row * clusterSize;
     }
 
     public Vertex getVertex(Tile start) {

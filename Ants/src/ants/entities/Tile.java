@@ -165,4 +165,9 @@ public class Tile implements Comparable<Tile>, SearchTarget {
         return toString();
     }
 
+    @Override
+    public boolean isFinal(SearchTarget to) {
+        return this.equals(to);
+    }
+
 }

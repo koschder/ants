@@ -12,15 +12,25 @@ public class Clustering {
     private int cols = 0;
 
     public Clustering(int cSize) {
+        int rows = Ants.getWorld().getRows() / clusterSize + 1;
+        int cols = Ants.getWorld().getCols() / clusterSize + 1;
+        init(cSize,rows,cols);
+    }
+    public Clustering(int cSize,int ro, int cl) {
+        init(cSize,ro,cl);
+    }
+    
+    
+    public void init(int cSize,int ro, int cl) {
         clusterSize = cSize;
-        rows = Ants.getWorld().getRows() / clusterSize + 1;
-        cols = Ants.getWorld().getCols() / clusterSize + 1;
-
+        rows = ro;
+        cols = cl;
+        
         clusters = new Cluster[rows][cols];
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                clusters[r][c] = new Cluster(r, c, clusterSize);
+                clusters[r][c] = new Cluster(r, c, clusterSize,this);
             }
         }
 
@@ -48,7 +58,8 @@ public class Clustering {
 
         int r = row % rows;
         int c = col % cols;
-
+        r = r < 0 ? r+rows : r;
+        c = c < 0 ? c+cols : c;
         // Logger.debug(LogCategory.CLUSTERED_ASTAR, "getWithWrapAround row %s col %s wrapped %s:%s %s", row, col, r, c,
         // clusters[r][c]);
 

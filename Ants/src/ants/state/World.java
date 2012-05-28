@@ -8,10 +8,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import javax.management.RuntimeErrorException;
+
 import ants.entities.Aim;
 import ants.entities.Ant;
 import ants.entities.Ilk;
 import ants.entities.Tile;
+import ants.util.Logger;
+import ants.util.Logger.LogCategory;
 
 public class World {
 
@@ -318,5 +322,43 @@ public class World {
             enemyHills.add(tile);
         else
             myHills.add(tile);
+    }
+
+    public void setEverythingVisibleAndPassable() {
+        visible = new boolean[rows][cols];
+        for (boolean[] row : visible) {
+            Arrays.fill(row, true);
+        }
+        
+    }
+
+    public void setWater(Tile tile, Tile tile2) {
+        if(tile.getRow() > tile2.getRow() || tile.getCol() > tile2.getCol())
+            throw new RuntimeErrorException(null, "Invalid water area");
+        
+        for(int r = tile.getRow(); r < tile2.getRow();r++)
+            for(int c = tile.getCol(); c < tile2.getCol();c++)
+                setIlk(new Tile(r,c), Ilk.WATER); 
+    }
+
+    public void debugPathOnMap(List<Tile> path) {
+        for (int r = 0; r < getRows(); r++) {
+            String row = "";
+            for (int c = 0; c < getCols(); c++) {
+                Tile t = new Tile(r, c);
+                Ilk lk = getIlk(t);
+
+                if (path.contains(t)) {
+                    row += "P";
+                } else if (lk.isPassable()) {
+                    row += " ";
+                } else {
+                    row += "W";
+                }
+            }
+            Logger.debug(LogCategory.PATHFINDING, row);
+            row = "";
+        }
+        
     }
 }

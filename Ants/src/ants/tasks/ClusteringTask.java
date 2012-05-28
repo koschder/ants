@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ants.entities.Aim;
+import ants.entities.DirectedEdge;
 import ants.entities.Edge;
 import ants.entities.Tile;
 import ants.search.Cluster;
 import ants.search.Clustering;
+import ants.search.PathFinder;
 import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
@@ -80,15 +82,17 @@ public class ClusteringTask implements Task {
                 Logger.debug(LogCategory.CLUSTERING, clusters.getClusters()[r][c].toString());
             }
         }
-        /*
-         * if (completedClusters > 14) { Cluster cStart = Ants.INSTANCE.getClusters().getClusters()[2][2]; Cluster cEnd
-         * = Ants.INSTANCE.getClusters().getClusters()[5][2]; DirectedEdge eStart = new
-         * DirectedEdge(cStart.edges.get(0).v1, cStart.edges.get(0).v2, cStart); DirectedEdge eEnd = new
-         * DirectedEdge(cEnd.edges.get(0).v1, cEnd.edges.get(0).v2, cEnd); Logger.debug(LogCategory.CLUSTERED_ASTAR,
-         * "Find hpa* path from edge to edge %s", eStart, eEnd); PathFinder.bestPath(PathFinder.A_STAR, eStart, eEnd,
-         * null, null, eStart.getStart() .distanceTo(eEnd.getEnd()) + 10); Logger.debug(LogCategory.CLUSTERED_ASTAR,
-         * "Find hpa* ended"); }
-         */
+        
+         if (completedClusters > 14) { Cluster cStart = Ants.INSTANCE.getClusters().getClusters()[2][2]; Cluster cEnd
+          = Ants.INSTANCE.getClusters().getClusters()[5][2]; DirectedEdge eStart = new
+          DirectedEdge(cStart.edges.get(0).v1, cStart.edges.get(0).v2, cStart); 
+          DirectedEdge eEnd = new DirectedEdge(cEnd.edges.get(0).v1, cEnd.edges.get(0).v2, cEnd); 
+          Logger.debug(LogCategory.CLUSTERED_ASTAR,
+          "Find hpa* path from edge %s to edge %s", eStart, eEnd); PathFinder.bestPath(PathFinder.A_STAR, eStart, eEnd,
+          null, null, eStart.getStart() .distanceTo(eEnd.getEnd()) + 10); 
+          Logger.debug(LogCategory.CLUSTERED_ASTAR,
+          "Find hpa* ended"); }
+         
     }
 
     private List<Edge> horizontalScan(int r, int c, int clusterSize) {

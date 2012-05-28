@@ -32,7 +32,8 @@ public class Node implements Comparable<Node> {
 
     @Override
     public String toString() {
-        return "Node [state=" + state + ", parent=" + (parent != null ? parent.state : "null") + ", cost=" + cost + "]";
+        return "Node [state=" + state + ", cost=" + cost + "]";
+        //return "Node [state=" + state + ", parent=" + (parent != null ? parent.state : "null") + ", cost=" + cost + "]";
     }
 
     @Override

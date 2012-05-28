@@ -26,18 +26,21 @@ public class DirectedEdge extends Edge implements SearchTarget {
 
     @Override
     public List<SearchTarget> getSuccessors() {
-
-        Vertex v = getCluster().getVertex(getStart());
         List<SearchTarget> list = new ArrayList<SearchTarget>();
-        if (v == null)
-            return list;
-
-        for (Edge e : v.edges) {
-            DirectedEdge de = new DirectedEdge(v, e.v1 == v ? e.v1 : v2, getCluster());
-            Logger.debug(LogCategory.CLUSTERED_ASTAR, "Find neighbour for edge %s in cluster %s ", de.toShortString(),
-                    getCluster());
-            list.addAll(getCluster().getEdgeWithNeighbourCluster(de));
-        }
+        /*
+         * Vertex v = getCluster().getVertex(getEnd()); if (v == null) return list;
+         * 
+         * Logger.debug(LogCategory.CLUSTERED_ASTAR, "Edges of %s",v); for (Edge e : v.edges) {
+         * Logger.debug(LogCategory.CLUSTERED_ASTAR, "        =>%s",e);
+         * 
+         * }
+         * 
+         * for (Edge e : v.edges) { DirectedEdge de = new DirectedEdge(v, e.v1 == v ? e.v1 : e.v2, getCluster());
+         * Logger.debug(LogCategory.CLUSTERED_ASTAR, "Find neighbour for edge %s in cluster %s ", de.toShortString(),
+         * getCluster());
+         */
+        list.addAll(getCluster().getEdgeWithNeighbourCluster(this));
+        // }
 
         return list;
     }
@@ -50,8 +53,7 @@ public class DirectedEdge extends Edge implements SearchTarget {
 
     @Override
     public int distanceTo(SearchTarget dest) {
-        getEnd().manhattanDistanceTo(dest.getTargetTile());
-        return 0;
+        return getEnd().manhattanDistanceTo(dest.getTargetTile());
     }
 
     @Override
@@ -59,7 +61,11 @@ public class DirectedEdge extends Edge implements SearchTarget {
         if (path != null)
             return path;
 
-        return PathFinder.bestPath(PathFinder.SIMPLE, getStart(), getEnd());
+        List<Tile> tiles =  PathFinder.bestPath(PathFinder.SIMPLE, getEnd(),getStart());
+        if(tiles.size()>1)
+            tiles.remove(tiles.size()-1);
+        
+        return tiles;
     }
 
     public Tile getEnd() {
@@ -94,12 +100,23 @@ public class DirectedEdge extends Edge implements SearchTarget {
         if (getClass() != obj.getClass())
             return false;
         DirectedEdge other = (DirectedEdge) obj;
-        return super.equals(other) && getCluster().equals(other.getCluster());
+        if (getCluster() == null && other.getCluster() == null)
+            return super.equals(other);
+        else if (getCluster() != null && other.getCluster() != null)
+            return super.equals(other) && getCluster().equals(other.getCluster());
+
+        return false;
     }
 
     @Override
     public String toShortString() {
-        return super.toString();
+        return getStart() + "-" + getEnd();
+    }
+
+    @Override
+    public boolean isFinal(SearchTarget to) {
+        return getEnd().equals(to.getTargetTile());
+
     }
 
 }

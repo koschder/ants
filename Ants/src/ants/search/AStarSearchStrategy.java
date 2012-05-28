@@ -53,22 +53,29 @@ public class AStarSearchStrategy implements SearchStrategy {
         PriorityQueue<Node> frontier = new PriorityQueue<Node>();
         frontier.add(new Node(from, null, 0));
         while (!frontier.isEmpty()) {
+            //Logger.debug(LogCategory.PATHFINDING, "Current frontier list is");
+            for(Node n : frontier){
+              //  Logger.debug(LogCategory.PATHFINDING, "Node %s Cost: %s",n.getState(),n.getCost());
+            }
+            
             Node node = frontier.poll();
+            Logger.debug(LogCategory.PATHFINDING, "Astar: new forntier item is %s",node.getState());
             explored.add(node.getState());
 
             List<Node> nodes = expand(node);
-            Logger.debug(LogCategory.PATHFINDING, "Astar: %s expanded(next) %s", node, nodes);
+            Logger.debug(LogCategory.PATHFINDING, "Astar: %s has %s items as expanded(next) %s", node.getState(),nodes.size(), nodes);
             for (Node child : nodes) {
                 if (frontier.contains(child) || explored.contains(child.getState()) || maxCostReached(child, to)) {
                     Logger.debug(LogCategory.PATHFINDING, "Skip new node: %s", child);
                     continue;
                 }
-                if (child.getState().equals(to))
+                if (child.getState().isFinal(to))
+                    
                     return path(child); // success
                 frontier.add(child);
-                Logger.debug(LogCategory.PATHFINDING, "Astar frontier size: %s", frontier.size());
-                Logger.debug(LogCategory.PATHFINDING, "Astar explored size: %s", explored.size());
             }
+            Logger.debug(LogCategory.PATHFINDING, "Astar frontier size: %s", frontier.size());
+            Logger.debug(LogCategory.PATHFINDING, "Astar explored size: %s", explored.size());
         }
         return null; // failure
     }
@@ -87,7 +94,7 @@ public class AStarSearchStrategy implements SearchStrategy {
         // addChild(node, children, south);
         // addChild(node, children, west);
         // addChild(node, children, east);
-        Logger.debug(LogCategory.PATHFINDING, "size of children %s", children.size());
+        //Logger.debug(LogCategory.PATHFINDING, "size of children %s", children.size());
         return children;
     }
 

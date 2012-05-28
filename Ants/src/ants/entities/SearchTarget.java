@@ -18,4 +18,6 @@ public interface SearchTarget {
 
     String toShortString();
 
+    boolean isFinal(SearchTarget to);
+
 }

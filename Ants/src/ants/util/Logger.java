@@ -25,8 +25,9 @@ public class Logger {
         SETUP(INFO),
         STATISTICS(INFO),
         TURN(INFO),
-        CLUSTERING(DEBUG),
+        CLUSTERING(INFO),
         CLUSTERING_Detail(INFO),
+        JUNIT(DEBUG),
         CLUSTERED_ASTAR(DEBUG);
 
         int level;

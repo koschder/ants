@@ -65,6 +65,10 @@ public enum Ants {
         this.clustering = new Clustering(7);
     }
 
+    public void setWorld(World newW){
+        world = newW;
+    }
+    
     public void clearState() {
         getWorld().clearState(getPopulation().getMyAnts(), getPopulation().getEnemyAnts());
         getPopulation().clearState();
@@ -218,4 +222,9 @@ public enum Ants {
     public int getTimeRemaining() {
         return turnTime - (int) (System.currentTimeMillis() - turnStartTime);
     }
+
+    public void initClustering(int i) {
+        this.clustering = new Clustering(i);
+    }
+
 }
