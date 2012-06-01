@@ -10,6 +10,7 @@ import ants.entities.Tile;
 public abstract class PathFinder {
     public static final Integer A_STAR = 1;
     public static final Integer SIMPLE = 2;
+    public static final Integer HPA_STAR = 3;
 
     private static Map<Integer, SearchStrategy> searchStrategies;
 
@@ -17,6 +18,7 @@ public abstract class PathFinder {
         searchStrategies = new HashMap<Integer, SearchStrategy>();
         searchStrategies.put(A_STAR, new AStarSearchStrategy(6));
         searchStrategies.put(SIMPLE, new SimpleSearchStrategy());
+        searchStrategies.put(HPA_STAR, new HPAStarSearchStrategy());
     }
 
     /**

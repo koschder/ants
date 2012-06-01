@@ -65,11 +65,17 @@ public class HpaStarTest {
     public void ObstacleTest() {
         Logger.debug(LogCategory.JUNIT, "JUNIT ObstacleTestTest init");
         /*
-         * generate map like this wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww woooooooooowwwwwwwwwwooooooooooooooow
-         * woooooooooowwwwwwwwwwooooooooooooooow woooooooooowwwwwwwwwwooooooooooooooow
-         * woooooooooowwwwwwwwwwooooooooooooooow woooooooooowwwwwwwwwwooooooooooooooow
-         * wooooooooooooooooooooooooooooooooooow wooooooooooooooooooooooooooooooooooow
-         * wooooooooooooooooooooooooooooooooooow wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+         * generate map like this 
+         * wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww -----------------------------------------
+         * woooooooooowwwwwwwwwwooooooooooooooow -----------------------------------------
+         * woooooooooowwwwwwwwwwooooooooooooooow -----------------------------------------
+         * woooooooooowwwwwwwwwwooooooooooooooow-----------------------------------------
+         * woooooooooowwwwwwwwwwooooooooooooooow -----------------------------------------
+         * woooooooooowwwwwwwwwwooooooooooooooow-----------------------------------------
+         * wooooooooooooooooooooooooooooooooooow -----------------------------------------
+         * wooooooooooooooooooooooooooooooooooow-----------------------------------------
+         * wooooooooooooooooooooooooooooooooooow -----------------------------------------
+         * wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww-----------------------------------------
          */
 
         World w = new World(40, 40, 5, 5, 5);
@@ -109,12 +115,18 @@ public class HpaStarTest {
     public void DifficultObstacleTest() {
         Logger.debug(LogCategory.JUNIT, "JUNIT ObstacleTestTest init");
         /*
-         * generate map like this wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww wooooooooooooooowwwwwooooooooooooooow
-         * wooooooooooooooowwwwwooooooooooooooow wooooooooooooooowwwwwooooooooooooooow
-         * wooooowwwwwwwwwwwwwwwooooooooooooooow wooooowwwwwwwwwwwwwwwwwwwwwoooowwwwww
-         * wooooowwwoooooooooooooowwwwooooooooow wooooowwwoooooooooooooowwwwwwwwooooow
-         * wooooooooooooowwwoooooowwwwwwwwooooow wooooooooooooowwwooooooooooooooooooow
-         * wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww
+         * generate map like this 
+         * wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww-----------------------------------------
+         * wooooooooooooooowwwwwooooooooooooooow-----------------------------------------
+         * wooooooooooooooowwwwwooooooooooooooow -----------------------------------------
+         * wooooooooooooooowwwwwooooooooooooooow-----------------------------------------
+         * wooooowwwwwwwwwwwwwwwooooooooooooooow -----------------------------------------
+         * wooooowwwwwwwwwwwwwwwwwwwwwoooowwwwww-----------------------------------------
+         * wooooowwwoooooooooooooowwwwooooooooow -----------------------------------------
+         * wooooowwwoooooooooooooowwwwwwwwooooow-----------------------------------------
+         * wooooooooooooowwwoooooowwwwwwwwooooow -----------------------------------------
+         * wooooooooooooowwwooooooooooooooooooow-----------------------------------------
+         * wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww-----------------------------------------
          */
         World w = new World(40, 40, 5, 5, 5);
         w.setEverythingVisibleAndPassable();

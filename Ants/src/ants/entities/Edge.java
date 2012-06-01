@@ -4,19 +4,31 @@ import java.util.List;
 
 import ants.search.Cluster;
 
+
 public class Edge {
 
+    public enum EdgeType { North, South, East, West, Intra };
     public Tile v1;
     public Tile v2;
     private Cluster cluster;
+    private EdgeType type;
+
+    public EdgeType getType() {
+        return type;
+    }
 
     // if no path defined the tiles can reached staright
     public List<Tile> path;
 
-    public Edge(Tile vertices, Tile lastVertices, Cluster c) {
+    public Edge(Tile vertices, Tile lastVertices, Cluster c){
+        this(vertices,lastVertices,c,null);
+    }
+    
+    public Edge(Tile vertices, Tile lastVertices, Cluster c,EdgeType et) {
         v1 = vertices;
         v2 = lastVertices;
         cluster = c;
+        type = et;
     }
 
     @Override
@@ -41,12 +53,13 @@ public class Edge {
 
     public void setCluster(Cluster c) {
         cluster = c;
-
     }
 
     public Cluster getCluster() {
         return cluster;
-
     }
 
+    public void setEdgeType(EdgeType et) {
+       this.type = et;        
+    }
 }

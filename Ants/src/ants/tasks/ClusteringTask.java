@@ -99,8 +99,9 @@ public class ClusteringTask implements Task {
         List<Edge> edges = new ArrayList<Edge>();
         Tile vertices = null;
         Tile lastVertices = null;
-        int startRowTile = r * clusterSize;
+        int startRowTile = Math.max(0,r * clusterSize % Ants.getWorld().getRows());
         int startColTile = c * clusterSize;
+       
         // whole cluster or shorten if we are on the "end" of the grid
         int endColTile = Math.min(Ants.getWorld().getCols(), (c + 1) * clusterSize);
 
@@ -150,7 +151,7 @@ public class ClusteringTask implements Task {
         Tile vertices = null;
         Tile lastVertices = null;
         int startRowTile = r * clusterSize;
-        int startColTile = c * clusterSize;
+        int startColTile = Math.max(0,c * clusterSize % Ants.getWorld().getCols());
         // whole cluster or shorten if we are on the "end" of the grid
         int endRowTile = Math.min(Ants.getWorld().getRows(), (r + 1) * clusterSize);
 

@@ -348,7 +348,7 @@ public class World {
                 Tile t = new Tile(r, c);
                 Ilk lk = getIlk(t);
 
-                if (path.contains(t)) {
+                if (path != null && path.contains(t)) {
                     row += "P";
                 } else if (lk.isPassable()) {
                     row += " ";

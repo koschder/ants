@@ -28,7 +28,8 @@ public class Logger {
         CLUSTERING(INFO),
         CLUSTERING_Detail(INFO),
         JUNIT(DEBUG),
-        CLUSTERED_ASTAR(DEBUG);
+        CLUSTERED_ASTAR(DEBUG),
+        HAPstar(DEBUG);
 
         int level;
 

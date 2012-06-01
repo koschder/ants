@@ -13,7 +13,7 @@ public class DirectedEdge extends Edge implements SearchTarget {
     private Tile startTile;
 
     public DirectedEdge(Tile vertices, Tile lastVertices, Cluster c) {
-        super(vertices, lastVertices, c);
+        super(vertices, lastVertices, c,null);
         startTile = vertices;
     }
 
@@ -53,6 +53,12 @@ public class DirectedEdge extends Edge implements SearchTarget {
 
     @Override
     public int distanceTo(SearchTarget dest) {
+//        if(dest instanceof DirectedEdge){
+//            DirectedEdge edge = (DirectedEdge)dest;
+//            int edgeDist = Math.abs(edge.getCluster().getRow() - getCluster().getRow());
+//            edgeDist += Math.abs(edge.getCluster().getCol() - getCluster().getCol());
+//            return edgeDist * 1000 + getEnd().manhattanDistanceTo(dest.getTargetTile());
+//        }
         return getEnd().manhattanDistanceTo(dest.getTargetTile());
     }
 

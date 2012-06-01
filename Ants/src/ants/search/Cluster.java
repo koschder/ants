@@ -12,6 +12,7 @@ import ants.entities.Edge;
 import ants.entities.SearchTarget;
 import ants.entities.Tile;
 import ants.entities.Vertex;
+import ants.entities.Edge.EdgeType;
 import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
@@ -27,6 +28,11 @@ public class Cluster {
     private int clusterSize;
     private Clustering clustering;
     public Set<Aim> aims = new HashSet<Aim>();
+
+
+    public Set<Aim> getAims() {
+        return aims;
+    }
 
     public Cluster(int r, int c, int csize, Clustering clstering) {
         index = r * csize + c;
@@ -50,31 +56,42 @@ public class Cluster {
         Logger.debug(LogCategory.PATHFINDING, "Edges of %s", name);
         Logger.debug(LogCategory.PATHFINDING, "Done_aims_of_%s", aims.toString());
         for (Edge e : edges) {
-            Logger.debug(LogCategory.PATHFINDING, "xx: Edge from %s to %s", e.v1, e.v2);
+            Logger.debug(LogCategory.PATHFINDING, "xx: Edge from %s to %s type: %s", e.v1, e.v2, e.getType());
         }
     }
 
     public void SetCluster(Aim newaim, List<Edge> newEdges) {
         aims.add(newaim);
-        edges.addAll(newEdges);
         Logger.debug(LogCategory.CLUSTERING_Detail, "%s: New edges arrived from aim %s E: %s", name, newaim, newEdges);
-        processNewEdgesVertices(newEdges);
+        if(newEdges.size() > 0){
+        edges.addAll(newEdges.subList(0,newEdges.size()));
+        processNewEdgesVertices(newEdges,newaim);
         createNewPath(newEdges);
         debugEdges();
         if (isClustered()) {
             Logger.debug(LogCategory.CLUSTERING, "%s is clustered_now! Vertices: %s Edges: %s", name, vertices.size(),
                     edges.size());
         }
+        }
 
     }
 
-    private void processNewEdgesVertices(List<Edge> newEdges) {
+    private void processNewEdgesVertices(List<Edge> newEdges,Aim newaim) {
         for (Edge e : newEdges) {
+            e.setEdgeType(getEdgeType(newaim));
             e.setCluster(this);
             processVertex(e, e.v1);
             processVertex(e, e.v2);
         }
 
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
     }
 
     private void processVertex(Edge e, Tile t) {
@@ -108,7 +125,7 @@ public class Cluster {
         if (tStart.equals(tEnd))
             return;
 
-        Edge edge = new Edge(tStart, tEnd, this);
+        Edge edge = new Edge(tStart, tEnd, this,Edge.EdgeType.Intra);
         if (edges.contains(edge))
             return;
 
@@ -218,6 +235,28 @@ public class Cluster {
             return false;
         Cluster other = (Cluster) obj;
         return other.name == name;
+    }
+
+    public Edge getEdgeOnBoarder(Aim a) {
+       for(Edge e : edges){
+           if(e.getType().equals(getEdgeType(a))){
+               return e;
+           }          
+       }
+       return null;
+    }
+
+    private EdgeType getEdgeType(Aim a) {
+        if(a.equals(Aim.SOUTH))
+            return EdgeType.South;
+        else if(a.equals(Aim.NORTH))
+            return EdgeType.North;
+        else if(a.equals(Aim.EAST))
+            return EdgeType.East;
+        else if(a.equals(Aim.WEST))
+            return EdgeType.West;
+        
+        return null;
     }
 
 }
