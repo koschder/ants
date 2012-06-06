@@ -1,0 +1,55 @@
+\chapter{Implementation}
+\label{chap:implementation}
+
+\section{Tasks}
+\label{sec:implementation_Tasks}
+
+\subsection{MissionTasks}
+\label{subsec:implementation_Tasks_MissionTask}
+Dieser Task prüft alle akutellen Missionen auf deren Gültigkeit wie zum Beispiel, ob die Ameise der Mission noch am Leben ist. Falls gültig, wird der nächste Schritt der Mission ausgeführt.
+
+\subsection{GatherFoodTask}
+\label{subsec:implementation_Tasks_GatherFoodTask}
+Für jedes Food-Tile wird in einem definierbaren Radius r die nächsten Ameisen bestimmt. Danach wird aufsteigend der Luftliniendistanz versucht mit dem Pfadsuchalgorithmus SiMPLE oder falls dieser kein Pfad gefunden hat mit A* eine passierbare Route gesucht. Falls diese existiert wird mit der Ameise und dem Food-Tile eine GatherFoodMission erstellt, welche die Ameise zum Food-Tile führt. Zu jedem Food-Tile wir immer nur eine Ameise geschickt.
+
+\subsection{AttackHillsTask}
+\label{subsec:implementation_Tasks_AttackHillsTask}
+Sobald gegnerische Ameisenhaufen sichtbar sind, sollen diese angegriffen werden, da dies +2 Punkte gibt. Die Kriterien, dass eine Pfad zum gegnerischen Haufen gesucht wird, sind die selben wie beim GatherFoodTask, ausser dass mehrere Ameisen das Ziel angreifen können. Es wird ein AttackHillMission erstellt.
+
+\subsection{CombatTask}
+\label{subsec:implementation_Tasks_CombatTask}
+
+\subsection{ExploreTask}
+\label{subsec:implementation_Tasks_ExploreTask}
+
+\subsection{FollowTask}
+\label{subsec:implementation_Tasks_FollowTask}
+
+\subsection{ClearHillTask}
+\label{subsec:implementation_Tasks_ClearHillTask}
+
+\subsection{ClusteringTask}
+\label{subsec:implementation_Tasks_ClusteringTask}
+
+\section{Missionen}
+\label{sec:implementation_Missionen}
+TODO
+
+\section{Pfadsuche}
+\label{sec:implementation_Pfadsuche}
+
+\subsection{Simple Algorthmus}
+\label{subsec:implementation_Pfadsuche_Simple}
+TODO
+
+\subsection{A* Algorthmus}
+\label{subsec:implementation_Pfadsuche_Astar}
+TODO
+
+\subsection{HPA* Algorthmus}
+\label{subsec:implementation_Pfadsuche_HPAstar}
+TODO
+
+\section{JavaScript Addon für HMTL-Gameviewer}
+\label{sec:implementation_Addon}
+TODO
