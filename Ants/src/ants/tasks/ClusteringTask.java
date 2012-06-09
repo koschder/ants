@@ -29,8 +29,8 @@ public class ClusteringTask implements Task {
 
         int updatedClusters = 0;
         int completedClusters = 0;
-        for (int r = 0; r < clusters.getRows() - 1; r++) {
-            for (int c = 0; c < clusters.getCols() - 1; c++) {
+        for (int r = 0; r < clusters.getRows(); r++) {
+            for (int c = 0; c < clusters.getCols(); c++) {
 
                 if (clusters.getClusters()[r][c].isClustered()) {
                     Logger.debug(LogCategory.CLUSTERING_Detail, "Cluster is clustered %s", clusters.getClusters()[r][c]);
