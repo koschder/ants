@@ -86,11 +86,11 @@ public class HpaStarTest {
 
         World w = new World(40, 40, 5, 5, 5);
         w.setEverythingVisibleAndPassable();
-//        w.setWater(new Tile(0, 38), new Tile(40, 40));
-//        w.setWater(new Tile(38, 0), new Tile(40, 40));
-//        w.setWater(new Tile(0, 0), new Tile(2, 40));
-//        w.setWater(new Tile(0, 0), new Tile(40, 2));
-//        w.setWater(new Tile(0, 10), new Tile(20, 20));
+        w.setWater(new Tile(0, 38), new Tile(40, 40));
+        w.setWater(new Tile(38, 0), new Tile(40, 40));
+        w.setWater(new Tile(0, 0), new Tile(2, 40));
+        w.setWater(new Tile(0, 0), new Tile(40, 2));
+       // w.setWater(new Tile(0, 10), new Tile(20, 20));
         Ants.INSTANCE.setup(0, 0, 40, 40, 0, 20, 20, 10);
         Ants.INSTANCE.setWorld(w);
         Ants.INSTANCE.initClustering(8);
@@ -99,11 +99,6 @@ public class HpaStarTest {
         task.setup();
         task.perform();
         
-        int amount = Ants.INSTANCE.getClusters().getRows()  * Ants.INSTANCE.getClusters().getCols(); 
-        for(int i = 0;i < amount;i++ ){
-            System.out.println("Idx: "+i+" is clustered "+Ants.INSTANCE.getClusters().getCluster(i).isClustered());
-            Assert.assertTrue(Ants.INSTANCE.getClusters().getCluster(i).isClustered());
-        }
         
         Ants.getClusters().getClusters()[0][0].debugEdges();
         Ants.getClusters().getClusters()[1][0].debugEdges();
@@ -115,9 +110,11 @@ public class HpaStarTest {
         
         List<Tile> path =  PathFinder.bestPath(PathFinder.HPA_STAR, new Tile(5,5), new Tile(5,30), null, null, 100);
      
-        Logger.debug(LogCategory.JUNIT, "HAPAstar unittest ended now!!!");
+        Logger.debug(LogCategory.JUNIT, "HAPAstar unittest ended now!!! path is: %s",path);
 
         w.debugPathOnMap(path);
+        
+        
         
         
     }

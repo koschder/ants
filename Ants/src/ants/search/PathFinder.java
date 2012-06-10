@@ -33,6 +33,7 @@ public abstract class PathFinder {
 
     public static List<Tile> bestPath(Integer strategy, SearchTarget from, SearchTarget to, int maxCost) {
         searchStrategies.get(strategy).setMaxCost(maxCost);
+        searchStrategies.get(strategy).setSearchSpace(null, null);
         return searchStrategies.get(strategy).bestPath(from, to);
     }
 
