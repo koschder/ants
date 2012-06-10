@@ -17,10 +17,13 @@ public class Clustering {
     private int rows = 0;
     private int cols = 0;
 
-    public Clustering(int cSize) {
-        int rows = Ants.getWorld().getRows() / clusterSize + 1;
-        int cols = Ants.getWorld().getCols() / clusterSize + 1;
-        init(cSize, rows, cols);
+    public Clustering(int clusterSiz) {
+        
+        float size = clusterSiz;
+        
+        int r = (int) Math.ceil(Ants.getWorld().getRows() / size);
+        int c = (int) Math.ceil(Ants.getWorld().getCols() / size);
+        init(clusterSiz, r, c);
     }
 
     public Clustering(int cSize, int ro, int cl) {
@@ -36,7 +39,7 @@ public class Clustering {
 
         for (int r = 0; r < rows; r++) {
             for (int c = 0; c < cols; c++) {
-                clusters[r][c] = new Cluster(r, c, clusterSize, this);
+                clusters[r][c] = new Cluster(r, c, clusterSize,r*cols+c, this);
             }
         }
 
@@ -83,17 +86,31 @@ public class Clustering {
         for (Aim a : aims) {
             if (c.hasScan(a)) {
                 Edge e = c.getEdgeOnBoarder(a);
-                // todo take v1 or v2?
-                if (e != null)
-                    return new DirectedEdge(start, e.v1, c);
+                
+                if (e != null){
+                List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, start, e.getTile1(), clusterSize*2);
+                    // there is a path to the cluster boarder
+                    if(path != null){
+                        DirectedEdge de = new DirectedEdge(start, e.getTile2(), c);
+                        de.setPath(path);
+                        return de;
+                    }
+                }
             }
         }
         for (Aim a : c.getAims()) {
             if (c.hasScan(a)) {
                 Edge e = c.getEdgeOnBoarder(a);
                 // todo take v1 or v2?
-                if (e != null)
-                    return new DirectedEdge(start, e.v1, c);
+                if (e != null){
+                    List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, start, e.getTile1(), clusterSize*2);
+                        // there is a path to the cluster boarder
+                        if(path != null){
+                            DirectedEdge de = new DirectedEdge(start, e.getTile1(), c);
+                            de.setPath(path);
+                            return de;
+                        }
+                    }
             }
         }
 
@@ -103,5 +120,11 @@ public class Clustering {
     private Cluster getClusterOf(Tile start) {
         
         return getWithWrapAround(start.getRow()/clusterSize, start.getCol()/clusterSize);
+    }
+
+    public Cluster getCluster(int iId) {
+        int row = (int)iId / cols;
+        int col = (int)iId % cols;
+        return clusters[row][col];
     }
 }

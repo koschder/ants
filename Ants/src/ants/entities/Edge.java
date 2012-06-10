@@ -8,8 +8,8 @@ import ants.search.Cluster;
 public class Edge {
 
     public enum EdgeType { North, South, East, West, Intra };
-    public Tile v1;
-    public Tile v2;
+    private Tile v1;
+    private Tile v2;
     private Cluster cluster;
     private EdgeType type;
 
@@ -18,7 +18,7 @@ public class Edge {
     }
 
     // if no path defined the tiles can reached staright
-    public List<Tile> path;
+    protected List<Tile> path;
 
     public Edge(Tile vertices, Tile lastVertices, Cluster c){
         this(vertices,lastVertices,c,null);
@@ -61,5 +61,13 @@ public class Edge {
 
     public void setEdgeType(EdgeType et) {
        this.type = et;        
+    }
+
+    public Tile getTile1() {
+        return v1;
+    }
+    
+    public Tile getTile2() {
+        return v2;
     }
 }

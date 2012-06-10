@@ -17,7 +17,7 @@ public class AStarSearchStrategy implements SearchStrategy {
     private int MAXCOSTS = 6;
     private Tile searchSpace1;
     private Tile searchSpace2;
-
+    private SearchTarget to;
     public AStarSearchStrategy(int maxcosts) {
         MAXCOSTS = maxcosts;
     }
@@ -29,6 +29,7 @@ public class AStarSearchStrategy implements SearchStrategy {
      * @see starter.SearchStrategy#bestPath(starter.Tile, starter.Tile)
      */
     public List<Tile> bestPath(SearchTarget from, SearchTarget to) {
+        this.to = to;
         Logger.debug(LogCategory.PATHFINDING, "**************** Astar_start: %s to %s", from.toShortString(),
                 to.toShortString());
         if (searchSpace1 != null) {
@@ -51,15 +52,16 @@ public class AStarSearchStrategy implements SearchStrategy {
 
         Set<SearchTarget> explored = new HashSet<SearchTarget>();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>();
-        frontier.add(new Node(from, null, 0));
+        frontier.add(new Node(from, null, 0,from.distanceTo(to)));
         while (!frontier.isEmpty()) {
             //Logger.debug(LogCategory.PATHFINDING, "Current frontier list is");
             for(Node n : frontier){
-              //  Logger.debug(LogCategory.PATHFINDING, "Node %s Cost: %s",n.getState(),n.getCost());
+                Logger.debug(LogCategory.PATHFINDING, "FFFrontier-Node %s EstCost: %s",n.getState(),n.getEstimatedCost());
             }
             
             Node node = frontier.poll();
-            Logger.debug(LogCategory.PATHFINDING, "Astar: new forntier item is %s",node.getState());
+            Logger.debug(LogCategory.PATHFINDING, "Astar ################# next interation #################");
+            Logger.debug(LogCategory.PATHFINDING, "Astar: newforntier item is %s",node.getState());
             explored.add(node.getState());
 
             List<Node> nodes = expand(node);
@@ -69,8 +71,7 @@ public class AStarSearchStrategy implements SearchStrategy {
                     Logger.debug(LogCategory.PATHFINDING, "Skip new node: %s", child);
                     continue;
                 }
-                if (child.getState().isFinal(to))
-                    
+                if (child.getState().isFinal(to))                  
                     return path(child); // success
                 frontier.add(child);
             }
@@ -81,7 +82,7 @@ public class AStarSearchStrategy implements SearchStrategy {
     }
 
     private boolean maxCostReached(Node child, SearchTarget to) {
-        return child.getCost() + child.getState().distanceTo(to) > MAXCOSTS;
+        return child.getEstimatedCost() > MAXCOSTS;
     }
 
     public List<Node> expand(Node node) {
@@ -105,7 +106,7 @@ public class AStarSearchStrategy implements SearchStrategy {
         }
 
         if (childState.isSearchable((parent.getParent() == null))) {
-            children.add(new Node(childState, parent, getCost(parent, childState)));
+            children.add(new Node(childState, parent, getActualCost(parent, childState),childState.distanceTo(to)));
         } else {
             Logger.debug(LogCategory.PATHFINDING, "tile %s is not passable", childState);
         }
@@ -115,8 +116,9 @@ public class AStarSearchStrategy implements SearchStrategy {
         return areaCheck.isInSearchSpace(searchSpace1, searchSpace2);
     }
 
-    private int getCost(Node current, SearchTarget dest) {
-        return current.getCost() + current.getState().distanceTo(dest);
+    private int getActualCost(Node current, SearchTarget dest) {
+        
+        return current.getActualCost() + dest.getCost();
     }
 
     private List<Tile> path(Node child) {

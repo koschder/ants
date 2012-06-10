@@ -20,4 +20,6 @@ public interface SearchTarget {
 
     boolean isFinal(SearchTarget to);
 
+    int getCost();
+
 }

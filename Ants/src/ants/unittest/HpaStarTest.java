@@ -45,8 +45,14 @@ public class HpaStarTest {
         Logger.debug(LogCategory.JUNIT, "JUNIT Addendedge");
         c.getClusters()[2][0].SetCluster(Aim.SOUTH, Arrays.asList(endEdge));
 
-        DirectedEdge e = new DirectedEdge(startEdge.v1, startEdge.v2, c.getClusters()[0][0]);
-        DirectedEdge e2 = new DirectedEdge(endEdge.v1, endEdge.v2, c.getClusters()[2][0]);
+        c.getClusters()[0][0].debugEdges();
+        c.getClusters()[1][0].debugEdges();
+        c.getClusters()[2][0].debugEdges();
+        
+        
+        
+        DirectedEdge e = new DirectedEdge(startEdge.getTile1(), startEdge.getTile2(), c.getClusters()[0][0]);
+        DirectedEdge e2 = new DirectedEdge(endEdge.getTile1(), endEdge.getTile2(), c.getClusters()[2][0]);
 
         Logger.debug(LogCategory.JUNIT, "[0][0] has %s edges", c.getClusters()[0][0].edges.size());
         Logger.debug(LogCategory.JUNIT, "[1][0] has %s edges", c.getClusters()[1][0].edges.size());
@@ -80,35 +86,40 @@ public class HpaStarTest {
 
         World w = new World(40, 40, 5, 5, 5);
         w.setEverythingVisibleAndPassable();
-        w.setWater(new Tile(0, 38), new Tile(40, 40));
-        w.setWater(new Tile(38, 0), new Tile(40, 40));
-        w.setWater(new Tile(0, 0), new Tile(2, 40));
-        w.setWater(new Tile(0, 0), new Tile(40, 2));
-        w.setWater(new Tile(0, 10), new Tile(20, 20));
-        Ants.INSTANCE.setup(0, 0, 30, 10, 0, 20, 20, 10);
+//        w.setWater(new Tile(0, 38), new Tile(40, 40));
+//        w.setWater(new Tile(38, 0), new Tile(40, 40));
+//        w.setWater(new Tile(0, 0), new Tile(2, 40));
+//        w.setWater(new Tile(0, 0), new Tile(40, 2));
+//        w.setWater(new Tile(0, 10), new Tile(20, 20));
+        Ants.INSTANCE.setup(0, 0, 40, 40, 0, 20, 20, 10);
         Ants.INSTANCE.setWorld(w);
         Ants.INSTANCE.initClustering(8);
 
         ClusteringTask task = new ClusteringTask();
         task.setup();
         task.perform();
-        // Logger.debug(LogCategory.JUNIT, "JUNIT ObstacleTestTest hpastar");
-
+        
+        int amount = Ants.INSTANCE.getClusters().getRows()  * Ants.INSTANCE.getClusters().getCols(); 
+        for(int i = 0;i < amount;i++ ){
+            System.out.println("Idx: "+i+" is clustered "+Ants.INSTANCE.getClusters().getCluster(i).isClustered());
+            Assert.assertTrue(Ants.INSTANCE.getClusters().getCluster(i).isClustered());
+        }
+        
         Ants.getClusters().getClusters()[0][0].debugEdges();
-        Edge e = Ants.getClusters().getClusters()[0][0].edges.get(0);
-        DirectedEdge edgeStart = new DirectedEdge(e.v1, e.v2, Ants.getClusters().getClusters()[0][0]);
-
-        Ants.getClusters().getClusters()[0][Ants.getClusters().getCols() - 2].debugEdges();
-        Edge e2 = Ants.getClusters().getClusters()[0][Ants.getClusters().getCols() - 2].edges.get(0);
-        DirectedEdge edgeEnd = new DirectedEdge(e2.v1, e2.v2, Ants.getClusters().getClusters()[0][Ants.getClusters()
-                .getCols() - 2]);
-
-        Logger.debug(LogCategory.JUNIT, "HAPAstar unittest start now!!!");
-
-        PathFinder.bestPath(PathFinder.A_STAR, edgeStart, edgeEnd, null, null, 100);
-
+        Ants.getClusters().getClusters()[1][0].debugEdges();
+        Ants.getClusters().getCluster(5).debugEdges();
+        Ants.getClusters().getCluster(24).debugEdges();
+        
+        Logger.debug(LogCategory.JUNIT, "JUNIT ObstacleTestTest hpastar");
+        Logger.debug(LogCategory.JUNIT, "HAPAstar unittest start now!!! ##############################");
+        
+        List<Tile> path =  PathFinder.bestPath(PathFinder.HPA_STAR, new Tile(5,5), new Tile(5,30), null, null, 100);
+     
         Logger.debug(LogCategory.JUNIT, "HAPAstar unittest ended now!!!");
 
+        w.debugPathOnMap(path);
+        
+        
     }
 
     @Test
@@ -153,11 +164,11 @@ public class HpaStarTest {
 
         Ants.getClusters().getClusters()[0][0].debugEdges();
         Edge e = Ants.getClusters().getClusters()[0][0].edges.get(0);
-        DirectedEdge edgeStart = new DirectedEdge(e.v1, e.v2, Ants.getClusters().getClusters()[0][0]);
+        DirectedEdge edgeStart = new DirectedEdge(e.getTile1(), e.getTile2(), Ants.getClusters().getClusters()[0][0]);
 
         Ants.getClusters().getClusters()[0][Ants.getClusters().getCols() - 2].debugEdges();
         Edge e2 = Ants.getClusters().getClusters()[0][Ants.getClusters().getCols() - 2].edges.get(0);
-        DirectedEdge edgeEnd = new DirectedEdge(e2.v1, e2.v2, Ants.getClusters().getClusters()[0][Ants.getClusters()
+        DirectedEdge edgeEnd = new DirectedEdge(e2.getTile1(), e2.getTile2(), Ants.getClusters().getClusters()[0][Ants.getClusters()
                 .getCols() - 2]);
 
         Logger.debug(LogCategory.JUNIT, "HAPAstar unittest start now!!!");

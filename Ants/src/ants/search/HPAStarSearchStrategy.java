@@ -12,30 +12,34 @@ import ants.util.Logger.LogCategory;
 public class HPAStarSearchStrategy implements SearchStrategy {
 
     int maxCost = 0;
-    
+
     @Override
     public List<Tile> bestPath(SearchTarget from, SearchTarget to) {
-       
+
         Tile start = from.getTargetTile();
         Tile end = to.getTargetTile();
-        DirectedEdge edgeStart = Ants.getClusters().getStartEdge(start,end);   
-        DirectedEdge endEdge = Ants.getClusters().getStartEdge(end,start);      
+        DirectedEdge edgeStart = Ants.getClusters().getStartEdge(start, end);
+        DirectedEdge endEdge = Ants.getClusters().getStartEdge(end, start);
 
-        if(edgeStart == null || endEdge == null){
+        if (edgeStart == null || endEdge == null) {
             Logger.debug(LogCategory.HAPstar, "HPAstar: Clustering not avaiable, try to find path with A*");
-            return PathFinder.bestPath(PathFinder.A_STAR, start, end,maxCost);
+            return PathFinder.bestPath(PathFinder.A_STAR, start, end, maxCost);
         }
         endEdge.reverseEdge();
         Logger.debug(LogCategory.HAPstar, "HPAstar: Connecting edges to Cluster edge are:");
-        Logger.debug(LogCategory.HAPstar, "     for start tile %s the edge is : %s",start,edgeStart);   
-        Logger.debug(LogCategory.HAPstar, "     for end tile %s the edge is : %s",end,endEdge);   
-        return PathFinder.bestPath(PathFinder.A_STAR, edgeStart, endEdge,maxCost);
+        Logger.debug(LogCategory.HAPstar, "     for start tile %s the edge is : %s", start, edgeStart);
+        Logger.debug(LogCategory.HAPstar, "     for end tile %s the edge is : %s", end, endEdge);
+        List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, edgeStart, endEdge, maxCost);
+        if (path != null)
+            path.addAll(endEdge.getPath());
+
+        return path;
 
     }
 
     @Override
     public void setMaxCost(int i) {
-       this.maxCost = i;
+        this.maxCost = i;
     }
 
     @Override

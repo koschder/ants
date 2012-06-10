@@ -6,12 +6,14 @@ public class Node implements Comparable<Node> {
 
     private SearchTarget state;
     private Node parent;
-    private int cost;
+    private int costEstimated;
+    private int costActual;
 
-    public Node(SearchTarget state, Node parent, int cost) {
+    public Node(SearchTarget state, Node parent, int costActual, int costEstimated) {
         this.state = state;
         this.parent = parent;
-        this.cost = cost;
+        this.costActual = costActual;
+        this.costEstimated = costEstimated;
     }
 
     /***
@@ -26,13 +28,17 @@ public class Node implements Comparable<Node> {
         return parent;
     }
 
-    public int getCost() {
-        return cost;
+    public int getAcutalCost() {
+        return costActual;
+    }
+    
+    public int getEstimatedCost() {
+        return costEstimated;
     }
 
     @Override
     public String toString() {
-        return "Node [state=" + state + ", cost=" + cost + "]";
+        return "Node [state=" + state + ", actual cost=" + costActual + ", estimated cost= "+costEstimated+"]";
         //return "Node [state=" + state + ", parent=" + (parent != null ? parent.state : "null") + ", cost=" + cost + "]";
     }
 
@@ -40,7 +46,7 @@ public class Node implements Comparable<Node> {
     public int hashCode() {
         final int prime = 31;
         int result = 1;
-        result = prime * result + cost;
+        result = prime * result + costActual +costEstimated;
         result = prime * result + ((parent == null) ? 0 : parent.hashCode());
         result = prime * result + ((state == null) ? 0 : state.hashCode());
         return result;
@@ -69,6 +75,10 @@ public class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(Node o) {
-        return cost - o.cost;
+        return costEstimated - o.costEstimated;
+    }
+
+    public int getActualCost() {   
+        return this.costActual;
     }
 }

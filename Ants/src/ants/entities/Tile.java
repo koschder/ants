@@ -170,4 +170,10 @@ public class Tile implements Comparable<Tile>, SearchTarget {
         return this.equals(to);
     }
 
+    @Override
+    public int getCost() {
+        // one move cost 1
+        return 1;
+    }
+
 }

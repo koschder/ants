@@ -5,43 +5,27 @@ import java.util.List;
 
 import ants.search.Cluster;
 import ants.search.PathFinder;
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
 
 public class DirectedEdge extends Edge implements SearchTarget {
 
     private Tile startTile;
 
     public DirectedEdge(Tile vertices, Tile lastVertices, Cluster c) {
-        super(vertices, lastVertices, c,null);
+        super(vertices, lastVertices, c, null);
         startTile = vertices;
     }
 
     public void reverseEdge() {
-        if (startTile == v1)
-            startTile = v2;
+        if (startTile == getTile1())
+            startTile = getTile2();
         else
-            startTile = v1;
+            startTile =  getTile1();
     }
 
     @Override
     public List<SearchTarget> getSuccessors() {
         List<SearchTarget> list = new ArrayList<SearchTarget>();
-        /*
-         * Vertex v = getCluster().getVertex(getEnd()); if (v == null) return list;
-         * 
-         * Logger.debug(LogCategory.CLUSTERED_ASTAR, "Edges of %s",v); for (Edge e : v.edges) {
-         * Logger.debug(LogCategory.CLUSTERED_ASTAR, "        =>%s",e);
-         * 
-         * }
-         * 
-         * for (Edge e : v.edges) { DirectedEdge de = new DirectedEdge(v, e.v1 == v ? e.v1 : e.v2, getCluster());
-         * Logger.debug(LogCategory.CLUSTERED_ASTAR, "Find neighbour for edge %s in cluster %s ", de.toShortString(),
-         * getCluster());
-         */
         list.addAll(getCluster().getEdgeWithNeighbourCluster(this));
-        // }
-
         return list;
     }
 
@@ -53,12 +37,6 @@ public class DirectedEdge extends Edge implements SearchTarget {
 
     @Override
     public int distanceTo(SearchTarget dest) {
-//        if(dest instanceof DirectedEdge){
-//            DirectedEdge edge = (DirectedEdge)dest;
-//            int edgeDist = Math.abs(edge.getCluster().getRow() - getCluster().getRow());
-//            edgeDist += Math.abs(edge.getCluster().getCol() - getCluster().getCol());
-//            return edgeDist * 1000 + getEnd().manhattanDistanceTo(dest.getTargetTile());
-//        }
         return getEnd().manhattanDistanceTo(dest.getTargetTile());
     }
 
@@ -67,15 +45,15 @@ public class DirectedEdge extends Edge implements SearchTarget {
         if (path != null)
             return path;
 
-        List<Tile> tiles =  PathFinder.bestPath(PathFinder.SIMPLE, getEnd(),getStart());
-        if(tiles.size()>1)
-            tiles.remove(tiles.size()-1);
-        
+        List<Tile> tiles = PathFinder.bestPath(PathFinder.SIMPLE, getEnd(), getStart());
+        if (tiles.size() > 1)
+            tiles.remove(tiles.size() - 1);
+
         return tiles;
     }
 
     public Tile getEnd() {
-        return v1.equals(startTile) ? v2 : v1;
+        return  getTile1().equals(startTile) ?  getTile2() :  getTile1();
     }
 
     public Tile getStart() {
@@ -89,7 +67,7 @@ public class DirectedEdge extends Edge implements SearchTarget {
 
     @Override
     public Tile getTargetTile() {
-        return getEnd();
+        return getStart();
     }
 
     @Override
@@ -121,7 +99,17 @@ public class DirectedEdge extends Edge implements SearchTarget {
 
     @Override
     public boolean isFinal(SearchTarget to) {
-        return getEnd().equals(to.getTargetTile());
+        return getEnd().equals(to.getTargetTile()) || getStart().equals(to.getTargetTile());
+       // return 
+
+    }
+
+    @Override
+    public int getCost() {
+        if (getPath() != null)
+            return getPath().size();
+
+        return Math.abs(getStart().getRow() - getEnd().getRow()) + Math.abs(getStart().getCol() - getEnd().getCol());
 
     }
 

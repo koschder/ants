@@ -1,7 +1,6 @@
 package ants.search;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,7 +12,6 @@ import ants.entities.SearchTarget;
 import ants.entities.Tile;
 import ants.entities.Vertex;
 import ants.entities.Edge.EdgeType;
-import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
@@ -34,8 +32,8 @@ public class Cluster {
         return aims;
     }
 
-    public Cluster(int r, int c, int csize, Clustering clstering) {
-        index = r * csize + c;
+    public Cluster(int r, int c, int csize,int idx, Clustering clstering) {
+        index = idx;
         clusterSize = csize;
         row = r;
         col = c;
@@ -56,7 +54,7 @@ public class Cluster {
         Logger.debug(LogCategory.PATHFINDING, "Edges of %s", name);
         Logger.debug(LogCategory.PATHFINDING, "Done_aims_of_%s", aims.toString());
         for (Edge e : edges) {
-            Logger.debug(LogCategory.PATHFINDING, "xx: Edge from %s to %s type: %s", e.v1, e.v2, e.getType());
+            Logger.debug(LogCategory.PATHFINDING, "xx: Edge from %s to %s type: %s", e.getTile1(), e.getTile2(), e.getType());
         }
     }
 
@@ -64,9 +62,15 @@ public class Cluster {
         aims.add(newaim);
         Logger.debug(LogCategory.CLUSTERING_Detail, "%s: New edges arrived from aim %s E: %s", name, newaim, newEdges);
         if(newEdges.size() > 0){
-        edges.addAll(newEdges.subList(0,newEdges.size()));
-        processNewEdgesVertices(newEdges,newaim);
-        createNewPath(newEdges);
+        
+        List<Edge> hardCopy = new ArrayList<Edge>(); 
+        for(Edge e : newEdges){   
+            hardCopy.add(new Edge(e.getTile1(),e.getTile2(),e.getCluster()));
+        }
+        edges.addAll(hardCopy);
+        
+        processNewEdgesVertices(hardCopy,newaim);
+        createNewPath(hardCopy);
         debugEdges();
         if (isClustered()) {
             Logger.debug(LogCategory.CLUSTERING, "%s is clustered_now! Vertices: %s Edges: %s", name, vertices.size(),
@@ -80,8 +84,8 @@ public class Cluster {
         for (Edge e : newEdges) {
             e.setEdgeType(getEdgeType(newaim));
             e.setCluster(this);
-            processVertex(e, e.v1);
-            processVertex(e, e.v2);
+            processVertex(e, e.getTile1());
+            processVertex(e, e.getTile2());
         }
 
     }
@@ -98,7 +102,7 @@ public class Cluster {
         if (vertices.contains(t))
             vertices.get(vertices.indexOf(t)).addEdge(e);
         else
-            vertices.add(new Vertex(e.v1, e));
+            vertices.add(new Vertex(e.getTile1(), e));
     }
 
     private void createNewPath(List<Edge> newEdges) {
@@ -112,10 +116,10 @@ public class Cluster {
     private void createNewPath(Edge newEdge) {
         for (int i = 0; i < edges.size(); i++) {
             Edge e = edges.get(i);
-            FindNewEdge(e.v1, newEdge.v1);
-            FindNewEdge(e.v2, newEdge.v2);
-            FindNewEdge(e.v1, newEdge.v2);
-            FindNewEdge(e.v2, newEdge.v1);
+            FindNewEdge(e.getTile1(), newEdge.getTile1());
+            FindNewEdge(e.getTile2(), newEdge.getTile2());
+            FindNewEdge(e.getTile1(), newEdge.getTile2());
+            FindNewEdge(e.getTile2(), newEdge.getTile1());
         }
 
     }
@@ -143,8 +147,8 @@ public class Cluster {
         Logger.debug(LogCategory.CLUSTERING_Detail, "%s: found!!", name);
         edge.setPath(path);
         edges.add(edge);
-        processVertex(edge, edge.v1);
-        processVertex(edge, edge.v2);
+        processVertex(edge, edge.getTile1());
+        processVertex(edge, edge.getTile2());
 
     }
 
@@ -188,10 +192,10 @@ public class Cluster {
         List<SearchTarget> list = new ArrayList<SearchTarget>();
         for (Edge e : c.edges) {
             Logger.debug(LogCategory.PATHFINDING, "scan edge %s ", e);
-            if (e.v1.equals(start)) {
-                list.add(new DirectedEdge(e.v1, e.v2, c));
-            } else if (e.v2.equals(start)) {
-                list.add(new DirectedEdge(e.v2, e.v1, c));
+            if (e.getTile1().equals(start)) {
+                list.add(new DirectedEdge(e.getTile1(), e.getTile2(), c));
+            } else if (e.getTile2().equals(start)) {
+                list.add(new DirectedEdge(e.getTile2(), e.getTile1(), c));
             }
         }
         Logger.debug(LogCategory.PATHFINDING, "edge found %s they are: %s", list.size(), list);
