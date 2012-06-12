@@ -19,11 +19,16 @@ Sobald gegnerische Ameisenhaufen sichtbar sind, sollen diese angegriffen werden,
 
 \subsection{CombatTask}
 \label{subsec:implementation_Tasks_CombatTask}
+Beim Angriffstask wird berechnet ob wir in einem Kampfgebiet (viewRadius2) die Überhand, d.h mehr Ameisen platziert haben. Falls ja wird die gegnerische Ameise angegriffen.
+
+\subsection{DefendAreaTask}
+\label{subsec:implementation_Tasks_DefendAreaTask}
+Dieser Task wäre vogesehen um eine Region wie zum Beispiel der eingene Ameisenhügel zu schützen. Dieser Task ist aber noch nicht implementiert.
+
 
 \subsection{ExploreTask}
 \label{subsec:implementation_Tasks_ExploreTask}
-Für alle noch unbeschäftigten Ameisen wird mittels ManhattenDistance der nächste Ort gesucht, der noch nicht sichtbar, also unerforscht ist.
-TODO
+Für alle noch unbeschäftigten Ameisen wird mittels ManhattenDistance der nächste Ort gesucht, der noch nicht sichtbar, also unerforscht ist. Falls ein Pfad mittels Pfadsuchalgorithmus gefunden wird, wird eine ExplorerMission/ref{sec:implementation_Missionen} erstellt, das heisst die Ameise wird den gefundenen Pfad in den nächsten Spielzügen ablaufen.
 
 
 
@@ -41,14 +46,19 @@ Der ClusteringTask wird als Vorbereitung für den HPA* Algorithmus verwendet. Hie
 
 \section{Missionen}
 \label{sec:implementation_Missionen}
-TODO
+Eine Mission dauert über meherer Spielzüge. Die meisten Missionen (GatherFoodMission,ExploreMission,AttackHillMission,AttackAntMission) sind Pfadmissionen\footnote{Die abstrakte Klasse PathMission ist im Code unter ants.missions.PathMission.java auffindbar } bei welchen die Ameise einem vorgegebenen Pfad, der bereits beim Erstellen der Mission berechnet wurde, folgt. Je nach spezifischer Mission sind aber die Abbruchbedingungen anders. Zum Beispiel die GatherFoodMission ist nur solange gültig wie das Futter noch nicht von einer anderen Ameise eingesammelt wurde.
+
+
 
 \section{Pfadsuche}
 \label{sec:implementation_Pfadsuche}
+Wir haben drei mögliche Pfadalgorithmen in unserem Code eingebaut. Via Klasse PathFinder kann für die Pfadsuche der Alogrithmus ausgewählt werden.
+
 
 \subsection{Simple Algorthmus}
 \label{subsec:implementation_Pfadsuche_Simple}
 TODO
+
 
 \subsection{A* Algorthmus}
 \label{subsec:implementation_Pfadsuche_Astar}
