@@ -3,6 +3,7 @@
 
 \section{Tasks}
 \label{sec:implementation_Tasks}
+Die Tasks bzw. Aufgaben des Bots wurden in eigenen Klassen implementiert. Das Interface Task \footnote{das Interface ist im Code unter ants.tasks.Bot.Java auffindbar } definiert eine setup()-Methode welche den Task initiert, sowie eine perform()-Methode welche den Task ausführt. Im Program werden die Tasks nach deren Wichtigkeit ausgeführt, was auch der nachfolgenden Reihenfolge entspricht. Jeder Task kann nur auf die unbeschäftigten Ameisen zur Verfügung, d.h. jene welchen noch keine Aufgabe zugeteilt wurde.
 
 \subsection{MissionTasks}
 \label{subsec:implementation_Tasks_MissionTask}
@@ -21,15 +22,22 @@ Sobald gegnerische Ameisenhaufen sichtbar sind, sollen diese angegriffen werden,
 
 \subsection{ExploreTask}
 \label{subsec:implementation_Tasks_ExploreTask}
+Für alle noch unbeschäftigten Ameisen wird mittels ManhattenDistance der nächste Ort gesucht, der noch nicht sichtbar, also unerforscht ist.
+TODO
+
+
 
 \subsection{FollowTask}
 \label{subsec:implementation_Tasks_FollowTask}
+Der FollowTask ist für Ameisen angedacht welche aktuell keine Aufgabe haben. Diese Ameisen sollen einfach einer beschäftigten Ameise folgen, damit diese nicht alleine unterwegs ist.
 
 \subsection{ClearHillTask}
 \label{subsec:implementation_Tasks_ClearHillTask}
+Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel "schlüpfen" und noch keinen Befehl haben, davon weg. So werden nachfolgende Ameisen nicht durch diese blockiert.
 
 \subsection{ClusteringTask}
 \label{subsec:implementation_Tasks_ClusteringTask}
+Der ClusteringTask wird als Vorbereitung für den HPA* Algorithmus verwendet. Hier wird alle sichtbaren Kartenregionen ein Clustering vorgenommen. Das Clustering wird im Kapitel \ref{subsec:implementation_Pfadsuche_HPAstar} im Detail beschreiben.
 
 \section{Missionen}
 \label{sec:implementation_Missionen}
