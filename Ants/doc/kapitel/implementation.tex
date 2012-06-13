@@ -38,7 +38,7 @@ Der FollowTask ist für Ameisen angedacht welche aktuell keine Aufgabe haben. Die
 Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel "schlüpfen" und noch keinen Befehl haben, davon weg. So werden nachfolgende Ameisen nicht durch diese blockiert.
 
 \subsection{ClusteringTask}
-\label{subsec:implementation_Tasks_ClusteringTask}
+\label{subsec:implementation.Tasks.ClusteringTask}
 Der ClusteringTask wird als Vorbereitung für den HPA* Algorithmus verwendet. Hier wird alle sichtbaren Kartenregionen ein Clustering vorgenommen. Das Clustering wird im Kapitel \ref{subsec:implementation.Pfadsuche.HPAstar} im Detail beschreiben.
 
 \section{Missionen}
@@ -54,16 +54,29 @@ Wir haben drei mögliche Pfadalgorithmen in unserem Code eingebaut. Via Klasse Pa
 
 \subsection{Simple Algorthmus}
 \label{subsec:implementation.Pfadsuche.Simple}
-TODO
+
+Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, dann die andere Achse abläuft. Sobald ein Hindernis in den Weg kommt bricht der Algorithmus ab. Im folgenden Beispiel sucht der Alogrithmus den Vertikal-Horizontal Pfad. Da dieser Pfad wegen dem Wasserhindernis (blau) nicht ans Ziel führt, wird via Horizontal-Vertikal Pfad gesucht. Hier wird der Pfad gefunden. Dieser Algorithmus ist wie der Name sagt sehr einfach aufgebaut und kostet wenig Rechenzeit. Dafür kann er keinen Hindernissen ausweichen.
+
+\includegraphics[height=50mm]{bilder/simplepath.png}
 
 
 \subsection{A* Algorthmus}
 \label{subsec:implementation.Pfadsuche.Astar}
-TODO
+Beim A* Algorithmus wird für jeden expandierten Knoten einen heuristischen Wert f(x) für gesamte Pfadlänge berechnet. Dass heisst f(x) besteht aus einem Teil g(x) welches die effektiven Kosten vom Startknoten zum aktuellen Knoten berechnet. Der andere Teil ist ein heuristischer Wert der Pfadkosten welche bis zum Zielknoten noch anfallen werden. Dieser Wert muss die effektiven Kosten zum Ziel immer unterschätzen. Dies ist in unserem Spiel dadurch gegeben, dass sich die Ameisen nicht diagonal bewegen können, wir aber für den heuristischen Wert die Luftlinie zum Ziel nehmen. Die Pfadsuche wird immer bei dem Knoten fortgesetzt welcher die kleinsten Kosten f(x) hat.
+
+\includegraphics[height=50mm]{bilder/heuristicAstar.png}
+
+Das Bild zeigt, dass der effektive Pfad (grau) vom expandierenden roten Knoten minimal 10 Pixel lang sein kann. Die Luftlinie (blau) als heurstischer Pfad hat aber nur die Länge 7.6 Pixel. Damit erfüllt unsere Implementation die Anforderungen des Algorithmus.
+
+Dieser Algorithmus wird in unserem Code für eine Pfadsuche über alle Pixel (jedes Pixel ist ein Node) verwendet aber auch für die berechneten Kanten welche im HPA* verwendet werden.
 
 \subsection{HPA* Algorthmus}
 \label{subsec:implementation.Pfadsuche.HPAstar}
-TODO
+
+Eine Pfadsuche A* überalle Pixel ist sehr teuer, da es viel Pfade gibt, die zum Teil nur ein Pixel nebeneinander liegen. Es werden bis zum Schluss verschiedenen Pfaden nachgegangen. Abhilde zu dieser sehr feinmaschigen Pfadsuche bietet der HPA* bei welchem im sogenanten Clustering übermehrere Pixel verlaufende Kanten und Knoten berechnet werden.
+
+\title{Clustering}
+
 
 \section{JavaScript Addon für HMTL-Gameviewer}
 \label{sec:implementation.Addon}
