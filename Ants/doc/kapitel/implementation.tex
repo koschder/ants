@@ -1,50 +1,138 @@
 \chapter{Implementation}
 \label{chap:implementation}
 
-\section{Tasks}
+\section{Modell}
+\label{sec:implementation.Model}
+Für die Modellierung habe wir uns auf die nötigsten Klassen beschränkt, um das Modell einfach zu halten. Ein wichtiger Aspekt der Modellierung war dabei die Abbildung des Spiel-Zustands auf State-Klassen, die uns jederzeit Zugriff auf alle bekannten Variablen des Spiels bieten. Einige Informationen können dabei direkt von der Spiel-Engine übernommen werden, die meisten Zustands-Informationen werden aber berechnet.
+
+Die Modellierung der Klassen, die Spiel-Elemente repräsentieren, war etwas einfacher; hier konnten wir auch einzelne Enumerationen u.ä. aus dem Beispiel-Bot der AI-Challenge übernehmen.
+
+\subsection{State-Klassen}
+\label{sec:implementation.State}
+
+\begin{figure}[bth]
+\centering
+\includegraphics[width=0.7\textwidth]{bilder/State}
+\caption{State-Klassen (vereinfacht)}
+\label{fig:StateClasses}
+\end{figure}
+
+Abbildung \ref{fig:StateClasses} zeigt eine \"{U}bersicht über die Zustands-Klassen. Für das Diagramm wurden lediglich die wichtigsten Methoden und Attribute berücksichtigt. Die State-Klassen implementieren alle das Singleton-Pattern.
+
+\subsubsection{Ants}
+\label{sec:implementation.State.Ants}
+Die Ants Klasse ist die zentrale State-Klasse. Sie bietet auch einfachen Zugriff auf die anderen State-Klassen. Ursprünglich hatten wir alle Methoden, die mit dem Zugriff auf den Spielzustand zu tun hatten, direkt in der Ants Klasse implementiert, haben aber schnell gemerkt, dass das unhandlich wird. Die Ants Klasse dient jetzt vor allem als Container für die anderen State-Klassen und implementiert nur noch einige Methoden, die Zustandsänderungen in verschiedenen Bereichen vornehmen.
+
+\subsubsection{World}
+\label{sec:implementation.State.World}
+Die World Klasse enthält Informationen zur Spielwelt. Hier wird die Karte abgespeichert, in der für jede Zelle die aktuell bekannten Informationen festgehalten werden. Das beinhaltet die Sichtbarkeit der Zelle und was die Zelle aktuell enthält (Ameise, Nahrung, Wasser, ...). Ausserdem werden Listen geführt, wo sich die eigenen und die bekannten gegnerischen Hügel befinden. Die Klasse bietet Methoden zur Distanzberechnung, gibt Auskunft über einzelne Zellen und darüber, ob sich Nahrung in der Umgebung einer bestimmten Zelle befindet.
+
+\subsubsection{Orders}
+\label{sec:implementation.State.Orders}
+In der Orders Klasse wird über Befehle und Missionen der einzelnen Ameisen Buch geführt. Die Liste der Befehle wird dabei in jedem Zug geleert und neu befüllt, während die Liste der Missionen Zug-übergreifend geführt wird. Das zentrale Verwalten der Befehle dient vor allem dazu, sicherzustellen, dass keine widersprüchlichen Befehle ausgegeben werden (mehrere Befehle für eine Ameise, gleiche Ziel-Koordinaten für mehrere Ameisen, ...)
+
+\subsubsection{Population}
+\label{sec:implementation.State.Population}
+Die Population Klasse dient der Verwaltung der eigenen und der gegnerischen Ameisen-Völker. Hier werden die Ameisen mit ihren aktuellen Aufenthaltsorten festgehalten. Wenn für eine Ameise ein Befehl ausgegeben wird, wird diese als beschäftigt markiert; über die Methode \texttt{getMyUnemployedAnts()} kann jederzeit eine Liste der Ameisen abgefragt werden, die für den aktuellen Zug noch keine Befehle erhalten haben.
+
+\subsubsection{Clustering}
+\label{sec:implementation.State.Clustering}
+Die Clustering Klasse dient dem Aufteilen des Spielfeldes in Clusters für die HPA*-Suche (s. Abschnitt \ref{subsec:implementation.Pfadsuche.HPAstar}). Hier werden die berechneten Clusters abgelegt, und der Zugriff auf sie erfolgt ebenfalls über die Clustering Klasse.
+
+\subsection{Spiel-Elemente (Welt)}
+\label{sec:implementation.Entities.World}
+
+\begin{figure}[bth]
+\centering
+\includegraphics[width=0.7\textwidth]{bilder/Entities_World}
+\caption{Spiel-Elemente der Spielwelt (vereinfacht)}
+\label{fig:entitiesWorld}
+\end{figure}
+
+Abbildung \ref{fig:entitiesWorld} zeigt die wichtigsten Klassen, die die Elemente des Spiels repräsentieren. Der \"Ubersichtlichkeit wegen wurden nur die wichtigsten Attribute und Operationen in das Diagramm aufgenommen.
+
+\subsection{Spiel-Elemente (Suche)}
+\label{sec:implementation.Entities.Search}
+
+\begin{figure}[bth]
+\centering
+\includegraphics[width=0.7\textwidth]{bilder/Entities_Search}
+\caption{Spiel-Elemente für die Suche (vereinfacht)}
+\label{fig:entitiesSearch}
+\end{figure}
+
+Abbildung \ref{fig:entitiesSearch} zeigt die wichtigsten Klassen, die für die Pfadsuche verwendet werden.
+
+\subsection{Tasks}
 \label{sec:implementation.Tasks}
+
+\begin{figure}[bth]
+\centering
+\includegraphics[width=0.5\textwidth]{bilder/Tasks}
+\caption{Tasks}
+\label{fig:tasks}
+\end{figure}
+
 Die Tasks bzw. Aufgaben des Bots wurden in eigenen Klassen implementiert. Das Interface Task \footnote{das Interface ist im Code unter ants.tasks.Bot.Java auffindbar } definiert eine setup()-Methode welche den Task initiert, sowie eine perform()-Methode welche den Task ausführt. Im Program werden die Tasks nach deren Wichtigkeit ausgeführt, was auch der nachfolgenden Reihenfolge entspricht. Jeder Task kann nur auf die unbeschäftigten Ameisen zur Verfügung, d.h. jene welchen noch keine Aufgabe zugeteilt wurde.
 
-\subsection{MissionTasks}
+\subsubsection{MissionTasks}
 \label{subsec:implementation.Tasks.MissionTask}
 Dieser Task prüft alle akutellen Missionen auf deren Gültigkeit wie zum Beispiel, ob die Ameise der Mission noch am Leben ist. Falls gültig, wird der nächste Schritt der Mission ausgeführt.
 
-\subsection{GatherFoodTask}
+\subsubsection{GatherFoodTask}
 \label{subsec:implementation.Tasks.GatherFoodTask}
 Für jedes Food-Tile wird in einem definierbaren Radius r die nächsten Ameisen bestimmt. Danach wird aufsteigend der Luftliniendistanz versucht mit dem Pfadsuchalgorithmus SiMPLE oder falls dieser kein Pfad gefunden hat mit A* eine passierbare Route gesucht. Falls diese existiert wird mit der Ameise und dem Food-Tile eine GatherFoodMission erstellt, welche die Ameise zum Food-Tile führt. Zu jedem Food-Tile wir immer nur eine Ameise geschickt.
 
-\subsection{AttackHillsTask}
+\subsubsection{AttackHillsTask}
 \label{subsec:implementation.Tasks.AttackHillsTask}
 Sobald gegnerische Ameisenhaufen sichtbar sind, sollen diese angegriffen werden, da dies +2 Punkte gibt. Die Kriterien, dass eine Pfad zum gegnerischen Haufen gesucht wird, sind die selben wie beim GatherFoodTask, ausser dass mehrere Ameisen das Ziel angreifen können. Es wird ein AttackHillMission erstellt.
 
-\subsection{CombatTask}
+\subsubsection{CombatTask}
 \label{subsec:implementation.Tasks.CombatTask}
 Beim Angriffstask wird berechnet ob wir in einem Kampfgebiet (viewRadius2) die Überhand, d.h mehr Ameisen platziert haben. Falls ja wird die gegnerische Ameise angegriffen.
 
-\subsection{DefendAreaTask}
+\subsubsection{DefendAreaTask}
 \label{subsec:implementation.Tasks.DefendAreaTask}
 Dieser Task wäre vogesehen um eine Region wie zum Beispiel der eingene Ameisenhügel zu schützen. Dieser Task ist aber noch nicht implementiert.
 
-\subsection{ExploreTask}
+\subsubsection{ExploreTask}
 \label{subsec:implementation.Tasks.ExploreTask}
-Für alle noch unbeschäftigten Ameisen wird mittels ManhattenDistance der nächste Ort gesucht, der noch nicht sichtbar, also unerforscht ist. Falls ein Pfad mittels Pfadsuchalgorithmus gefunden wird, wird eine ExplorerMission/ref{sec:implementation.Missionen} erstellt, das heisst die Ameise wird den gefundenen Pfad in den nächsten Spielzügen ablaufen.
+Für alle noch unbeschäftigten Ameisen wird mittels ManhattenDistance der nächste Ort gesucht, der noch nicht sichtbar, also unerforscht ist. Falls ein Pfad mittels Pfadsuchalgorithmus gefunden wird, wird eine ExplorerMission (s. Abschnitt \ref{sec:implementation.Missionen}) erstellt, das heisst die Ameise wird den gefundenen Pfad in den nächsten Spielzügen ablaufen.
 
-\subsection{FollowTask}
+\subsubsection{FollowTask}
 \label{subsec:implementation.Tasks.FollowTask}
 Der FollowTask ist für Ameisen angedacht welche aktuell keine Aufgabe haben. Diese Ameisen sollen einfach einer beschäftigten Ameise folgen, damit diese nicht alleine unterwegs ist.
 
-\subsection{ClearHillTask}
+\subsubsection{ClearHillTask}
 \label{subsec:implementation.Tasks.ClearHillTask}
 Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel "schlüpfen" und noch keinen Befehl haben, davon weg. So werden nachfolgende Ameisen nicht durch diese blockiert.
 
-\subsection{ClusteringTask}
+\subsubsection{ClusteringTask}
 \label{subsec:implementation.Tasks.ClusteringTask}
 Der ClusteringTask wird als Vorbereitung für den HPA* Algorithmus verwendet. Hier wird alle sichtbaren Kartenregionen ein Clustering vorgenommen. Das Clustering wird im Kapitel \ref{subsec:implementation.Pfadsuche.HPAstar} im Detail beschreiben.
 
-\section{Missionen}
+\subsection{Missionen}
 \label{sec:implementation.Missionen}
 Eine Mission dauert über meherer Spielzüge. Die meisten Missionen (GatherFoodMission,ExploreMission,AttackHillMission,AttackAntMission) sind Pfadmissionen\footnote{Die abstrakte Klasse PathMission ist im Code unter ants.missions.PathMission.java auffindbar } bei welchen die Ameise einem vorgegebenen Pfad, der bereits beim Erstellen der Mission berechnet wurde, folgt. Je nach spezifischer Mission sind aber die Abbruchbedingungen anders. Zum Beispiel die GatherFoodMission ist nur solange gültig wie das Futter noch nicht von einer anderen Ameise eingesammelt wurde.
 
+
+\section{Bot}
+\label{sec:implementation.Bot}
+
+
+\begin{figure}[bth]
+\centering
+\includegraphics[width=0.9\textwidth]{bilder/FirstTurn}
+\caption{Ablauf des ersten Zugs des Spiels}
+\label{fig:firstTurn}
+\end{figure}
+
+\begin{figure}[bth]
+\centering
+\includegraphics[width=0.9\textwidth]{bilder/Turn}
+\caption{Ablauf der weiteren Züge des Spiels}
+\label{fig:turn}
+\end{figure}
 
 
 \section{Pfadsuche}
