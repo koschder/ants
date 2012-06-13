@@ -55,16 +55,25 @@ Wir haben drei mögliche Pfadalgorithmen in unserem Code eingebaut. Via Klasse Pa
 \subsection{Simple Algorthmus}
 \label{subsec:implementation.Pfadsuche.Simple}
 
-Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, dann die andere Achse abläuft. Sobald ein Hindernis in den Weg kommt bricht der Algorithmus ab. Im folgenden Beispiel sucht der Alogrithmus den Vertikal-Horizontal Pfad. Da dieser Pfad wegen dem Wasserhindernis (blau) nicht ans Ziel führt, wird via Horizontal-Vertikal Pfad gesucht. Hier wird der Pfad gefunden. Dieser Algorithmus ist wie der Name sagt sehr einfach aufgebaut und kostet wenig Rechenzeit. Dafür kann er keinen Hindernissen ausweichen.
+Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, dann die andere Achse abläuft. Sobald ein Hindernis in den Weg kommt bricht der Algorithmus ab. Im folgenden Beispiel sucht der Alogrithmus den Vertikal-Horizontal Pfad. Da dieser Pfad wegen dem Wasserhindernis (blau) nicht ans Ziel führt, wird via Horizontal-Vertikal Pfad gesucht. Hier wird der Pfad gefunden. Dieser Algorithmus ist, wie der Name bereits aussagt, sehr einfach aufgebaut und kostet wenig Rechenzeit. Dafür kann er keinen Hindernissen ausweichen.
 
+\begin{figure}
+\centering
 \includegraphics[height=50mm]{bilder/simplepath.png}
-
+\caption{Simple-Path Algorithmus}
+\label{fig:SimplePath}
+\end{figure}
 
 \subsection{A* Algorthmus}
 \label{subsec:implementation.Pfadsuche.Astar}
 Beim A* Algorithmus wird für jeden expandierten Knoten einen heuristischen Wert f(x) für gesamte Pfadlänge berechnet. Dass heisst f(x) besteht aus einem Teil g(x) welches die effektiven Kosten vom Startknoten zum aktuellen Knoten berechnet. Der andere Teil ist ein heuristischer Wert der Pfadkosten welche bis zum Zielknoten noch anfallen werden. Dieser Wert muss die effektiven Kosten zum Ziel immer unterschätzen. Dies ist in unserem Spiel dadurch gegeben, dass sich die Ameisen nicht diagonal bewegen können, wir aber für den heuristischen Wert die Luftlinie zum Ziel nehmen. Die Pfadsuche wird immer bei dem Knoten fortgesetzt welcher die kleinsten Kosten f(x) hat.
 
+\begin{figure}
+\centering
 \includegraphics[height=50mm]{bilder/heuristicAstar.png}
+\caption{Heuristische Kosten (blau), Effektive Kosten (grau)}
+\label{fig:heuristicAstar}
+\end{figure}
 
 Das Bild zeigt, dass der effektive Pfad (grau) vom expandierenden roten Knoten minimal 10 Pixel lang sein kann. Die Luftlinie (blau) als heurstischer Pfad hat aber nur die Länge 7.6 Pixel. Damit erfüllt unsere Implementation die Anforderungen des Algorithmus.
 
@@ -73,11 +82,44 @@ Dieser Algorithmus wird in unserem Code für eine Pfadsuche über alle Pixel (jede
 \subsection{HPA* Algorthmus}
 \label{subsec:implementation.Pfadsuche.HPAstar}
 
-Eine Pfadsuche A* überalle Pixel ist sehr teuer, da es viel Pfade gibt, die zum Teil nur ein Pixel nebeneinander liegen. Es werden bis zum Schluss verschiedenen Pfaden nachgegangen. Abhilde zu dieser sehr feinmaschigen Pfadsuche bietet der HPA* bei welchem im sogenanten Clustering übermehrere Pixel verlaufende Kanten und Knoten berechnet werden.
+Eine Pfadsuche A* überalle Pixel ist sehr teuer, da es viel Pfade gibt, die zum Teil nur ein Pixel nebeneinander liegen. Es werden bis zum Schluss verschiedenen Pfaden nachgegangen. Abhilde zu dieser sehr feinmaschigen Pfadsuche bietet der Hierarcical Pathfinding A* bei welchem im sogenanten Clustering über mehrere Pixel verlaufende Kanten und Knoten berechnet werden.
 
-\title{Clustering}
+\paragraph[Clustering]{Clustering}
+Das Clustering wird während dem ClusteringTask ausgeführt, Dabei wird die Landkarte in sogenannte Clusters unterteilt. Auf dem Bild \ref{fig.clusteredMap} wurde die Karte in 16 Clusters aufgeteilt. 
 
+\begin{figure}
+\centering
+\includegraphics[height=50mm]{bilder/clusteredMap.png}
+\caption{Clustereinteilung auf der Landkarte. Clustergrösse 4x4, Landkarte 16x16}
+\label{fig.clusteredMap}
+\end{figure}
+
+Danach wird für jeden Cluster und ein Nachbar aus der vierer Nachbarschaft die Verbindungskanten berechnet. Dies kann natürlich nur für Clusters gemacht werden bei welchen die Landkarte bereits komplett sichtbar ist, was zu Begin des Spiel nicht gegeben wird. Deshalb wird der ClusteringTask in jedem Spielzug aufgerufen, in der Hoffnung ein Clusterkomplett verbinden zu können. Sobald eine beliebige Seite eines Clusters berechnet ist wird diese Aussenkante beim Cluster und dem anleigenden Nachbar gespeichert und nicht mehr berechnet.
+
+\begin{figure}
+\centering
+\includegraphics[height=50mm]{bilder/clusteredMap2.png}
+\caption{Die Kanten jedes Clusters wurden berechnet}
+\label{fig.clusteredMap2}
+\end{figure}
+
+Sobald ein Cluster zwei oder mehrere Aussenkanten kennt berechnet er die Innenkanten mit A* welche die Knoten der Aussenkanten verbindet. Dies ergibt nun ein Pfadnetz über die Gesamtekarte. Nun wird ein Pfad vom Pixel (0,9) nach (14,9) gesucht. Zuerst wird eruiert in welchem Cluster sich das Start- bzw Zielpixel befindet. Danach wird in dem gefunden Cluster ein Weg zu einem beliebigen Knoten auf der Clusterseite gesucht. Sind diese Knoten erreicht kann nun das vorberechnete Pfadnetz mittels bereits beschrieben A* Algroithmus verwendet werden um die beiden Knoten auf dem kürzesten möglichen Pfad zu verbinden.\footnote{Der gefundene Pfad könnte mittels Pathsmoothing verkürzt werden. Dies wurde aber in unserer Arbeit nicht implementiert.}
+
+TODO Beispielbild
 
 \section{JavaScript Addon für HMTL-Gameviewer}
 \label{sec:implementation.Addon}
-TODO
+Das Codepaket welches von den Challengeersteller mitgeliefert wird bietet bereits eine hilfreiche 2D-Visualisierung des Spiels mit welchem das Spielgeschehen mitverfolgt werden kann. Die Visualisierung wurde mit HMTL und Javascript implementiert. Leider ist es nicht möglich zusätzliche Informationen auf die Seite zu projizieren. Deshalb haben wir den Viewer mit einer solchen Funktion erweitert. Mit der Codezeile Logger.liveInfo(...) kann eine Zusatzinformation geschrieben werden. Es muss definiert werden mit welchem Zug und wo auf dem Spielfeld die Infomation angezeigt werden soll. Im Beispiel wird an der Position der Ameise ausgegeben welchen Task die Ameise hat.
+\begin{verbatim}
+Logger.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s ant: %s", issuer, ant.getTile());
+\end{verbatim}
+Auf der Karte wird ein einfaches aber praktisches Popup angezeigt. Dank solchen Zusatzinfomrationen muss nicht mühsam im Log nach geschaut werden, welcher Ameise wann und wo welcher Task zugeordnet ist.
+
+\begin{figure}
+\centering
+\includegraphics[height=70mm]{bilder/javascriptAddon.png}
+\caption{Das Popup zeigt dei Aufgabe und den Pfad (blau), welcher die Ameise ablaufen wird.}
+\label{fig.javascriptAddon}
+\end{figure}
+
+Das angezeigte Popup zeigt welchen Task (GatherFoodTask) die Ameise hat, wo sie sich befindet <r:28 c:14>, welches Futterpixel angesteuert wird <r:35 c:13> und welchen Pfad dazu berechnet wurde. 
