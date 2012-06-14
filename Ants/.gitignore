@@ -1,0 +1,15 @@
+*.pyc
+/*.jar
+/logs
+/bin
+# First, ignore everything
+/doc
+# And all the file types you're interested in.
+!*.tex
+!*.bib
+!*.pdf
+!*.png
+!*.tif
+!*.jpg
+!*.vpp
+
