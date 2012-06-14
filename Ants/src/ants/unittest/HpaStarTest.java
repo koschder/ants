@@ -1,22 +1,10 @@
 package ants.unittest;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
-import org.junit.experimental.theories.suppliers.TestedOn;
 
-import ants.entities.Aim;
-import ants.entities.DirectedEdge;
-import ants.entities.Edge;
-import ants.entities.Ilk;
 import ants.entities.Tile;
-import ants.search.AStarSearchStrategy;
-import ants.search.Cluster;
-import ants.search.Clustering;
 import ants.search.PathFinder;
 import ants.state.Ants;
 import ants.state.World;
@@ -26,48 +14,9 @@ import ants.util.Logger.LogCategory;
 
 public class HpaStarTest {
 
-    @Test
-    public void BasicTest() {
-        Logger.debug(LogCategory.JUNIT, "-----------JUNIT----------- BasicTest init");
-        Clustering c = new Clustering(10, 4, 2);
-        World w = new World(40, 11, 5, 5, 5);
-        w.setEverythingVisibleAndPassable();
-        Ants.INSTANCE.setup(0, 0, 30, 10, 0, 20, 20, 10);
-        Ants.INSTANCE.setWorld(w);
-
-        Edge startEdge = new Edge(new Tile(0, 0), new Tile(10, 0), null);
-        c.getClusters()[0][0].SetCluster(Aim.NORTH, Arrays.asList(startEdge));
-        c.getClusters()[0][0].SetCluster(Aim.NORTH, Arrays.asList(new Edge(new Tile(0, 0), new Tile(0, 10), null)));
-        c.getClusters()[0][0].SetCluster(Aim.SOUTH, Arrays.asList(new Edge(new Tile(10, 0), new Tile(10, 10), null)));
-        c.getClusters()[1][0].SetCluster(Aim.NORTH, Arrays.asList(new Edge(new Tile(10, 0), new Tile(10, 10), null)));
-        c.getClusters()[1][0].SetCluster(Aim.SOUTH, Arrays.asList(new Edge(new Tile(20, 0), new Tile(20, 10), null)));
-        c.getClusters()[2][0].SetCluster(Aim.NORTH, Arrays.asList(new Edge(new Tile(20, 0), new Tile(20, 10), null)));
-        Edge endEdge = new Edge(new Tile(30, 0), new Tile(30, 10), null);
-        Logger.debug(LogCategory.JUNIT, "JUNIT Addendedge");
-        c.getClusters()[2][0].SetCluster(Aim.SOUTH, Arrays.asList(endEdge));
-
-        c.getClusters()[0][0].debugEdges();
-        c.getClusters()[1][0].debugEdges();
-        c.getClusters()[2][0].debugEdges();
-
-        DirectedEdge e = new DirectedEdge(startEdge.getTile1(), startEdge.getTile2(), c.getClusters()[0][0]);
-        DirectedEdge e2 = new DirectedEdge(endEdge.getTile1(), endEdge.getTile2(), c.getClusters()[2][0]);
-
-        Logger.debug(LogCategory.JUNIT, "[0][0] has %s edges", c.getClusters()[0][0].edges.size());
-        Logger.debug(LogCategory.JUNIT, "[1][0] has %s edges", c.getClusters()[1][0].edges.size());
-        c.getClusters()[1][0].debugEdges();
-        Logger.debug(LogCategory.JUNIT, "[2][0] has %s edges", c.getClusters()[2][0].edges.size());
-
-        Logger.debug(LogCategory.JUNIT, "HAPAstar unittest start now!!!");
-
-        PathFinder.bestPath(PathFinder.A_STAR, e, e2, null, null, 50);
-
-        Logger.debug(LogCategory.JUNIT, "HAPAstar unittest ended now!!!");
-
-    }
 
     @Test
-    public void ObstacleTest() {
+    public void obstacleTest() {
         Logger.debug(LogCategory.JUNIT, "-----------JUNIT----------- ObstacleTest init");
         /*
          * generate map like this -------------------------------------
@@ -120,8 +69,11 @@ public class HpaStarTest {
 
     }
 
+    /***
+     * comparing astar with hpastar
+     */
     @Test
-    public void CompareAtoAstarText() {
+    public void compareAtoAstarText() {
         Logger.debug(LogCategory.JUNIT, "-----------JUNIT----------- CompareAtoAstarText init");
         /*
          * generate map like this -------------------------------------
@@ -187,9 +139,11 @@ public class HpaStarTest {
     }
     
     
-    
+    /***
+     * thest hpa* with difficulte obstacles
+     */
     @Test
-    public void DifficultObstacleTest() {
+    public void difficultObstacleTest() {
         Logger.debug(LogCategory.JUNIT, "-----------JUNIT----------- DifficultObstacleTest init");
         /*
          * generate map like this -------------------------------------

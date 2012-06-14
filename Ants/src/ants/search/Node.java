@@ -2,11 +2,28 @@ package ants.search;
 
 import ants.entities.SearchTarget;
 
+/***
+ * this class is used in the as item in the frontier and in the explored list at A* algorithm.
+ * @author kaeserst
+ *
+ */
 public class Node implements Comparable<Node> {
 
+    /***
+     * current SearchTarget
+     */
     private SearchTarget state;
+    /***
+     * parent node
+     */
     private Node parent;
+    /***
+     * the estimated cost from start to the target node.
+     */
     private double costEstimated;
+    /***
+     * the path cost until this node.
+     */
     private int costActual;
 
     public Node(SearchTarget state, Node parent, int costActual, double costEstimated) {
@@ -61,10 +78,6 @@ public class Node implements Comparable<Node> {
         if (getClass() != obj.getClass())
             return false;
         Node other = (Node) obj;
-        /*
-         * if (cost != other.cost) return false; if (parent == null) { if (other.parent != null) return false; } else if
-         * (!parent.equals(other.parent)) return false;
-         */
         if (state == null) {
             if (other.state != null)
                 return false;
@@ -75,7 +88,7 @@ public class Node implements Comparable<Node> {
 
     @Override
     /**
-     * nachkomastellen berücksichtigen
+     * cosider the digit behind the comma.
      */
     public int compareTo(Node o) {
         return ((int)costEstimated*100) - ((int)o.costEstimated*100);

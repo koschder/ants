@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import ants.entities.DirectedEdge;
-import ants.entities.Edge;
 import ants.entities.Tile;
 import ants.search.PathFinder;
 import ants.state.Ants;
@@ -16,8 +14,11 @@ import ants.util.Logger.LogCategory;
 
 public class FullHpaStarTest {
 
+    /***
+     * check if we find a hpa* path on a map with obstacles.
+     */
     @Test
-    public void ObstacleTest() {
+    public void obstacleTest() {
         Logger.debug(LogCategory.JUNIT, "JUNIT ObstacleTestTest init");
         initClusteredMap();
         
@@ -27,7 +28,7 @@ public class FullHpaStarTest {
         long elapsed = System.currentTimeMillis() - start;
         Logger.debug(LogCategory.JUNIT, "Hpastar  unittest ended now!!! duration: %s milisecods", elapsed);
         
-        Ants.INSTANCE.getWorld().debugPathOnMap(path);
+        Ants.getWorld().debugPathOnMap(path);
         
 
         Ants.getClusters().getClusters()[0][0].debugEdges();
