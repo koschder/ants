@@ -63,7 +63,7 @@ public class Clustering {
         return clusters;
     }
 
-    public Cluster getWithWrapAround(int row, int col) {
+    public Cluster getClusterWrapAround(int row, int col) {
 
         int r = row % rows;
         int c = col % cols;
@@ -119,7 +119,7 @@ public class Clustering {
 
     private Cluster getClusterOf(Tile start) {
         
-        return getWithWrapAround(start.getRow()/clusterSize, start.getCol()/clusterSize);
+        return getClusterWrapAround(start.getRow()/clusterSize, start.getCol()/clusterSize);
     }
 
     public Cluster getCluster(int iId) {

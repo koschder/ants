@@ -2,6 +2,8 @@ package ants.unittest;
 
 import java.util.List;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 
 import ants.entities.Tile;
@@ -13,11 +15,13 @@ import ants.util.Logger.LogCategory;
 
 public class AstarTest {
 
-    
+    /***
+     * testing a star with some obstacles
+     */
     @Test
     public void ObstacleTest() {
         Logger.debug(LogCategory.JUNIT, "JUNIT ObstacleTestTest init");
-        initClusteredMap();
+        initMap();
         
         Logger.debug(LogCategory.JUNIT, "A-star unittest start now!!!");
         long start = System.currentTimeMillis();
@@ -27,10 +31,10 @@ public class AstarTest {
         
         Ants.getWorld().debugPathOnMap(path);
         
-        
+        Assert.assertNotNull(path);
     }
 
-    private void initClusteredMap() {
+    private void initMap() {
         /*
          * generate map like this 
          * wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww -----------------------------------------

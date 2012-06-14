@@ -13,6 +13,10 @@ public class HPAStarSearchStrategy implements SearchStrategy {
 
     int maxCost = 0;
 
+    /***
+     * return the best path between the from and the to SearchTarget using the HPA* algorithm.
+     * if the clustering for the HPA* is not ready yet we use A*
+     */
     @Override
     public List<Tile> bestPath(SearchTarget from, SearchTarget to) {
 
@@ -23,8 +27,7 @@ public class HPAStarSearchStrategy implements SearchStrategy {
 
         if (edgeStart == null || endEdge == null) {
             Logger.debug(LogCategory.HAPstar, "HPAstar: Clustering not avaiable, try to find path with A*");
-           // return PathFinder.bestPath(PathFinder.A_STAR, start, end, maxCost);
-            return null;
+            return PathFinder.bestPath(PathFinder.A_STAR, start, end, maxCost);
         }
         endEdge.reverseEdge();
         Logger.debug(LogCategory.HAPstar, "HPAstar: Connecting edges to Cluster edge are:");

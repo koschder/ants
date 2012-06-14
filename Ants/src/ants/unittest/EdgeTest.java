@@ -11,8 +11,11 @@ import ants.search.Cluster;
 
 public class EdgeTest {
 
+    /***
+     * comparing edges
+     */
     @Test
-    public void test() {
+    public void compareEdgeTest() {
 
         Tile t1 = new Tile(3, 4);
         Tile t2 = new Tile(10, 3);
@@ -28,8 +31,11 @@ public class EdgeTest {
     }
     
     
+    /***
+     * compare directed edges
+     */
     @Test
-    public void DirectedEdgeTest() {
+    public void directedEdgeTest() {
         DirectedEdge c0Edge = new DirectedEdge(new Tile(0,0),new Tile(0,10),null);
         DirectedEdge c1Edge = new DirectedEdge(new Tile(0,0),new Tile(0,10),null);
     

@@ -14,6 +14,10 @@ import ants.util.Logger.LogCategory;
 
 public class SimpleSearchStrategy implements SearchStrategy {
 
+    /***
+     * the simplest algorithm for finding a path by connecting two straight lines. This alogrithm cannot be
+     * use by DirectedEdges
+     */
     @Override
     public List<Tile> bestPath(SearchTarget areaFrom, SearchTarget areaTo) {
 
@@ -32,6 +36,13 @@ public class SimpleSearchStrategy implements SearchStrategy {
 
     }
 
+    /***
+     * try to get a path from to to with via
+     * @param from
+     * @param to
+     * @param via
+     * @return
+     */
     private List<Tile> getSimpleViaPath(Tile from, Tile to, Tile via) {
         List<Tile> path = new ArrayList<Tile>();
         Logger.debug(LogCategory.PATHFINDING, "calling simpleViaPath with from %s to %s via %s", from, to, via);
@@ -48,6 +59,12 @@ public class SimpleSearchStrategy implements SearchStrategy {
         return path;
     }
 
+    /***
+     *  
+     * @param from
+     * @param to
+     * @return a straight path between two tiles or null if no path is found.
+     */
     private List<Tile> getStraightPath(Tile from, Tile to) {
         List<Tile> path = new ArrayList<Tile>();
 
