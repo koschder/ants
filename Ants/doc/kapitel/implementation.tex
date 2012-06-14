@@ -51,6 +51,31 @@ Die Clustering Klasse dient dem Aufteilen des Spielfeldes in Clusters für die HP
 
 Abbildung \ref{fig:entitiesWorld} zeigt die wichtigsten Klassen, die die Elemente des Spiels repräsentieren. Der \"Ubersichtlichkeit wegen wurden nur die wichtigsten Attribute und Operationen in das Diagramm aufgenommen.
 
+\subsubsection{Ant}
+\label{sec:implementation.Entities.Ant}
+Eine Ant gehört immer zu einem Spieler; über die Methode isMine() können unsere eigenen Ameisen identifiziert werden. 
+Eine Ameise weiss jeweils, in welcher Zelle sie steht. Das Feld nextTile dient der Verfolgung einer Ameise über mehrere Züge -- das Feld wird jeweils aktualisiert, wenn der Ameise ein Befehl ausgegeben wird; im nächsten Zug können wir dann prüfen, ob die Ameise den Befehl korrekt ausführen konnte. Eine Ameise kennt auch die anderen Ameisen in ihrer Umgebung: Über die Methoden getEnemies/FriendsInRadius() können alle bekannten Freunde und Feinde in einem bestimmten Radius ermittelt werden.
+
+\subsubsection{Tile}
+\label{sec:implementation.Entities.Tile}
+Das Tile repräsentiert eine Zelle des Spielfelds. Es implementiert das SearchTarget Interface (s. \ref{sec:implementation.Entities.SearchTarget}). Es bietet zudem Methoden für die einfache Distanzberechnung, sowie für das Bestimmen der Richtungen, in die ein anderes Tile liegt.
+
+\subsubsection{Route}
+\label{sec:implementation.Entities.Route}
+Eine Route repräsentiert eine einfache Start-Ziel Verbindung. Sie hält für eine Ameise die Luftliniendistanz zu einem bestimmten Ziel-Feld fest.
+
+\subsubsection{Move}
+\label{sec:implementation.Entities.Move}
+Ein Move entspricht einem Zug einer Ameise. Für ein bestimmtes Tile wird angegeben, in welche Richtung sich die Ameise bewegen soll.
+
+\subsubsection{Ilk}
+\label{sec:implementation.Entities.Ilk}
+Ilk ist der Typ einer Zelle. Der Ilk einer Tile-Instanz gibt an, was sich gerade in der Zelle befindet. Dies kann eine Gelände-Typ sein, wenn die Zelle ansonsten leer ist, oder es kann eine Ameise, Nahrung, oder eine Hügel sein. Die Ilk-Enumeration bietet Hilfsmethoden, um festzustellen, ob eine Zelle passierbar oder besetzt ist.
+
+\subsubsection{Aim}
+\label{sec:implementation.Entities.Aim}
+Aim ist einfach eine Repräsentation einer Himmelsrichtung
+
 \subsection{Spiel-Elemente (Suche)}
 \label{sec:implementation.Entities.Search}
 
@@ -61,7 +86,10 @@ Abbildung \ref{fig:entitiesWorld} zeigt die wichtigsten Klassen, die die Element
 \label{fig:entitiesSearch}
 \end{figure}
 
-Abbildung \ref{fig:entitiesSearch} zeigt die wichtigsten Klassen, die für die Pfadsuche verwendet werden.
+Abbildung \ref{fig:entitiesSearch} zeigt die wichtigsten Klassen, die für die Pfadsuche verwendet werden. Der \"Ubersichtlichkeit wegen wurden nur die wichtigsten Attribute und Operationen in das Diagramm aufgenommen.
+
+\subsubsection{SearchTarget}
+\label{sec:implementation.Entities.SearchTarget}
 
 \subsection{Tasks}
 \label{sec:implementation.Tasks}
