@@ -1,5 +1,6 @@
 <project default="runTutorial">
 	<target name="jar">
+		<javac srcdir="${basedir}/src" destdir="${basedir}/bin"/>
 		<jar destfile="${basedir}/TutorialBot.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="ants.bot.MyBot" />
