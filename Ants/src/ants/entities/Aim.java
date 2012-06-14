@@ -5,6 +5,7 @@ import java.util.Map;
 
 /**
  * Represents a direction in which to move an ant.
+ * The directions are NORTH,EAST,SOUTH and WEST
  */
 public enum Aim {
     /** North direction, or up. */

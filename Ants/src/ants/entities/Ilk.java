@@ -40,12 +40,19 @@ public enum Ilk {
         return this == LAND || this == DEAD;
     }
 
+    /***
+     * 
+     * @return true if it is a food Ilk.
+     */
     public boolean isFood() {
         return this == FOOD;
     }
 
+    /**
+     * 
+     * @return ture if there is a friendly ant.
+     */
     public boolean hasFriendlyAnt() {
-        // TODO Auto-generated method stub
         return this == MY_ANT;
     }
 }

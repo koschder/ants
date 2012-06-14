@@ -1,32 +1,40 @@
 package ants.entities;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import ants.search.Cluster;
 
-
+/***
+ * Describes a edge consists of to tiles as start and end node.
+ * 
+ * @author kases1,kustl1
+ * 
+ */
 public class Edge {
 
-    public enum EdgeType { North, South, East, West, Intra };
+    public enum EdgeType {
+        North,
+        South,
+        East,
+        West,
+        Intra
+    };
+
     private Tile v1;
     private Tile v2;
     private Cluster cluster;
     private EdgeType type;
 
-    public EdgeType getType() {
-        return type;
-    }
-
-    // if no path defined the tiles can reached staright
+    /***
+     * path between the tiles
+     */
     protected List<Tile> path;
 
-    public Edge(Tile vertices, Tile lastVertices, Cluster c){
-        this(vertices,lastVertices,c,null);
+    public Edge(Tile vertices, Tile lastVertices, Cluster c) {
+        this(vertices, lastVertices, c, null);
     }
-    
-    public Edge(Tile vertices, Tile lastVertices, Cluster c,EdgeType et) {
+
+    public Edge(Tile vertices, Tile lastVertices, Cluster c, EdgeType et) {
         v1 = vertices;
         v2 = lastVertices;
         cluster = c;
@@ -34,8 +42,8 @@ public class Edge {
     }
 
     public Edge(Tile vertices, Tile lastVertices, List<Tile> newPath, Cluster c) {
-       this(vertices,lastVertices,c);
-       this.setPath(newPath);
+        this(vertices, lastVertices, c);
+        this.setPath(newPath);
     }
 
     @Override
@@ -49,6 +57,42 @@ public class Edge {
         return result;
     }
 
+    public Cluster getCluster() {
+        return cluster;
+    }
+
+    public List<Tile> getPath() {
+        return path;
+    }
+
+    public Tile getTile1() {
+        return v1;
+    }
+
+    public Tile getTile2() {
+        return v2;
+    }
+
+    public EdgeType getType() {
+        return type;
+    }
+
+    /**
+     * 
+     * @return true if the path is already calculated.
+     */
+    public boolean hasPath() {
+        return (path != null) && (path.size() > 0);
+    }
+
+    public void setCluster(Cluster c) {
+        cluster = c;
+    }
+
+    public void setEdgeType(EdgeType et) {
+        this.type = et;
+    }
+
     public void setPath(List<Tile> newPath) {
         path = newPath;
     }
@@ -56,34 +100,5 @@ public class Edge {
     @Override
     public String toString() {
         return v1 + "-" + v2;
-    }
-
-    public void setCluster(Cluster c) {
-        cluster = c;
-    }
-
-    public Cluster getCluster() {
-        return cluster;
-    }
-
-    public void setEdgeType(EdgeType et) {
-       this.type = et;        
-    }
-
-    public Tile getTile1() {
-        return v1;
-    }
-    
-    public Tile getTile2() {
-        return v2;
-    }
-
-    public boolean hasPath() {
-        
-        return (path != null) && (path.size() > 0);
-    }
-
-    public List<Tile> getPath() {     
-        return path;
     }
 }

@@ -45,6 +45,11 @@ public class Tile implements Comparable<Tile>, SearchTarget {
         return col;
     }
 
+    /***
+     * 
+     * @param dest
+     * @return the manhattanDistanceTo an ohter tile
+     */
     public int manhattanDistanceTo(Tile dest) {
         return Math.abs(dest.col - this.col) + Math.abs(dest.row - this.row);
     }
@@ -118,7 +123,6 @@ public class Tile implements Comparable<Tile>, SearchTarget {
 
     @Override
     public boolean isSearchable(boolean bParentNode) {
-
         return Ants.getWorld().getIlk(this).isPassable() && !isOccupiedForNextMove(bParentNode);
     }
 

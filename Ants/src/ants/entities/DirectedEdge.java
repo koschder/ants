@@ -6,6 +6,11 @@ import java.util.List;
 import ants.search.Cluster;
 import ants.search.PathFinder;
 
+/***
+ * DirectedEdge is used to define which is the start and the end node of the Edge
+ * @author kaeserst
+ *
+ */
 public class DirectedEdge extends Edge implements SearchTarget {
 
     private Tile startTile;
@@ -15,12 +20,16 @@ public class DirectedEdge extends Edge implements SearchTarget {
         startTile = vertices;
     }
 
+    /**
+     *change direction. start is end and vice versa
+     */
     public void reverseEdge() {
         if (startTile == getTile1())
             startTile = getTile2();
         else
             startTile =  getTile1();
     }
+
 
     @Override
     public List<SearchTarget> getSuccessors() {
@@ -31,7 +40,6 @@ public class DirectedEdge extends Edge implements SearchTarget {
 
     @Override
     public boolean isSearchable(boolean bParentNode) {
-        // TODO correct?
         return true;
     }
 
@@ -39,7 +47,7 @@ public class DirectedEdge extends Edge implements SearchTarget {
     public int manhattanDistanceTo(SearchTarget dest) {
         return getEnd().manhattanDistanceTo(dest.getTargetTile());
     }
-
+    
     @Override
     public List<Tile> getPath() {
         if (path != null)
@@ -50,10 +58,18 @@ public class DirectedEdge extends Edge implements SearchTarget {
         return path;
     }
 
+    /***
+     * 
+     * @return the end node of this edge
+     */
     public Tile getEnd() {
         return  getTile1().equals(startTile) ?  getTile2() :  getTile1();
     }
 
+    /***
+     * 
+     * @return  the start node of this edge
+     */
     public Tile getStart() {
         return this.startTile;
     }
@@ -82,14 +98,8 @@ public class DirectedEdge extends Edge implements SearchTarget {
         if (getClass() != obj.getClass())
             return false;
         DirectedEdge other = (DirectedEdge) obj;
-//        if (getCluster() == null && other.getCluster() == null)
-//            return super.equals(other);
-//        else if (getCluster() != null && other.getCluster() != null)
-//            return super.equals(other) && getCluster().equals(other.getCluster());
-
         return other.getEnd().equals(getEnd());
         
-        //return false;
     }
 
     @Override
@@ -100,8 +110,6 @@ public class DirectedEdge extends Edge implements SearchTarget {
     @Override
     public boolean isFinal(SearchTarget to) {
         return getEnd().equals(to.getTargetTile()) || getStart().equals(to.getTargetTile());
-       // return 
-
     }
 
     @Override

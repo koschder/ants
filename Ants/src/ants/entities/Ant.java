@@ -51,6 +51,11 @@ public class Ant implements Comparable<Ant> {
         return sortedFriends;
     }
 
+    /**
+     * Returns all friendly ants in a radius of my ant.
+     * @param radius
+     * @return
+     */
     public List<Ant> getFriendsInRadius(int radius) {
         final List<Ant> friends = new ArrayList<Ant>();
         for (Entry<Ant, Integer> entry : getSortedFriends().entrySet()) {
@@ -61,6 +66,12 @@ public class Ant implements Comparable<Ant> {
         return friends;
     }
 
+    /**
+     * returns all emenies in a radius
+     * @param radius
+     * @param onlyMyAnts to decide if alle emenies are returned, or only the current bot ones.
+     * @return
+     */
     public List<Ant> getEnemiesInRadius(int radius, boolean onlyMyAnts) {
         final List<Ant> enemies = new ArrayList<Ant>();
         for (Entry<Ant, Integer> entry : getSortedEnemies().entrySet()) {
@@ -84,6 +95,9 @@ public class Ant implements Comparable<Ant> {
         this.nextTile = nextTile;
     }
 
+    /***
+     * places the ant on the tile, where it was moved in the last round.
+     */
     public void setup() {
         if (nextTile != null) {
             tile = new Tile(nextTile.getRow(), nextTile.getCol());
@@ -112,7 +126,6 @@ public class Ant implements Comparable<Ant> {
 
     @Override
     public int hashCode() {
-        // TODO darf man das so machen
         return tile.hashCode();
     }
 

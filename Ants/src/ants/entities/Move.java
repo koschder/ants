@@ -1,5 +1,10 @@
 package ants.entities;
 
+/***
+ * a move stores the current position and the direction where to move.
+ * @author kustl1, kases1
+ *
+ */
 public class Move {
     private Tile tile;
     private Aim direction;
