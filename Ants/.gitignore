@@ -12,4 +12,5 @@
 !*.tif
 !*.jpg
 !*.vpp
+!/doc/javadoc/
 
