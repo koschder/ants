@@ -8,6 +8,13 @@ import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
+/**
+ * This task is responsible for allowing those ants that are currently following a {@link Mission} to execute the next
+ * step of their mission.
+ * 
+ * @author kases1,kustl1
+ * 
+ */
 public class MissionTask extends BaseTask {
 
     @Override

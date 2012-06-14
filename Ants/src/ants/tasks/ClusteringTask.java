@@ -12,7 +12,13 @@ import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
-public class ClusteringTask implements Task {
+/**
+ * This task is responsible for dividing up the map into clusters.
+ * 
+ * @author kases1,kustl1
+ * 
+ */
+public class ClusteringTask extends BaseTask {
 
     Clustering clusters = Ants.getClusters();
 
@@ -46,7 +52,7 @@ public class ClusteringTask implements Task {
                         clusters.getClusters()[r][c].SetCluster(Aim.WEST, edgesV);
                         int cNeighbour = (c - 1 < 0) ? clusters.getCols() - 1 : c - 1;
                         clusters.getClusters()[r][cNeighbour].SetCluster(Aim.EAST, edgesV);
-                        updatedClusters++;        
+                        updatedClusters++;
                     }
                 } else {
                     Logger.debug(LogCategory.CLUSTERING_Detail, "Already clustered in Aim %s on r: %s c: %s", Aim.WEST,
@@ -114,8 +120,8 @@ public class ClusteringTask implements Task {
                     if (lastVertices == null) {
                         // todo what to do?
                     } else {
-                        edges.add(new Edge(vertices, lastVertices,path, null));
-                       // path = new ArrayList<Tile>();
+                        edges.add(new Edge(vertices, lastVertices, path, null));
+                        // path = new ArrayList<Tile>();
                     }
                     vertices = null;
                     lastVertices = null;
@@ -128,15 +134,15 @@ public class ClusteringTask implements Task {
             }
         }
         if (vertices != null && lastVertices != null) {
-           
-            edges.add(new Edge(vertices, lastVertices,path, null));
+
+            edges.add(new Edge(vertices, lastVertices, path, null));
         } else if (vertices != null) {
             // todo what to do?
         }
         return edges;
     }
 
-    public List<Edge> verticalScan(int r, int c, int clusterSize) {
+    private List<Edge> verticalScan(int r, int c, int clusterSize) {
         List<Edge> edges = new ArrayList<Edge>();
         // left
         Tile vertices = null;
@@ -152,7 +158,7 @@ public class ClusteringTask implements Task {
         for (int i = startRowTile; i < endRowTile; i++) {
             Tile tile = new Tile(i, startColTile);
             Logger.debug(LogCategory.CLUSTERING_Detail, "Check %s", tile);
-            
+
             if (Ants.getWorld().isVisible(tile)) {
                 if (Ants.getWorld().getIlk(tile).isPassable()) {
 
@@ -169,8 +175,8 @@ public class ClusteringTask implements Task {
                         // todo what to do?
                     } else {
 
-                        edges.add(new Edge(vertices, lastVertices,path, null));
-                       // path = new ArrayList<Tile>();
+                        edges.add(new Edge(vertices, lastVertices, path, null));
+                        // path = new ArrayList<Tile>();
                     }
                     vertices = null;
                     lastVertices = null;
@@ -182,18 +188,12 @@ public class ClusteringTask implements Task {
                 return null;
             }
         }
-        if (vertices != null && lastVertices != null) {           
-            edges.add(new Edge(vertices, lastVertices, path,null));
+        if (vertices != null && lastVertices != null) {
+            edges.add(new Edge(vertices, lastVertices, path, null));
         } else if (vertices != null) {
             // todo what to do?
         }
         return edges;
-    }
-
-    @Override
-    public void setup() {
-        // TODO Auto-generated method stub
-
     }
 
 }

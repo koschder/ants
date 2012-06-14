@@ -11,6 +11,12 @@ import ants.missions.AttackHillMission;
 import ants.search.PathFinder;
 import ants.state.Ants;
 
+/**
+ * Task that identifies enemy hills suitable for attacking and sends Ants to attack them.
+ * 
+ * @author kases1,kustl1
+ * 
+ */
 public class AttackHillsTask extends BaseTask {
 
     private int cutoff = 100;

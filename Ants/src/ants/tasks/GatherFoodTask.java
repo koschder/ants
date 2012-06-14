@@ -16,6 +16,12 @@ import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
+/**
+ * Searches for food and sends our ants to gather it.
+ * 
+ * @author kases1,kustl1
+ * 
+ */
 public class GatherFoodTask extends BaseTask {
 
     // the maximum distance an ant can be away of a food tile to catch it.
