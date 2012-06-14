@@ -20,7 +20,10 @@ import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
 /**
- * Starter bot implementation.
+ * Bot implementation. This was originally based on the sample bot from the starter package, but the implementation is
+ * completely different, although the hierarchy is still the same.
+ * 
+ * @author kases1,kustl1
  */
 public class MyBot extends Bot {
     /**
@@ -53,6 +56,10 @@ public class MyBot extends Bot {
                         .size());
         initTasks();
         doStatistics();
+        /*
+         * This is the main loop of the bot. All the actual work is done in the tasks that are executed in the order
+         * they are defined.
+         */
         for (Task task : tasks) {
             long start = System.currentTimeMillis();
             int unemployed = Ants.getPopulation().getMyUnemployedAnts().size();
@@ -69,6 +76,9 @@ public class MyBot extends Bot {
         Ants.getOrders().issueOrders();
     }
 
+    /**
+     * Gathers statistics and periodically writes them to the log.
+     */
     private void doStatistics() {
 
         statAntsAmountHistory.add(Ants.getPopulation().getMyAnts().size());
@@ -84,6 +94,10 @@ public class MyBot extends Bot {
         }
     }
 
+    /**
+     * Creates the {@link Task}s in order of importance if they are not yet created, and allows the tasks to perform
+     * setup duties.
+     */
     private void initTasks() {
         if (tasks.isEmpty()) {
             tasks.add(new MissionTask());
