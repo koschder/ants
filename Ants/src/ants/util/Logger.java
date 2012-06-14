@@ -7,7 +7,17 @@ import java.io.RandomAccessFile;
 
 import ants.entities.Tile;
 
+/**
+ * Logger class that writes application logs to a separate log file.
+ * 
+ * @author kases1,kustl1
+ * 
+ */
 public class Logger {
+    /**
+     * Category for logging. The level parameter configures the log level for that category.
+     * 
+     */
     public enum LogCategory {
         ATTACK_HILLS(INFO),
         CLEAR_HILL(INFO),
@@ -62,14 +72,35 @@ public class Logger {
         }
     }
 
+    /**
+     * Write a log statement with DEBUG log level.
+     * 
+     * @param category
+     * @param message
+     * @param parameters
+     */
     public static void debug(LogCategory category, String message, Object... parameters) {
         log(DEBUG, category, message, parameters);
     }
 
+    /**
+     * Write a log statement with INFO log level.
+     * 
+     * @param category
+     * @param message
+     * @param parameters
+     */
     public static void info(LogCategory category, String message, Object... parameters) {
         log(INFO, category, message, parameters);
     }
 
+    /**
+     * Write a log statement with ERROR log level.
+     * 
+     * @param category
+     * @param message
+     * @param parameters
+     */
     public static void error(LogCategory category, String message, Object... parameters) {
         log(ERROR, category, message, parameters);
     }
@@ -79,6 +110,13 @@ public class Logger {
             log.println(String.format(message, parameters));
     }
 
+    /**
+     * Log an exception.
+     * 
+     * @param message
+     * @param ex
+     * @param parameters
+     */
     public static void exception(String message, Exception ex, Object... parameters) {
         String logMsg = String.format(message, parameters);
         String error = String.format("EXCEPTION: %s stacktrace:  ", ex);
@@ -86,6 +124,14 @@ public class Logger {
         ex.printStackTrace(log);
     }
 
+    /**
+     * Write a message to the liveInfo file that is used to display additional information in the game replay.
+     * 
+     * @param turn
+     * @param tile
+     * @param message
+     * @param parameters
+     */
     public static void liveInfo(int turn, Tile tile, String message, Object... parameters) {
         try {
             String delimiter = "";

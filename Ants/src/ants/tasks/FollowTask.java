@@ -8,6 +8,13 @@ import ants.missions.FollowMission;
 import ants.missions.Mission;
 import ants.state.Ants;
 
+/**
+ * This task orders our ants that don't have anything better to do to follow another ant. Should be executed next to
+ * last in the chain of tasks.
+ * 
+ * @author kases1,kustl1
+ * 
+ */
 public class FollowTask extends BaseTask {
 
     private final int MAX_DISTANCE_TO_START_FOLLOW = 6;

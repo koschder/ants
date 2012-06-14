@@ -10,6 +10,12 @@ import ants.missions.AttackAntMission;
 import ants.search.PathFinder;
 import ants.state.Ants;
 
+/**
+ * This task identifies vulnerable enemy ants and sends a troop of our ants to attack them.
+ * 
+ * @author kases1,kustl1
+ * 
+ */
 public class CombatTask extends BaseTask {
 
     @Override

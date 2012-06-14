@@ -16,6 +16,13 @@ import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
+/**
+ * This task sends ants into unexplored areas of the map to discover new frontiers - to boldly go where no ant has gone
+ * before.
+ * 
+ * @author kases1,kustl1
+ * 
+ */
 public class ExploreTask extends BaseTask {
 
     private Set<Tile> unseenTiles;
