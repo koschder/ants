@@ -17,6 +17,12 @@ import ants.entities.Tile;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
+/**
+ * This class holds state about the game world.
+ * 
+ * @author kases1,kustl1
+ * 
+ */
 public class World {
 
     private int rows;
@@ -25,10 +31,8 @@ public class World {
 
     private int viewRadius2;
 
-    @SuppressWarnings("unused")
     private int attackRadius2;
 
-    @SuppressWarnings("unused")
     private int spawnRadius2;
 
     private Ilk map[][];
@@ -134,6 +138,14 @@ public class World {
         return viewRadius2;
     }
 
+    public int getAttackRadius2() {
+        return attackRadius2;
+    }
+
+    public int getSpawnRadius2() {
+        return spawnRadius2;
+    }
+
     public Ilk getIlk(Tile tile) {
         return map[tile.getRow()][tile.getCol()];
     }
@@ -191,6 +203,11 @@ public class World {
         return new Tile(row, col);
     }
 
+    /**
+     * Update information about tile visibility using the vision abilities of our ants.
+     * 
+     * @param myAnts
+     */
     public void updateVision(Collection<Ant> myAnts) {
         for (boolean[] row : visible) {
             Arrays.fill(row, false);
@@ -203,6 +220,12 @@ public class World {
         }
     }
 
+    /**
+     * Is there food within view distance of the given tile?
+     * 
+     * @param tile
+     * @return
+     */
     public boolean isFoodNearby(Tile tile) {
         for (Tile foodTile : foodTiles) {
             if (getSquaredDistance(foodTile, tile) < viewRadius2)
@@ -212,7 +235,6 @@ public class World {
     }
 
     /**
-     * Returns a set containing all my hills locations.
      * 
      * @return a set containing all my hills locations
      */
@@ -221,7 +243,6 @@ public class World {
     }
 
     /**
-     * Returns a set containing all enemy hills locations.
      * 
      * @return a set containing all enemy hills locations
      */
@@ -230,7 +251,6 @@ public class World {
     }
 
     /**
-     * Returns a set containing all food locations.
      * 
      * @return a set containing all food locations
      */
@@ -324,23 +344,37 @@ public class World {
             myHills.add(tile);
     }
 
+    /**
+     * For testing only
+     */
     public void setEverythingVisibleAndPassable() {
         visible = new boolean[rows][cols];
         for (boolean[] row : visible) {
             Arrays.fill(row, true);
         }
-        
+
     }
 
+    /**
+     * for testing only
+     * 
+     * @param tile
+     * @param tile2
+     */
     public void setWater(Tile tile, Tile tile2) {
-        if(tile.getRow() > tile2.getRow() || tile.getCol() > tile2.getCol())
+        if (tile.getRow() > tile2.getRow() || tile.getCol() > tile2.getCol())
             throw new RuntimeErrorException(null, "Invalid water area");
-        
-        for(int r = tile.getRow(); r < tile2.getRow();r++)
-            for(int c = tile.getCol(); c < tile2.getCol();c++)
-                setIlk(new Tile(r,c), Ilk.WATER); 
+
+        for (int r = tile.getRow(); r < tile2.getRow(); r++)
+            for (int c = tile.getCol(); c < tile2.getCol(); c++)
+                setIlk(new Tile(r, c), Ilk.WATER);
     }
 
+    /**
+     * For testing only
+     * 
+     * @param path
+     */
     public void debugPathOnMap(List<Tile> path) {
         for (int r = 0; r < getRows(); r++) {
             String row = "";
@@ -359,6 +393,6 @@ public class World {
             Logger.debug(LogCategory.JUNIT, row);
             row = "";
         }
-        
+
     }
 }

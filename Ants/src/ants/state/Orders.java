@@ -13,12 +13,21 @@ import ants.missions.Mission;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
+/**
+ * This class tracks all orders and missions for our ants. It ensures that no conflicting orders are given.
+ * 
+ * @author kases1,kustl1
+ * 
+ */
 public class Orders {
 
     private Set<Mission> missions = new HashSet<Mission>();
 
     private Map<Tile, Move> orders = new HashMap<Tile, Move>();
 
+    /**
+     * Clears all turn-scoped state (i.e. the orders); the missions are tracked across turns.
+     */
     public void clearState() {
         orders.clear();
         // prevent stepping on own hill
@@ -54,14 +63,11 @@ public class Orders {
         return false;
     }
 
-    public Map<Tile, Move> getOrders() {
-        return orders;
-    }
-
-    public Set<Mission> getMissions() {
-        return missions;
-    }
-
+    /**
+     * Adds a mission to the list and executes its first step.
+     * 
+     * @param newMission
+     */
     public void addMission(Mission newMission) {
         if (missions.add(newMission)) {
             newMission.execute();
@@ -69,6 +75,9 @@ public class Orders {
         }
     }
 
+    /**
+     * Prints the orders to the SystemOutputStream (sends them to the game engine).
+     */
     public void issueOrders() {
         for (Move move : orders.values()) {
             if (move != null) {
@@ -78,5 +87,17 @@ public class Orders {
                 System.out.println(order);
             }
         }
+    }
+
+    /*
+     * Accessors
+     */
+
+    public Map<Tile, Move> getOrders() {
+        return orders;
+    }
+
+    public Set<Mission> getMissions() {
+        return missions;
     }
 }

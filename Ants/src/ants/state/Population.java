@@ -10,7 +10,13 @@ import ants.entities.Tile;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
-
+/**
+ * This class keeps track of our and the enemies' ant populations. It also tracks which of our ants are already employed
+ * each turn.
+ * 
+ * @author kases1,kustl1
+ * 
+ */
 public class Population {
     private Set<Ant> myAnts = new HashSet<Ant>();
     private Set<Ant> myUnemployedAnts = null;
@@ -18,6 +24,9 @@ public class Population {
 
     private Set<Ant> enemyAnts = new HashSet<Ant>();
 
+    /**
+     * Clears all state; this class contains only turn-scoped state information.
+     */
     public void clearState() {
         myAnts.clear();
         employedAnts.clear();
@@ -25,6 +34,12 @@ public class Population {
         myUnemployedAnts = null;
     }
 
+    /**
+     * Adds an ant to the population. The <code>owner</code> parameter determines to which collection the ant is added.
+     * 
+     * @param tile
+     * @param owner
+     */
     public void addAnt(Tile tile, int owner) {
         if (owner == Ant.MINE)
             myAnts.add(new Ant(tile, owner));
@@ -40,6 +55,10 @@ public class Population {
         return enemyAnts;
     }
 
+    /**
+     * 
+     * @return all our ants that have no orders yet.
+     */
     public Collection<Ant> getMyUnemployedAnts() {
         if (myUnemployedAnts == null)
             myUnemployedAnts = new HashSet<Ant>(myAnts);
@@ -56,6 +75,11 @@ public class Population {
         return myUnemployedAnts;
     }
 
+    /**
+     * Marks the given Ant as employed.
+     * 
+     * @param ant
+     */
     public void addEmployedAnt(Ant ant) {
         employedAnts.add(ant);
     }

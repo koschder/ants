@@ -6,10 +6,15 @@ import ants.entities.Tile;
 import ants.search.Clustering;
 
 /**
- * Holds all game data and current game state.
+ * Container class for the game state. Provides access to game metadata (such as turnTime, startTime, ...) as well as
+ * access to information about the world (via {@link World}), the ants (via {@link Population}), the orders (via
+ * {@link Orders}), and the {@link Clustering} of the map.
+ * 
+ * @author kases1, kustl1
  */
 public enum Ants {
     INSTANCE;
+
     /** Maximum map size. */
     public static final int MAX_MAP_SIZE = 256 * 2;
 
@@ -29,9 +34,7 @@ public enum Ants {
 
     private Orders orders;
 
-    /*
-     * clusters for hierarcical grah pathfidning.
-     */
+    // clusters for hierarchical graph pathfidning.
     private Clustering clustering;
 
     /**
@@ -65,10 +68,9 @@ public enum Ants {
         this.clustering = new Clustering(7);
     }
 
-    public void setWorld(World newW){
-        world = newW;
-    }
-    
+    /**
+     * Clears all turn-scoped information.
+     */
     public void clearState() {
         getWorld().clearState(getPopulation().getMyAnts(), getPopulation().getEnemyAnts());
         getPopulation().clearState();
@@ -83,7 +85,7 @@ public enum Ants {
     }
 
     /**
-     * Updates game state information about new ants and food locations.
+     * Updates game state information about new ants locations.
      * 
      * @param ilk
      *            ilk to be updated
@@ -103,10 +105,21 @@ public enum Ants {
         }
     }
 
+    /**
+     * Updates game state information.
+     * 
+     * @param ilk
+     *            ilk to be updated
+     * @param tile
+     *            location on the game map to be updated
+     */
     public void update(Ilk ilk, Tile tile) {
         update(ilk, tile, Integer.MIN_VALUE);
     }
 
+    /**
+     * Pre-calculates the distances between the ants (both friendly and enemy ants)
+     */
     public void calculateDistances() {
         for (Ant enemy : getPopulation().getEnemyAnts()) {
             for (Ant myAnt : getPopulation().getMyAnts()) {
@@ -158,28 +171,47 @@ public enum Ants {
         return turn;
     }
 
+    /**
+     * 
+     * @return the singleton instance of Ants
+     */
     public static Ants getAnts() {
         return INSTANCE;
     }
 
+    /**
+     * 
+     * @return the singleton instance of World
+     */
     public static World getWorld() {
         return INSTANCE.world;
     }
 
+    /**
+     * 
+     * @return the singleton instance of Population
+     */
     public static Population getPopulation() {
         return INSTANCE.population;
     }
 
+    /**
+     * 
+     * @return the singleton instance of Orders
+     */
     public static Orders getOrders() {
         return INSTANCE.orders;
     }
 
+    /**
+     * 
+     * @return the singleton instance of Clustering
+     */
     public static Clustering getClusters() {
         return INSTANCE.clustering;
     }
 
     /**
-     * Returns timeout for initializing and setting up the bot on turn 0.
      * 
      * @return timeout for initializing and setting up the bot on turn 0
      */
@@ -188,7 +220,6 @@ public enum Ants {
     }
 
     /**
-     * Returns timeout for a single game turn, starting with turn 1.
      * 
      * @return timeout for a single game turn, starting with turn 1
      */
@@ -197,7 +228,6 @@ public enum Ants {
     }
 
     /**
-     * Returns maximum number of turns the game will be played.
      * 
      * @return maximum number of turns the game will be played
      */
@@ -206,7 +236,6 @@ public enum Ants {
     }
 
     /**
-     * Returns the start time of the current turn.
      * 
      * @return start time of the current turn.
      */
@@ -215,7 +244,6 @@ public enum Ants {
     }
 
     /**
-     * Returns how much time the bot has still has to take its turn before timing out.
      * 
      * @return how much time the bot has still has to take its turn before timing out
      */
@@ -223,6 +251,20 @@ public enum Ants {
         return turnTime - (int) (System.currentTimeMillis() - turnStartTime);
     }
 
+    /**
+     * Only for testing
+     * 
+     * @param newW
+     */
+    public void setWorld(World newW) {
+        world = newW;
+    }
+
+    /**
+     * Only for testing
+     * 
+     * @param i
+     */
     public void initClustering(int i) {
         this.clustering = new Clustering(i);
     }
