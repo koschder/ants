@@ -52,7 +52,7 @@ public class AStarSearchStrategy implements SearchStrategy {
 
         Set<SearchTarget> explored = new HashSet<SearchTarget>();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>();
-        frontier.add(new Node(from, null, 0,from.distanceTo(to)));
+        frontier.add(new Node(from, null, 0,from.beelineTo(to)));
         while (!frontier.isEmpty()) {
             //Logger.debug(LogCategory.PATHFINDING, "Current frontier list is");
             for(Node n : frontier){
@@ -65,7 +65,7 @@ public class AStarSearchStrategy implements SearchStrategy {
             explored.add(node.getState());
 
             List<Node> nodes = expand(node);
-            Logger.debug(LogCategory.PATHFINDING, "Astar: %s has %s items as expanded(next) %s", node.getState(),nodes.size(), nodes);
+            //Logger.debug(LogCategory.PATHFINDING, "Astar: %s has %s items as expanded(next) %s", node.getState(),nodes.size(), nodes);
             for (Node child : nodes) {
                 if (frontier.contains(child) || explored.contains(child.getState()) || maxCostReached(child, to)) {
                     Logger.debug(LogCategory.PATHFINDING, "Skip new node: %s", child);
@@ -106,7 +106,7 @@ public class AStarSearchStrategy implements SearchStrategy {
         }
 
         if (childState.isSearchable((parent.getParent() == null))) {
-            children.add(new Node(childState, parent, getActualCost(parent, childState),childState.distanceTo(to)));
+            children.add(new Node(childState, parent, getActualCost(parent, childState),childState.beelineTo(to)));
         } else {
             Logger.debug(LogCategory.PATHFINDING, "tile %s is not passable", childState);
         }
@@ -118,7 +118,7 @@ public class AStarSearchStrategy implements SearchStrategy {
 
     private int getActualCost(Node current, SearchTarget dest) {
         
-        return current.getActualCost() + dest.getCost();
+        return current.getActualCost();
     }
 
     private List<Tile> path(Node child) {

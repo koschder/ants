@@ -1,5 +1,7 @@
 package ants.entities;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ants.search.Cluster;
@@ -31,6 +33,11 @@ public class Edge {
         type = et;
     }
 
+    public Edge(Tile vertices, Tile lastVertices, List<Tile> newPath, Cluster c) {
+       this(vertices,lastVertices,c);
+       this.setPath(newPath);
+    }
+
     @Override
     public boolean equals(Object o) {
         boolean result = false;
@@ -42,8 +49,8 @@ public class Edge {
         return result;
     }
 
-    public void setPath(List<Tile> path) {
-        this.path = path;
+    public void setPath(List<Tile> newPath) {
+        path = newPath;
     }
 
     @Override
@@ -69,5 +76,14 @@ public class Edge {
     
     public Tile getTile2() {
         return v2;
+    }
+
+    public boolean hasPath() {
+        
+        return (path != null) && (path.size() > 0);
+    }
+
+    public List<Tile> getPath() {     
+        return path;
     }
 }

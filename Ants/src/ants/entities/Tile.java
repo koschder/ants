@@ -128,13 +128,7 @@ public class Tile implements Comparable<Tile>, SearchTarget {
         return false;
     }
 
-    @Override
-    public int distanceTo(SearchTarget dest) {
-        if (dest instanceof Tile)
-            return manhattanDistanceTo((Tile) dest);
-
-        throw new RuntimeException("distanceTo for a Tile to a " + dest.getClass() + "not implemented");
-    }
+   
 
     @Override
     public List<Tile> getPath() {
@@ -174,6 +168,20 @@ public class Tile implements Comparable<Tile>, SearchTarget {
     public int getCost() {
         // one move cost 1
         return 1;
+    }
+
+    @Override
+    public int manhattanDistanceTo(SearchTarget dest) {
+            if (dest instanceof Tile)
+                return manhattanDistanceTo((Tile) dest);
+
+            throw new RuntimeException("distanceTo for a Tile to a " + dest.getClass() + "not implemented");
+    }
+
+    @Override
+    public double beelineTo(SearchTarget searchTarget) {
+        Tile dest = searchTarget.getTargetTile();
+        return Math.sqrt(Math.pow(Math.abs(dest.col - this.col)-0.01,2) + Math.pow(Math.abs(dest.row - this.row),2))-0.01;
     }
 
 }

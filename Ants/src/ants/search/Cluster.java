@@ -65,7 +65,7 @@ public class Cluster {
         
         List<Edge> hardCopy = new ArrayList<Edge>(); 
         for(Edge e : newEdges){   
-            hardCopy.add(new Edge(e.getTile1(),e.getTile2(),e.getCluster()));
+            hardCopy.add(new Edge(e.getTile1(),e.getTile2(),e.getPath(),e.getCluster()));
         }
         edges.addAll(hardCopy);
         
@@ -191,7 +191,7 @@ public class Cluster {
         Logger.debug(LogCategory.PATHFINDING, "search edge starts with %s in %s", start, c);
         List<SearchTarget> list = new ArrayList<SearchTarget>();
         for (Edge e : c.edges) {
-            Logger.debug(LogCategory.PATHFINDING, "scan edge %s ", e);
+            //Logger.debug(LogCategory.PATHFINDING, "scan edge %s ", e);
             if (e.getTile1().equals(start)) {
                 list.add(new DirectedEdge(e.getTile1(), e.getTile2(), c));
             } else if (e.getTile2().equals(start)) {
@@ -261,6 +261,11 @@ public class Cluster {
             return EdgeType.West;
         
         return null;
+    }
+
+    public List<Edge> getEdges() {
+        
+        return this.edges;
     }
 
 }

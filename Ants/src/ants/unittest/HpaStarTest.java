@@ -7,6 +7,7 @@ import java.util.List;
 import junit.framework.Assert;
 
 import org.junit.Test;
+import org.junit.experimental.theories.suppliers.TestedOn;
 
 import ants.entities.Aim;
 import ants.entities.DirectedEdge;
@@ -22,6 +23,7 @@ import ants.state.World;
 import ants.tasks.ClusteringTask;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
+
 
 public class HpaStarTest {
 
@@ -90,7 +92,8 @@ public class HpaStarTest {
         w.setWater(new Tile(38, 0), new Tile(40, 40));
         w.setWater(new Tile(0, 0), new Tile(2, 40));
         w.setWater(new Tile(0, 0), new Tile(40, 2));
-       // w.setWater(new Tile(0, 10), new Tile(20, 20));
+      //  w.setWater(new Tile(0, 18), new Tile(30, 20));
+      //  w.setWater(new Tile(20, 10), new Tile(25, 25));
         Ants.INSTANCE.setup(0, 0, 40, 40, 0, 20, 20, 10);
         Ants.INSTANCE.setWorld(w);
         Ants.INSTANCE.initClustering(8);
@@ -108,7 +111,7 @@ public class HpaStarTest {
         Logger.debug(LogCategory.JUNIT, "JUNIT ObstacleTestTest hpastar");
         Logger.debug(LogCategory.JUNIT, "HAPAstar unittest start now!!! ##############################");
         
-        List<Tile> path =  PathFinder.bestPath(PathFinder.HPA_STAR, new Tile(5,5), new Tile(5,30), null, null, 100);
+        List<Tile> path =  PathFinder.bestPath(PathFinder.HPA_STAR, new Tile(5,5), new Tile(20,30), null, null, 100);
      
         Logger.debug(LogCategory.JUNIT, "HAPAstar unittest ended now!!! path is: %s",path);
 
@@ -152,37 +155,28 @@ public class HpaStarTest {
 
         Ants.INSTANCE.setup(0, 0, 30, 10, 0, 20, 20, 10);
         Ants.INSTANCE.setWorld(w);
-        Ants.INSTANCE.initClustering(8);
+        Ants.INSTANCE.initClustering(10);
 
         ClusteringTask task = new ClusteringTask();
         task.setup();
         task.perform();
         // Logger.debug(LogCategory.JUNIT, "JUNIT ObstacleTestTest hpastar");
 
-        Ants.getClusters().getClusters()[0][0].debugEdges();
-        Edge e = Ants.getClusters().getClusters()[0][0].edges.get(0);
-        DirectedEdge edgeStart = new DirectedEdge(e.getTile1(), e.getTile2(), Ants.getClusters().getClusters()[0][0]);
-
-        Ants.getClusters().getClusters()[0][Ants.getClusters().getCols() - 2].debugEdges();
-        Edge e2 = Ants.getClusters().getClusters()[0][Ants.getClusters().getCols() - 2].edges.get(0);
-        DirectedEdge edgeEnd = new DirectedEdge(e2.getTile1(), e2.getTile2(), Ants.getClusters().getClusters()[0][Ants.getClusters()
-                .getCols() - 2]);
-
         Logger.debug(LogCategory.JUNIT, "HAPAstar unittest start now!!!");
         long start = System.currentTimeMillis();
-        List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, edgeStart, edgeEnd, null, null, 100);
+        List<Tile> path = PathFinder.bestPath(PathFinder.HPA_STAR, new Tile(7,8), new Tile(7,32), null, null, 100);
         long elapsed = System.currentTimeMillis() - start;
         Logger.debug(LogCategory.JUNIT, "HAPAstar unittest ended now!!! duration: %s milisecods", elapsed);
 
         w.debugPathOnMap(path);
         
-        Logger.debug(LogCategory.JUNIT, "Astar unittest start now!!!");
-        start = System.currentTimeMillis();
-        path = PathFinder.bestPath(PathFinder.A_STAR, new Tile(7,8), new Tile(7,32), null, null, 100);
-        elapsed = System.currentTimeMillis() - start;
-        Logger.debug(LogCategory.JUNIT, "Astar unittest ended now!!! duration: %s milisecods", elapsed);
-
-        w.debugPathOnMap(path);
+//        Logger.debug(LogCategory.JUNIT, "Astar unittest start now!!!");
+//        start = System.currentTimeMillis();
+//        path = PathFinder.bestPath(PathFinder.A_STAR, new Tile(7,8), new Tile(7,32), null, null, 100);
+//        elapsed = System.currentTimeMillis() - start;
+//        Logger.debug(LogCategory.JUNIT, "Astar unittest ended now!!! duration: %s milisecods", elapsed);
+//
+//        w.debugPathOnMap(path);
         
 
     }

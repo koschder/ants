@@ -23,7 +23,8 @@ public class HPAStarSearchStrategy implements SearchStrategy {
 
         if (edgeStart == null || endEdge == null) {
             Logger.debug(LogCategory.HAPstar, "HPAstar: Clustering not avaiable, try to find path with A*");
-            return PathFinder.bestPath(PathFinder.A_STAR, start, end, maxCost);
+           // return PathFinder.bestPath(PathFinder.A_STAR, start, end, maxCost);
+            return null;
         }
         endEdge.reverseEdge();
         Logger.debug(LogCategory.HAPstar, "HPAstar: Connecting edges to Cluster edge are:");

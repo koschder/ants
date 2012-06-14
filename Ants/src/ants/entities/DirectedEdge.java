@@ -36,7 +36,7 @@ public class DirectedEdge extends Edge implements SearchTarget {
     }
 
     @Override
-    public int distanceTo(SearchTarget dest) {
+    public int manhattanDistanceTo(SearchTarget dest) {
         return getEnd().manhattanDistanceTo(dest.getTargetTile());
     }
 
@@ -45,11 +45,9 @@ public class DirectedEdge extends Edge implements SearchTarget {
         if (path != null)
             return path;
 
-        List<Tile> tiles = PathFinder.bestPath(PathFinder.SIMPLE, getEnd(), getStart());
-        if (tiles.size() > 1)
-            tiles.remove(tiles.size() - 1);
+        path = PathFinder.bestPath(PathFinder.A_STAR, getEnd(), getStart());
 
-        return tiles;
+        return path;
     }
 
     public Tile getEnd() {
@@ -111,6 +109,11 @@ public class DirectedEdge extends Edge implements SearchTarget {
 
         return Math.abs(getStart().getRow() - getEnd().getRow()) + Math.abs(getStart().getCol() - getEnd().getCol());
 
+    }
+
+    @Override
+    public double beelineTo(SearchTarget dest) {     
+        return getEnd().beelineTo(dest.getTargetTile());
     }
 
 }

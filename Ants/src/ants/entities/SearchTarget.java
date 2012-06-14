@@ -8,7 +8,8 @@ public interface SearchTarget {
 
     boolean isSearchable(boolean bParentNode);
 
-    int distanceTo(SearchTarget dest);
+    int manhattanDistanceTo(SearchTarget dest);
+    double beelineTo(SearchTarget dest);
 
     List<Tile> getPath();
 

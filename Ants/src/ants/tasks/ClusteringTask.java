@@ -46,7 +46,7 @@ public class ClusteringTask implements Task {
                         clusters.getClusters()[r][c].SetCluster(Aim.WEST, edgesV);
                         int cNeighbour = (c - 1 < 0) ? clusters.getCols() - 1 : c - 1;
                         clusters.getClusters()[r][cNeighbour].SetCluster(Aim.EAST, edgesV);
-                        updatedClusters++;
+                        updatedClusters++;        
                     }
                 } else {
                     Logger.debug(LogCategory.CLUSTERING_Detail, "Already clustered in Aim %s on r: %s c: %s", Aim.WEST,
@@ -79,22 +79,22 @@ public class ClusteringTask implements Task {
             for (int c = 0; c < clusters.getCols(); c++) {
                 Logger.debug(LogCategory.CLUSTERING, clusters.getClusters()[r][c].toString());
             }
-        } 
+        }
     }
 
     private List<Edge> horizontalScan(int r, int c, int clusterSize) {
         List<Edge> edges = new ArrayList<Edge>();
         Tile vertices = null;
         Tile lastVertices = null;
-        int startRowTile = Math.max(0,r * clusterSize % Ants.getWorld().getRows());
+        int startRowTile = Math.max(0, r * clusterSize % Ants.getWorld().getRows());
         int startColTile = c * clusterSize;
-       
+
         // whole cluster or shorten if we are on the "end" of the grid
         int endColTile = Math.min(Ants.getWorld().getCols(), (c + 1) * clusterSize);
 
         Logger.debug(LogCategory.CLUSTERING_Detail, "horizontalScan on r: %s c: %s to r: %s c: %s", startRowTile,
                 startColTile, startRowTile, startColTile + clusterSize);
-
+        List<Tile> path = new ArrayList<Tile>();
         for (int i = startColTile; i < endColTile; i++) {
             Tile tile = new Tile(startRowTile, i);
 
@@ -104,7 +104,9 @@ public class ClusteringTask implements Task {
 
                     if (vertices == null) {
                         vertices = tile;
+                        path.add(tile);
                     } else {
+                        path.add(tile);
                         lastVertices = tile;
                     }
                 } else { // now blocked add the last start and endpoint to cluster.
@@ -112,7 +114,8 @@ public class ClusteringTask implements Task {
                     if (lastVertices == null) {
                         // todo what to do?
                     } else {
-                        edges.add(new Edge(vertices, lastVertices, null));
+                        edges.add(new Edge(vertices, lastVertices,path, null));
+                       // path = new ArrayList<Tile>();
                     }
                     vertices = null;
                     lastVertices = null;
@@ -125,7 +128,8 @@ public class ClusteringTask implements Task {
             }
         }
         if (vertices != null && lastVertices != null) {
-            edges.add(new Edge(vertices, lastVertices, null));
+           
+            edges.add(new Edge(vertices, lastVertices,path, null));
         } else if (vertices != null) {
             // todo what to do?
         }
@@ -138,22 +142,25 @@ public class ClusteringTask implements Task {
         Tile vertices = null;
         Tile lastVertices = null;
         int startRowTile = r * clusterSize;
-        int startColTile = Math.max(0,c * clusterSize % Ants.getWorld().getCols());
+        int startColTile = Math.max(0, c * clusterSize % Ants.getWorld().getCols());
         // whole cluster or shorten if we are on the "end" of the grid
         int endRowTile = Math.min(Ants.getWorld().getRows(), (r + 1) * clusterSize);
 
         Logger.debug(LogCategory.CLUSTERING_Detail, "verticalScan on r: %s c: %s to r: %s c: %s", startRowTile,
                 startColTile, startRowTile + clusterSize, startColTile);
-
+        List<Tile> path = new ArrayList<Tile>();
         for (int i = startRowTile; i < endRowTile; i++) {
             Tile tile = new Tile(i, startColTile);
             Logger.debug(LogCategory.CLUSTERING_Detail, "Check %s", tile);
+            
             if (Ants.getWorld().isVisible(tile)) {
                 if (Ants.getWorld().getIlk(tile).isPassable()) {
 
                     if (vertices == null) {
                         vertices = tile;
+                        path.add(tile);
                     } else {
+                        path.add(tile);
                         lastVertices = tile;
                     }
                 } else { // now blocked add the last start and endpoint to cluster.
@@ -161,7 +168,9 @@ public class ClusteringTask implements Task {
                     if (lastVertices == null) {
                         // todo what to do?
                     } else {
-                        edges.add(new Edge(vertices, lastVertices, null));
+
+                        edges.add(new Edge(vertices, lastVertices,path, null));
+                       // path = new ArrayList<Tile>();
                     }
                     vertices = null;
                     lastVertices = null;
@@ -173,8 +182,8 @@ public class ClusteringTask implements Task {
                 return null;
             }
         }
-        if (vertices != null && lastVertices != null) {
-            edges.add(new Edge(vertices, lastVertices, null));
+        if (vertices != null && lastVertices != null) {           
+            edges.add(new Edge(vertices, lastVertices, path,null));
         } else if (vertices != null) {
             // todo what to do?
         }
