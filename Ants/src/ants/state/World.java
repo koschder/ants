@@ -356,7 +356,7 @@ public class World {
                     row += "W";
                 }
             }
-            Logger.debug(LogCategory.PATHFINDING, row);
+            Logger.debug(LogCategory.JUNIT, row);
             row = "";
         }
         

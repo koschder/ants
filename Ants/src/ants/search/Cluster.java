@@ -164,6 +164,9 @@ public class Cluster {
     public List<SearchTarget> getEdgeWithNeighbourCluster(DirectedEdge e) {
         List<SearchTarget> list = new ArrayList<SearchTarget>();
 
+        list.addAll(getWithWrapAround(e.getEnd(), row , col));
+        
+        
         if (e.getEnd().getRow() == getBottomFrontier()) // south todo wrap around
 
             list.addAll(getWithWrapAround(e.getEnd(), row + 1, col));

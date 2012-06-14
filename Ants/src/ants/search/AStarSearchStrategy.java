@@ -35,14 +35,16 @@ public class AStarSearchStrategy implements SearchStrategy {
         if (searchSpace1 != null) {
             Logger.debug(LogCategory.PATHFINDING, "In searchspace: %s to %s", searchSpace1, searchSpace2);
         }
+        long start = System.currentTimeMillis();
         List<Tile> list = calculateBestPath(from, to);
         if (list != null && list.size() > 1) {
             Logger.debug(LogCategory.PATHFINDING, "list size() %s", list.size());
             list.remove(0); // first path-tile is position of ant (not the next step)
         }
         String length = list != null ? "has size of " + list.size() : "not found";
+        long elapsed = System.currentTimeMillis() - start;
         Logger.debug(LogCategory.PATHFINDING,
-                "****************  Astar_end:  best path size: %s from: %s to %s path: %s", length, from, to, list);
+                "****************  Astar_end:  best path size: %s from: %s to %s duration %s path: %s", length, from, to,elapsed, list);
         return list;
     }
 
@@ -53,31 +55,20 @@ public class AStarSearchStrategy implements SearchStrategy {
         Set<SearchTarget> explored = new HashSet<SearchTarget>();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>();
         frontier.add(new Node(from, null, 0,from.beelineTo(to)));
-        while (!frontier.isEmpty()) {
-            //Logger.debug(LogCategory.PATHFINDING, "Current frontier list is");
-            for(Node n : frontier){
-                Logger.debug(LogCategory.PATHFINDING, "FFFrontier-Node %s EstCost: %s",n.getState(),n.getEstimatedCost());
-            }
-            
+        while (!frontier.isEmpty()) {           
             Node node = frontier.poll();
-            Logger.debug(LogCategory.PATHFINDING, "Astar ################# next interation #################");
-            Logger.debug(LogCategory.PATHFINDING, "Astar: newforntier item is %s",node.getState());
             explored.add(node.getState());
 
             List<Node> nodes = expand(node);
-            //Logger.debug(LogCategory.PATHFINDING, "Astar: %s has %s items as expanded(next) %s", node.getState(),nodes.size(), nodes);
             for (Node child : nodes) {
                 if (frontier.contains(child) || explored.contains(child.getState()) || maxCostReached(child, to)) {
-                    Logger.debug(LogCategory.PATHFINDING, "Skip new node: %s", child);
                     continue;
                 }
                 if (child.getState().isFinal(to))                  
                     return path(child); // success
                 frontier.add(child);
             }
-            Logger.debug(LogCategory.PATHFINDING, "Astar frontier size: %s", frontier.size());
-            Logger.debug(LogCategory.PATHFINDING, "Astar explored size: %s", explored.size());
-        }
+         }
         return null; // failure
     }
 
@@ -91,11 +82,6 @@ public class AStarSearchStrategy implements SearchStrategy {
         for (SearchTarget a : list) {
             addChild(node, children, a);
         }
-        // addChild(node, children, north);
-        // addChild(node, children, south);
-        // addChild(node, children, west);
-        // addChild(node, children, east);
-        //Logger.debug(LogCategory.PATHFINDING, "size of children %s", children.size());
         return children;
     }
 
@@ -108,7 +94,7 @@ public class AStarSearchStrategy implements SearchStrategy {
         if (childState.isSearchable((parent.getParent() == null))) {
             children.add(new Node(childState, parent, getActualCost(parent, childState),childState.beelineTo(to)));
         } else {
-            Logger.debug(LogCategory.PATHFINDING, "tile %s is not passable", childState);
+            //Logger.debug(LogCategory.PATHFINDING, "tile %s is not passable", childState);
         }
     }
 

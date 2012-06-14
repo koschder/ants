@@ -20,7 +20,7 @@ public class Logger {
         FOLLOW(INFO),
         FOOD(INFO),
         ORDERS(INFO),
-        PATHFINDING(DEBUG),
+        PATHFINDING(INFO),
         PERFORMANCE(INFO),
         SETUP(INFO),
         STATISTICS(INFO),
@@ -28,8 +28,8 @@ public class Logger {
         CLUSTERING(INFO),
         CLUSTERING_Detail(INFO),
         JUNIT(DEBUG),
-        CLUSTERED_ASTAR(DEBUG),
-        HAPstar(DEBUG);
+        CLUSTERED_ASTAR(INFO),
+        HAPstar(INFO);
 
         int level;
 

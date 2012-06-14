@@ -82,12 +82,14 @@ public class DirectedEdge extends Edge implements SearchTarget {
         if (getClass() != obj.getClass())
             return false;
         DirectedEdge other = (DirectedEdge) obj;
-        if (getCluster() == null && other.getCluster() == null)
-            return super.equals(other);
-        else if (getCluster() != null && other.getCluster() != null)
-            return super.equals(other) && getCluster().equals(other.getCluster());
+//        if (getCluster() == null && other.getCluster() == null)
+//            return super.equals(other);
+//        else if (getCluster() != null && other.getCluster() != null)
+//            return super.equals(other) && getCluster().equals(other.getCluster());
 
-        return false;
+        return other.getEnd().equals(getEnd());
+        
+        //return false;
     }
 
     @Override
