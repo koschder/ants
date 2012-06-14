@@ -10,6 +10,12 @@ import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
+/***
+ * Implements the interface Mission an handles the base tasks of a mission.
+ * 
+ * @author kaeserst
+ * 
+ */
 public abstract class BaseMission implements Mission {
     protected Ant ant;
     protected Deque<Move> previousMoves = new ArrayDeque<Move>();
@@ -38,11 +44,21 @@ public abstract class BaseMission implements Mission {
         return previousMoves.isEmpty() ? null : previousMoves.getLast();
     }
 
+    /***
+     * cancels the mission.
+     */
     protected void abandonMission() {
         Logger.debug(LogCategory.EXECUTE_MISSIONS, "Abandoning mission of type %s", getClass().getSimpleName());
         abandon = true;
     }
 
+    /***
+     * puts the next move of the ant in the orders set.
+     * 
+     * @param ant
+     * @param aim
+     * @return true if the move is stored and will be executed.
+     */
     protected boolean putMissionOrder(Ant ant, Aim aim) {
         if (Ants.getOrders().issueOrder(ant, aim, getVisualizeInfos())) {
             previousMoves.add(new Move(ant.getTile(), aim));
@@ -51,12 +67,24 @@ public abstract class BaseMission implements Mission {
         return false;
     }
 
+    /***
+     * 
+     * @return the name of the mission.
+     */
     protected String getVisualizeInfos() {
         return getClass().getSimpleName();
     }
 
+    /***
+     * Abstract class must be implemented be the mission. it checks if the mission is still vaild.
+     * 
+     * @return true if mission is vaild
+     */
     protected abstract boolean isSpecificMissionValid();
 
+    /***
+     * return the ant which executes this mission
+     */
     public Ant getAnt() {
         return ant;
     }

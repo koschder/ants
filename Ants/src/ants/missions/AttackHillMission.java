@@ -6,18 +6,29 @@ import ants.entities.Ant;
 import ants.entities.Tile;
 import ants.state.Ants;
 
+/***
+ * This mission used for attacking the enemies hills
+ * @author kases1,kustl1
+ *
+ */
 public class AttackHillMission extends PathMission {
 
-    Tile hill;
+    /***
+     * the enemy hill.
+     */
+    Tile enemyHill;
 
     public AttackHillMission(Ant ant, List<Tile> path) {
         super(ant, path);
-        hill = path.get(path.size() - 1);
+        enemyHill = path.get(path.size() - 1);
     }
 
+    /***
+     * mission is as long vaild, as long the enemy hill exists.
+     */
     @Override
     protected boolean isSpecificMissionValid() {
-        if (!Ants.getWorld().getEnemyHills().contains(hill))
+        if (!Ants.getWorld().getEnemyHills().contains(enemyHill))
             return false;
         return true;
     }

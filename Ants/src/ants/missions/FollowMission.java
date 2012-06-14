@@ -11,8 +11,7 @@ import ants.util.Logger.LogCategory;
 
 /***
  * This mission is used to let an ant follow an other ant which has already a mission.
- * 
- * @author kaeserst
+ * @author kases1,kustl1
  * 
  */
 public class FollowMission extends BaseMission {
@@ -30,6 +29,10 @@ public class FollowMission extends BaseMission {
         return (mastermission == null || mastermission.isComplete());
     }
 
+    /***
+     * as long as the master mission is valid this mission is vaild to.
+     * if the ant of the master mission is to far away this mission is invalid
+     */
     @Override
     protected boolean isSpecificMissionValid() {
         if (!mastermission.isValid())
@@ -49,6 +52,9 @@ public class FollowMission extends BaseMission {
     }
 
     @Override
+    /***
+     * move towards the ant of the mastermission
+     */
     public void execute() {
 
         Move m = mastermission.getLastMove();

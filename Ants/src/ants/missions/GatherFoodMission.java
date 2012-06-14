@@ -6,18 +6,25 @@ import ants.entities.Ant;
 import ants.entities.Tile;
 import ants.state.Ants;
 
+/***
+ * Mission for gathering a food tile
+ * @author kustl1, kases1
+ *
+ */
 public class GatherFoodMission extends PathMission {
 
     Tile food;
-
     public GatherFoodMission(Ant ant, List<Tile> path) {
         super(ant, path);
         food = path.get(path.size() - 1);
     }
 
+    /***
+     * is valid as long the food is on the map
+     */
     @Override
     public boolean isSpecificMissionValid() {
-        // if food to gather isn't there the mission is not vaild.
+        // if food to gather isn't there the mission is not valid.
         if (!Ants.getWorld().getIlk(food).isFood())
             return false;
         // TODO other checks here
