@@ -9,6 +9,11 @@ import ants.entities.Tile;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
+/***
+ * this mission is implemented to follow a path defined while creating the class
+ * @author kases1, kustl1
+ *
+ */
 public abstract class PathMission extends BaseMission {
 
     public List<Tile> path = new ArrayList<Tile>();
@@ -18,6 +23,10 @@ public abstract class PathMission extends BaseMission {
         this.path = path;
     }
 
+    /***
+     * 
+     * @return the whole path as a string.
+     */
     public String getPathString() {
         if (path == null)
             return "path is null";
@@ -45,6 +54,10 @@ public abstract class PathMission extends BaseMission {
             abandonMission();
     }
 
+    /***
+     * puts the order in the order list where the ant has to go and remove this path piece.
+     * @return true if order is put successful.
+     */
     protected boolean moveToNextTile() {
         if (path == null)
             return false;

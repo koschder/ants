@@ -30,10 +30,14 @@ public class DirectedEdge extends Edge implements SearchTarget {
             startTile =  getTile1();
     }
 
-
+/***
+ * returns all successor edges of the current edges end node
+ */
     @Override
     public List<SearchTarget> getSuccessors() {
         List<SearchTarget> list = new ArrayList<SearchTarget>();
+        if(getCluster() == null)
+            return list;
         list.addAll(getCluster().getEdgeWithNeighbourCluster(this));
         return list;
     }
@@ -48,13 +52,14 @@ public class DirectedEdge extends Edge implements SearchTarget {
         return getEnd().manhattanDistanceTo(dest.getTargetTile());
     }
     
+    /***
+     * returns the path between the two tiles, if the path is not known it is calculated.
+     */
     @Override
     public List<Tile> getPath() {
         if (path != null)
             return path;
-
         path = PathFinder.bestPath(PathFinder.A_STAR, getEnd(), getStart());
-
         return path;
     }
 
