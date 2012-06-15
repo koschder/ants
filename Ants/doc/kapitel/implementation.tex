@@ -70,7 +70,7 @@ Ein Move entspricht einem Zug einer Ameise. Für ein bestimmtes Tile wird angegeb
 
 \subsubsection{Ilk}
 \label{sec:implementation.Entities.Ilk}
-Ilk ist der Typ einer Zelle. Der Ilk einer Tile-Instanz gibt an, was sich gerade in der Zelle befindet. Dies kann eine Gelände-Typ sein, wenn die Zelle ansonsten leer ist, oder es kann eine Ameise, Nahrung, oder eine Hügel sein. Die Ilk-Enumeration bietet Hilfsmethoden, um festzustellen, ob eine Zelle passierbar oder besetzt ist.
+Ilk ist der Typ einer Zelle. Der Ilk einer Tile-Instanz gibt an, was sich gerade in der Zelle befindet. Dies kann ein Gelände-Typ sein, wenn die Zelle ansonsten leer ist, oder es kann eine Ameise, Nahrung, oder ein Hügel sein. Die Ilk-Enumeration bietet Hilfsmethoden, um festzustellen, ob eine Zelle passierbar oder besetzt ist.
 
 \subsubsection{Aim}
 \label{sec:implementation.Entities.Aim}
@@ -122,7 +122,7 @@ Beim Angriffstask wird berechnet ob wir in einem Kampfgebiet (definiert über den
 
 \subsubsection{DefendAreaTask}
 \label{subsec:implementation.Tasks.DefendAreaTask}
-Dieser Task wäre vogesehen um eine Region wie zum Beispiel den eigenen Ameisenhügel zu schützen. Dieser Task wurde mit im Zuge dieser Arbeit nicht implementiert.
+Dieser Task wäre vogesehen um eine Region wie zum Beispiel den eigenen Ameisenhügel zu schützen. Dieser Task wurde im Zuge dieser Arbeit nicht implementiert.
 
 \subsubsection{ExploreTask}
 \label{subsec:implementation.Tasks.ExploreTask}
@@ -149,7 +149,7 @@ Der ClusteringTask wird als Vorbereitung für den HPA* Algorithmus verwendet. Hie
 \caption{Missionen}
 \label{fig:missions}
 \end{figure}
-Eine Mission dauert über mehrere Spielzüge. Die meisten Missionen (GatherFoodMission, ExploreMission, AttackHillMission, AttackAntMission) sind Pfadmissionen\footnote{Die abstrakte Klasse PathMission ist im Code unter ants.missions.PathMission.java auffindbar.} bei welchen die Ameise einem vorgegebenen Pfad, der bereits beim Erstellen der Mission berechnet wurde, folgt. 
+Eine Mission dauert über mehrere Spielzüge. Die meisten Missionen (GatherFoodMission, ExploreMission, AttackHillMission, AttackAntMission) sind Pfadmissionen\footnote{Die abstrakte Klasse PathMission ist im Code unter ants.missions.PathMission.java auffindbar.}, bei welchen die Ameise einem vorgegebenen Pfad, der bereits beim Erstellen der Mission berechnet wurde, folgt. 
 Die FollowMission ist eine spezielle Mission, mit der eine Ameise einfach einer anderen Ameise hinterherläuft.
 
 Eine Mission kann auch abgebrochen werden, wenn es keinen Sinn mehr macht, sie weiter zu verfolgen. Je nach spezifischer Mission sind aber die Abbruchbedingungen anders. Zum Beispiel die GatherFoodMission ist nur solange gültig wie das Futter noch nicht von einer anderen Ameise eingesammelt wurde.
@@ -184,16 +184,18 @@ Jeder Zug beginnt mit dem Einlesen des Inputs vom SystemInputStream. Wenn der Bo
 
 Im 1. Zug werden dabei Instanzen der Tasks erstellt. Abgesehen davon unterscheidet sich der 1. Zug von diesem Punkt an nicht mehr von allen nachfolgenden Zügen. Die Tasks werden vorbereitet (Aufruf der jeweiligen setup() Methode; danach werden einige statistische Werte aktualisiert und in jedem 10. Zug auch geloggt. Dann werden die Tasks in der definierten Reihenfolge aufgerufen. Hier wird der Löwenanteil der Zeit verbracht, denn die Tasks enthalten die eigentliche Logik unserer Ameisen.
 
+Zum Schluss werden dann mit issueOrders() die Züge der Ameisen über den SystemOutputStream an die Spielengine übergeben.
+
 
 \section{Pfadsuche}
 \label{sec:implementation.Pfadsuche}
 Wir haben drei mögliche Pfadalgorithmen in unserem Code eingebaut. Via PathFinder-Klasse kann für die Pfadsuche der Algorithmus ausgewählt werden.
 
 
-\subsection{Simple Algorthmus}
+\subsection{Simple Algorithmus}
 \label{subsec:implementation.Pfadsuche.Simple}
 
-Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, dann die andere Achse abläuft. Sobald ein Hindernis in den Weg kommt bricht der Algorithmus ab. In der Abbildung \ref{fig:SimplePath} sucht der Alogrithmus zuerst den Vertikal-Horizontal Pfad. Da dieser Pfad wegen dem Wasserhindernis (blau) nicht ans Ziel führt, wird via Horizontal-Vertikal Pfad gesucht. Hier wird ein Pfad gefunden. Dieser Algorithmus ist, wie der Name bereits aussagt, sehr einfach aufgebaut und kostet wenig Rechenzeit. Dafür kann er keinen Hindernissen ausweichen.
+Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, dann die andere Achse abläuft. Sobald ein Hindernis in den Weg kommt, bricht der Algorithmus ab. In der Abbildung \ref{fig:SimplePath} sucht der Algorithmus zuerst den Vertikal-Horizontal Pfad. Da dieser Pfad wegen dem Wasserhindernis (blau) nicht ans Ziel führt, wird via Horizontal-Vertikal Pfad gesucht. Hier wird ein Pfad gefunden. Dieser Algorithmus ist, wie der Name bereits aussagt, sehr einfach aufgebaut und kostet wenig Rechenzeit. Dafür kann er keinen Hindernissen ausweichen.
 
 \begin{figure}[bth]
 \centering
@@ -202,11 +204,11 @@ Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, 
 \label{fig:SimplePath}
 \end{figure}
 
-\subsection{A* Algorthmus}
+\subsection{A* Algorithmus}
 \label{subsec:implementation.Pfadsuche.Astar}
-Beim A* Algorithmus werden für jeden expandierten Knoten die geschätzten Kosten f(x) für gesamte Pfadlänge berechnet. f(x) besteht aus einem Teil g(x) welches die effektiven Kosten vom Startknoten zum aktuellen Knoten berechnet. Der andere Teil h(x) ist ein heuristischer Wert, der die Pfadkosten bis zum Zielknoten approximiert. Dieser Wert muss die effektiven Kosten zum Ziel immer unterschätzen. Dies ist in unserem Spiel dadurch gegeben, dass sich die Ameisen nicht diagonal bewegen können, wir aber für den heuristischen Wert die Luftlinie zum Ziel verwenden. Die Pfadsuche wird immer bei dem Knoten fortgesetzt welcher die kleinsten Kosten f(x) hat.
+Beim A* Algorithmus werden für jeden expandierten Knoten die geschätzten Kosten f(x) für die gesamte Pfadlänge berechnet. f(x) besteht aus einem Teil g(x) welches die effektiven Kosten vom Startknoten zum aktuellen Knoten berechnet. Der andere Teil h(x) ist ein heuristischer Wert, der die Pfadkosten bis zum Zielknoten approximiert. Dieser Wert muss die effektiven Kosten zum Ziel immer unterschätzen. Dies ist in unserem Spiel dadurch gegeben, dass sich die Ameisen nicht diagonal bewegen können, wir aber für den heuristischen Wert die Luftlinie zum Ziel verwenden. Die Pfadsuche wird immer bei dem Knoten fortgesetzt welcher die kleinsten Kosten f(x) hat.
 
-Die Abbildung \ref{fig:heuristicAstar} zeigt den effektiven Pfad (grau) vom zu expandierenden roten Knoten mit den minimalen Kosten von 10 Pixel. Die Luftlinie (blau) als heurstischer Wert hat aber nur eine Länge von 7.6 Pixel. Damit erfüllt unsere Heuristik die Anforderungen des Algorithmus.
+Die Abbildung \ref{fig:heuristicAstar} zeigt den effektiven Pfad (grau) vom zu expandierenden roten Knoten mit den minimalen Kosten von 10 Pixel. Die Luftlinie (blau) als heuristischer Wert hat aber nur eine Länge von 7.6 Pixel. Damit erfüllt unsere Heuristik die Anforderungen des Algorithmus.
 
 \begin{figure}[bth]
 \centering
@@ -241,7 +243,7 @@ Danach werden für jeden Cluster und einen Nachbar-Cluster aus der Vierer-Nachbar
 \label{fig.clusteredMap2}
 \end{figure}
 
-Sobald ein Cluster zwei oder mehrere Aussenkanten kennt berechnet er die Innenkanten mit A* welche die Knoten der Aussenkanten verbindet. Dies ergibt nun ein Pfadnetz über die Gesamtkarte. Im nachfolgenden Bild sind die Innenkanten (gelb) ersichtlich, die bei den ersten 8 Cluster berechnet wurden.
+Sobald ein Cluster zwei oder mehrere Aussenkanten kennt berechnet er die Innenkanten mit A* welche die Knoten der Aussenkanten verbinden. Dies ergibt nun ein Pfadnetz über die Gesamtkarte. Im nachfolgenden Bild sind die Innenkanten (gelb) ersichtlich, die bei den ersten 8 Cluster berechnet wurden.
 
 \begin{figure}[bth]
 \centering
@@ -266,7 +268,7 @@ Das Codepaket welches von den Challenge-Organisatoren mitgeliefert wird, bietet 
 Logger.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), 
                 "Task: %s ant: %s", issuer, ant.getTile());
 \end{verbatim}
-Auf der Karte wird ein einfaches aber praktisches Popup mit den geschriebenen Informationen angezeigt. Dank solchen Zusatzinfomrationen muss nicht mühsam im Log nachgeschaut werden, welcher Ameise wann und wo welcher Task zugeordnet ist.
+Auf der Karte wird ein einfaches aber praktisches Popup mit den geschriebenen Informationen angezeigt. Dank solcher Zusatzinformationen muss nicht mühsam im Log nachgeschaut werden, welcher Ameise wann und wo welcher Task zugeordnet ist.
 
 \begin{figure}[bth]
 \centering
