@@ -70,7 +70,7 @@ Ein Move entspricht einem Zug einer Ameise. Für ein bestimmtes Tile wird angegeb
 
 \subsubsection{Ilk}
 \label{sec:implementation.Entities.Ilk}
-Ilk ist der Typ einer Zelle. Der Ilk einer Tile-Instanz gibt an, was sich gerade in der Zelle befindet. Dies kann eine Gelände-Typ sein, wenn die Zelle ansonsten leer ist, oder es kann eine Ameise, Nahrung, oder eine Hügel sein. Die Ilk-Enumeration bietet Hilfsmethoden, um festzustellen, ob eine Zelle passierbar oder besetzt ist.
+Ilk ist der Typ einer Zelle. Der Ilk einer Tile-Instanz gibt an, was sich gerade in der Zelle befindet. Dies kann ein Gelände-Typ sein, wenn die Zelle ansonsten leer ist, oder es kann eine Ameise, Nahrung, oder ein Hügel sein. Die Ilk-Enumeration bietet Hilfsmethoden, um festzustellen, ob eine Zelle passierbar oder besetzt ist.
 
 \subsubsection{Aim}
 \label{sec:implementation.Entities.Aim}
@@ -104,29 +104,29 @@ Implementierende Klassen sind Edge (repäsentiert eine Kante in einem Cluster) un
 \end{figure}
 Zu Beginn des Projekts haben wir die wichtigsten Aufgaben einer Ameise identifiziert. Diese Aufgaben wurden als Tasks in eigenen Klassen implementiert. Das Interface Task\footnote{Das Interface ist im Code unter ants.tasks.Bot.Java auffindbar.} definiert eine setup()-Methode welche den Task initiiert, sowie eine perform()-Methode welche den Task ausführt. Im Programm werden die Tasks nach deren Wichtigkeit ausgeführt, was auch der nachfolgenden Reihenfolge entspricht. Jedem Task stehen nur die unbeschäftigten Ameisen zur Verfügung, d.h. jene welchen noch keine Aufgabe zugeteilt wurde.
 
-\subsubsection{MissionTasks}
+\subsubsection{MissionTask}
 \label{subsec:implementation.Tasks.MissionTask}
-Dieser Task prüft alle akutellen Missionen auf deren Gültigkeit, beispielsweise ob die Ameise der Mission den letzten Zug überlebt hat und die Mission weiterführen kann. Falls gültig, wird der nächste Schritt der Mission ausgeführt.
+Dieser Task prüft alle aktuellen Missionen auf deren Gültigkeit, beispielsweise ob die Ameise der Mission den letzten Zug überlebt hat und die Mission weiterführen kann. Falls gültig, wird der nächste Schritt der Mission ausgeführt.
 
 \subsubsection{GatherFoodTask}
 \label{subsec:implementation.Tasks.GatherFoodTask}
-Für jedes Food-Tile wird in einem definierbaren Radius r die nächsten Ameisen bestimmt. Danach wird aufsteigend der Luftliniendistanz versucht mit dem Pfadsuchalgorithmus SIMPLE (s. Abschnitt \ref{subsec:implementation.Pfadsuche.Simple}) oder falls dieser kein Pfad gefunden hat mit A* eine passierbare Route gesucht. Wenn ein Pfad existiert, kann mit der Ameise und dem Food-Tile eine GatherFoodMission erstellt werden, welche die Ameise zum Food-Tile führt. Zu jedem Food-Tile wird immer nur eine Ameise geschickt.
+Für jedes Food-Tile werden in einem definierbaren Radius r die nächsten Ameisen bestimmt. Danach wird nach aufsteigender Luftliniendistanz mit dem Pfadsuchalgorithmus SIMPLE (s. Abschnitt \ref{subsec:implementation.Pfadsuche.Simple}) oder -- falls dieser keinen Pfad gefunden hat -- mit A* eine passierbare Route gesucht. Wenn ein Pfad existiert, kann mit der Ameise und dem Food-Tile eine GatherFoodMission erstellt werden, welche die Ameise zum Food-Tile führt. Zu jedem Food-Tile wird immer nur eine Ameise geschickt.
 
 \subsubsection{AttackHillsTask}
 \label{subsec:implementation.Tasks.AttackHillsTask}
-Sobald gegnerische Ameisenhaufen sichtbar sind, sollen diese angegriffen werden. Falls dieser, wie bereits erwäht, zerstört wird, werden  zwei Bonuspunkten gutgeschrieben. Die Kriterien, dass eine Pfad zum gegnerischen Haufen gesucht wird, sind die selben wie beim GatherFoodTask, ausser dass mehrere Ameisen das Ziel angreifen können. Es wird ein AttackHillMission erstellt.
+Sobald gegnerische Ameisenhaufen sichtbar sind, sollen diese angegriffen werden. Das Zerstören eines gegnerischen Haufens ist wie erwähnt 2 Punkte wert. Die Kriterien, nach denen eine Pfad zum gegnerischen Haufen gesucht wird, sind die selben wie beim GatherFoodTask, ausser dass mehrere Ameisen das Ziel angreifen können. Es wird eine AttackHillMission erstellt.
 
 \subsubsection{CombatTask}
 \label{subsec:implementation.Tasks.CombatTask}
-Beim Angriffstask wird berechnet ob wir in einem Kampfgebiet (viewRadius2) die Überhand, d.h mehr Ameisen platziert haben. Falls ja wird die gegnerische Ameise angegriffen.
+Beim Angriffstask wird berechnet ob wir in einem Kampfgebiet (definiert über den Sichtradius einer Ameise) die Überhand, d.h. mehr Ameisen platziert haben. Falls ja, wird die gegnerische Ameise angegriffen.
 
 \subsubsection{DefendAreaTask}
 \label{subsec:implementation.Tasks.DefendAreaTask}
-Dieser Task wäre vogesehen um eine Region wie zum Beispiel der eigene Ameisenhügel zu schützen. Dieser Task wurde mit im Zuge dieser Arbeit nicht implementiert.
+Dieser Task wäre vogesehen um eine Region wie zum Beispiel den eigenen Ameisenhügel zu schützen. Dieser Task wurde im Zuge dieser Arbeit nicht implementiert.
 
 \subsubsection{ExploreTask}
 \label{subsec:implementation.Tasks.ExploreTask}
-Für alle noch unbeschäftigten Ameisen wird mittels ManhattanDistance der nächste Ort gesucht, der noch nicht sichtbar, also unerforscht ist. Falls ein Pfad mittels Pfadsuchalgorithmus gefunden wird, wird eine ExplorerMission (s. Abschnitt \ref{sec:implementation.Missionen}) erstellt. Die Ameise wird den gefundenen Pfad in den nächsten Spielzügen ablaufen.
+Für alle noch unbeschäftigten Ameisen wird mittels ManhattanDistance der nächste Ort gesucht, der noch nicht sichtbar, also unerforscht ist. Falls ein Pfad mittels Pfadsuchalgorithmus gefunden wird, wird eine ExploreMission (s. Abschnitt \ref{sec:implementation.Missionen}) erstellt. Die Ameise wird den gefundenen Pfad in den nächsten Spielzügen ablaufen.
 
 \subsubsection{FollowTask}
 \label{subsec:implementation.Tasks.FollowTask}
@@ -134,7 +134,7 @@ Der FollowTask ist für Ameisen angedacht welche aktuell keine Aufgabe haben. Die
 
 \subsubsection{ClearHillTask}
 \label{subsec:implementation.Tasks.ClearHillTask}
-Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel \"schlüpfen\" vom Hügel weg. So werden nachfolgende Ameisen nicht durch diese blockiert.
+Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel ''schlüpfen``, vom Hügel weg. So werden nachfolgende Ameisen nicht durch diese blockiert.
 
 \subsubsection{ClusteringTask}
 \label{subsec:implementation.Tasks.ClusteringTask}
@@ -149,7 +149,7 @@ Der ClusteringTask wird als Vorbereitung für den HPA* Algorithmus verwendet. Hie
 \caption{Missionen}
 \label{fig:missions}
 \end{figure}
-Eine Mission dauert über meherer Spielzüge. Die meisten Missionen (GatherFoodMission, ExploreMission, AttackHillMission, AttackAntMission) sind Pfadmissionen\footnote{Die abstrakte Klasse PathMission ist im Code unter ants.missions.PathMission.java auffindbar.} bei welchen die Ameise einem vorgegebenen Pfad, der bereits beim Erstellen der Mission berechnet wurde, folgt. 
+Eine Mission dauert über mehrere Spielzüge. Die meisten Missionen (GatherFoodMission, ExploreMission, AttackHillMission, AttackAntMission) sind Pfadmissionen\footnote{Die abstrakte Klasse PathMission ist im Code unter ants.missions.PathMission.java auffindbar.}, bei welchen die Ameise einem vorgegebenen Pfad, der bereits beim Erstellen der Mission berechnet wurde, folgt. 
 Die FollowMission ist eine spezielle Mission, mit der eine Ameise einfach einer anderen Ameise hinterherläuft.
 
 Eine Mission kann auch abgebrochen werden, wenn es keinen Sinn mehr macht, sie weiter zu verfolgen. Je nach spezifischer Mission sind aber die Abbruchbedingungen anders. Zum Beispiel die GatherFoodMission ist nur solange gültig wie das Futter noch nicht von einer anderen Ameise eingesammelt wurde.
@@ -180,20 +180,22 @@ Als Basis für unsere Bot Implementation haben wir den Beispiel-Bot verwendet, de
 \label{sec:implementation.Bot.Turn}
 Abbildung \ref{fig:firstTurn} zeigt den Ablauf des ersten Zugs, während Abbildung \ref{fig:turn} den Ablauf aller weiteren Züge zeigt. 
 
-Jeder Zug beginnt mit dem Einlesen des Inputs vom SystemInputStream. Wenn der Bot das Signal "READY" (1. Zug) oder "GO" (alle weiteren Züge) erhält, kann er den gesammelten Input verarbeiten (Methode parseSetup() resp. parseUpdate()). Danach wird die eigentliche Logik des Bots ausgeführt.
+Jeder Zug beginnt mit dem Einlesen des Inputs vom SystemInputStream. Wenn der Bot das Signal ''READY`` (1. Zug) oder ''GO`` (alle weiteren Züge) erhält, kann er den gesammelten Input verarbeiten (Methode parseSetup() resp. parseUpdate()). Danach wird die eigentliche Logik des Bots ausgeführt.
 
 Im 1. Zug werden dabei Instanzen der Tasks erstellt. Abgesehen davon unterscheidet sich der 1. Zug von diesem Punkt an nicht mehr von allen nachfolgenden Zügen. Die Tasks werden vorbereitet (Aufruf der jeweiligen setup() Methode; danach werden einige statistische Werte aktualisiert und in jedem 10. Zug auch geloggt. Dann werden die Tasks in der definierten Reihenfolge aufgerufen. Hier wird der Löwenanteil der Zeit verbracht, denn die Tasks enthalten die eigentliche Logik unserer Ameisen.
+
+Zum Schluss werden dann mit issueOrders() die Züge der Ameisen über den SystemOutputStream an die Spielengine übergeben.
 
 
 \section{Pfadsuche}
 \label{sec:implementation.Pfadsuche}
-Wir haben drei mögliche Pfadalgorithmen in unserem Code eingebaut. Via PathFinder-Klasse kann für die Pfadsuche der Alogrithmus ausgewählt werden.
+Wir haben drei mögliche Pfadalgorithmen in unserem Code eingebaut. Via PathFinder-Klasse kann für die Pfadsuche der Algorithmus ausgewählt werden.
 
 
-\subsection{Simple Algorthmus}
+\subsection{Simple Algorithmus}
 \label{subsec:implementation.Pfadsuche.Simple}
 
-Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, dann die andere Achse abläuft. Sobald ein Hindernis in den Weg kommt bricht der Algorithmus ab. In der Abbildung \ref{fig:SimplePath} sucht der zuerst Alogrithmus den Vertikal-Horizontal Pfad. Da dieser Pfad wegen dem Wasserhindernis (blau) nicht ans Ziel führt, wird via Horizontal-Vertikal Pfad gesucht. Hier wird ein Pfad gefunden. Dieser Algorithmus ist, wie der Name bereits aussagt, sehr einfach aufgebaut und kostet wenig Rechenzeit. Dafür kann er keinen Hindernissen ausweichen.
+Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, dann die andere Achse abläuft. Sobald ein Hindernis in den Weg kommt, bricht der Algorithmus ab. In der Abbildung \ref{fig:SimplePath} sucht der Algorithmus zuerst den Vertikal-Horizontal Pfad. Da dieser Pfad wegen dem Wasserhindernis (blau) nicht ans Ziel führt, wird via Horizontal-Vertikal Pfad gesucht. Hier wird ein Pfad gefunden. Dieser Algorithmus ist, wie der Name bereits aussagt, sehr einfach aufgebaut und kostet wenig Rechenzeit. Dafür kann er keinen Hindernissen ausweichen.
 
 \begin{figure}[bth]
 \centering
@@ -202,16 +204,16 @@ Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, 
 \label{fig:SimplePath}
 \end{figure}
 
-\subsection{A* Algorthmus}
+\subsection{A* Algorithmus}
 \label{subsec:implementation.Pfadsuche.Astar}
-Beim A* Algorithmus wird für jeden expandierten Knoten einen heuristischen Wert f(x) für gesamte Pfadlänge berechnet. f(x) besteht aus einem Teil g(x) welches die effektiven Kosten vom Startknoten zum aktuellen Knoten berechnet. Der andere Teil h(x) ist ein heuristischer Wert der die Pfadkosten welche bis zum Zielknoten approximiert. Dieser Wert muss die effektiven Kosten zum Ziel immer unterschätzen. Dies ist in unserem Spiel dadurch gegeben, dass sich die Ameisen nicht diagonal bewegen können, wir aber für den heuristischen Wert die Luftlinie zum Ziel verwenden. Die Pfadsuche wird immer bei dem Knoten fortgesetzt welcher die kleinsten Kosten f(x) hat.
-\newline
-Die Abbildung \ref{fig:heuristicAstar} zeigt den effektiven Pfad (grau) vom expandierenden roten Knoten mit den minimalen Kosten von 10 Pixel. Die Luftlinie (blau) als heurstischer Wert hat aber nur eine Länge von 7.6 Pixel. Damit erfüllt unsere Implementation die Anforderungen des Algorithmus.
+Beim A* Algorithmus werden für jeden expandierten Knoten die geschätzten Kosten f(x) für die gesamte Pfadlänge berechnet. f(x) besteht aus einem Teil g(x) welches die effektiven Kosten vom Startknoten zum aktuellen Knoten berechnet. Der andere Teil h(x) ist ein heuristischer Wert, der die Pfadkosten bis zum Zielknoten approximiert. Dieser Wert muss die effektiven Kosten zum Ziel immer unterschätzen. Dies ist in unserem Spiel dadurch gegeben, dass sich die Ameisen nicht diagonal bewegen können, wir aber für den heuristischen Wert die Luftlinie zum Ziel verwenden. Die Pfadsuche wird immer bei dem Knoten fortgesetzt welcher die kleinsten Kosten f(x) hat.
+
+Die Abbildung \ref{fig:heuristicAstar} zeigt den effektiven Pfad (grau) vom zu expandierenden roten Knoten mit den minimalen Kosten von 10 Pixel. Die Luftlinie (blau) als heuristischer Wert hat aber nur eine Länge von 7.6 Pixel. Damit erfüllt unsere Heuristik die Anforderungen des Algorithmus.
 
 \begin{figure}[bth]
 \centering
 \includegraphics[height=50mm]{bilder/heuristicAstar.png}
-\caption{Heuristische Kosten (blau), Effektive Kosten (grau)}
+\caption[A* Pfadsuche]{Heuristische Kosten (blau), Effektive Kosten (grau)}
 \label{fig:heuristicAstar}
 \end{figure}
 
@@ -220,37 +222,37 @@ Dieser A*-Algorithmus wird in unserem Code für eine Pfadsuche über alle Pixel (j
 \subsection{HPA* Algorthmus}
 \label{subsec:implementation.Pfadsuche.HPAstar}
 
-Eine Pfadsuche A* überalle Pixel ist sehr teuer, da es viel Pfade gibt, die zum Teil nur ein Pixel nebeneinander liegen. Es werden bis zum Schluss verschiedenen Pfaden nachgegangen. Abhilfe zu dieser sehr feinmaschigen Pfadsuche bietet der Hierarcical Pathfinding A* bei welchem im sogenanten Clustering über mehrere Pixel verlaufende Kanten und Knoten berechnet werden.
+Eine Pfadsuche A* über alle Pixel ist sehr teuer, da es viel Pfade gibt, die zum Teil nur ein Pixel nebeneinander liegen. Es werden bis zum Schluss verschiedenen Pfaden nachgegangen. Abhilfe zu dieser sehr feinmaschigen Pfadsuche bietet der Hierarchical Pathfinding A* bei welchem im sogenanten Clustering über mehrere Pixel verlaufende Kanten und Knoten berechnet werden.
 
-\paragraph[Clustering]{Clustering}
+\subsubsection{Clustering}
 Das Clustering wird während dem ClusteringTask ausgeführt, Dabei wird die Landkarte in sogenannte Clusters unterteilt. Auf dem Bild \ref{fig.clusteredMap} wurde die Karte in 16 Clusters aufgeteilt. 
 
 \begin{figure}[bth]
 \centering
 \includegraphics[height=50mm]{bilder/clusteredMap.png}
-\caption{Clustereinteilung auf der Landkarte. Clustergrösse 4x4, Landkarte 16x16}
+\caption[Clustereinteilung auf der Landkarte.]{Clustereinteilung auf der Landkarte. Clustergrösse 4x4, Landkarte 16x16}
 \label{fig.clusteredMap}
 \end{figure}
 
-Danach wird für jeden Cluster und ein Nachbar aus der vierer Nachbarschaft die Verbindungskanten berechnet. Dies kann natürlich nur für Clusters gemacht werden die auf einem sichtbaren Teil der Landkarte liegen, was zu Begin des Spiel nicht gegeben ist. Deshalb wird der ClusteringTask in jedem Spielzug aufgerufen, in der Hoffnung ein Cluster komplett verbinden zu können. Sobald eine beliebige Seite eines Clusters berechnet ist, wird diese Aussenkante im Cluster und dem anleigenden Nachbar gespeichert und nicht mehr neu berechnet.
+Danach werden für jeden Cluster und einen Nachbar-Cluster aus der Vierer-Nachbarschaft die Verbindungskanten berechnet. Dies kann natürlich nur für Clusters gemacht werden die auf einem sichtbaren Teil der Landkarte liegen, was zu Begin des Spiel nicht gegeben ist. Deshalb wird der ClusteringTask in jedem Spielzug aufgerufen, in der Hoffnung ein Cluster komplett verbinden zu können. Sobald eine beliebige Seite eines Clusters berechnet ist, wird diese Aussenkante im Cluster und dem anliegenden Nachbar gespeichert und nicht mehr neu berechnet.
 
 \begin{figure}[bth]
 \centering
 \includegraphics[height=50mm]{bilder/clusteredMap2.png}
-\caption{Die Kanten jedes Clusters wurden berechnet}
+\caption[Cluster mit berechneten Kanten]{Die Kanten jedes Clusters wurden berechnet}
 \label{fig.clusteredMap2}
 \end{figure}
 
-Sobald ein Cluster zwei oder mehrere Aussenkanten kennt berechnet er die Innenkanten mit A* welche die Knoten der Aussenkanten verbindet. Dies ergibt nun ein Pfadnetz über die Gesamtkarte. Im nachfolgenden Bild sind die Innenkanten (gelb) ersichtlich, die bei den ersten 8 Cluster berechnet wurden.
+Sobald ein Cluster zwei oder mehrere Aussenkanten kennt berechnet er die Innenkanten mit A* welche die Knoten der Aussenkanten verbinden. Dies ergibt nun ein Pfadnetz über die Gesamtkarte. Im nachfolgenden Bild sind die Innenkanten (gelb) ersichtlich, die bei den ersten 8 Cluster berechnet wurden.
 
 \begin{figure}[bth]
 \centering
 \includegraphics[height=50mm]{bilder/clusteredMap3.png}
-\caption{Darstellung der Innenkanten}
+\caption[Cluster mit Innenkanten]{Darstellung der Innenkanten}
 \label{fig.clusteredMap3}
 \end{figure}
 
-In der Abbilding \ref{fig:clusteredMap4} wird ein Pfad vom Pixel (3,9) nach (13,9) mittels HPA* gesucht (grüne Punkte). Zuerst wird eruiert in welchem Cluster sich das Start- bzw Zielpixel befindet. Danach wird in dem gefundenen Cluster ein Weg zu einem beliebigen Knoten auf der Clusterseite gesucht. Sind diese Knoten erreicht (blaue Pfade), wird nun das vorberechnete Pfadnetz mittels bereits beschrieben A* Algroithmus verwendet um die beiden Knoten auf dem kürzesten möglichen Pfad (gelb) zu verbinden.\footnote{Der resultierende Pfad könnte mittels Pathsmoothing verkürzt werden. Dies wurde aber in unserer Arbeit nicht implementiert.}
+In der Abbildung \ref{fig.clusteredMap4} wird ein Pfad vom Pixel (3,9) nach (13,9) mittels HPA* gesucht (grüne Punkte). Zuerst wird eruiert in welchem Cluster sich das Start- bzw Zielpixel befindet. Danach wird in dem gefundenen Cluster ein Weg zu einem beliebigen Knoten auf der Clusterseite gesucht. Sind diese Knoten erreicht (blaue Pfade), wird nun das vorberechnete Pfadnetz mittels bereits beschrieben A* Algorithmus verwendet um die beiden Knoten auf dem kürzesten möglichen Pfad (gelb) zu verbinden.\footnote{Der resultierende Pfad könnte mittels Pathsmoothing verkürzt werden. Dies wurde aber in unserer Arbeit nicht implementiert.}
 
 \begin{figure}[bth]
 \centering
@@ -261,16 +263,17 @@ In der Abbilding \ref{fig:clusteredMap4} wird ein Pfad vom Pixel (3,9) nach (13,
 
 \section{JavaScript Addon für HMTL-Gameviewer}
 \label{sec:implementation.Addon}
-Das Codepaket welches von den Challengeersteller mitgeliefert wird bietet bereits eine hilfreiche 2D-Visualisierung des Spiels mit welchem das Spielgeschehen mitverfolgt werden kann. Die Visualisierung wurde mit HMTL und Javascript implementiert. Leider ist es nicht möglich zusätzliche Informationen auf die Seite zu projizieren. Deshalb haben wir den Viewer mit einer solchen Funktion erweitert. Mit der Codezeile Logger.liveInfo(...) kann eine Zusatzinformation geschrieben werden. Es muss definiert werden mit welchem Zug und wo auf dem Spielfeld die Infomation angezeigt werden soll. Im Beispiel wird an der Position der Ameise ausgegeben welchen Task die Ameise hat.
+Das Codepaket welches von den Challenge-Organisatoren mitgeliefert wird, bietet bereits eine hilfreiche 2D-Visualisierung des Spiels, mit welchem das Spielgeschehen mitverfolgt werden kann. Die Visualisierung wurde mit HMTL und Javascript implementiert. Leider ist es nicht möglich zusätzliche Informationen auf die Seite zu projizieren. Deshalb haben wir den Viewer mit einer solchen Funktion erweitert. Mit der Codezeile Logger.liveInfo(...) kann eine Zusatzinformation geschrieben werden. Es muss definiert werden mit welchem Zug und wo auf dem Spielfeld die Infomation angezeigt werden soll. Im Beispiel wird an der Position der Ameise ausgegeben welchen Task die Ameise hat.
 \begin{verbatim}
-Logger.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s ant: %s", issuer, ant.getTile());
+Logger.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), 
+                "Task: %s ant: %s", issuer, ant.getTile());
 \end{verbatim}
-Auf der Karte wird ein einfaches aber praktisches Popup mit den geschriebenen Informationen angezeigt. Dank solchen Zusatzinfomrationen muss nicht mühsam im Log nach geschaut werden, welcher Ameise wann und wo welcher Task zugeordnet ist.
+Auf der Karte wird ein einfaches aber praktisches Popup mit den geschriebenen Informationen angezeigt. Dank solcher Zusatzinformationen muss nicht mühsam im Log nachgeschaut werden, welcher Ameise wann und wo welcher Task zugeordnet ist.
 
 \begin{figure}[bth]
 \centering
 \includegraphics[height=70mm]{bilder/javascriptAddon.png}
-\caption{Das Popup zeigt dei Aufgabe und den Pfad (blau), welcher die Ameise ablaufen wird.}
+\caption[Live-Info Popup]{Das Popup zeigt die Aufgabe und den Pfad (blau), welcher die Ameise ablaufen wird.}
 \label{fig.javascriptAddon}
 \end{figure}
 
