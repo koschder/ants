@@ -64,12 +64,8 @@ public class EdgeTest {
         DirectedEdge c2Edge = new DirectedEdge(new Tile(0,10),new Tile(0,0),null);
         DirectedEdge c3Edge = new DirectedEdge(new Tile(0,0),new Tile(0,10),null);
     
-        Assert.assertTrue(c2Edge.equals(c3Edge));
+        Assert.assertFalse(c2Edge.equals(c3Edge));
         
-        DirectedEdge c4Edge = new DirectedEdge(new Tile(0,0),new Tile(0,10),null);
-        DirectedEdge c5Edge = new DirectedEdge(new Tile(0,0),new Tile(0,10),new Cluster(0,0,0,0,null));
-    
-        Assert.assertFalse(c4Edge.equals(c5Edge));
     }
 
 

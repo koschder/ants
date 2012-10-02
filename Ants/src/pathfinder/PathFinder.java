@@ -78,7 +78,7 @@ public class PathFinder {
      */
     public List<Tile> search(Strategy strategy, SearchTarget start, SearchTarget end, int maxCost) {
         SearchStrategy searchStrat = getStartegy(strategy);
-        searchStrat.setMaxCost(maxCost);
+        searchStrat.setMaxCost(maxCost);      
         return searchStrat.search(start, end);
     }
 

@@ -32,7 +32,21 @@ public class UnitTestMap extends SearchableMap {
         for (int i = 0; i < sMap.length(); i++) {
             int row = i / x;
             int col = i % x;
-            map[row][col] = sMap.charAt(i) == 'w' ? water : land;
+            map[row][col] = sMap.charAt(i) == 'w' || sMap.charAt(i) == '%' ? water : land;
+        }
+    }
+    
+    
+    public UnitTestMap(List<String> sMapRows) {
+        int mapCols = sMapRows.get(0).length();
+    
+        map = new int[sMapRows.size()][mapCols];
+
+        for (int i = 0; i < sMapRows.size(); i++) {
+            for (int j = 0; j < mapCols; j++) {
+            char charIt = sMapRows.get(i).charAt(j);
+            map[i][j] = charIt == 'w' || charIt == '%' ? water : land;
+            }
         }
     }
 
@@ -89,7 +103,7 @@ public class UnitTestMap extends SearchableMap {
             for (int c = 0; c < getCols(); c++) {
                 verticalLine += "-";
                 Tile t = new Tile(r, c);
-                if (c % clusterSize == 0)
+                if (c % clusterSize == 0 && clusterSize != -1)
                     row += "|";
                 if (path != null && path.contains(t)) {
                     row += "P";
@@ -99,7 +113,7 @@ public class UnitTestMap extends SearchableMap {
                     row += "W";
                 }
             }
-            if (r % clusterSize == 0) {
+            if (r % clusterSize == 0 && clusterSize != -1) {
                 returnString.add(verticalLine);
             }
             returnString.add(row);

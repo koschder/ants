@@ -23,7 +23,7 @@ public class SimpleSearchStrategy extends SearchStrategy {
      * use by DirectedEdges
      */
     @Override
-    public List<Tile> search(SearchTarget areaFrom, SearchTarget areaTo) {
+    public List<Tile> searchPath(SearchTarget areaFrom, SearchTarget areaTo) {
 
         if (!(areaFrom instanceof Tile && areaTo instanceof Tile))
             throw new RuntimeException("SimpleSearchStrategy not implmented for class" + areaTo.getClass());

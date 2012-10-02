@@ -31,7 +31,7 @@ public class Logger {
         FOLLOW(INFO),
         FOOD(INFO),
         ORDERS(INFO),
-        PATHFINDING(INFO),
+        PATHFINDING(DEBUG),
         PERFORMANCE(INFO),
         SETUP(INFO),
         STATISTICS(INFO),

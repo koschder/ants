@@ -21,7 +21,7 @@ public class HPAStarSearchStrategy extends SearchStrategy {
      * return the best path between the from and the to SearchTarget using the HPA* algorithm.
      * if the clustering for the HPA* is not ready yet we use A*
      */
-    public List<Tile> search(SearchTarget from, SearchTarget to) {
+    public List<Tile> searchPath(SearchTarget from, SearchTarget to) {
 
         Tile start = from.getTargetTile();
         Tile end = to.getTargetTile();

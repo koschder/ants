@@ -30,24 +30,12 @@ public class AStarSearchStrategy extends SearchStrategy {
      * 
      * @see starter.SearchStrategy#bestPath(starter.Tile, starter.Tile)
      */
-    public List<Tile> search(SearchTarget from, SearchTarget to) {
+    public List<Tile> searchPath(SearchTarget from, SearchTarget to) {
         this.to = to;
-        Logger.debug(LogCategory.PATHFINDING, "**************** Astar_start: %s to %s", from.toShortString(),
-                to.toShortString());
-        if (searchSpace1 != null) {
-            Logger.debug(LogCategory.PATHFINDING, "In searchspace: %s to %s", searchSpace1, searchSpace2);
-        }
-        long start = System.currentTimeMillis();
         List<Tile> list = calculateBestPath(from, to);
         if (list != null && list.size() > 1) {
-            Logger.debug(LogCategory.PATHFINDING, "list size() %s", list.size());
             list.remove(0); // first path-tile is position of ant (not the next step)
         }
-        String length = list != null ? "has size of " + list.size() : "not found";
-        long elapsed = System.currentTimeMillis() - start;
-        Logger.debug(LogCategory.PATHFINDING,
-                "****************  Astar_end:  best path size: %s from: %s to %s duration %s path: %s", length, from,
-                to, elapsed, list);
         return list;
     }
 

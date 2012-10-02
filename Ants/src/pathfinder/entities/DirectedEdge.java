@@ -81,7 +81,7 @@ public class DirectedEdge extends Edge implements SearchTarget {
         if (getClass() != obj.getClass())
             return false;
         DirectedEdge other = (DirectedEdge) obj;
-        return other.getEnd().equals(getEnd());
+        return other.getEnd().equals(getEnd()) && other.getStart().equals(getStart());
         
     }
 
