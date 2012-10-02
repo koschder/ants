@@ -1,4 +1,4 @@
-package ants.search;
+package pathfinder.search;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -7,20 +7,22 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-import ants.entities.SearchTarget;
-import ants.entities.Tile;
+import pathfinder.PathFinder;
+import pathfinder.entities.Node;
+import pathfinder.entities.SearchTarget;
+import pathfinder.entities.Tile;
+
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
-public class AStarSearchStrategy implements SearchStrategy {
+public class AStarSearchStrategy extends SearchStrategy {
 
-    private int MAXCOSTS = 6;
-    private Tile searchSpace1;
-    private Tile searchSpace2;
-    private SearchTarget to;
-    public AStarSearchStrategy(int maxcosts) {
-        MAXCOSTS = maxcosts;
+    public AStarSearchStrategy(PathFinder f) {
+        super(f);
     }
+
+
+    private SearchTarget to;
 
     @Override
     /*
@@ -28,7 +30,7 @@ public class AStarSearchStrategy implements SearchStrategy {
      * 
      * @see starter.SearchStrategy#bestPath(starter.Tile, starter.Tile)
      */
-    public List<Tile> bestPath(SearchTarget from, SearchTarget to) {
+    public List<Tile> search(SearchTarget from, SearchTarget to) {
         this.to = to;
         Logger.debug(LogCategory.PATHFINDING, "**************** Astar_start: %s to %s", from.toShortString(),
                 to.toShortString());
@@ -44,7 +46,8 @@ public class AStarSearchStrategy implements SearchStrategy {
         String length = list != null ? "has size of " + list.size() : "not found";
         long elapsed = System.currentTimeMillis() - start;
         Logger.debug(LogCategory.PATHFINDING,
-                "****************  Astar_end:  best path size: %s from: %s to %s duration %s path: %s", length, from, to,elapsed, list);
+                "****************  Astar_end:  best path size: %s from: %s to %s duration %s path: %s", length, from,
+                to, elapsed, list);
         return list;
     }
 
@@ -54,8 +57,8 @@ public class AStarSearchStrategy implements SearchStrategy {
 
         Set<SearchTarget> explored = new HashSet<SearchTarget>();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>();
-        frontier.add(new Node(from, null, 0,from.beelineTo(to)));
-        while (!frontier.isEmpty()) {           
+        frontier.add(new Node(from, null, 0, from.beelineTo(to)));
+        while (!frontier.isEmpty()) {
             Node node = frontier.poll();
             explored.add(node.getState());
 
@@ -64,21 +67,21 @@ public class AStarSearchStrategy implements SearchStrategy {
                 if (frontier.contains(child) || explored.contains(child.getState()) || maxCostReached(child, to)) {
                     continue;
                 }
-                if (child.getState().isFinal(to))                  
+                if (child.getState().isFinal(to))
                     return path(child); // success
                 frontier.add(child);
             }
-         }
+        }
         return null; // failure
     }
 
     private boolean maxCostReached(Node child, SearchTarget to) {
-        return child.getEstimatedCost() > MAXCOSTS;
+        return child.getEstimatedCost() > maxCost && maxCost != -1;
     }
 
     public List<Node> expand(Node node) {
         List<Node> children = new ArrayList<Node>();
-        List<SearchTarget> list = node.getState().getSuccessors();
+        List<SearchTarget> list = pathFinder.getSuccessor(node.getState(), node.getParent() == null);
         for (SearchTarget a : list) {
             addChild(node, children, a);
         }
@@ -90,20 +93,12 @@ public class AStarSearchStrategy implements SearchStrategy {
             Logger.debug(LogCategory.PATHFINDING, "tile %s is not in searchspace", childState);
             return;
         }
+        children.add(new Node(childState, parent, getActualCost(parent, childState), childState.beelineTo(to)));
 
-        if (childState.isSearchable((parent.getParent() == null))) {
-            children.add(new Node(childState, parent, getActualCost(parent, childState),childState.beelineTo(to)));
-        } else {
-            //Logger.debug(LogCategory.PATHFINDING, "tile %s is not passable", childState);
-        }
-    }
-
-    private boolean inSearchSpace(SearchTarget areaCheck) {
-        return areaCheck.isInSearchSpace(searchSpace1, searchSpace2);
     }
 
     private int getActualCost(Node current, SearchTarget dest) {
-        
+
         return current.getActualCost();
     }
 
@@ -121,14 +116,5 @@ public class AStarSearchStrategy implements SearchStrategy {
         addToPath(path, child.getParent());
     }
 
-    @Override
-    public void setMaxCost(int i) {
-        this.MAXCOSTS = i;
-    }
 
-    @Override
-    public void setSearchSpace(Tile p1, Tile p2) {
-        this.searchSpace1 = p1;
-        this.searchSpace2 = p2;
-    }
 }

@@ -1,5 +1,6 @@
 package ants.entities;
 
+import pathfinder.entities.Tile;
 import ants.state.Ants;
 
 /**

@@ -1,4 +1,4 @@
-package ants.entities;
+package pathfinder.entities;
 
 import java.util.List;
 
@@ -13,14 +13,14 @@ public interface SearchTarget {
      * 
      * @return the next SearchTarget(s) on were the path goes on.
      */
-    List<SearchTarget> getSuccessors();
+    //List<SearchTarget> getSuccessors();
 
     /***
      * Returns true if the SearchTarget can be used for path finding.
      * @param bParentNode
      * @return
      */
-    boolean isSearchable(boolean bParentNode);
+    //boolean isSearchable(boolean bParentNode);
 
     /***
      * Returns the Manhattan distance to the overgiven destination {@code dest}

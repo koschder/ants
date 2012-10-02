@@ -1,8 +1,7 @@
-package ants.entities;
+package pathfinder.entities;
 
 import java.util.List;
 
-import ants.search.Cluster;
 
 /***
  * Describes a edge consists of to tiles as start and end node.

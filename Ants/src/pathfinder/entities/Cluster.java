@@ -1,17 +1,14 @@
-package ants.search;
+package pathfinder.entities;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import ants.entities.Aim;
-import ants.entities.DirectedEdge;
-import ants.entities.Edge;
-import ants.entities.SearchTarget;
-import ants.entities.Tile;
-import ants.entities.Vertex;
-import ants.entities.Edge.EdgeType;
+import pathfinder.PathFinder;
+import pathfinder.entities.Edge.EdgeType;
+
+
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
@@ -171,7 +168,7 @@ public class Cluster {
         Tile searchSpace0 = new Tile(row * clusterSize, col * clusterSize);
         // todo is +1 correct?
         Tile searchSpace1 = new Tile((row + 1) * clusterSize + 1, (col + 1) * clusterSize + 1);
-        List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, tStart, tEnd, searchSpace0, searchSpace1, costs);
+        List<Tile> path = clustering.getPathFinder().search(PathFinder.Strategy.AStar,tStart, tEnd, searchSpace0, searchSpace1, costs);
         // List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, tStart, tEnd);
         if (path == null)
             return;
@@ -179,8 +176,8 @@ public class Cluster {
         Logger.debug(LogCategory.CLUSTERING_Detail, "%s: found!!", name);
         edge.setPath(path);
         edges.add(edge);
-        processVertex(edge, edge.getTile1());
-        processVertex(edge, edge.getTile2());
+        processVertex(edge.getTile1(), edge);
+        processVertex(edge.getTile2(), edge);
 
     }
 
@@ -283,16 +280,16 @@ public class Cluster {
         return (row + 1) * clusterSize;
     }
 
-    /***
-     * 
-     * @param tile
-     * @return a an existing vertex on the tile
-     */
-    public Vertex getVertex(Tile tile) {
-        if (vertices.contains(tile))
-            return vertices.get(vertices.indexOf(tile));
-        return null;
-    }
+//    /***
+//     * 
+//     * @param tile
+//     * @return a an existing vertex on the tile
+//     */
+//    public Vertex getVertex(Tile tile) {
+//        if (vertices.contains(tile))
+//            return vertices.get(vertices.indexOf(tile));
+//        return null;
+//    }
 
     /***
      * returns all continuative edges of the cluster[clusterRow][clusterCol]
@@ -345,23 +342,26 @@ public class Cluster {
         for (Edge e : newEdges) {
             e.setEdgeType(getEdgeType(newaim));
             e.setCluster(this);
-            processVertex(e, e.getTile1());
-            processVertex(e, e.getTile2());
+            processVertex(e.getTile1(), e);
+            processVertex(e.getTile2(), e);
         }
 
     }
 
-    /***
-     * add the vertices to the vertices list if they aren't yet.
-     * 
-     * @param e
-     * @param t
-     */
-    private void processVertex(Edge e, Tile t) {
-        if (vertices.contains(t))
+/***
+ * add the vertices to the vertices list if they aren't yet.
+ * @param t
+ * @param e
+ * @return true if the tile is a new vertices and was added
+ */
+    private boolean processVertex(Tile t, Edge e) {
+        if (vertices.contains(t) && e != null){
             vertices.get(vertices.indexOf(t)).addEdge(e);
-        else
-            vertices.add(new Vertex(e.getTile1(), e));
+            return false;
+        }else{
+            vertices.add(new Vertex(t, e));
+        return true;
+        }
     }
 
     /***
@@ -369,7 +369,7 @@ public class Cluster {
      * @param newaim
      * @param newEdges
      */
-    public void SetCluster(Aim newaim, List<Edge> newEdges) {
+    public void addEdge(Aim newaim, List<Edge> newEdges) {
         scannedAims.add(newaim);
         Logger.debug(LogCategory.CLUSTERING_Detail, "%s: New edges arrived from aim %s E: %s", name, newaim, newEdges);
         if (newEdges.size() > 0) {
@@ -393,6 +393,17 @@ public class Cluster {
     @Override
     public String toString() {
         return name + " Scanned aims: " + scannedAims + " Edge: " + edges.size() + " Vertices: " + vertices.size();
+    }
+
+    public void addTiles(Aim newScannedAim, List<Tile> tiles) {
+        scannedAims.add(newScannedAim);
+        for(Tile t : tiles){
+            if(processVertex(t,null)){
+                for(Vertex x : vertices)
+                    findNewEdge(t, x);
+            }
+        }
+        
     }
 
 }

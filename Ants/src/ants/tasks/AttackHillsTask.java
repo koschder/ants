@@ -4,11 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import pathfinder.entities.Tile;
+
+
 import ants.entities.Ant;
 import ants.entities.Route;
-import ants.entities.Tile;
 import ants.missions.AttackHillMission;
-import ants.search.PathFinder;
+import ants.search.AntsPathFinder;
 import ants.state.Ants;
 
 /**
@@ -39,7 +41,7 @@ public class AttackHillsTask extends BaseTask {
         }
         Collections.sort(hillRoutes);
         for (Route route : hillRoutes) {
-            List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, route.getStart(), route.getEnd());
+            List<Tile> path =Ants.getPathFinder().bestPath(AntsPathFinder.A_STAR, route.getStart(), route.getEnd());
             if (path != null)
                 Ants.getOrders().addMission(new AttackHillMission(route.getAnt(), path));
         }

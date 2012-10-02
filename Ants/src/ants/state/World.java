@@ -10,10 +10,13 @@ import java.util.Set;
 
 import javax.management.RuntimeErrorException;
 
-import ants.entities.Aim;
+import pathfinder.entities.Aim;
+import pathfinder.entities.SearchTarget;
+import pathfinder.entities.SearchableMap;
+import pathfinder.entities.Tile;
+
 import ants.entities.Ant;
 import ants.entities.Ilk;
-import ants.entities.Tile;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
@@ -23,7 +26,7 @@ import ants.util.Logger.LogCategory;
  * @author kases1,kustl1
  * 
  */
-public class World {
+public class World extends SearchableMap {
 
     private int rows;
 
@@ -159,27 +162,7 @@ public class World {
         map[tile.getRow()][tile.getCol()] = ilk;
     }
 
-    /**
-     * Returns location in the specified direction from the specified location.
-     * 
-     * @param tile
-     *            location on the game map
-     * @param direction
-     *            direction to look up
-     * 
-     * @return location in <code>direction</code> from <cod>tile</code>
-     */
-    public Tile getTile(Tile tile, Aim direction) {
-        int row = (tile.getRow() + direction.getRowDelta()) % rows;
-        if (row < 0) {
-            row += rows;
-        }
-        int col = (tile.getCol() + direction.getColDelta()) % cols;
-        if (col < 0) {
-            col += cols;
-        }
-        return new Tile(row, col);
-    }
+
 
     /**
      * Returns location with the specified offset from the specified location.
@@ -288,46 +271,7 @@ public class World {
         return rowDelta * rowDelta + colDelta * colDelta;
     }
 
-    /**
-     * Returns one or two orthogonal directions from one location to the another.
-     * 
-     * @param t1
-     *            one location on the game map
-     * @param t2
-     *            another location on the game map
-     * 
-     * @return orthogonal directions from <code>t1</code> to <code>t2</code>
-     */
-    public List<Aim> getDirections(Tile t1, Tile t2) {
-        List<Aim> directions = new ArrayList<Aim>();
-        if (t1.getRow() < t2.getRow()) {
-            if (t2.getRow() - t1.getRow() >= rows / 2) {
-                directions.add(Aim.NORTH);
-            } else {
-                directions.add(Aim.SOUTH);
-            }
-        } else if (t1.getRow() > t2.getRow()) {
-            if (t1.getRow() - t2.getRow() >= rows / 2) {
-                directions.add(Aim.SOUTH);
-            } else {
-                directions.add(Aim.NORTH);
-            }
-        }
-        if (t1.getCol() < t2.getCol()) {
-            if (t2.getCol() - t1.getCol() >= cols / 2) {
-                directions.add(Aim.WEST);
-            } else {
-                directions.add(Aim.EAST);
-            }
-        } else if (t1.getCol() > t2.getCol()) {
-            if (t1.getCol() - t2.getCol() >= cols / 2) {
-                directions.add(Aim.EAST);
-            } else {
-                directions.add(Aim.WEST);
-            }
-        }
-        return directions;
-    }
+ 
 
     /**
      * Updates game state information about hills locations.
@@ -395,4 +339,36 @@ public class World {
         }
 
     }
+ 
+    public List<SearchTarget> getSuccessor(SearchTarget target,boolean isNextMove) {
+            Tile state = target.getTargetTile();
+            List<SearchTarget> list = new ArrayList<SearchTarget>();
+            if(isPassable(getTile(state, Aim.NORTH),isNextMove))
+                list.add(getTile(state, Aim.NORTH));
+                if(isPassable(getTile(state, Aim.SOUTH),isNextMove))
+                list.add(getTile(state, Aim.SOUTH));
+                if(isPassable(getTile(state, Aim.WEST),isNextMove))
+                list.add(getTile(state, Aim.WEST));
+                if(isPassable(getTile(state, Aim.EAST),isNextMove))
+                list.add(getTile(state, Aim.EAST));
+            return list;
+    }
+    
+    private boolean isPassable(Tile tile, boolean nextMove) {
+        return isPassable(tile) && !isOccupiedForNextMove(nextMove);
+    }
+
+    public boolean isPassable(SearchTarget tile) {
+        return Ants.getWorld().getIlk(tile.getTargetTile()).isPassable();
+    }
+    
+    private boolean isOccupiedForNextMove(boolean bParentNode) {
+        if (!bParentNode) // we are on the 2nd level of the search tree
+            return Ants.getOrders().getOrders().containsValue(this);
+        return false;
+    }
+
+    public boolean isVisible(SearchTarget tile) {
+        return visible[tile.getTargetTile().getRow()][tile.getTargetTile().getCol()];
+    }    
 }

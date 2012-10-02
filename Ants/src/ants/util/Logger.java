@@ -5,7 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.PrintStream;
 import java.io.RandomAccessFile;
 
-import ants.entities.Tile;
+import pathfinder.entities.Tile;
+
 
 /**
  * Logger class that writes application logs to a separate log file.

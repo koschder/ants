@@ -5,10 +5,11 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import ants.entities.Aim;
+import pathfinder.entities.Aim;
+import pathfinder.entities.Tile;
+
 import ants.entities.Ant;
 import ants.entities.Move;
-import ants.entities.Tile;
 import ants.missions.Mission;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;

@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.junit.Test;
 
-import ants.entities.Tile;
-import ants.search.PathFinder;
 import ants.state.Ants;
 import ants.state.World;
 import ants.tasks.ClusteringTask;

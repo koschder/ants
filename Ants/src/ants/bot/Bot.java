@@ -1,7 +1,7 @@
 package ants.bot;
 
+import pathfinder.entities.Tile;
 import ants.entities.Ilk;
-import ants.entities.Tile;
 import ants.state.Ants;
 
 /**

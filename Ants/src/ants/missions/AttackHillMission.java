@@ -2,8 +2,9 @@ package ants.missions;
 
 import java.util.List;
 
+import pathfinder.entities.Tile;
+
 import ants.entities.Ant;
-import ants.entities.Tile;
 import ants.state.Ants;
 
 /***

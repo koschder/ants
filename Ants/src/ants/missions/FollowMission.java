@@ -2,10 +2,12 @@ package ants.missions;
 
 import java.util.List;
 
+import pathfinder.entities.Tile;
+
 import ants.entities.Ant;
 import ants.entities.Move;
-import ants.entities.Tile;
-import ants.search.PathFinder;
+import ants.search.AntsPathFinder;
+import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
@@ -60,7 +62,7 @@ public class FollowMission extends BaseMission {
         Move m = mastermission.getLastMove();
         if (m == null || m.getTile().equals(ant.getTile())) // no move done yet, wait to the next round;
             return;
-        List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, ant.getTile(), m.getTile());
+        List<Tile> path = Ants.getPathFinder().bestPath(AntsPathFinder.SIMPLE, ant.getTile(), m.getTile());
         if (path == null)
             abandonMission();
         else

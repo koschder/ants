@@ -1,13 +1,15 @@
-package ants.unittest;
+package pathfinder.unittest;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import ants.entities.DirectedEdge;
-import ants.entities.Edge;
-import ants.entities.Tile;
-import ants.search.Cluster;
+import pathfinder.entities.Cluster;
+import pathfinder.entities.DirectedEdge;
+import pathfinder.entities.Edge;
+import pathfinder.entities.Tile;
+import pathfinder.entities.Vertex;
+
 
 public class EdgeTest {
 
@@ -30,6 +32,24 @@ public class EdgeTest {
 
     }
     
+    
+    @Test
+    public void compareVertexTest() {
+
+        Tile t1 = new Tile(3, 4);
+        Tile t2 = new Tile(10, 3);
+        Tile t3 = new Tile(10, 3);
+        Edge e1 = new Edge(t1, t2, null);
+        Vertex v1 = new Vertex(t1,e1);
+        Vertex v2 = new Vertex(t2,e1);
+        Vertex v3 = new Vertex(t3,e1);
+
+        boolean b1 = v1.equals(v2);
+        
+        Assert.assertFalse(b1);
+        Assert.assertTrue(v2.equals(v3));
+
+    }
     
     /***
      * compare directed edges

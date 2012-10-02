@@ -1,25 +1,29 @@
-package ants.search;
+package pathfinder.search;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.management.RuntimeErrorException;
+import pathfinder.PathFinder;
+import pathfinder.entities.Aim;
+import pathfinder.entities.SearchTarget;
+import pathfinder.entities.Tile;
 
-import ants.entities.Aim;
-import ants.entities.SearchTarget;
-import ants.entities.Tile;
-import ants.state.Ants;
+
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
-public class SimpleSearchStrategy implements SearchStrategy {
+public class SimpleSearchStrategy extends SearchStrategy {
+
+    public SimpleSearchStrategy(PathFinder f) {
+        super(f);
+    }
 
     /***
      * the simplest algorithm for finding a path by connecting two straight lines. This alogrithm cannot be
      * use by DirectedEdges
      */
     @Override
-    public List<Tile> bestPath(SearchTarget areaFrom, SearchTarget areaTo) {
+    public List<Tile> search(SearchTarget areaFrom, SearchTarget areaTo) {
 
         if (!(areaFrom instanceof Tile && areaTo instanceof Tile))
             throw new RuntimeException("SimpleSearchStrategy not implmented for class" + areaTo.getClass());
@@ -56,6 +60,8 @@ public class SimpleSearchStrategy implements SearchStrategy {
 
         path.addAll(firstLeg);
         path.addAll(secondLeg);
+        if(path.size() > maxCost && maxCost != -1)
+            return null; //pfad zu lang.
         return path;
     }
 
@@ -68,33 +74,22 @@ public class SimpleSearchStrategy implements SearchStrategy {
     private List<Tile> getStraightPath(Tile from, Tile to) {
         List<Tile> path = new ArrayList<Tile>();
 
-        List<Aim> directions = Ants.getWorld().getDirections(from, to);
+        List<Aim> directions = pathFinder.getMap().getDirections(from, to);
         if (!(directions.size() == 1))
             Logger.error(LogCategory.PATHFINDING, "more than 1 direction from %s to %s", from, to);
         Aim aim = directions.get(0);
-
-        if (!Ants.getWorld().getIlk(from, aim).isUnoccupied())
+        
+        if(!pathFinder.getMap().isPassable(pathFinder.getMap().getTile(from, aim)))
             return null;
 
         Tile t = from;
         while (!t.equals(to)) {
-            if (!Ants.getWorld().getIlk(t, aim).isPassable())
-                return null; // straight path is blocked
-            t = Ants.getWorld().getTile(t, aim);
+            t = pathFinder.getMap().getTile(t, aim);
+            if (!pathFinder.getMap().isPassable(t) || !inSearchSpace(t))
+                return null; // straight path is blocked           
             path.add(t);
         }
         path.add(to);
         return path;
-    }
-
-    @Override
-    public void setMaxCost(int i) {
-        // no maxcost for this SearchStratey
-        throw new RuntimeErrorException(null, "this function is not implemented yet");
-    }
-
-    @Override
-    public void setSearchSpace(Tile p1, Tile p2) {
-        throw new RuntimeErrorException(null, "this function is not implemented yet");
     }
 }

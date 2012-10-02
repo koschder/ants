@@ -4,10 +4,11 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
+import pathfinder.entities.Tile;
+
 import ants.entities.Ant;
-import ants.entities.Tile;
 import ants.missions.AttackAntMission;
-import ants.search.PathFinder;
+import ants.search.AntsPathFinder;
 import ants.state.Ants;
 
 /**
@@ -39,7 +40,7 @@ public class CombatTask extends BaseTask {
 
     private void attackEnemy(Ant enemy, List<Ant> friends) {
         for (Ant ant : friends) {
-            List<Tile> path = PathFinder.bestPath(PathFinder.A_STAR, ant.getTile(), enemy.getTile());
+            List<Tile> path = Ants.getPathFinder().bestPath(AntsPathFinder.A_STAR, ant.getTile(), enemy.getTile());
             if (path != null)
                 Ants.getOrders().addMission(new AttackAntMission(ant, path));
         }

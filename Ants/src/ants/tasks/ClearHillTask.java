@@ -1,6 +1,6 @@
 package ants.tasks;
 
-import ants.entities.Aim;
+import pathfinder.entities.Aim;
 import ants.entities.Ant;
 import ants.state.Ants;
 

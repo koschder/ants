@@ -5,8 +5,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import pathfinder.entities.Tile;
+
 import ants.entities.Ant;
-import ants.entities.Tile;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 

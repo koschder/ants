@@ -1,10 +1,8 @@
-package ants.entities;
+package pathfinder.entities;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import ants.state.Ants;
 
 /**
  * Represents a tile of the game map.
@@ -67,7 +65,8 @@ public class Tile implements Comparable<Tile>, SearchTarget {
      */
     @Override
     public int hashCode() {
-        return row * Ants.MAX_MAP_SIZE + col;
+        //TODO unschen
+        return row * 2000 + col;
     }
 
     /**
@@ -111,26 +110,13 @@ public class Tile implements Comparable<Tile>, SearchTarget {
         }
     }
 
-    @Override
-    public List<SearchTarget> getSuccessors() {
-        List<SearchTarget> list = new ArrayList<SearchTarget>();
-        list.add(Ants.getWorld().getTile(this, Aim.NORTH));
-        list.add(Ants.getWorld().getTile(this, Aim.SOUTH));
-        list.add(Ants.getWorld().getTile(this, Aim.WEST));
-        list.add(Ants.getWorld().getTile(this, Aim.EAST));
-        return list;
-    }
 
-    @Override
-    public boolean isSearchable(boolean bParentNode) {
-        return Ants.getWorld().getIlk(this).isPassable() && !isOccupiedForNextMove(bParentNode);
-    }
+//    @Override
+//    public boolean isSearchable(boolean bParentNode) {
+//        return Ants.getWorld().getIlk(this).isPassable() && !isOccupiedForNextMove(bParentNode);
+//    }
 
-    private boolean isOccupiedForNextMove(boolean bParentNode) {
-        if (!bParentNode) // we are on the 2nd level of the search tree
-            return Ants.getOrders().getOrders().containsValue(this);
-        return false;
-    }
+
 
    
 

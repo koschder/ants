@@ -1,10 +1,7 @@
-package ants.entities;
+package pathfinder.entities;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import ants.search.Cluster;
-import ants.search.PathFinder;
 
 /***
  * DirectedEdge is used to define which is the start and the end node of the Edge
@@ -33,19 +30,15 @@ public class DirectedEdge extends Edge implements SearchTarget {
 /***
  * returns all successor edges of the current edges end node
  */
-    @Override
-    public List<SearchTarget> getSuccessors() {
-        List<SearchTarget> list = new ArrayList<SearchTarget>();
-        if(getCluster() == null)
-            return list;
-        list.addAll(getCluster().getEdgeWithNeighbourCluster(this));
-        return list;
-    }
+//    @Override
+//    public List<SearchTarget> getSuccessors() {
+//
+//    }
 
-    @Override
-    public boolean isSearchable(boolean bParentNode) {
-        return true;
-    }
+//    @Override
+//    public boolean isSearchable(boolean bParentNode) {
+//        return true;
+//    }
 
     @Override
     public int manhattanDistanceTo(SearchTarget dest) {
@@ -59,8 +52,7 @@ public class DirectedEdge extends Edge implements SearchTarget {
     public List<Tile> getPath() {
         if (path != null)
             return path;
-        path = PathFinder.bestPath(PathFinder.A_STAR, getEnd(), getStart());
-        return path;
+        throw new RuntimeException("path is null, it must be calculated before instanced the object");
     }
 
     /***

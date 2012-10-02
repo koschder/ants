@@ -1,6 +1,5 @@
-package ants.search;
+package pathfinder.entities;
 
-import ants.entities.SearchTarget;
 
 /***
  * this class is used in the as item in the frontier and in the explored list at A* algorithm.

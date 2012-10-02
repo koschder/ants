@@ -17,7 +17,7 @@
 			<arg line="--end_wait=0.25" />
 			<arg line="--verbose" />
 			<arg line="--log_dir logs" />
-			<arg line="--turns 30" />
+			<arg line="--turns 50" />
 			<arg line="--map_file tools/submission_test/test.map" />
 			<arg line="&quot;java -jar TutorialBot.jar&quot;" />
 			<arg line="&quot;python tools/submission_test/TestBot.py&quot;" />
@@ -31,10 +31,10 @@
 			<arg line="&quot;python tools/sample_bots/python/HunterBot.py&quot;" />
 			<arg line="--map_file tools/maps/example/tutorial1.map" />
 			<arg line="--log_dir logs" />
-			<arg line="--turns 60" />
+			<arg line="--turns 120" />
 			<arg line="--scenario" />
 			<arg line="--food none" />
-			<arg line="--player_seed 7" />
+			<arg line="--player_seed 9" />
 			<arg line="--verbose" />
 			<arg line="-e" />
 		</exec>

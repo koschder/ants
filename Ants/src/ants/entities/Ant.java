@@ -8,6 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
+import pathfinder.entities.Tile;
+
 public class Ant implements Comparable<Ant> {
     public static final int MINE = 0;
     private Tile tile;

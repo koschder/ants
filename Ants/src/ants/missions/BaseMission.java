@@ -3,7 +3,8 @@ package ants.missions;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
-import ants.entities.Aim;
+import pathfinder.entities.Aim;
+
 import ants.entities.Ant;
 import ants.entities.Move;
 import ants.state.Ants;

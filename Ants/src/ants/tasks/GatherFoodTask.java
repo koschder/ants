@@ -7,11 +7,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import pathfinder.entities.Tile;
+
+
 import ants.entities.Ant;
 import ants.entities.Route;
-import ants.entities.Tile;
 import ants.missions.GatherFoodMission;
-import ants.search.PathFinder;
+import ants.search.AntsPathFinder;
 import ants.state.Ants;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
@@ -56,9 +58,9 @@ public class GatherFoodTask extends BaseTask {
         for (Route route : foodRoutes) {
             // food not already targeted && ant not used
             if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())) {
-                List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, route.getStart(), route.getEnd());
+                List<Tile> path = Ants.getPathFinder().bestPath(AntsPathFinder.SIMPLE, route.getStart(), route.getEnd());
                 if (path == null)
-                    path = PathFinder.bestPath(PathFinder.A_STAR, route.getStart(), route.getEnd());
+                    path = Ants.getPathFinder().bestPath(AntsPathFinder.A_STAR, route.getStart(), route.getEnd());
                 if (path == null)
                     continue;
                 Ants.getOrders().addMission(new GatherFoodMission(route.getAnt(), path));

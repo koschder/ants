@@ -1,9 +1,11 @@
 package ants.state;
 
+import pathfinder.PathFinder;
+import pathfinder.entities.Clustering;
+import pathfinder.entities.Tile;
 import ants.entities.Ant;
 import ants.entities.Ilk;
-import ants.entities.Tile;
-import ants.search.Clustering;
+import ants.search.AntsPathFinder;
 
 /**
  * Container class for the game state. Provides access to game metadata (such as turnTime, startTime, ...) as well as
@@ -35,7 +37,7 @@ public enum Ants {
     private Orders orders;
 
     // clusters for hierarchical graph pathfidning.
-    private Clustering clustering;
+    private AntsPathFinder pathfinder;
 
     /**
      * Creates new {@link Ants} object.
@@ -65,7 +67,7 @@ public enum Ants {
         this.world = new World(rows, cols, viewRadius2, attackRadius2, spawnRadius2);
         this.population = new Population();
         this.orders = new Orders();
-        this.clustering = new Clustering(7);
+        this.pathfinder = new AntsPathFinder();
     }
 
     /**
@@ -207,8 +209,8 @@ public enum Ants {
      * 
      * @return the singleton instance of Clustering
      */
-    public static Clustering getClusters() {
-        return INSTANCE.clustering;
+    public static AntsPathFinder getPathFinder() {
+        return INSTANCE.pathfinder;
     }
 
     /**
@@ -265,8 +267,8 @@ public enum Ants {
      * 
      * @param i
      */
-    public void initClustering(int i) {
-        this.clustering = new Clustering(i);
+    public void initPathFinder() {
+        this.pathfinder = new AntsPathFinder();
     }
 
 }

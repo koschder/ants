@@ -2,8 +2,9 @@ package ants.tasks;
 
 import java.util.Iterator;
 
+import pathfinder.entities.Tile;
+
 import ants.entities.Ant;
-import ants.entities.Tile;
 import ants.missions.FollowMission;
 import ants.missions.Mission;
 import ants.state.Ants;

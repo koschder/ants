@@ -1,5 +1,8 @@
 package ants.entities;
 
+import pathfinder.entities.Aim;
+import pathfinder.entities.Tile;
+
 /***
  * a move stores the current position and the direction where to move.
  * @author kustl1, kases1

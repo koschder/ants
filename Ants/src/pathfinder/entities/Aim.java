@@ -1,4 +1,4 @@
-package ants.entities;
+package pathfinder.entities;
 
 import java.util.HashMap;
 import java.util.Map;

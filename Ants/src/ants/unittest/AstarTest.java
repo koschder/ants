@@ -35,19 +35,7 @@ public class AstarTest {
     }
 
     private void initMap() {
-        /*
-         * generate map like this 
-         * wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww -----------------------------------------
-         * woooooooooowwwwwwwwwwooooooooooooooow -----------------------------------------
-         * woooooooooowwwwwwwwwwooooooooooooooow -----------------------------------------
-         * woooooooooowwwwwwwwwwooooooooooooooow-----------------------------------------
-         * woooooooooowwwwwwwwwwooooooooooooooow -----------------------------------------
-         * woooooooooowwwwwwwwwwooooooooooooooow-----------------------------------------
-         * wooooooooooooooooooooooooooooooooooow -----------------------------------------
-         * wooooooooooooooooooooooooooooooooooow-----------------------------------------
-         * wooooooooooooooooooooooooooooooooooow -----------------------------------------
-         * wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww-----------------------------------------
-         */
+        
 
         World w = new World(40, 40, 5, 5, 5);
         w.setEverythingVisibleAndPassable();

@@ -3,9 +3,10 @@ package ants.missions;
 import java.util.ArrayList;
 import java.util.List;
 
-import ants.entities.Aim;
+import pathfinder.entities.Aim;
+import pathfinder.entities.Tile;
+
 import ants.entities.Ant;
-import ants.entities.Tile;
 import ants.util.Logger;
 import ants.util.Logger.LogCategory;
 
