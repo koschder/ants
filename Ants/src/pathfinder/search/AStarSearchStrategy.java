@@ -81,7 +81,7 @@ public class AStarSearchStrategy extends SearchStrategy {
 
     public List<Node> expand(Node node) {
         List<Node> children = new ArrayList<Node>();
-        List<SearchTarget> list = pathFinder.getSuccessor(node.getState(), node.getParent() == null);
+        List<SearchTarget> list = pathFinder.getMap().getSuccessor(node.getState(), node.getParent() == null);
         for (SearchTarget a : list) {
             addChild(node, children, a);
         }

@@ -49,9 +49,9 @@ public class ClusteringTest {
         
         UnitTestMap map = new UnitTestMap(cols,sMap);
         PathFinder pf = new PathFinder();
-        
+        int clusterSize = 8;
         pf.setMap(map);
-        pf.InitClustering(WorldType.Globe, 8,clusterType);
+        pf.InitClustering(WorldType.Globe, clusterSize,clusterType);
         
         pf.cluster();
         
@@ -65,7 +65,7 @@ public class ClusteringTest {
             tiles.add(x.getTargetTile());
         }
         String name = "ClusterByType"+clusterType;
-        map.printMap(tiles,clusterd.getClusterSize());
-        map.saveHtmlMap(name,tiles,clusterd.getClusterSize());
+        map.printMap(tiles,clusterSize);
+        map.saveHtmlMap(name,tiles,clusterSize);
     }
 }

@@ -1,6 +1,5 @@
 package pathfinder.entities;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /***
@@ -26,19 +25,6 @@ public class DirectedEdge extends Edge implements SearchTarget {
         else
             startTile =  getTile1();
     }
-
-/***
- * returns all successor edges of the current edges end node
- */
-//    @Override
-//    public List<SearchTarget> getSuccessors() {
-//
-//    }
-
-//    @Override
-//    public boolean isSearchable(boolean bParentNode) {
-//        return true;
-//    }
 
     @Override
     public int manhattanDistanceTo(SearchTarget dest) {

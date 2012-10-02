@@ -87,7 +87,7 @@ public class Node implements Comparable<Node> {
 
     @Override
     /**
-     * cosider the digit behind the comma.
+     * consider the digit behind the comma.
      */
     public int compareTo(Node o) {
         return ((int)costEstimated*100) - ((int)o.costEstimated*100);

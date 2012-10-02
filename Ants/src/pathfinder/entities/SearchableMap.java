@@ -9,11 +9,27 @@ public abstract class SearchableMap {
 
     public abstract int getCols();
 
+    /***
+     * 
+     * @param tile
+     * @return true if we can pass through this tile (type)
+     */
     public abstract boolean isPassable(SearchTarget tile);
     
+    /***
+     * do we know the character of this field.
+     * @param tile
+     * @return
+     */
     public abstract boolean isVisible(SearchTarget tile);
 
-    public abstract List<SearchTarget> getSuccessor(SearchTarget state,boolean isNextMove);
+    /***
+     * returns all neighbor fields, passable for any movable object 
+     * @param currentPosition actual position
+     * @param isNextMove (is this path part used for next game step or later)
+     * @return all "next" positions
+     */
+    public abstract List<SearchTarget> getSuccessor(SearchTarget currentPosition,boolean isNextMove);
 
     /**
      * Returns one or two orthogonal directions from one location to the another.

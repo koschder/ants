@@ -14,7 +14,7 @@ import ants.util.Logger.LogCategory;
 
 /***
  * a cluster is an area on the map. the cluster connects the neighbour cluster throw passable edges along the cluster
- * side. these edges are connected to edge other is there is a passable path between.
+ * side. these edges are connected to edges inside the cluster if there is a passable path between.
  * 
  * @author kaeserst
  * 
@@ -30,7 +30,7 @@ public class Cluster {
      */
     public List<Vertex> vertices = new ArrayList<Vertex>();
     /***
-     * name of the cluster conists of the index and the dimensions.
+     * name of the cluster consists of the index and the dimensions.
      */
     public String name;
     /***
@@ -280,17 +280,6 @@ public class Cluster {
         return (row + 1) * clusterSize;
     }
 
-//    /***
-//     * 
-//     * @param tile
-//     * @return a an existing vertex on the tile
-//     */
-//    public Vertex getVertex(Tile tile) {
-//        if (vertices.contains(tile))
-//            return vertices.get(vertices.indexOf(tile));
-//        return null;
-//    }
-
     /***
      * returns all continuative edges of the cluster[clusterRow][clusterCol]
      * 
@@ -320,7 +309,7 @@ public class Cluster {
      * @param checkAim
      * @return true if this aim is already processed.
      */
-    public boolean hasScan(Aim checkAim) {
+    public boolean isSideScanned(Aim checkAim) {
         return scannedAims.contains(checkAim);
     }
 
@@ -395,15 +384,18 @@ public class Cluster {
         return name + " Scanned aims: " + scannedAims + " Edge: " + edges.size() + " Vertices: " + vertices.size();
     }
 
-    public void addTiles(Aim newScannedAim, List<Tile> tiles) {
-        scannedAims.add(newScannedAim);
+    /***
+     * this method adds new vertices found on a cluster side. they get linked with already existing vertices.
+     * @param sideAim the side Aim on witch the tiles where calculated
+     * @param tiles
+     */
+    public void addTiles(Aim sideAim, List<Tile> tiles) {
+        scannedAims.add(sideAim);
         for(Tile t : tiles){
             if(processVertex(t,null)){
                 for(Vertex x : vertices)
                     findNewEdge(t, x);
             }
-        }
-        
+        }      
     }
-
 }
