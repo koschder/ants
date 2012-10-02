@@ -1,13 +1,75 @@
+
+\newcommand{\vspacecm}{0.7cm}
+
 \chapter{Ziele}
 
-\section{Mussziele}
-\label{sec:ziele.Mussziele}
+Der im Rahmen von Projekt 2 entwickelte Bot soll um Logik für taktische und strategische Entscheidungen und koordinierte Bewegung erweitert werden.
 
-\section{Sollziele}
-\label{sec:ziele.Sollziele}
+\section{Funktionale Anforderungen}
+\label{sec:ziele.FunktionaleAnforderungen}
 
-\section{Kannziele}
-\label{sec:ziele.Kannziele}
+\subsection{Musskriterien}
+\label{sec:ziele.FunktionaleAnforderungen.Musskriterien}
 
-\section{Abgrenzungen}
-\label{sec:ziele.Abgrenzungen}
+Der Bot unterscheidet zwischen diversen Aufgaben:
+	\begin{itemize}
+	\item Nahrungsbeschaffung
+	\item Angriff
+	\item Verteidigung
+	\item Erkundung
+	\end{itemize}
+
+\vspace{\vspacecm}
+
+Der Bot kann eine Beurteilung seiner Situation auf dem Spielfeld vornehmen
+	\begin{itemize}
+	\item Dominante/unterlegene Position
+	\item Sicherheit verschiedener Gebiete des Spielfelds (eigener/gegnerischer Einfluss)
+	\item Konfliktpotenzial in verschiedenen Gebieten des Spielfelds
+	\end{itemize}
+		
+Anhand der Situationsbeurteilung werden die unterschiedlichen Aufgaben entsprechend gewichtet. Stark gewichtete Aufgaben erhalten mehr Ressourcen (Ameisen) zur Durchführung.
+
+\vspace{\vspacecm}
+
+Der Bot identifiziert zur Erfüllung dieser Aufgaben taktische Ziele:
+	\begin{itemize}
+	\item Gegnerische Hügel angreifen, was bei Erfolg den Score erhöht und das eigentliche Ziel des Spiels ist.
+	\item Isolierte gegnerische Ameisen angreifen.
+	\item Schwachstellen in der gegnerischen Verteidigung ausnutzen.
+	\item Engpässe im Terrain sichern bzw. versperren.
+	\item Konfliktzonen, d.h. viele Ameisen auf einem engen Raum, erkennen und entsprechend reagieren.
+	\end{itemize}
+
+\vspace{\vspacecm}
+
+Für die konkrete Erreichung dieser definierten Ziele verfügt der Bot über taktische Logik:
+	\begin{itemize}
+	\item Bei der Pfadsuche wird die Sicherheit der zu durchquerenden Gebiete berücksichtigt
+	\item In Kampfsituationen kann der Bot die Ameisen in Formationen gliedern, die geeignet sind, eine lokale Überzahl eigener gegenüber gegnerischen Ameisen zu erzeugen
+	\item Beim Aufeinandertreffen mit gegnerischen Ameisen wird Entschieden ob angegriffen, die Stellung gehalten oder geflüchtet wird.
+	\end{itemize}
+
+\subsection{Kannkriterien}
+\label{sec:ziele.FunktionaleAnforderungen.Kannkriterien}
+Das Verhalten des Bots ist konfigurativ einstellbar, so dass zum Beispiel ein “agressiver” Bot gegen einen defensiven Bot antreten kann.
+
+\section{Nicht funktionale Anforderungen}
+\label{sec:ziele.NichtFunktionaleAnforderungen}
+
+\subsection{Musskriterien}
+\label{sec:ziele.NichtFunktionaleAnforderungen.Musskriterien}
+Modularer Aufbau, so dass die einzelnen Komponenten getestet werden können.
+
+Wichtige Funktionen wie die Pfadsuche und die Berechnung von Influence Maps sollen in separaten Modulen implementiert werden, damit sie auch von anderen Projekten verwendet werden könnten.
+
+Der Code wird dokumentiert, so dass dieser nachvollziehbar ist.
+
+\subsection{Kannkriterien}
+\label{sec:ziele.NichtFunktionaleAnforderungen.Kannkriterien}
+Für die wiederverwendbaren Module wird jeweils ein kleines Tutorial geschrieben, wie die Module verwendbar sind.
+
+
+\section{Abgrenzungskriterien}
+
+TODO
