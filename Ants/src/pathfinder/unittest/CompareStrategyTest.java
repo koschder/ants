@@ -4,7 +4,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import junit.framework.Assert;
 
@@ -18,18 +17,18 @@ public class CompareStrategyTest {
     @Test
     public void AStarTest() {
         String sTestName = "AStarTest";
-        System.out.println(sTestName);       
+        System.out.println(sTestName);
         PathFinder pf = initPathFinder();
-        Tile start =  new Tile(25, 70);
+        Tile start = new Tile(25, 70);
         Tile end = new Tile(45, 20);
-        List<Tile> path = pf.search(PathFinder.Strategy.AStar,start, end, -1);
-        if(path == null){
+        List<Tile> path = pf.search(PathFinder.Strategy.AStar, start, end, -1);
+        if (path == null) {
             path = new ArrayList<Tile>();
             path.add(start);
             path.add(end);
         }
-            
-        ((UnitTestMap)pf.getMap()).saveHtmlMap(sTestName, path,-1);
+
+        ((UnitTestMap) pf.getMap()).saveHtmlMap(sTestName, path, -1);
         Assert.assertNotNull(path);
 
     }
@@ -37,12 +36,12 @@ public class CompareStrategyTest {
     private PathFinder initPathFinder() {
         UnitTestMap map = initMap();
         PathFinder pf = new PathFinder();
-        pf.setMap(map);       
+        pf.setMap(map);
         return pf;
     }
 
     private UnitTestMap initMap() {
-        String sFileName = "tools\\maps\\cell_maze\\cell_maze_p04_10.map";
+        String sFileName = "tools/maps/cell_maze/cell_maze_p04_10.map";
         try {
             UnitTestMap map = new UnitTestMap(parseFile(sFileName));
             return map;
