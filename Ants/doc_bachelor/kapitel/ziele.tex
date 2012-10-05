@@ -21,7 +21,17 @@ Der Bot unterscheidet zwischen diversen Aufgaben:
 
 \vspace{\vspacecm}
 
-Der Bot kann eine Beurteilung seiner Situation auf dem Spielfeld vornehmen
+Der Bot identifiziert zur Erfüllung dieser Aufgaben konkrete Ziele, wie z.B.:
+	\begin{itemize}
+	\item Gegnerische Hügel angreifen, was bei Erfolg den Score erhöht und das eigentliche Ziel des Spiels ist.
+	\item Isolierte gegnerische Ameisen angreifen.
+	\item Schwachstellen in der gegnerischen Verteidigung ausnutzen.
+	\item Engpässe im Terrain sichern bzw. versperren.
+	\item Konfliktzonen, d.h. viele Ameisen auf einem engen Raum, erkennen und entsprechend reagieren.
+	\end{itemize}
+\vspace{\vspacecm}
+
+Die Auswahl von Taktik und Strategie basiert auf der Bewertung der Situation auf dem Spielfeld, z.B. anhand folgender Kriterien:
 	\begin{itemize}
 	\item Dominante/unterlegene Position
 	\item Sicherheit verschiedener Gebiete des Spielfelds (eigener/gegnerischer Einfluss)
@@ -30,20 +40,10 @@ Der Bot kann eine Beurteilung seiner Situation auf dem Spielfeld vornehmen
 		
 Anhand der Situationsbeurteilung werden die unterschiedlichen Aufgaben entsprechend gewichtet. Stark gewichtete Aufgaben erhalten mehr Ressourcen (Ameisen) zur Durchführung.
 
-\vspace{\vspacecm}
-
-Der Bot identifiziert zur Erfüllung dieser Aufgaben taktische Ziele:
-	\begin{itemize}
-	\item Gegnerische Hügel angreifen, was bei Erfolg den Score erhöht und das eigentliche Ziel des Spiels ist.
-	\item Isolierte gegnerische Ameisen angreifen.
-	\item Schwachstellen in der gegnerischen Verteidigung ausnutzen.
-	\item Engpässe im Terrain sichern bzw. versperren.
-	\item Konfliktzonen, d.h. viele Ameisen auf einem engen Raum, erkennen und entsprechend reagieren.
-	\end{itemize}
 
 \vspace{\vspacecm}
 
-Für die konkrete Erreichung dieser definierten Ziele verfügt der Bot über taktische Logik:
+Die Situationsbeurteilung fliesst auch in die taktische Logik ein, wie folgende Beispiele illustrieren:
 	\begin{itemize}
 	\item Bei der Pfadsuche wird die Sicherheit der zu durchquerenden Gebiete berücksichtigt
 	\item In Kampfsituationen kann der Bot die Ameisen in Formationen gliedern, die geeignet sind, eine lokale Überzahl eigener gegenüber gegnerischen Ameisen zu erzeugen
