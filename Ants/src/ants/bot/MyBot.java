@@ -5,6 +5,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import logging.LogLevel;
+import logging.Logger;
+import logging.LoggerFactory;
+import logging.LoggingConfig;
+import ants.LogCategory;
 import ants.entities.Ant;
 import ants.state.Ants;
 import ants.tasks.AttackHillsTask;
@@ -16,8 +21,6 @@ import ants.tasks.FollowTask;
 import ants.tasks.GatherFoodTask;
 import ants.tasks.MissionTask;
 import ants.tasks.Task;
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
 
 /**
  * Bot implementation. This was originally based on the sample bot from the starter package, but the implementation is
@@ -26,6 +29,11 @@ import ants.util.Logger.LogCategory;
  * @author kases1,kustl1
  */
 public class MyBot extends Bot {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.TURN);
+    private static final Logger LOGGER_PERFORMANCE = LoggerFactory.getLogger(LogCategory.PERFORMANCE);
+    private static final Logger LOGGER_TASKS = LoggerFactory.getLogger(LogCategory.EXECUTE_TASKS);
+    private static final Logger LOGGER_STATISTICS = LoggerFactory.getLogger(LogCategory.STATISTICS);
+
     /**
      * Main method executed by the game engine for starting the bot.
      * 
@@ -36,7 +44,30 @@ public class MyBot extends Bot {
      *             if an I/O error occurs
      */
     public static void main(String[] args) throws IOException {
+        initLogging();
         new MyBot().readSystemInput();
+    }
+
+    private static void initLogging() {
+        LoggingConfig.configure(LogCategory.ATTACK_HILLS, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.CLEAR_HILL, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.COMBAT, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.DEFEND, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.EXCEPTION, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.EXECUTE_TASKS, LogLevel.DEBUG);
+        LoggingConfig.configure(LogCategory.EXECUTE_MISSIONS, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.EXPLORE, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.FOLLOW, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.FOOD, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.ORDERS, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.PERFORMANCE, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.SETUP, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.STATISTICS, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.TURN, LogLevel.INFO);
+        LoggingConfig.configure(pathfinder.LogCategory.PATHFINDING, LogLevel.INFO);
+        LoggingConfig.configure(pathfinder.LogCategory.CLUSTERING, LogLevel.INFO);
+        LoggingConfig.configure(pathfinder.LogCategory.CLUSTERED_ASTAR, LogLevel.INFO);
+        LoggingConfig.configure(pathfinder.LogCategory.HPASTAR, LogLevel.INFO);
     }
 
     private List<Task> tasks = new ArrayList<Task>();
@@ -50,9 +81,8 @@ public class MyBot extends Bot {
 
     @Override
     public void doTurn() {
-        Logger.info(LogCategory.TURN,
-                "------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------", Ants
-                        .getAnts().getTurn(), Ants.getPopulation().getMyAnts().size(), Ants.getOrders().getMissions()
+        LOGGER.info("------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------",
+                Ants.getAnts().getTurn(), Ants.getPopulation().getMyAnts().size(), Ants.getOrders().getMissions()
                         .size());
         initTasks();
         doStatistics();
@@ -63,16 +93,15 @@ public class MyBot extends Bot {
         for (Task task : tasks) {
             long start = System.currentTimeMillis();
             int unemployed = Ants.getPopulation().getMyUnemployedAnts().size();
-            Logger.info(LogCategory.PERFORMANCE, "task started:: %s at %s", task.getClass().getSimpleName(), start);
+            LOGGER_PERFORMANCE.info("task started:: %s at %s", task.getClass().getSimpleName(), start);
             task.perform();
-            Logger.debug(LogCategory.EXECUTE_TASKS, "Task %s found jobs for %s of %s unemployed ants", task.getClass()
-                    .getSimpleName(), unemployed - Ants.getPopulation().getMyUnemployedAnts().size(), unemployed);
-            Logger.info(LogCategory.PERFORMANCE, "task ended  :: %s, took %s ms", task.getClass().getSimpleName(),
+            LOGGER_TASKS.debug("Task %s found jobs for %s of %s unemployed ants", task.getClass().getSimpleName(),
+                    unemployed - Ants.getPopulation().getMyUnemployedAnts().size(), unemployed);
+            LOGGER_PERFORMANCE.info("task ended  :: %s, took %s ms", task.getClass().getSimpleName(),
                     System.currentTimeMillis() - start);
         }
         final Collection<Ant> myUnemployedAnts = Ants.getPopulation().getMyUnemployedAnts();
-        Logger.debug(LogCategory.EXECUTE_TASKS, "Unemployed Ants (%s total): %s", myUnemployedAnts.size(),
-                myUnemployedAnts);
+        LOGGER_TASKS.debug("Unemployed Ants (%s total): %s", myUnemployedAnts.size(), myUnemployedAnts);
         Ants.getOrders().issueOrders();
     }
 
@@ -89,8 +118,8 @@ public class MyBot extends Bot {
 
         // every 10 steps we write the statistic to the log
         if (Ants.getAnts().getTurn() % 10 == 0) {
-            Logger.info(LogCategory.STATISTICS, "Statistics: Influence history: %s", statAntsInfluenceHistory);
-            Logger.info(LogCategory.STATISTICS, "Statistics: Ants amount history: %s", statAntsAmountHistory);
+            LOGGER_STATISTICS.info("Statistics: Influence history: %s", statAntsInfluenceHistory);
+            LOGGER_STATISTICS.info("Statistics: Ants amount history: %s", statAntsAmountHistory);
         }
     }
 
@@ -116,7 +145,7 @@ public class MyBot extends Bot {
 
     @Override
     protected void doFinishTurn() {
-        Logger.info(LogCategory.TURN, "Finished in %1$s ms with %2$s ms remaining.", System.currentTimeMillis()
+        LOGGER.info("Finished in %1$s ms with %2$s ms remaining.", System.currentTimeMillis()
                 - Ants.getAnts().getTurnStartTime(), Ants.getAnts().getTimeRemaining());
 
     }

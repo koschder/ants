@@ -5,11 +5,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.entities.Tile;
-
+import ants.LogCategory;
 import ants.entities.Ant;
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
 
 /**
  * This class keeps track of our and the enemies' ant populations. It also tracks which of our ants are already employed
@@ -19,6 +19,7 @@ import ants.util.Logger.LogCategory;
  * 
  */
 public class Population {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.SETUP);
     private Set<Ant> myAnts = new HashSet<Ant>();
     private Set<Ant> myUnemployedAnts = null;
     private Set<Ant> employedAnts = new HashSet<Ant>();
@@ -66,10 +67,10 @@ public class Population {
         for (Iterator<Ant> it = employedAnts.iterator(); it.hasNext();) {
             Ant ant = it.next();
             if (!myUnemployedAnts.remove(ant)) {
-                Logger.error(LogCategory.SETUP, "Could not remove ant %s Tile: %s of unemployedAnts size: %s", ant,
-                        ant.getTile(), myUnemployedAnts.size());
+                LOGGER.error("Could not remove ant %s Tile: %s of unemployedAnts size: %s", ant, ant.getTile(),
+                        myUnemployedAnts.size());
             } else {
-                Logger.debug(LogCategory.SETUP, "Ant %s Tile: %s marked as employed", ant, ant.getTile());
+                LOGGER.debug("Ant %s Tile: %s marked as employed", ant, ant.getTile());
             }
             it.remove();
         }

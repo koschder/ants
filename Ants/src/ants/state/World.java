@@ -14,11 +14,8 @@ import pathfinder.entities.Aim;
 import pathfinder.entities.SearchTarget;
 import pathfinder.entities.SearchableMap;
 import pathfinder.entities.Tile;
-
 import ants.entities.Ant;
 import ants.entities.Ilk;
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
 
 /**
  * This class holds state about the game world.
@@ -162,8 +159,6 @@ public class World extends SearchableMap {
         map[tile.getRow()][tile.getCol()] = ilk;
     }
 
-
-
     /**
      * Returns location with the specified offset from the specified location.
      * 
@@ -271,8 +266,6 @@ public class World extends SearchableMap {
         return rowDelta * rowDelta + colDelta * colDelta;
     }
 
- 
-
     /**
      * Updates game state information about hills locations.
      * 
@@ -319,41 +312,42 @@ public class World extends SearchableMap {
      * 
      * @param path
      */
-    public void debugPathOnMap(List<Tile> path) {
-        for (int r = 0; r < getRows(); r++) {
-            String row = "";
-            for (int c = 0; c < getCols(); c++) {
-                Tile t = new Tile(r, c);
-                Ilk lk = getIlk(t);
+    // TODO still needed?
+    // public void debugPathOnMap(List<Tile> path) {
+    // for (int r = 0; r < getRows(); r++) {
+    // String row = "";
+    // for (int c = 0; c < getCols(); c++) {
+    // Tile t = new Tile(r, c);
+    // Ilk lk = getIlk(t);
+    //
+    // if (path != null && path.contains(t)) {
+    // row += "P";
+    // } else if (lk.isPassable()) {
+    // row += " ";
+    // } else {
+    // row += "W";
+    // }
+    // }
+    // LiveInfo.debug(LogCategory.JUNIT, row);
+    // row = "";
+    // }
+    //
+    // }
 
-                if (path != null && path.contains(t)) {
-                    row += "P";
-                } else if (lk.isPassable()) {
-                    row += " ";
-                } else {
-                    row += "W";
-                }
-            }
-            Logger.debug(LogCategory.JUNIT, row);
-            row = "";
-        }
+    public List<SearchTarget> getSuccessor(SearchTarget target, boolean isNextMove) {
+        Tile state = target.getTargetTile();
+        List<SearchTarget> list = new ArrayList<SearchTarget>();
+        if (isPassable(getTile(state, Aim.NORTH), isNextMove))
+            list.add(getTile(state, Aim.NORTH));
+        if (isPassable(getTile(state, Aim.SOUTH), isNextMove))
+            list.add(getTile(state, Aim.SOUTH));
+        if (isPassable(getTile(state, Aim.WEST), isNextMove))
+            list.add(getTile(state, Aim.WEST));
+        if (isPassable(getTile(state, Aim.EAST), isNextMove))
+            list.add(getTile(state, Aim.EAST));
+        return list;
+    }
 
-    }
- 
-    public List<SearchTarget> getSuccessor(SearchTarget target,boolean isNextMove) {
-            Tile state = target.getTargetTile();
-            List<SearchTarget> list = new ArrayList<SearchTarget>();
-            if(isPassable(getTile(state, Aim.NORTH),isNextMove))
-                list.add(getTile(state, Aim.NORTH));
-                if(isPassable(getTile(state, Aim.SOUTH),isNextMove))
-                list.add(getTile(state, Aim.SOUTH));
-                if(isPassable(getTile(state, Aim.WEST),isNextMove))
-                list.add(getTile(state, Aim.WEST));
-                if(isPassable(getTile(state, Aim.EAST),isNextMove))
-                list.add(getTile(state, Aim.EAST));
-            return list;
-    }
-    
     private boolean isPassable(Tile tile, boolean nextMove) {
         return isPassable(tile) && !isOccupiedForNextMove(nextMove);
     }
@@ -361,7 +355,7 @@ public class World extends SearchableMap {
     public boolean isPassable(SearchTarget tile) {
         return Ants.getWorld().getIlk(tile.getTargetTile()).isPassable();
     }
-    
+
     private boolean isOccupiedForNextMove(boolean bParentNode) {
         if (!bParentNode) // we are on the 2nd level of the search tree
             return Ants.getOrders().getOrders().containsValue(this);
@@ -370,5 +364,5 @@ public class World extends SearchableMap {
 
     public boolean isVisible(SearchTarget tile) {
         return visible[tile.getTargetTile().getRow()][tile.getTargetTile().getCol()];
-    }    
+    }
 }

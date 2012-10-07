@@ -2,17 +2,10 @@ package pathfinder.unittest;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
-import java.io.PrintStream;
-import java.io.RandomAccessFile;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
-
-import ants.entities.Ilk;
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
 
 import pathfinder.entities.Aim;
 import pathfinder.entities.SearchTarget;
@@ -35,17 +28,16 @@ public class UnitTestMap extends SearchableMap {
             map[row][col] = sMap.charAt(i) == 'w' || sMap.charAt(i) == '%' ? water : land;
         }
     }
-    
-    
+
     public UnitTestMap(List<String> sMapRows) {
         int mapCols = sMapRows.get(0).length();
-    
+
         map = new int[sMapRows.size()][mapCols];
 
         for (int i = 0; i < sMapRows.size(); i++) {
             for (int j = 0; j < mapCols; j++) {
-            char charIt = sMapRows.get(i).charAt(j);
-            map[i][j] = charIt == 'w' || charIt == '%' ? water : land;
+                char charIt = sMapRows.get(i).charAt(j);
+                map[i][j] = charIt == 'w' || charIt == '%' ? water : land;
             }
         }
     }
@@ -118,9 +110,9 @@ public class UnitTestMap extends SearchableMap {
             }
             returnString.add(row);
         }
-        
-        returnString.add(String.format("# Amount of path tiles: %s",path == null ? 0 : path.size()));
-        
+
+        returnString.add(String.format("# Amount of path tiles: %s", path == null ? 0 : path.size()));
+
         return returnString;
     }
 
@@ -135,12 +127,12 @@ public class UnitTestMap extends SearchableMap {
         sb.append("<html>\n<head>\n<link rel=\"stylesheet\" href=\"cssUnitTest.css\" />\n</head>\n<body>\n<table>\n");
         boolean horizLine = false;
         boolean vertLine = false;
-        
+
         for (String s : stringMap(tiles, clusterSize)) {
-        if(s.startsWith("#")){
-            comment.append("<br/>"+s);
-            continue;           
-        }
+            if (s.startsWith("#")) {
+                comment.append("<br/>" + s);
+                continue;
+            }
             StringBuilder sbRow = new StringBuilder();
             for (int i = 0; i < s.length(); i++) {
                 if (s.charAt(i) == '-') {
@@ -161,23 +153,24 @@ public class UnitTestMap extends SearchableMap {
 
                 String background = s.charAt(i) == 'W' ? "water" : "land";
                 cssclass += background;
-                
+
                 String dotPath = "http://upload.wikimedia.org/wikipedia/commons/e/e0/Red_Dot.gif";
-                
-                String content = s.charAt(i) == 'P' ? String.format("<img src=\"%s\" class\"poi\">",dotPath) : "&nbsp;";
+
+                String content = s.charAt(i) == 'P' ? String.format("<img src=\"%s\" class\"poi\">", dotPath)
+                        : "&nbsp;";
                 sbRow.append(String.format("<td class=\"%s\">%s</td>", cssclass, content));
                 vertLine = false;
             }
-            if (sbRow.length() > 0){
+            if (sbRow.length() > 0) {
                 sb.append(String.format("<tr>%s</tr>\n", sbRow.toString()));
-            horizLine = false;
+                horizLine = false;
             }
         }
 
-        sb.append("</table>\nComments:\n"+comment.toString()+"\n</body>\n</html>\n");
+        sb.append("</table>\nComments:\n" + comment.toString() + "\n</body>\n</html>\n");
 
         try {
-            String fName = "logs/"+fileName+".html";
+            String fName = "logs/" + fileName + ".html";
             Writer output = null;
             String text = sb.toString();
             File file = new File(fName);

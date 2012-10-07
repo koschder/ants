@@ -7,15 +7,15 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.entities.Tile;
-
+import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Route;
 import ants.missions.ExploreMission;
 import ants.search.AntsPathFinder;
 import ants.state.Ants;
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
 
 /**
  * This task sends ants into unexplored areas of the map to discover new frontiers - to boldly go where no ant has gone
@@ -26,6 +26,7 @@ import ants.util.Logger.LogCategory;
  */
 public class ExploreTask extends BaseTask {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.EXPLORE);
     private Set<Tile> unseenTiles;
     private Set<Tile> invisibleTiles;
     // max distance to follow
@@ -45,8 +46,7 @@ public class ExploreTask extends BaseTask {
         // remove any tiles that can be seen, run each turn
         removeVisibleTiles(unseenTiles);
         removeVisibleTiles(invisibleTiles);
-        Logger.debug(LogCategory.EXPLORE, "Invisible tiles: %s, Unseen tiles: %s", invisibleTiles.size(),
-                unseenTiles.size());
+        LOGGER.debug("Invisible tiles: %s, Unseen tiles: %s", invisibleTiles.size(), unseenTiles.size());
 
         int totalTiles = Ants.getWorld().getCols() * Ants.getWorld().getRows();
         if ((unseenTiles.size() / totalTiles) < 0.1)
@@ -74,7 +74,8 @@ public class ExploreTask extends BaseTask {
             for (Route route : unseenRoutes) {
                 if (route.getDistance() > minDistance * 2)
                     break;
-                List<Tile> path = Ants.getPathFinder().bestPath(AntsPathFinder.SIMPLE, route.getStart(), route.getEnd());
+                List<Tile> path = Ants.getPathFinder()
+                        .bestPath(AntsPathFinder.SIMPLE, route.getStart(), route.getEnd());
                 if (path == null)
                     continue;
                 Ants.getOrders().addMission(new ExploreMission(route.getAnt(), path));

@@ -3,13 +3,13 @@ package ants.missions;
 import java.util.ArrayDeque;
 import java.util.Deque;
 
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.entities.Aim;
-
+import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Move;
 import ants.state.Ants;
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
 
 /***
  * Implements the interface Mission an handles the base tasks of a mission.
@@ -18,6 +18,7 @@ import ants.util.Logger.LogCategory;
  * 
  */
 public abstract class BaseMission implements Mission {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.EXECUTE_MISSIONS);
     protected Ant ant;
     protected Deque<Move> previousMoves = new ArrayDeque<Move>();
     private boolean abandon = false;
@@ -32,7 +33,7 @@ public abstract class BaseMission implements Mission {
             return false;
         boolean antIsAlive = (Ants.getWorld().getIlk(ant.getTile()).hasFriendlyAnt());
         if (!antIsAlive) {
-            Logger.debug(LogCategory.EXECUTE_MISSIONS, "isMissionValid(): no ant at %s", ant.getTile());
+            LOGGER.debug("isMissionValid(): no ant at %s", ant.getTile());
         }
         return (antIsAlive && isSpecificMissionValid());
     }
@@ -49,7 +50,7 @@ public abstract class BaseMission implements Mission {
      * cancels the mission.
      */
     protected void abandonMission() {
-        Logger.debug(LogCategory.EXECUTE_MISSIONS, "Abandoning mission of type %s", getClass().getSimpleName());
+        LOGGER.debug("Abandoning mission of type %s", getClass().getSimpleName());
         abandon = true;
     }
 

@@ -1,6 +1,5 @@
 package ants.state;
 
-import pathfinder.PathFinder;
 import pathfinder.entities.Clustering;
 import pathfinder.entities.Tile;
 import ants.entities.Ant;

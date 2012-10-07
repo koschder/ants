@@ -2,9 +2,9 @@ package pathfinder.search;
 
 import java.util.List;
 
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
-
+import logging.Logger;
+import logging.LoggerFactory;
+import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import pathfinder.entities.SearchTarget;
 import pathfinder.entities.Tile;
@@ -17,6 +17,8 @@ import pathfinder.entities.Tile;
  */
 public abstract class SearchStrategy {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.PATHFINDING);
+
     public SearchStrategy(PathFinder f) {
         pathFinder = f;
     }
@@ -28,26 +30,28 @@ public abstract class SearchStrategy {
      * @return the path in a list or null if no path is found.
      */
     protected abstract List<Tile> searchPath(SearchTarget from, SearchTarget to);
-    
+
     /***
      * searchs the path and logs the calls
+     * 
      * @param from
      * @param to
      * @return the path if found, or null if path is empty
      */
-    public List<Tile> search(SearchTarget from, SearchTarget to){
+    public List<Tile> search(SearchTarget from, SearchTarget to) {
         long start = System.currentTimeMillis();
-        
-        List<Tile> path = searchPath(from,to);
-                
+
+        List<Tile> path = searchPath(from, to);
+
         setTimeElapsed(System.currentTimeMillis() - start);
-        log(path,from,to);
-        
+        log(path, from, to);
+
         return path;
     }
 
     /***
      * logs for every search the main facts about the done search
+     * 
      * @param path
      * @param from
      * @param to
@@ -56,11 +60,11 @@ public abstract class SearchStrategy {
         String pathlength = path != null ? "path has size of " + path.size() : "path not found";
         String searchSpaceInfo = "";
         if (searchSpace1 != null) {
-            searchSpaceInfo =  String.format("In searchspace: %s to %s", searchSpace1, searchSpace2);
+            searchSpaceInfo = String.format("In searchspace: %s to %s", searchSpace1, searchSpace2);
         }
-        Logger.debug(LogCategory.PATHFINDING, "PathFinder: %s ended. Path from: %s to %s %s took %s miliseconds. %s ", this.getClass(), from.toShortString(),
-                to.toShortString(),searchSpaceInfo,getTimeElapsed(),pathlength);
- 
+        LOGGER.debug("PathFinder: %s ended. Path from: %s to %s %s took %s miliseconds. %s ", this.getClass(),
+                from.toShortString(), to.toShortString(), searchSpaceInfo, getTimeElapsed(), pathlength);
+
     }
 
     public enum WorldType {
@@ -78,11 +82,11 @@ public abstract class SearchStrategy {
         this.searchSpace1 = p1;
         this.searchSpace2 = p2;
     }
-    
+
     protected boolean inSearchSpace(SearchTarget areaCheck) {
         return areaCheck.isInSearchSpace(searchSpace1, searchSpace2);
     }
-    
+
     public void setMaxCost(int i) {
         maxCost = i;
     }

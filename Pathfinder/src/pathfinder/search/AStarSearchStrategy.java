@@ -7,20 +7,21 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import logging.Logger;
+import logging.LoggerFactory;
+import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import pathfinder.entities.Node;
 import pathfinder.entities.SearchTarget;
 import pathfinder.entities.Tile;
 
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
-
 public class AStarSearchStrategy extends SearchStrategy {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.PATHFINDING);
 
     public AStarSearchStrategy(PathFinder f) {
         super(f);
     }
-
 
     private SearchTarget to;
 
@@ -78,7 +79,7 @@ public class AStarSearchStrategy extends SearchStrategy {
 
     private void addChild(Node parent, List<Node> children, SearchTarget childState) {
         if (!inSearchSpace(childState)) {
-            Logger.debug(LogCategory.PATHFINDING, "tile %s is not in searchspace", childState);
+            LOGGER.debug("tile %s is not in searchspace", childState);
             return;
         }
         children.add(new Node(childState, parent, getActualCost(parent, childState), childState.beelineTo(to)));
@@ -103,6 +104,5 @@ public class AStarSearchStrategy extends SearchStrategy {
         path.addAll(child.getState().getPath());
         addToPath(path, child.getParent());
     }
-
 
 }

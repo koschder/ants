@@ -5,12 +5,11 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import logging.Logger;
+import logging.LoggerFactory;
+import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import pathfinder.entities.Edge.EdgeType;
-
-
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
 
 /***
  * a cluster is an area on the map. the cluster connects the neighbour cluster throw passable edges along the cluster
@@ -20,6 +19,9 @@ import ants.util.Logger.LogCategory;
  * 
  */
 public class Cluster {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.CLUSTERING);
+    private static final Logger LOGGER_PATH = LoggerFactory.getLogger(LogCategory.PATHFINDING);
+    private static final Logger LOGGER_ASTAR = LoggerFactory.getLogger(LogCategory.CLUSTERED_ASTAR);
 
     /***
      * stores all edges located in the cluster
@@ -118,7 +120,7 @@ public class Cluster {
      */
     private void createNewPath(List<Edge> newEdges) {
         for (Edge e : newEdges) {
-            Logger.debug(LogCategory.CLUSTERING_Detail, "%s: createNewPath for e: %s", name, e);
+            LOGGER.trace("%s: createNewPath for e: %s", name, e);
             createNewPath(e);
         }
     }
@@ -127,11 +129,10 @@ public class Cluster {
      * print all edges of the cluster into the log file.
      */
     public void debugEdges() {
-        Logger.debug(LogCategory.PATHFINDING, "Edges of %s", name);
-        Logger.debug(LogCategory.PATHFINDING, "Done_aims_of_%s", scannedAims.toString());
+        LOGGER_PATH.debug("Edges of %s", name);
+        LOGGER_PATH.debug("Done_aims_of_%s", scannedAims.toString());
         for (Edge e : edges) {
-            Logger.debug(LogCategory.PATHFINDING, "xx: Edge from %s to %s type: %s", e.getTile1(), e.getTile2(),
-                    e.getType());
+            LOGGER_PATH.debug("xx: Edge from %s to %s type: %s", e.getTile1(), e.getTile2(), e.getType());
         }
     }
 
@@ -154,7 +155,7 @@ public class Cluster {
      * @param tEnd
      */
     private void findNewEdge(Tile tStart, Tile tEnd) {
-        Logger.debug(LogCategory.CLUSTERING_Detail, "%s: Find new path between %s and %s", name, tStart, tEnd);
+        LOGGER.trace("%s: Find new path between %s and %s", name, tStart, tEnd);
         if (tStart.equals(tEnd))
             return;
 
@@ -162,18 +163,22 @@ public class Cluster {
         if (edges.contains(edge))
             return;
 
-        // path limit costs are the manhattanDistance plus a factor for a maybe way around
+        // path limit costs are the manhattanDistance plus a factor for a maybe
+        // way around
         int costs = tStart.manhattanDistanceTo(tEnd) + 3;
-        // List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, tStart, tEnd, costs);
+        // List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, tStart,
+        // tEnd, costs);
         Tile searchSpace0 = new Tile(row * clusterSize, col * clusterSize);
         // todo is +1 correct?
         Tile searchSpace1 = new Tile((row + 1) * clusterSize + 1, (col + 1) * clusterSize + 1);
-        List<Tile> path = clustering.getPathFinder().search(PathFinder.Strategy.AStar,tStart, tEnd, searchSpace0, searchSpace1, costs);
-        // List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, tStart, tEnd);
+        List<Tile> path = clustering.getPathFinder().search(PathFinder.Strategy.AStar, tStart, tEnd, searchSpace0,
+                searchSpace1, costs);
+        // List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, tStart,
+        // tEnd);
         if (path == null)
             return;
 
-        Logger.debug(LogCategory.CLUSTERING_Detail, "%s: found!!", name);
+        LOGGER.trace("%s: found!!", name);
         edge.setPath(path);
         edges.add(edge);
         processVertex(edge.getTile1(), edge);
@@ -225,7 +230,8 @@ public class Cluster {
 
         list.addAll(getEdgesOfCluster(e.getEnd(), row, col));
 
-        if (e.getEnd().getRow() == getBottomFrontier()) // south todo wrap around
+        if (e.getEnd().getRow() == getBottomFrontier()) // south todo wrap
+                                                        // around
 
             list.addAll(getEdgesOfCluster(e.getEnd(), row + 1, col));
 
@@ -241,9 +247,9 @@ public class Cluster {
 
             list.addAll(getEdgesOfCluster(e.getEnd(), row, col + 1));
 
-        Logger.debug(LogCategory.CLUSTERED_ASTAR, "%s neighbour cluster found", list.size());
+        LOGGER_ASTAR.debug("%s neighbour cluster found", list.size());
         for (SearchTarget t : list)
-            Logger.debug(LogCategory.CLUSTERED_ASTAR, "      => %s", t);
+            LOGGER_ASTAR.debug("      => %s", t);
         return list;
     }
 
@@ -290,17 +296,17 @@ public class Cluster {
      */
     private List<SearchTarget> getEdgesOfCluster(Tile start, int clusterRow, int clusterCol) {
         Cluster c = clustering.getClusterWrapAround(clusterRow, clusterCol);
-        Logger.debug(LogCategory.PATHFINDING, "search edge starts with %s in %s", start, c);
+        LOGGER_PATH.debug("search edge starts with %s in %s", start, c);
         List<SearchTarget> list = new ArrayList<SearchTarget>();
         for (Edge e : c.edges) {
-            // Logger.debug(LogCategory.PATHFINDING, "scan edge %s ", e);
+            // LOGGER_PATH.debug("scan edge %s ", e);
             if (e.getTile1().equals(start)) {
                 list.add(new DirectedEdge(e.getTile1(), e.getTile2(), c));
             } else if (e.getTile2().equals(start)) {
                 list.add(new DirectedEdge(e.getTile2(), e.getTile1(), c));
             }
         }
-        Logger.debug(LogCategory.PATHFINDING, "edge found %s they are: %s", list.size(), list);
+        LOGGER_PATH.debug("edge found %s they are: %s", list.size(), list);
         return list;
     }
 
@@ -337,30 +343,32 @@ public class Cluster {
 
     }
 
-/***
- * add the vertices to the vertices list if they aren't yet.
- * @param t
- * @param e
- * @return true if the tile is a new vertices and was added
- */
+    /***
+     * add the vertices to the vertices list if they aren't yet.
+     * 
+     * @param t
+     * @param e
+     * @return true if the tile is a new vertices and was added
+     */
     private boolean processVertex(Tile t, Edge e) {
-        if (vertices.contains(t) && e != null){
+        if (vertices.contains(t) && e != null) {
             vertices.get(vertices.indexOf(t)).addEdge(e);
             return false;
-        }else{
+        } else {
             vertices.add(new Vertex(t, e));
-        return true;
+            return true;
         }
     }
 
     /***
      * new scanned edges are integrated into the cluster and are connected with existing edges.
+     * 
      * @param newaim
      * @param newEdges
      */
     public void addEdge(Aim newaim, List<Edge> newEdges) {
         scannedAims.add(newaim);
-        Logger.debug(LogCategory.CLUSTERING_Detail, "%s: New edges arrived from aim %s E: %s", name, newaim, newEdges);
+        LOGGER.trace("%s: New edges arrived from aim %s E: %s", name, newaim, newEdges);
         if (newEdges.size() > 0) {
 
             List<Edge> hardCopy = new ArrayList<Edge>();
@@ -372,8 +380,7 @@ public class Cluster {
             createNewPath(hardCopy);
             debugEdges();
             if (isClustered()) {
-                Logger.debug(LogCategory.CLUSTERING, "%s is clustered_now! Vertices: %s Edges: %s", name,
-                        vertices.size(), edges.size());
+                LOGGER.debug("%s is clustered_now! Vertices: %s Edges: %s", name, vertices.size(), edges.size());
             }
         }
 
@@ -386,16 +393,18 @@ public class Cluster {
 
     /***
      * this method adds new vertices found on a cluster side. they get linked with already existing vertices.
-     * @param sideAim the side Aim on witch the tiles where calculated
+     * 
+     * @param sideAim
+     *            the side Aim on witch the tiles where calculated
      * @param tiles
      */
     public void addTiles(Aim sideAim, List<Tile> tiles) {
         scannedAims.add(sideAim);
-        for(Tile t : tiles){
-            if(processVertex(t,null)){
-                for(Vertex x : vertices)
+        for (Tile t : tiles) {
+            if (processVertex(t, null)) {
+                for (Vertex x : vertices)
                     findNewEdge(t, x);
             }
-        }      
+        }
     }
 }

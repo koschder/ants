@@ -3,14 +3,15 @@ package pathfinder.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import logging.Logger;
+import logging.LoggerFactory;
+import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import pathfinder.PathFinder.WorldType;
 
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
-
 public class Clustering {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.CLUSTERING);
     private Cluster[][] clusters;
     private int clusterSize = 7;
     private int rows = 0;
@@ -61,7 +62,7 @@ public class Clustering {
             }
         }
 
-        Logger.debug(LogCategory.CLUSTERING, "Cluster_array %s x %s initialised", rows, cols);
+        LOGGER.debug("Cluster_array %s x %s initialised", rows, cols);
 
     }
 
@@ -161,7 +162,7 @@ public class Clustering {
     public void perform() {
         for (int r = 0; r < getRows(); r++) {
             for (int c = 0; c < getCols(); c++) {
-                Logger.debug(LogCategory.CLUSTERING_Detail, "Cluster_overview:" + getClusters()[r][c]);
+                LOGGER.trace("Cluster_overview:" + getClusters()[r][c]);
             }
         }
         int updatedClusters = 0;
@@ -170,7 +171,7 @@ public class Clustering {
             for (int c = 0; c < getCols(); c++) {
 
                 if (getClusters()[r][c].isClustered()) {
-                    Logger.debug(LogCategory.CLUSTERING_Detail, "Cluster is clustered %s", getClusters()[r][c]);
+                    LOGGER.trace("Cluster is clustered %s", getClusters()[r][c]);
                     completedClusters++;
                     continue;
                 }
@@ -180,25 +181,23 @@ public class Clustering {
                     if (scanVerticalBorder(r, c))
                         updatedClusters++;
                 } else {
-                    Logger.debug(LogCategory.CLUSTERING_Detail, "Already clustered in Aim %s on r: %s c: %s", Aim.WEST,
-                            r, c);
+                    LOGGER.trace("Already clustered in Aim %s on r: %s c: %s", Aim.WEST, r, c);
                 }
 
                 if (!current.isSideScanned(Aim.NORTH)) {
                     if (scanHorizontalBorder(r, c))
                         updatedClusters++;
                 } else {
-                    Logger.debug(LogCategory.CLUSTERING_Detail, "Already clustered in Aim %s on r: %s c: %s",
-                            Aim.NORTH, r, c);
+                    LOGGER.trace("Already clustered in Aim %s on r: %s c: %s", Aim.NORTH, r, c);
                 }
                 // current.debugEdges();
             }
         }
-        Logger.debug(LogCategory.CLUSTERING, "Clusters updated: %s", updatedClusters);
-        Logger.debug(LogCategory.CLUSTERING, "Clusters compeleted: %s", completedClusters);
+        LOGGER.debug("Clusters updated: %s", updatedClusters);
+        LOGGER.debug("Clusters compeleted: %s", completedClusters);
         // for (int r = 0; r < getRows(); r++) {
         // for (int c = 0; c < getCols(); c++) {
-        // Logger.debug(LogCategory.CLUSTERING, getClusters()[r][c].toString());
+        // LOGGER.debug(getClusters()[r][c].toString());
         // }
         // }
     }
@@ -240,6 +239,7 @@ public class Clustering {
 
     /***
      * Scans a horizontal border an sets the connecting vertices on the corners
+     * 
      * @param r
      * @param c
      * @return true if scanning successful, false if not all part of the scanned line was visible
@@ -254,13 +254,13 @@ public class Clustering {
         // whole cluster or shorten if we are on the "end" of the grid
         int endColTile = Math.min(pathFinder.getMap().getCols(), (c + 1) * clusterSize);
 
-        Logger.debug(LogCategory.CLUSTERING_Detail, "horizontalScan on r: %s c: %s to r: %s c: %s", startRowTile,
-                startColTile, startRowTile, startColTile + clusterSize);
+        LOGGER.trace("horizontalScan on r: %s c: %s to r: %s c: %s", startRowTile, startColTile, startRowTile,
+                startColTile + clusterSize);
         List<Tile> path = new ArrayList<Tile>();
         for (int i = startColTile; i <= endColTile; i++) {
             Tile tile = getWrapAroundTile(startRowTile, i);
 
-            Logger.debug(LogCategory.CLUSTERING_Detail, "Check %s", tile);
+            LOGGER.trace("Check %s", tile);
             if (pathFinder.getMap().isVisible(tile)) {
                 if (pathFinder.getMap().isPassable(tile)) {
                     if (vertices == null) {
@@ -271,7 +271,7 @@ public class Clustering {
                         lastVertices = tile;
                     }
                 } else { // now blocked add the last start and endpoint to cluster.
-                    Logger.debug(LogCategory.CLUSTERING_Detail, "Not passable %s", tile);
+                    LOGGER.trace("Not passable %s", tile);
                     if (lastVertices == null) {
                         // todo what to do?
                     } else {
@@ -283,8 +283,7 @@ public class Clustering {
                 }
 
             } else {
-                Logger.debug(LogCategory.CLUSTERING_Detail,
-                        "clustering breaked not all surrounding tiles are visible cluster r %s c %s", r, c);
+                LOGGER.trace("clustering breaked not all surrounding tiles are visible cluster r %s c %s", r, c);
                 return false;
             }
         }
@@ -307,6 +306,7 @@ public class Clustering {
 
     /***
      * Scans a vertical border an sets the connecting vertices on the corners
+     * 
      * @param r
      * @param c
      * @return true if scanning successful, false if not all part of the scanned line was visible
@@ -321,12 +321,12 @@ public class Clustering {
         // whole cluster or shorten if we are on the "end" of the grid
         int endRowTile = Math.min(pathFinder.getMap().getRows(), (r + 1) * clusterSize);
 
-        Logger.debug(LogCategory.CLUSTERING_Detail, "verticalScan on r: %s c: %s to r: %s c: %s", startRowTile,
-                startColTile, startRowTile + clusterSize, startColTile);
+        LOGGER.trace("verticalScan on r: %s c: %s to r: %s c: %s", startRowTile, startColTile, startRowTile
+                + clusterSize, startColTile);
         List<Tile> path = new ArrayList<Tile>();
         for (int i = startRowTile; i <= endRowTile; i++) {
             Tile tile = getWrapAroundTile(i, startColTile);
-            Logger.debug(LogCategory.CLUSTERING_Detail, "Check %s", tile);
+            LOGGER.trace("Check %s", tile);
 
             if (pathFinder.getMap().isVisible(tile)) {
                 if (pathFinder.getMap().isPassable(tile)) {
@@ -338,7 +338,7 @@ public class Clustering {
                         lastVertices = tile;
                     }
                 } else { // now blocked add the last start and endpoint to cluster.
-                    Logger.debug(LogCategory.CLUSTERING_Detail, "Not passable %s", tile);// tileNeighbour);
+                    LOGGER.trace("Not passable %s", tile);// tileNeighbour);
                     if (lastVertices == null) {
                         // todo what to do?
                     } else {
@@ -351,8 +351,7 @@ public class Clustering {
                 }
 
             } else {
-                Logger.debug(LogCategory.CLUSTERING_Detail,
-                        "clustering breaked not all surrounding tiles are visible cluster r %s c %s", r, c);
+                LOGGER.trace("clustering breaked not all surrounding tiles are visible cluster r %s c %s", r, c);
                 return false;
             }
         }
@@ -371,6 +370,7 @@ public class Clustering {
 
     /***
      * Scans a horizontal border an stores every center vertex of each passage connecting a neighbour cluster
+     * 
      * @param r
      * @param c
      * @return true if scanning successful, false if not all part of the scanned line was visible
@@ -385,7 +385,7 @@ public class Clustering {
         List<Tile> path = new ArrayList<Tile>();
         for (int i = startColTile; i <= endColTile; i++) {
             Tile tile = getWrapAroundTile(startRowTile, i);
-            Logger.debug(LogCategory.CLUSTERING_Detail, "Check %s", tile);
+            LOGGER.trace("Check %s", tile);
             if (pathFinder.getMap().isVisible(tile)) {
                 if (pathFinder.getMap().isPassable(tile)) {
                     path.add(tile);
@@ -395,8 +395,7 @@ public class Clustering {
                     path = new ArrayList<Tile>();
                 }
             } else {
-                Logger.debug(LogCategory.CLUSTERING_Detail,
-                        "clustering breaked not all surrounding tiles are visible cluster r %s c %s", r, c);
+                LOGGER.trace("clustering breaked not all surrounding tiles are visible cluster r %s c %s", r, c);
                 return false;
             }
         }
@@ -411,6 +410,7 @@ public class Clustering {
 
     /***
      * Scans a vertical border an stores every center vertex of each passage connecting a neighbour cluster
+     * 
      * @param r
      * @param c
      * @return true if scanning successful, false if not all part of the scanned line was visible
@@ -434,8 +434,7 @@ public class Clustering {
                     path = new ArrayList<Tile>();
                 }
             } else {
-                Logger.debug(LogCategory.CLUSTERING_Detail,
-                        "clustering breaked not all surrounding tiles are visible cluster r %s c %s", r, c);
+                LOGGER.trace("clustering breaked not all surrounding tiles are visible cluster r %s c %s", r, c);
                 return false;
             }
         }
@@ -451,8 +450,10 @@ public class Clustering {
 
     /***
      * 
-     * @param r row
-     * @param c column
+     * @param r
+     *            row
+     * @param c
+     *            column
      * @return a tile considering it the parameters must be fit to the world size
      */
     private Tile getWrapAroundTile(int r, int c) {
@@ -468,13 +469,13 @@ public class Clustering {
         return pathFinder;
     }
 
-//    public List<SearchTarget> getSuccessors(DirectedEdge state) {
-//        List<SearchTarget> list = new ArrayList<SearchTarget>();
-//        if (state.getCluster() == null)
-//            return list;
-//        list.addAll(state.getCluster().getEdgeWithNeighbourCluster(state));
-//        return list;
-//    }
+    // public List<SearchTarget> getSuccessors(DirectedEdge state) {
+    // List<SearchTarget> list = new ArrayList<SearchTarget>();
+    // if (state.getCluster() == null)
+    // return list;
+    // list.addAll(state.getCluster().getEdgeWithNeighbourCluster(state));
+    // return list;
+    // }
 
     public List<Vertex> getAllVertices() {
         List<Vertex> verts = new ArrayList<Vertex>();
@@ -487,7 +488,7 @@ public class Clustering {
     }
 
     public void setWorldType(WorldType t) {
-        //TODO
+        // TODO
     }
 
 }

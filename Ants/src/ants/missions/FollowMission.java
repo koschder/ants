@@ -2,22 +2,24 @@ package ants.missions;
 
 import java.util.List;
 
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.entities.Tile;
-
+import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Move;
 import ants.search.AntsPathFinder;
 import ants.state.Ants;
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
 
 /***
  * This mission is used to let an ant follow an other ant which has already a mission.
+ * 
  * @author kases1,kustl1
  * 
  */
 public class FollowMission extends BaseMission {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.FOLLOW);
     private Mission mastermission;
     private final int MAX_DISTANCE_TO_MASTER = 6;
 
@@ -32,8 +34,8 @@ public class FollowMission extends BaseMission {
     }
 
     /***
-     * as long as the master mission is valid this mission is vaild to.
-     * if the ant of the master mission is to far away this mission is invalid
+     * as long as the master mission is valid this mission is vaild to. if the ant of the master mission is to far away
+     * this mission is invalid
      */
     @Override
     protected boolean isSpecificMissionValid() {
@@ -45,8 +47,8 @@ public class FollowMission extends BaseMission {
 
         int distance = m.getTile().manhattanDistanceTo(ant.getTile());
         if (distance > MAX_DISTANCE_TO_MASTER) {
-            Logger.debug(LogCategory.FOLLOW, "FollowMission cancelled, master is to far away : %s max is: %s)",
-                    distance, MAX_DISTANCE_TO_MASTER);
+            LOGGER.debug("FollowMission cancelled, master is to far away : %s max is: %s)", distance,
+                    MAX_DISTANCE_TO_MASTER);
             return false;
 
         }

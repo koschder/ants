@@ -3,20 +3,22 @@ package ants.missions;
 import java.util.ArrayList;
 import java.util.List;
 
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.entities.Aim;
 import pathfinder.entities.Tile;
-
+import ants.LogCategory;
 import ants.entities.Ant;
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
 
 /***
  * this mission is implemented to follow a path defined while creating the class
+ * 
  * @author kases1, kustl1
- *
+ * 
  */
 public abstract class PathMission extends BaseMission {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.EXECUTE_MISSIONS);
     public List<Tile> path = new ArrayList<Tile>();
 
     public PathMission(Ant ant, List<Tile> path) {
@@ -57,6 +59,7 @@ public abstract class PathMission extends BaseMission {
 
     /***
      * puts the order in the order list where the ant has to go and remove this path piece.
+     * 
      * @return true if order is put successful.
      */
     protected boolean moveToNextTile() {
@@ -67,7 +70,7 @@ public abstract class PathMission extends BaseMission {
         Aim aim = ant.getTile().directionTo(nextStep);
 
         if (putMissionOrder(ant, aim)) {
-            Logger.debug(LogCategory.EXECUTE_MISSIONS, "Go to: %s direction is %s", nextStep, aim);
+            LOGGER.debug("Go to: %s direction is %s", nextStep, aim);
             return true;
         }
         return false;

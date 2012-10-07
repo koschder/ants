@@ -7,16 +7,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.entities.Tile;
-
-
+import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Route;
 import ants.missions.GatherFoodMission;
 import ants.search.AntsPathFinder;
 import ants.state.Ants;
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
 
 /**
  * Searches for food and sends our ants to gather it.
@@ -26,6 +25,7 @@ import ants.util.Logger.LogCategory;
  */
 public class GatherFoodTask extends BaseTask {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.FOOD);
     // the maximum distance an ant can be away of a food tile to catch it.
     private int MAXDISTANCE = 50;
 
@@ -37,7 +37,7 @@ public class GatherFoodTask extends BaseTask {
         TreeSet<Ant> sortedAnts;
         foodTargets = new HashMap<Tile, Tile>();
         // find close food
-        Logger.debug(LogCategory.FOOD, "unemployed ants %s", Ants.getPopulation().getMyUnemployedAnts().size());
+        LOGGER.debug("unemployed ants %s", Ants.getPopulation().getMyUnemployedAnts().size());
         foodRoutes = new ArrayList<Route>();
         sortedFood = new TreeSet<Tile>(Ants.getWorld().getFoodTiles());
         sortedAnts = new TreeSet<Ant>(Ants.getPopulation().getMyUnemployedAnts());
@@ -46,7 +46,7 @@ public class GatherFoodTask extends BaseTask {
             for (Ant ant : sortedAnts) {
                 final Tile antLoc = ant.getTile();
                 int distance = Ants.getWorld().getSquaredDistance(antLoc, foodLoc);
-                Logger.debug(LogCategory.FOOD, "Distance is %s", distance);
+                LOGGER.debug("Distance is %s", distance);
                 // Todo distance verwirrlich, da nicht im pixel mass.
                 if (distance > MAXDISTANCE)
                     continue;
@@ -58,7 +58,8 @@ public class GatherFoodTask extends BaseTask {
         for (Route route : foodRoutes) {
             // food not already targeted && ant not used
             if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())) {
-                List<Tile> path = Ants.getPathFinder().bestPath(AntsPathFinder.SIMPLE, route.getStart(), route.getEnd());
+                List<Tile> path = Ants.getPathFinder()
+                        .bestPath(AntsPathFinder.SIMPLE, route.getStart(), route.getEnd());
                 if (path == null)
                     path = Ants.getPathFinder().bestPath(AntsPathFinder.A_STAR, route.getStart(), route.getEnd());
                 if (path == null)

@@ -3,10 +3,11 @@ package ants.tasks;
 import java.util.Iterator;
 import java.util.Set;
 
+import logging.Logger;
+import logging.LoggerFactory;
+import ants.LogCategory;
 import ants.missions.Mission;
 import ants.state.Ants;
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
 
 /**
  * This task is responsible for allowing those ants that are currently following a {@link Mission} to execute the next
@@ -16,6 +17,8 @@ import ants.util.Logger.LogCategory;
  * 
  */
 public class MissionTask extends BaseTask {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.EXECUTE_MISSIONS);
 
     @Override
     public void setup() {
@@ -29,19 +32,19 @@ public class MissionTask extends BaseTask {
     public void perform() {
 
         Set<Mission> missions = Ants.getOrders().getMissions();
-        Logger.debug(LogCategory.EXECUTE_MISSIONS, "Current mission count: %s", missions.size());
+        LOGGER.debug("Current mission count: %s", missions.size());
         for (Iterator<Mission> it = missions.iterator(); it.hasNext();) {
             Mission mission = it.next();
-            Logger.debug(LogCategory.EXECUTE_MISSIONS, "mission: %s", mission);
+            LOGGER.debug("mission: %s", mission);
             if (mission.isComplete()) {
                 it.remove();
                 continue;
             }
             if (mission.isValid()) {
                 mission.execute();
-                Logger.debug(LogCategory.EXECUTE_MISSIONS, "Mission performed: %s", mission);
+                LOGGER.debug("Mission performed: %s", mission);
             } else {
-                Logger.debug(LogCategory.EXECUTE_MISSIONS, "Mission not vaild: %s. Mission is removed.", mission);
+                LOGGER.debug("Mission not vaild: %s. Mission is removed.", mission);
                 it.remove();
             }
         }

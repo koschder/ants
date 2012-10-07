@@ -5,14 +5,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.entities.Aim;
 import pathfinder.entities.Tile;
-
+import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Move;
 import ants.missions.Mission;
-import ants.util.Logger;
-import ants.util.Logger.LogCategory;
+import ants.util.LiveInfo;
 
 /**
  * This class tracks all orders and missions for our ants. It ensures that no conflicting orders are given.
@@ -22,6 +23,9 @@ import ants.util.Logger.LogCategory;
  */
 public class Orders {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.ORDERS);
+    private static final Logger LOGGER_MISSIONS = LoggerFactory.getLogger(LogCategory.EXECUTE_MISSIONS);
+    private static final Logger LOGGER_TASKS = LoggerFactory.getLogger(LogCategory.EXECUTE_TASKS);
     private Set<Mission> missions = new HashSet<Mission>();
 
     private Map<Tile, Move> orders = new HashMap<Tile, Move>();
@@ -54,8 +58,8 @@ public class Orders {
         // Track all moves, prevent collisions
         Tile newLoc = Ants.getWorld().getTile(ant.getTile(), direction);
         if (Ants.getWorld().getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
-            Logger.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s ant: %s", issuer, ant.getTile());
-            Logger.debug(LogCategory.EXECUTE_TASKS, "%1$s: Moving ant from %2$s to %3$s", issuer, ant.getTile(), newLoc);
+            LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s ant: %s", issuer, ant.getTile());
+            LOGGER_TASKS.debug("%1$s: Moving ant from %2$s to %3$s", issuer, ant.getTile(), newLoc);
             orders.put(newLoc, new Move(ant.getTile(), direction));
             ant.setNextTile(newLoc);
             Ants.getPopulation().addEmployedAnt(ant);
@@ -72,7 +76,7 @@ public class Orders {
     public void addMission(Mission newMission) {
         if (missions.add(newMission)) {
             newMission.execute();
-            Logger.debug(LogCategory.EXECUTE_MISSIONS, "New mission created: %s", newMission);
+            LOGGER_MISSIONS.debug("New mission created: %s", newMission);
         }
     }
 
@@ -84,7 +88,7 @@ public class Orders {
             if (move != null) {
                 final String order = "o " + move.getTile().getRow() + " " + move.getTile().getCol() + " "
                         + move.getDirection().getSymbol();
-                Logger.debug(LogCategory.ORDERS, "Issuing order: %s", order);
+                LOGGER.debug("Issuing order: %s", order);
                 System.out.println(order);
             }
         }
