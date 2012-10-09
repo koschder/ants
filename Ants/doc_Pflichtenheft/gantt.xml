@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="Untitled Gantt Project" company="" webLink="http://" view-date="2012-09-01" view-index="0" gantt-divider-location="569" resource-divider-location="300" version="2.0">
+<project name="Untitled Gantt Project" company="" webLink="http://" view-date="2012-08-01" view-index="0" gantt-divider-location="249" resource-divider-location="300" version="2.0">
     <description/>
     <view zooming-state="default:8" id="gantt-chart"/>
     <view id="resource-table">
-        <field id="0" name="Name" width="52" order="0"/>
-        <field id="1" name="Default role" width="47" order="1"/>
+        <field id="0" name="Name" width="50" order="0"/>
+        <field id="1" name="Default role" width="50" order="1"/>
     </view>
     <!-- -->
     <calendars>
@@ -40,9 +40,26 @@
             <depend id="4" type="2" difference="0" hardness="Strong"/>
         </task>
         <task id="4" name="Pfadsuche ausgelagert" color="#8cb6ce" meeting="true" start="2012-10-22" duration="1" complete="0" expand="true"/>
-        <task id="6" name="Implementieren Influence Maps" color="#8cb6ce" meeting="false" start="2012-09-03" duration="1" complete="0" expand="true"/>
-        <task id="7" name="Implementieren Ressourcenzuordnung" color="#8cb6ce" meeting="false" start="2012-09-03" duration="1" complete="0" expand="true"/>
-        <task id="8" name="" color="#8cb6ce" meeting="false" start="2012-09-03" duration="1" complete="0" expand="true"/>
+        <task id="10" name="Implementieren Influence Maps" color="#8cb6ce" meeting="false" start="2012-10-15" duration="10" complete="0" expand="true"/>
+        <task id="11" name="Implementieren Ressourcenzuteilung" color="#8cb6ce" meeting="false" start="2012-10-22" duration="14" complete="0" expand="true">
+            <depend id="6" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="6" name="Bot kann strategische Entscheide treffen" color="#8cb6ce" meeting="true" start="2012-11-09" duration="1" complete="0" expand="true"/>
+        <task id="12" name="Konzept für Beurteilung von Kampfsituationen" color="#8cb6ce" meeting="false" start="2012-11-12" duration="5" complete="0" expand="true"/>
+        <task id="13" name="Beurteilung von Kampfsituationen implementieren" color="#8cb6ce" meeting="false" start="2012-11-19" duration="9" complete="0" expand="true">
+            <depend id="7" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="14" name="Kampfverhalten implementieren" color="#8cb6ce" meeting="false" start="2012-11-19" duration="9" complete="0" expand="true">
+            <depend id="7" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="7" name="Kampfverhalten fertig implementiert" color="#8cb6ce" meeting="true" start="2012-11-30" duration="1" complete="0" expand="true"/>
+        <task id="19" name="Zusätzliche taktische Bewertungen implementieren" color="#8cb6ce" meeting="false" start="2012-12-03" duration="9" complete="0" expand="true">
+            <depend id="8" type="2" difference="0" hardness="Strong"/>
+        </task>
+        <task id="8" name="Alle Funktionen implementiert" color="#8cb6ce" meeting="true" start="2012-12-14" duration="1" complete="0" expand="true"/>
+        <task id="15" name="Feinschliff des Verhaltens der Ameisen" color="#8cb6ce" meeting="false" start="2012-12-17" duration="15" complete="0" expand="true"/>
+        <task id="16" name="Abschlussarbeiten Dokumentation" color="#8cb6ce" meeting="false" start="2013-01-07" duration="9" complete="0" expand="true"/>
+        <task id="9" name="Abschluss der Arbeit" color="#8cb6ce" meeting="true" start="2013-01-18" duration="1" complete="0" expand="true"/>
     </tasks>
     <resources/>
     <allocations/>
@@ -53,12 +70,12 @@
         <displaycolumn property-id="tpd8" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd6" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd10" order="-1" width="75" visible="false"/>
+        <displaycolumn property-id="tpd3" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd9" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd1" order="-1" width="75" visible="false"/>
         <displaycolumn property-id="tpd0" order="-1" width="75" visible="false"/>
-        <displaycolumn property-id="tpd4" order="0" width="119" visible="true"/>
+        <displaycolumn property-id="tpd4" order="0" width="118" visible="true"/>
         <displaycolumn property-id="tpd5" order="1" width="127" visible="true"/>
-        <displaycolumn property-id="tpd3" order="2" width="319" visible="true"/>
     </taskdisplaycolumns>
     <previous/>
     <roles roleset-name="Default"/>
