@@ -5,6 +5,7 @@
 # First, ignore everything
 /doc
 /doc_bachelor
+/doc_Pflichtenheft
 # And all the file types you're interested in.
 !*.tex
 !*.bib
