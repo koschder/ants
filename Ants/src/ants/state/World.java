@@ -12,7 +12,7 @@ import javax.management.RuntimeErrorException;
 
 import pathfinder.entities.Aim;
 import pathfinder.entities.SearchTarget;
-import pathfinder.entities.SearchableMap;
+import pathfinder.entities.AbstractSearchableMap;
 import pathfinder.entities.Tile;
 import ants.entities.Ant;
 import ants.entities.Ilk;
@@ -23,7 +23,7 @@ import ants.entities.Ilk;
  * @author kases1,kustl1
  * 
  */
-public class World extends SearchableMap {
+public class World extends AbstractSearchableMap {
 
     private int rows;
 
