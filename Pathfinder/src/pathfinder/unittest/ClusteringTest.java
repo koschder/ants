@@ -6,24 +6,23 @@ import java.util.List;
 import org.junit.Test;
 
 import pathfinder.PathFinder;
-import pathfinder.PathFinder.WorldType;
 import pathfinder.entities.Clustering;
 import pathfinder.entities.Tile;
 import pathfinder.entities.Vertex;
 
 public class ClusteringTest {
     @Test
-    public void ClusteringMapCornerTest() {   
-        clusteringTestByType(Clustering.ClusterType.Corner);       
+    public void ClusteringMapCornerTest() {
+        clusteringTestByType(Clustering.ClusterType.Corner);
     }
-    
+
     @Test
-    public void ClusteringMapCenteredTest() {   
-        clusteringTestByType(Clustering.ClusterType.Centered);       
+    public void ClusteringMapCenteredTest() {
+        clusteringTestByType(Clustering.ClusterType.Centered);
     }
 
     private void clusteringTestByType(Clustering.ClusterType clusterType) {
-        System.out.println("ClusteringMapTest"+clusterType);
+        System.out.println("ClusteringMapTest" + clusterType);
         String sMap = "";
         sMap += "woooowwwwwwwwwwwwwwwwwwwwww";
         int cols = sMap.length();
@@ -46,26 +45,26 @@ public class ClusteringTest {
         sMap += "wooooooooooooooooowooooooow";
         sMap += "wooooooooooooooooowooooooow";
         sMap += "woooowwwwwwwwwwwwwooooowwww";
-        
-        UnitTestMap map = new UnitTestMap(cols,sMap);
+
+        UnitTestMap map = new UnitTestMap(cols, sMap);
         PathFinder pf = new PathFinder();
         int clusterSize = 8;
         pf.setMap(map);
-        pf.InitClustering(WorldType.Globe, clusterSize,clusterType);
-        
+        pf.InitClustering(clusterSize, clusterType);
+
         pf.cluster();
-        
+
         Clustering clusterd = pf.getClustering();
-        
-        List<Vertex> verts =  clusterd.getAllVertices();
-        
+
+        List<Vertex> verts = clusterd.getAllVertices();
+
         List<Tile> tiles = new ArrayList<Tile>();
-        
-        for(Vertex x : verts){        
+
+        for (Vertex x : verts) {
             tiles.add(x.getTargetTile());
         }
-        String name = "ClusterByType"+clusterType;
-        map.printMap(tiles,clusterSize);
-        map.saveHtmlMap(name,tiles,clusterSize);
+        String name = "ClusterByType" + clusterType;
+        map.printMap(tiles, clusterSize);
+        map.saveHtmlMap(name, tiles, clusterSize);
     }
 }

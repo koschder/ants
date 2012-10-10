@@ -67,11 +67,6 @@ public abstract class SearchStrategy {
 
     }
 
-    public enum WorldType {
-        Pizza,
-        Globe
-    };
-
     protected PathFinder pathFinder;
     protected int maxCost;
     protected Tile searchSpace1;

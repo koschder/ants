@@ -47,8 +47,6 @@ public class PathFinder {
     /***
      * Initialize the clustering
      * 
-     * @param t
-     *            WorldType: Pizza if the World has borders, or Global if the world is wrap around.
      * @param clusterSize
      *            the size of each cluster
      * @param clusterType
@@ -56,11 +54,11 @@ public class PathFinder {
      *            centered at the passage
      * 
      */
-    public void InitClustering(WorldType t, int clusterSize, ClusterType clusterType) {
+    public void InitClustering(int clusterSize, ClusterType clusterType) {
 
         cluster = new Clustering(this, clusterSize, map.getRows(), map.getCols());
         cluster.setClusterType(clusterType);
-        cluster.setWorldType(t);
+        cluster.setWorldType(map.getWorldType());
 
     }
 
@@ -78,7 +76,7 @@ public class PathFinder {
      */
     public List<Tile> search(Strategy strategy, SearchTarget start, SearchTarget end, int maxCost) {
         SearchStrategy searchStrat = getStartegy(strategy);
-        searchStrat.setMaxCost(maxCost);      
+        searchStrat.setMaxCost(maxCost);
         return searchStrat.search(start, end);
     }
 
@@ -90,8 +88,10 @@ public class PathFinder {
      *            position
      * @param end
      *            position
-     * @param searchSpace0 the left top corner of the search area in witch the framework can search the path
-     * @param searchSpace1 the right bottom corner of the search area in witch the framework can search the path
+     * @param searchSpace0
+     *            the left top corner of the search area in witch the framework can search the path
+     * @param searchSpace1
+     *            the right bottom corner of the search area in witch the framework can search the path
      * @param maxCost
      *            maximum Costs for the path, if param is set to -1 no costs are calculated.
      * @return the found path, or null if no path found.
@@ -117,7 +117,7 @@ public class PathFinder {
         if (strategy == Strategy.HpaStar)
             return new HPAStarSearchStrategy(this);
 
-        throw new RuntimeException("Strategy not implemented: "+strategy);
+        throw new RuntimeException("Strategy not implemented: " + strategy);
     }
 
     /***

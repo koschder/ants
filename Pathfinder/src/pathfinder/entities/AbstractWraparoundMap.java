@@ -3,7 +3,9 @@ package pathfinder.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractSearchableMap implements SearchableMap {
+import pathfinder.PathFinder.WorldType;
+
+public abstract class AbstractWraparoundMap implements SearchableMap {
 
     @Override
     public abstract int getRows();
@@ -19,6 +21,11 @@ public abstract class AbstractSearchableMap implements SearchableMap {
 
     @Override
     public abstract List<SearchTarget> getSuccessor(SearchTarget currentPosition, boolean isNextMove);
+
+    @Override
+    public WorldType getWorldType() {
+        return WorldType.Globe;
+    }
 
     @Override
     public List<Aim> getDirections(Tile t1, Tile t2) {
