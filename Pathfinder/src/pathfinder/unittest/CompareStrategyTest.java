@@ -15,7 +15,7 @@ import pathfinder.entities.Tile;
 public class CompareStrategyTest {
 
     @Test
-    public void AStarTest() {
+    public void aStarTest() {
         String sTestName = "AStarTest";
         System.out.println(sTestName);
         PathFinder pf = initPathFinder();

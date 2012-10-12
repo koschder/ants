@@ -12,7 +12,7 @@ import pathfinder.entities.Tile;
 public class FindAStarTest {
 
     @Test
-    public void BaseTest() {
+    public void baseTest() {
         System.out.println("BaseTest");
         UnitTestMap map = new UnitTestMap(25, 25);
         PathFinder pf = new PathFinder();
@@ -24,7 +24,7 @@ public class FindAStarTest {
     }
 
     @Test
-    public void SomeWaterTest() {
+    public void someWaterTest() {
         System.out.println("SomeWaterTest");
         String sMap = "";
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
@@ -54,7 +54,7 @@ public class FindAStarTest {
     }
 
     @Test
-    public void GlobeTest() {
+    public void globeTest() {
         System.out.println("GlobeTest");
         String sMap = "";
         sMap += "wowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";

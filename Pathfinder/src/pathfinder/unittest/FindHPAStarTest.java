@@ -9,24 +9,19 @@ import org.junit.Test;
 import pathfinder.PathFinder;
 import pathfinder.entities.Tile;
 
-public class SimpleSearchTest {
+public class FindHPAStarTest {
 
     @Test
     public void baseTest() {
         System.out.println("BaseTest");
         UnitTestMap map = new UnitTestMap(25, 25);
         PathFinder pf = new PathFinder();
+        
         pf.setMap(map);
-        List<Tile> path = pf.search(PathFinder.Strategy.Simple, new Tile(10, 10), new Tile(15, 15), 20);
+        List<Tile> path = pf.search(PathFinder.Strategy.AStar, new Tile(10, 10), new Tile(15, 15), 20);
         map.printMap(path);
         Assert.assertNotNull(path);
 
-        map.printMap(path);
-        String row = "";
-        for (Tile t : path) {
-            row += t.getRow() + ":" + t.getCol() + "=>";
-        }
-        System.out.println(row);
     }
 
     @Test
@@ -41,24 +36,24 @@ public class SimpleSearchTest {
         sMap += "wooooooowwwwwwwwwwwwwooooowooooooooow";
         sMap += "woooooooooooowoooooooooooowooooooooow";
         sMap += "woooooooooooowoooowooooooowooooooooow";
-        sMap += "wooooooooooooooooooooooooowooooooooow";
+        sMap += "wooooooooooooooooowooooooowooooooooow";
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         UnitTestMap map = new UnitTestMap(37, sMap);
         PathFinder pf = new PathFinder();
         pf.setMap(map);
-        List<Tile> path = pf.search(PathFinder.Strategy.Simple,new Tile(5, 2), new Tile(8, 17), -1);
-        
+        List<Tile> path = pf.search(PathFinder.Strategy.AStar, new Tile(2, 2), new Tile(2, 35), -1);
+
         map.printMap(path);
         String row = "";
         for (Tile t : path) {
             row += t.getRow() + ":" + t.getCol() + "=>";
         }
         System.out.println(row);
-        
+
         Assert.assertNotNull(path);
     }
-    
+
     @Test
     public void globeTest() {
         System.out.println("GlobeTest");
@@ -71,21 +66,21 @@ public class SimpleSearchTest {
         sMap += "wooooooowwwwwwwwwwwwwooooowooooooooow";
         sMap += "woooooooooooowoooooooooooowoooooooooo";
         sMap += "ooooooooooooowoooowooooooowoooooooooo";
-        sMap += "oooooooooooooooooowooooooowoooooooooo";
+        sMap += "wooooooooooooooooowooooooowooooooooow";
         sMap += "wowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         UnitTestMap map = new UnitTestMap(37, sMap);
         PathFinder pf = new PathFinder();
         pf.setMap(map);
-        List<Tile> path = pf.search(PathFinder.Strategy.Simple,new Tile(8, 2), new Tile(6, 34), -1);
-        
+        List<Tile> path = pf.search(PathFinder.Strategy.AStar, new Tile(2, 2), new Tile(2, 35), -1);
+
         map.printMap(path);
         String row = "";
         for (Tile t : path) {
             row += t.getRow() + ":" + t.getCol() + "=>";
         }
         System.out.println(row);
-        
+
         Assert.assertNotNull(path);
     }
 }

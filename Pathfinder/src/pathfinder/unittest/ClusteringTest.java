@@ -13,12 +13,12 @@ import pathfinder.entities.Vertex;
 
 public class ClusteringTest {
     @Test
-    public void ClusteringMapCornerTest() {   
+    public void clusteringMapCornerTest() {   
         clusteringTestByType(Clustering.ClusterType.Corner);       
     }
     
     @Test
-    public void ClusteringMapCenteredTest() {   
+    public void clusteringMapCenteredTest() {   
         clusteringTestByType(Clustering.ClusterType.Centered);       
     }
 
