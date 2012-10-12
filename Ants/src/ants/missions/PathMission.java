@@ -3,12 +3,13 @@ package ants.missions;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import logging.Logger;
 import logging.LoggerFactory;
-import pathfinder.entities.Aim;
-import pathfinder.entities.Tile;
 import ants.LogCategory;
 import ants.entities.Ant;
+import api.Aim;
+import api.Tile;
 
 /***
  * this mission is implemented to follow a path defined while creating the class

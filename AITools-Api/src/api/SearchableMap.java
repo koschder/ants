@@ -1,8 +1,8 @@
-package pathfinder.entities;
+package api;
 
 import java.util.List;
 
-import pathfinder.PathFinder.WorldType;
+
 
 public interface SearchableMap {
 

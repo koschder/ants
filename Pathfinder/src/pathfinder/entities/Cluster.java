@@ -5,6 +5,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import api.Aim;
+import api.SearchTarget;
+import api.Tile;
+
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;

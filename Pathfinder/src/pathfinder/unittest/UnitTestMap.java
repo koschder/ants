@@ -7,10 +7,11 @@ import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 
-import pathfinder.entities.Aim;
-import pathfinder.entities.SearchTarget;
+import api.Aim;
+import api.SearchTarget;
+import api.Tile;
+
 import pathfinder.entities.AbstractWraparoundMap;
-import pathfinder.entities.Tile;
 
 public class UnitTestMap extends AbstractWraparoundMap {
 

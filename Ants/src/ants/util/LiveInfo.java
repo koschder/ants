@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 
-import pathfinder.entities.Tile;
+import api.Tile;
+
+
+
 
 /**
  * Logger class that writes application logs to a separate log file.

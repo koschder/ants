@@ -3,11 +3,14 @@ package pathfinder.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import api.Aim;
+import api.Tile;
+import api.WorldType;
+
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
-import pathfinder.PathFinder.WorldType;
 
 public class Clustering {
 

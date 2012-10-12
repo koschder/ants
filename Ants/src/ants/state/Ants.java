@@ -1,10 +1,10 @@
 package ants.state;
 
 import pathfinder.entities.Clustering;
-import pathfinder.entities.Tile;
 import ants.entities.Ant;
 import ants.entities.Ilk;
 import ants.search.AntsPathFinder;
+import api.Tile;
 
 /**
  * Container class for the game state. Provides access to game metadata (such as turnTime, startTime, ...) as well as

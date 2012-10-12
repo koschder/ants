@@ -5,11 +5,11 @@ import java.util.Deque;
 
 import logging.Logger;
 import logging.LoggerFactory;
-import pathfinder.entities.Aim;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Move;
 import ants.state.Ants;
+import api.Aim;
 
 /***
  * Implements the interface Mission an handles the base tasks of a mission.

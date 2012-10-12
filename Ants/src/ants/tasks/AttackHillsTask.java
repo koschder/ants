@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import pathfinder.entities.Tile;
+
 
 
 import ants.entities.Ant;
@@ -12,6 +12,7 @@ import ants.entities.Route;
 import ants.missions.AttackHillMission;
 import ants.search.AntsPathFinder;
 import ants.state.Ants;
+import api.Tile;
 
 /**
  * Task that identifies enemy hills suitable for attacking and sends Ants to attack them.

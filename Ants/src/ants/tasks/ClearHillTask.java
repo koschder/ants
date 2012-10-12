@@ -1,8 +1,8 @@
 package ants.tasks;
 
-import pathfinder.entities.Aim;
 import ants.entities.Ant;
 import ants.state.Ants;
+import api.Aim;
 
 /**
  * Task that ensures that no ant blocks our hills. This should be executed last, since it just issues a random order for

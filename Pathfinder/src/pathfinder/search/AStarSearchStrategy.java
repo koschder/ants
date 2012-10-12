@@ -7,13 +7,15 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
+import api.SearchTarget;
+import api.Tile;
+
+
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import pathfinder.entities.Node;
-import pathfinder.entities.SearchTarget;
-import pathfinder.entities.Tile;
 
 public class AStarSearchStrategy extends SearchStrategy {
 

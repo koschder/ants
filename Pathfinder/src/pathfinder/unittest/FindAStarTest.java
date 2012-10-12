@@ -6,8 +6,10 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import api.Tile;
+
+
 import pathfinder.PathFinder;
-import pathfinder.entities.Tile;
 
 public class FindAStarTest {
 

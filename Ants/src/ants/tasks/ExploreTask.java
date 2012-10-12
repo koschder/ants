@@ -7,15 +7,16 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
+
 import logging.Logger;
 import logging.LoggerFactory;
-import pathfinder.entities.Tile;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Route;
 import ants.missions.ExploreMission;
 import ants.search.AntsPathFinder;
 import ants.state.Ants;
+import api.Tile;
 
 /**
  * This task sends ants into unexplored areas of the map to discover new frontiers - to boldly go where no ant has gone

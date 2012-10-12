@@ -2,13 +2,15 @@ package pathfinder.search;
 
 import java.util.List;
 
+import api.SearchTarget;
+import api.Tile;
+
+
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import pathfinder.entities.DirectedEdge;
-import pathfinder.entities.SearchTarget;
-import pathfinder.entities.Tile;
 
 public class HPAStarSearchStrategy extends SearchStrategy {
 

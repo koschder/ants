@@ -2,20 +2,20 @@ package pathfinder.search;
 
 import java.util.List;
 
+import api.SearchTarget;
+
 import pathfinder.entities.AbstractWraparoundMap;
 import pathfinder.entities.Clustering;
 import pathfinder.entities.DirectedEdge;
-import pathfinder.entities.Edge;
-import pathfinder.entities.SearchTarget;
 
-public class ClusteredMap extends AbstractWraparoundMap  {
+public class ClusteredMap extends AbstractWraparoundMap {
 
     private Clustering clustering;
-    
-    public ClusteredMap(Clustering c){
+
+    public ClusteredMap(Clustering c) {
         clustering = c;
     }
-    
+
     @Override
     public int getRows() {
         return clustering.getRows();
@@ -38,15 +38,15 @@ public class ClusteredMap extends AbstractWraparoundMap  {
 
     @Override
     public List<SearchTarget> getSuccessor(SearchTarget currentEdge, boolean isNextMove) {
-       
-        if(!(currentEdge instanceof DirectedEdge)){
+
+        if (!(currentEdge instanceof DirectedEdge)) {
             throw new IllegalArgumentException("SearchTarget must be of the type DirectedEdge");
         }
-        
-        DirectedEdge e = (DirectedEdge)currentEdge;
-        
+
+        DirectedEdge e = (DirectedEdge) currentEdge;
+
         return e.getCluster().getEdgeWithNeighbourCluster(e);
-      
+
     }
 
 }

@@ -2,12 +2,13 @@ package ants.tasks;
 
 import java.util.Iterator;
 
-import pathfinder.entities.Tile;
+
 
 import ants.entities.Ant;
 import ants.missions.FollowMission;
 import ants.missions.Mission;
 import ants.state.Ants;
+import api.Tile;
 
 /**
  * This task orders our ants that don't have anything better to do to follow another ant. Should be executed next to

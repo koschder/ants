@@ -3,7 +3,13 @@ package pathfinder.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import pathfinder.PathFinder.WorldType;
+import api.Aim;
+import api.SearchTarget;
+import api.SearchableMap;
+import api.Tile;
+import api.WorldType;
+
+
 
 public abstract class AbstractWraparoundMap implements SearchableMap {
 

@@ -10,12 +10,12 @@ import java.util.Set;
 
 import javax.management.RuntimeErrorException;
 
-import pathfinder.entities.Aim;
-import pathfinder.entities.SearchTarget;
 import pathfinder.entities.AbstractWraparoundMap;
-import pathfinder.entities.Tile;
 import ants.entities.Ant;
 import ants.entities.Ilk;
+import api.Aim;
+import api.SearchTarget;
+import api.Tile;
 
 /**
  * This class holds state about the game world.
