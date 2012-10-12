@@ -16,6 +16,8 @@ import ants.entities.Ilk;
 import api.Aim;
 import api.SearchTarget;
 import api.Tile;
+import api.Unit;
+import api.UnitMap;
 
 /**
  * This class holds state about the game world.
@@ -23,7 +25,7 @@ import api.Tile;
  * @author kases1,kustl1
  * 
  */
-public class World extends AbstractWraparoundMap {
+public class World extends AbstractWraparoundMap implements UnitMap {
 
     private int rows;
 
@@ -160,28 +162,6 @@ public class World extends AbstractWraparoundMap {
     }
 
     /**
-     * Returns location with the specified offset from the specified location.
-     * 
-     * @param tile
-     *            location on the game map
-     * @param offset
-     *            offset to look up
-     * 
-     * @return location with <code>offset</code> from <cod>tile</code>
-     */
-    public Tile getTile(Tile tile, Tile offset) {
-        int row = (tile.getRow() + offset.getRow()) % rows;
-        if (row < 0) {
-            row += rows;
-        }
-        int col = (tile.getCol() + offset.getCol()) % cols;
-        if (col < 0) {
-            col += cols;
-        }
-        return new Tile(row, col);
-    }
-
-    /**
      * Update information about tile visibility using the vision abilities of our ants.
      * 
      * @param myAnts
@@ -234,18 +214,6 @@ public class World extends AbstractWraparoundMap {
      */
     public Set<Tile> getFoodTiles() {
         return foodTiles;
-    }
-
-    /**
-     * Returns true if a location is visible this turn
-     * 
-     * @param tile
-     *            location on the game map
-     * 
-     * @return true if the location is visible
-     */
-    public boolean isVisible(Tile tile) {
-        return visible[tile.getRow()][tile.getCol()];
     }
 
     /**
@@ -352,7 +320,8 @@ public class World extends AbstractWraparoundMap {
         return isPassable(tile) && !isOccupiedForNextMove(nextMove);
     }
 
-    public boolean isPassable(SearchTarget tile) {
+    @Override
+    public boolean isPassable(Tile tile) {
         return Ants.getWorld().getIlk(tile.getTargetTile()).isPassable();
     }
 
@@ -362,7 +331,31 @@ public class World extends AbstractWraparoundMap {
         return false;
     }
 
-    public boolean isVisible(SearchTarget tile) {
-        return visible[tile.getTargetTile().getRow()][tile.getTargetTile().getCol()];
+    /**
+     * Returns true if a location is visible this turn
+     * 
+     * @param tile
+     *            location on the game map
+     * 
+     * @return true if the location is visible
+     */
+    @Override
+    public boolean isVisible(Tile tile) {
+        return visible[tile.getRow()][tile.getCol()];
+    }
+
+    @Override
+    public Collection<Unit> getUnits(int player) {
+        Set<Unit> playersAnts = new HashSet<Unit>();
+        for (Unit unit : Ants.getPopulation().getEnemyAnts()) {
+            if (unit.getPlayer() == player)
+                playersAnts.add(unit);
+        }
+        return playersAnts;
+    }
+
+    @Override
+    public Set<Integer> getPlayers() {
+        return Ants.getPopulation().getPlayers();
     }
 }

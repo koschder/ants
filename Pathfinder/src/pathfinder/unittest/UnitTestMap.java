@@ -58,11 +58,11 @@ public class UnitTestMap extends AbstractWraparoundMap {
         return map[0].length;
     }
 
-    public boolean isPassable(SearchTarget tile) {
+    public boolean isPassable(Tile tile) {
         return map[tile.getTargetTile().getRow()][tile.getTargetTile().getCol()] == land;
     }
 
-    public boolean isVisible(SearchTarget tile) {
+    public boolean isVisible(Tile tile) {
         return true;
     }
 

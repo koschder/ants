@@ -2,30 +2,7 @@ package api;
 
 import java.util.List;
 
-
-
-public interface SearchableMap {
-
-    public int getRows();
-
-    public int getCols();
-
-    public WorldType getWorldType();
-
-    /***
-     * 
-     * @param tile
-     * @return true if we can pass through this tile (type)
-     */
-    public boolean isPassable(SearchTarget tile);
-
-    /***
-     * do we know the character of this field.
-     * 
-     * @param tile
-     * @return
-     */
-    public boolean isVisible(SearchTarget tile);
+public interface SearchableMap extends TileMap {
 
     /***
      * returns all neighbor fields, passable for any movable object

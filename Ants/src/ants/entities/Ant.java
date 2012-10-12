@@ -9,11 +9,12 @@ import java.util.Map.Entry;
 import java.util.TreeMap;
 
 import api.Tile;
+import api.Unit;
 
 
 
 
-public class Ant implements Comparable<Ant> {
+public class Ant implements Comparable<Ant>, Unit {
     public static final int MINE = 0;
     private Tile tile;
     private Tile nextTile;
@@ -28,10 +29,12 @@ public class Ant implements Comparable<Ant> {
         this.player = owner;
     }
 
+    @Override
     public boolean isMine() {
         return player == MINE;
     }
 
+    @Override
     public int getPlayer() {
         return player;
     }
@@ -88,6 +91,7 @@ public class Ant implements Comparable<Ant> {
         return enemies;
     }
 
+    @Override
     public Tile getTile() {
         return tile;
     }

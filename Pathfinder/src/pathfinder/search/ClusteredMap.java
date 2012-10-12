@@ -3,6 +3,7 @@ package pathfinder.search;
 import java.util.List;
 
 import api.SearchTarget;
+import api.Tile;
 
 import pathfinder.entities.AbstractWraparoundMap;
 import pathfinder.entities.Clustering;
@@ -27,12 +28,12 @@ public class ClusteredMap extends AbstractWraparoundMap {
     }
 
     @Override
-    public boolean isPassable(SearchTarget tile) {
+    public boolean isPassable(Tile tile) {
         return true;
     }
 
     @Override
-    public boolean isVisible(SearchTarget tile) {
+    public boolean isVisible(Tile tile) {
         return true;
     }
 

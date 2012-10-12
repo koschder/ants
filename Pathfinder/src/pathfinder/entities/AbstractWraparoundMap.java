@@ -4,29 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import api.Aim;
-import api.SearchTarget;
 import api.SearchableMap;
 import api.Tile;
 import api.WorldType;
 
-
-
 public abstract class AbstractWraparoundMap implements SearchableMap {
-
-    @Override
-    public abstract int getRows();
-
-    @Override
-    public abstract int getCols();
-
-    @Override
-    public abstract boolean isPassable(SearchTarget tile);
-
-    @Override
-    public abstract boolean isVisible(SearchTarget tile);
-
-    @Override
-    public abstract List<SearchTarget> getSuccessor(SearchTarget currentPosition, boolean isNextMove);
 
     @Override
     public WorldType getWorldType() {
@@ -72,6 +54,29 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
             row += getRows();
         }
         int col = (tile.getCol() + direction.getColDelta()) % getCols();
+        if (col < 0) {
+            col += getCols();
+        }
+        return new Tile(row, col);
+    }
+
+    /**
+     * Returns location with the specified offset from the specified location.
+     * 
+     * @param tile
+     *            location on the game map
+     * @param offset
+     *            offset to look up
+     * 
+     * @return location with <code>offset</code> from <cod>tile</code>
+     */
+    @Override
+    public Tile getTile(Tile tile, Tile offset) {
+        int row = (tile.getRow() + offset.getRow()) % getRows();
+        if (row < 0) {
+            row += getRows();
+        }
+        int col = (tile.getCol() + offset.getCol()) % getCols();
         if (col < 0) {
             col += getCols();
         }

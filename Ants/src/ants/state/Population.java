@@ -5,7 +5,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
-
 import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
@@ -26,6 +25,12 @@ public class Population {
     private Set<Ant> employedAnts = new HashSet<Ant>();
 
     private Set<Ant> enemyAnts = new HashSet<Ant>();
+    private Set<Integer> players;
+
+    public Population() {
+        players = new HashSet<Integer>();
+        players.add(0); // that's us
+    }
 
     /**
      * Clears all state; this class contains only turn-scoped state information.
@@ -46,8 +51,14 @@ public class Population {
     public void addAnt(Tile tile, int owner) {
         if (owner == Ant.MINE)
             myAnts.add(new Ant(tile, owner));
-        else
+        else {
             enemyAnts.add(new Ant(tile, owner));
+            players.add(owner);
+        }
+    }
+
+    public Set<Integer> getPlayers() {
+        return players;
     }
 
     public Set<Ant> getMyAnts() {
