@@ -6,7 +6,6 @@ import java.util.List;
 import org.junit.Test;
 
 import pathfinder.PathFinder;
-import pathfinder.PathFinder.WorldType;
 import pathfinder.entities.Clustering;
 import pathfinder.entities.Tile;
 import pathfinder.entities.Vertex;
@@ -51,7 +50,7 @@ public class ClusteringTest {
         PathFinder pf = new PathFinder();
         int clusterSize = 8;
         pf.setMap(map);
-        pf.InitClustering(WorldType.Globe, clusterSize,clusterType);
+        pf.initClustering(clusterSize,clusterType);
         
         pf.cluster();
         

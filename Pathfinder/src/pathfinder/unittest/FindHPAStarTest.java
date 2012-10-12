@@ -1,27 +1,32 @@
 package pathfinder.unittest;
 
 import java.util.List;
-
 import junit.framework.Assert;
-
 import org.junit.Test;
-
 import pathfinder.PathFinder;
 import pathfinder.entities.Tile;
+import pathfinder.entities.Clustering.ClusterType;
 
 public class FindHPAStarTest {
 
     @Test
     public void baseTest() {
+        baseTestbyType(ClusterType.Centered);
+        baseTestbyType(ClusterType.Corner);
+    }
+
+    private void baseTestbyType(ClusterType type) {
         System.out.println("BaseTest");
         UnitTestMap map = new UnitTestMap(25, 25);
         PathFinder pf = new PathFinder();
-        
+        int clusterSize = 8;
         pf.setMap(map);
-        List<Tile> path = pf.search(PathFinder.Strategy.AStar, new Tile(10, 10), new Tile(15, 15), 20);
+        pf.initClustering(clusterSize, type);
+        pf.cluster();
+        List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, new Tile(10, 10), new Tile(15, 15), 20);
         map.printMap(path);
+        map.saveHtmlMap("FindHPAStarTest_BaseTest_" + type.toString(), path, clusterSize);
         Assert.assertNotNull(path);
-
     }
 
     @Test

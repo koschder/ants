@@ -54,7 +54,7 @@ public class PathFinder {
      *            centered at the passage
      * 
      */
-    public void InitClustering(int clusterSize, ClusterType clusterType) {
+    public void initClustering(int clusterSize, ClusterType clusterType) {
 
         cluster = new Clustering(this, clusterSize, map.getRows(), map.getCols());
         cluster.setClusterType(clusterType);

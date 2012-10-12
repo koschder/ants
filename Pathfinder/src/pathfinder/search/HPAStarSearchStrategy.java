@@ -37,7 +37,17 @@ public class HPAStarSearchStrategy extends SearchStrategy {
         LOGGER.debug("HPAstar: Connecting edges to Cluster edge are:");
         LOGGER.debug("     for start tile %s the edge is : %s", start, edgeStart);
         LOGGER.debug("     for end tile %s the edge is : %s", end, endEdge);
-        List<Tile> path = findPathWithAStar(edgeStart, endEdge, maxCost);
+        
+        
+       // List<Tile> path = findPathWithAStar(edgeStart, endEdge, maxCost);
+        
+        ClusteredMap cmap = new ClusteredMap(pathFinder.getClustering());
+        
+        PathFinder pf = new PathFinder();
+        pf.setMap(cmap);
+        List<Tile> path = pf.search(PathFinder.Strategy.AStar, edgeStart, endEdge, maxCost);
+        
+        
         if (path != null)
             path.addAll(endEdge.getPath());
 
