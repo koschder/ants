@@ -9,10 +9,10 @@ import java.util.List;
 
 import pathfinder.entities.Aim;
 import pathfinder.entities.SearchTarget;
-import pathfinder.entities.SearchableMap;
+import pathfinder.entities.AbstractWraparoundMap;
 import pathfinder.entities.Tile;
 
-public class UnitTestMap extends SearchableMap {
+public class UnitTestMap extends AbstractWraparoundMap {
 
     int[][] map;
 
