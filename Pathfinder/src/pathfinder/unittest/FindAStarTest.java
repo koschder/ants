@@ -6,10 +6,9 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import api.Tile;
-
-
 import pathfinder.PathFinder;
+import api.MapOutput;
+import api.Tile;
 
 public class FindAStarTest {
 
@@ -20,7 +19,10 @@ public class FindAStarTest {
         PathFinder pf = new PathFinder();
         pf.setMap(map);
         List<Tile> path = pf.search(PathFinder.Strategy.AStar, new Tile(10, 10), new Tile(15, 15), 20);
-        map.printMap(path);
+        MapOutput put = new MapOutput();
+        put.setMap(pf.getMap());
+        put.addObject(path, "A Star Path");
+        put.saveHtmlMap("FindAStarTest_BaseTest");
         Assert.assertNotNull(path);
 
     }
@@ -45,12 +47,10 @@ public class FindAStarTest {
         pf.setMap(map);
         List<Tile> path = pf.search(PathFinder.Strategy.AStar, new Tile(2, 2), new Tile(2, 35), -1);
 
-        map.printMap(path);
-        String row = "";
-        for (Tile t : path) {
-            row += t.getRow() + ":" + t.getCol() + "=>";
-        }
-        System.out.println(row);
+        MapOutput put = new MapOutput();
+        put.setMap(pf.getMap());
+        put.addObject(path, "A Star Path");
+        put.saveHtmlMap("FindAStarTest_SomeWaterTest");
 
         Assert.assertNotNull(path);
     }
@@ -75,12 +75,10 @@ public class FindAStarTest {
         pf.setMap(map);
         List<Tile> path = pf.search(PathFinder.Strategy.AStar, new Tile(2, 2), new Tile(2, 35), -1);
 
-        map.printMap(path);
-        String row = "";
-        for (Tile t : path) {
-            row += t.getRow() + ":" + t.getCol() + "=>";
-        }
-        System.out.println(row);
+        MapOutput put = new MapOutput();
+        put.setMap(pf.getMap());
+        put.addObject(path, "A Star Pat");
+        put.saveHtmlMap("FindAStarTest_GlobeTest");
 
         Assert.assertNotNull(path);
     }

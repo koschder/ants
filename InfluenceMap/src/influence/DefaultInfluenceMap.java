@@ -42,13 +42,13 @@ public class DefaultInfluenceMap implements InfluenceMap {
                     for (int col = -mx; col <= mx; ++col) {
                         int d = row * row + col * col;
                         if (d <= this.viewRadius2) {
-                            Tile t = map.getTile(tile, new Tile(row, col));
-                            if (t.equals(tile))
+                            Tile tRadius = map.getTile(tile, new Tile(row, col));
+                            if (tRadius.equals(tile))
                                 continue;
                             if (d <= this.attackRadius2)
-                                playerInfluence[tile.getRow()][tile.getCol()] += 50;
+                                playerInfluence[tRadius.getRow()][tRadius.getCol()] += 50;
                             else
-                                playerInfluence[tile.getRow()][tile.getCol()] += 10;
+                                playerInfluence[tRadius.getRow()][tRadius.getCol()] += 10;
                         }
                     }
                 }

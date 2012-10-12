@@ -6,10 +6,9 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import api.Tile;
-
-
 import pathfinder.PathFinder;
+import api.MapOutput;
+import api.Tile;
 
 public class SimpleSearchTest {
 
@@ -20,15 +19,13 @@ public class SimpleSearchTest {
         PathFinder pf = new PathFinder();
         pf.setMap(map);
         List<Tile> path = pf.search(PathFinder.Strategy.Simple, new Tile(10, 10), new Tile(15, 15), 20);
-        map.printMap(path);
+
         Assert.assertNotNull(path);
 
-        map.printMap(path);
-        String row = "";
-        for (Tile t : path) {
-            row += t.getRow() + ":" + t.getCol() + "=>";
-        }
-        System.out.println(row);
+        MapOutput put = new MapOutput();
+        put.setMap(pf.getMap());
+        put.addObject(path, "Simple Path");
+        put.saveHtmlMap("SimpleSearchTest_baseTest");
     }
 
     @Test
@@ -49,18 +46,16 @@ public class SimpleSearchTest {
         UnitTestMap map = new UnitTestMap(37, sMap);
         PathFinder pf = new PathFinder();
         pf.setMap(map);
-        List<Tile> path = pf.search(PathFinder.Strategy.Simple,new Tile(5, 2), new Tile(8, 17), -1);
-        
-        map.printMap(path);
-        String row = "";
-        for (Tile t : path) {
-            row += t.getRow() + ":" + t.getCol() + "=>";
-        }
-        System.out.println(row);
-        
+        List<Tile> path = pf.search(PathFinder.Strategy.Simple, new Tile(5, 2), new Tile(8, 17), -1);
+
+        MapOutput put = new MapOutput();
+        put.setMap(pf.getMap());
+        put.addObject(path, "Simple Path");
+        put.saveHtmlMap("SimpleSearchTest_someWaterTest");
+
         Assert.assertNotNull(path);
     }
-    
+
     @Test
     public void globeTest() {
         System.out.println("GlobeTest");
@@ -79,15 +74,13 @@ public class SimpleSearchTest {
         UnitTestMap map = new UnitTestMap(37, sMap);
         PathFinder pf = new PathFinder();
         pf.setMap(map);
-        List<Tile> path = pf.search(PathFinder.Strategy.Simple,new Tile(8, 2), new Tile(6, 34), -1);
-        
-        map.printMap(path);
-        String row = "";
-        for (Tile t : path) {
-            row += t.getRow() + ":" + t.getCol() + "=>";
-        }
-        System.out.println(row);
-        
+        List<Tile> path = pf.search(PathFinder.Strategy.Simple, new Tile(8, 2), new Tile(6, 34), -1);
+
+        MapOutput put = new MapOutput();
+        put.setMap(pf.getMap());
+        put.addObject(path, "Simple Path");
+        put.saveHtmlMap("SimpleSearchTest_globeTest");
+
         Assert.assertNotNull(path);
     }
 }

@@ -1,0 +1,40 @@
+  body {
+    background-color: #d8da3d;
+ }
+ .horzBorder{
+   border-top: solid 1px white;
+   border-bottom: solid 1px white;
+ }
+ .vertBorder{
+   border-left: solid 1px white;
+   border-right: solid 1px white;
+ }
+ .water{
+	background-color: #00CCFF;
+}
+
+ .land{
+	background-color: #66CC66;
+}
+
+.poi{
+	height: 12px;
+	width: 12px;
+}
+
+table{
+	border: 0px;
+	border-spacing:0;
+    border-collapse:collapse;
+	text-align:center;
+
+}
+
+
+td{
+	height: 20px;
+	width: 20px;
+	font-size: 8px;
+	padding: 0px;
+	border: solid 1px #B8B8B8;
+}

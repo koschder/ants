@@ -5,6 +5,7 @@ import influence.DefaultInfluenceMap;
 import org.junit.Test;
 
 import api.InfluenceMap;
+import api.MapOutput;
 
 public class InfluenceTest {
 
@@ -28,7 +29,12 @@ public class InfluenceTest {
 
         InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
 
-        map.saveHtmlMap("frickling_safetyInfluenceTest", iMap);
+        MapOutput put = new MapOutput();
+        put.setMap(map);
+        put.setClusterSize(5);
+        put.setInfluenceMap(iMap);
+        put.addAllUnits();
+        put.saveHtmlMap("frickling_safetyInfluenceTest");
 
     }
 }

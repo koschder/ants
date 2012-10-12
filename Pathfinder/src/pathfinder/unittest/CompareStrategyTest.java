@@ -9,10 +9,9 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import api.Tile;
-
-
 import pathfinder.PathFinder;
+import api.MapOutput;
+import api.Tile;
 
 public class CompareStrategyTest {
 
@@ -30,7 +29,11 @@ public class CompareStrategyTest {
             path.add(end);
         }
 
-        ((UnitTestMap) pf.getMap()).saveHtmlMap(sTestName, path, -1);
+        MapOutput put = new MapOutput();
+        put.setMap(pf.getMap());
+        put.addObject(path, "A Star Path");
+        put.saveHtmlMap(sTestName);
+
         Assert.assertNotNull(path);
 
     }

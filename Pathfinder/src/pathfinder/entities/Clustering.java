@@ -3,14 +3,13 @@ package pathfinder.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import api.Aim;
-import api.Tile;
-import api.WorldType;
-
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
+import api.Aim;
+import api.Tile;
+import api.WorldType;
 
 public class Clustering {
 
@@ -113,51 +112,51 @@ public class Clustering {
         if (c == null)
             return null;
 
-        // we dont need to check if there is a path between start and  e.getTile2() because if there is no between start and e.getTile1()
-        // there will be no between start and  e.getTile2()  as well.
-        for(Edge e : c.getEdges()){
+        // we dont need to check if there is a path between start and e.getTile2() because if there is no between start
+        // and e.getTile1()
+        // there will be no between start and e.getTile2() as well.
+        for (Edge e : c.getEdges()) {
             List<Tile> path = pathFinder.search(PathFinder.Strategy.AStar, start, e.getTile1(), clusterSize * 2);
-            if(path != null){
-                DirectedEdge e1 =  new DirectedEdge(start,e.getTile1(),c);
+            if (path != null) {
+                DirectedEdge e1 = new DirectedEdge(start, e.getTile1(), c);
                 e1.setPath(path);
                 return e1;
-            }                 
+            }
         }
-        
-        
-//        List<Aim> suitableAims = pathFinder.getMap().getDirections(start, end);
-//        // try to find a cluster edge in direction to target (end)
-//        for (Aim side : suitableAims) {
-//            if (c.isSideScanned(side)) {
-//                Edge e = c.getEdgeOnBoarder(side);
-//                if (e != null) {
-//                    List<Tile> path = pathFinder
-//                            .search(PathFinder.Strategy.AStar, start, e.getTile1(), clusterSize * 2);
-//
-//                    // there is a path to the cluster boarder
-//                    if (path != null) {
-//                        DirectedEdge de = new DirectedEdge(start, e.getTile2(), c);
-//                        de.setPath(path);
-//                        return de;
-//                    }
-//                }
-//            }
-//        }
-//        for (Aim a : c.getAims()) {
-//            if (c.isSideScanned(a) && !suitableAims.contains(a)) {
-//                Edge e = c.getEdgeOnBoarder(a);
-//                if (e != null) {
-//                    List<Tile> path = pathFinder
-//                            .search(PathFinder.Strategy.AStar, start, e.getTile1(), clusterSize * 2);
-//                    // there is a path to the cluster border
-//                    if (path != null) {
-//                        DirectedEdge de = new DirectedEdge(start, e.getTile1(), c);
-//                        de.setPath(path);
-//                        return de;
-//                    }
-//                }
-//            }
-//        }
+
+        // List<Aim> suitableAims = pathFinder.getMap().getDirections(start, end);
+        // // try to find a cluster edge in direction to target (end)
+        // for (Aim side : suitableAims) {
+        // if (c.isSideScanned(side)) {
+        // Edge e = c.getEdgeOnBoarder(side);
+        // if (e != null) {
+        // List<Tile> path = pathFinder
+        // .search(PathFinder.Strategy.AStar, start, e.getTile1(), clusterSize * 2);
+        //
+        // // there is a path to the cluster boarder
+        // if (path != null) {
+        // DirectedEdge de = new DirectedEdge(start, e.getTile2(), c);
+        // de.setPath(path);
+        // return de;
+        // }
+        // }
+        // }
+        // }
+        // for (Aim a : c.getAims()) {
+        // if (c.isSideScanned(a) && !suitableAims.contains(a)) {
+        // Edge e = c.getEdgeOnBoarder(a);
+        // if (e != null) {
+        // List<Tile> path = pathFinder
+        // .search(PathFinder.Strategy.AStar, start, e.getTile1(), clusterSize * 2);
+        // // there is a path to the cluster border
+        // if (path != null) {
+        // DirectedEdge de = new DirectedEdge(start, e.getTile1(), c);
+        // de.setPath(path);
+        // return de;
+        // }
+        // }
+        // }
+        // }
         return null;
     }
 
@@ -492,12 +491,14 @@ public class Clustering {
     // return list;
     // }
 
-    public List<Vertex> getAllVertices() {
-        List<Vertex> verts = new ArrayList<Vertex>();
+    public List<Tile> getAllVertices() {
+        List<Tile> verts = new ArrayList<Tile>();
         for (Cluster[] cs : getClusters())
             for (Cluster c : cs) {
                 System.out.println("clsuter: " + c.name);
-                verts.addAll(c.vertices);
+                for (Vertex v : c.vertices) {
+                    verts.add(v.getTargetTile());
+                }
             }
         return verts;
     }
