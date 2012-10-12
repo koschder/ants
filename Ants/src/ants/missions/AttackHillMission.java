@@ -2,10 +2,11 @@ package ants.missions;
 
 import java.util.List;
 
-import pathfinder.entities.Tile;
+
 
 import ants.entities.Ant;
 import ants.state.Ants;
+import api.Tile;
 
 /***
  * This mission used for attacking the enemies hills

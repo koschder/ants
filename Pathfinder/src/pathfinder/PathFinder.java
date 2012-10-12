@@ -2,11 +2,14 @@ package pathfinder;
 
 import java.util.List;
 
+import api.SearchTarget;
+import api.SearchableMap;
+import api.Tile;
+
+
+
 import pathfinder.entities.Clustering;
 import pathfinder.entities.Clustering.ClusterType;
-import pathfinder.entities.SearchTarget;
-import pathfinder.entities.SearchableMap;
-import pathfinder.entities.Tile;
 import pathfinder.search.AStarSearchStrategy;
 import pathfinder.search.HPAStarSearchStrategy;
 import pathfinder.search.SearchStrategy;
@@ -19,11 +22,6 @@ import pathfinder.search.SimpleSearchStrategy;
  * 
  */
 public class PathFinder {
-
-    public enum WorldType {
-        Pizza,
-        Globe
-    };
 
     public enum Strategy {
         Simple,

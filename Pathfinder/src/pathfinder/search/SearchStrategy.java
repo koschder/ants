@@ -2,12 +2,14 @@ package pathfinder.search;
 
 import java.util.List;
 
+import api.SearchTarget;
+import api.Tile;
+
+
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
-import pathfinder.entities.SearchTarget;
-import pathfinder.entities.Tile;
 
 /***
  * definitions for a searchstrategy

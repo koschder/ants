@@ -4,9 +4,11 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import api.Tile;
+
+
 import pathfinder.entities.DirectedEdge;
 import pathfinder.entities.Edge;
-import pathfinder.entities.Tile;
 import pathfinder.entities.Vertex;
 
 public class EdgeTest {

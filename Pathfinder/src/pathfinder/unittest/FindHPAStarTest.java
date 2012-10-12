@@ -3,8 +3,10 @@ package pathfinder.unittest;
 import java.util.List;
 import junit.framework.Assert;
 import org.junit.Test;
+
+import api.Tile;
+
 import pathfinder.PathFinder;
-import pathfinder.entities.Tile;
 import pathfinder.entities.Clustering.ClusterType;
 
 public class FindHPAStarTest {

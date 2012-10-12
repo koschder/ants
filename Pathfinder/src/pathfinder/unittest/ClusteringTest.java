@@ -5,9 +5,11 @@ import java.util.List;
 
 import org.junit.Test;
 
+import api.Tile;
+
+
 import pathfinder.PathFinder;
 import pathfinder.entities.Clustering;
-import pathfinder.entities.Tile;
 import pathfinder.entities.Vertex;
 
 public class ClusteringTest {

@@ -1,4 +1,4 @@
-package pathfinder.entities;
+package api;
 
 import java.util.HashMap;
 import java.util.Map;

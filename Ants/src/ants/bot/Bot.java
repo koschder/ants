@@ -1,8 +1,8 @@
 package ants.bot;
 
-import pathfinder.entities.Tile;
 import ants.entities.Ilk;
 import ants.state.Ants;
+import api.Tile;
 
 /**
  * Provides basic game state handling.

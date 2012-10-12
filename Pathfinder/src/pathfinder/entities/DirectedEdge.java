@@ -2,6 +2,10 @@ package pathfinder.entities;
 
 import java.util.List;
 
+import api.SearchTarget;
+import api.Tile;
+
+
 /***
  * DirectedEdge is used to define which is the start and the end node of the Edge
  * @author kaeserst

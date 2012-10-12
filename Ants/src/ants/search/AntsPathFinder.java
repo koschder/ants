@@ -3,9 +3,9 @@ package ants.search;
 import java.util.List;
 
 import pathfinder.PathFinder;
-import pathfinder.entities.SearchTarget;
-import pathfinder.entities.Tile;
 import ants.state.Ants;
+import api.SearchTarget;
+import api.Tile;
 
 /***
  * stores all searchstrategies. best path can be calculated with this class.

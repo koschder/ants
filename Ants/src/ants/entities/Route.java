@@ -1,7 +1,7 @@
 package ants.entities;
 
-import pathfinder.entities.Tile;
 import ants.state.Ants;
+import api.Tile;
 
 /**
  * Represents a route from one tile to another. stores the selected ant for the route. the distance of 

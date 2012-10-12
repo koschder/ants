@@ -4,12 +4,13 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-import pathfinder.entities.Tile;
+
 
 import ants.entities.Ant;
 import ants.missions.AttackAntMission;
 import ants.search.AntsPathFinder;
 import ants.state.Ants;
+import api.Tile;
 
 /**
  * This task identifies vulnerable enemy ants and sends a troop of our ants to attack them.
