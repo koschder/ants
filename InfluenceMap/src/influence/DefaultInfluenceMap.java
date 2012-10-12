@@ -2,6 +2,7 @@ package influence;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import api.InfluenceMap;
 import api.Tile;
@@ -15,8 +16,15 @@ public class DefaultInfluenceMap implements InfluenceMap {
 
     @Override
     public int getSafety(Tile tile) {
-        // TODO Auto-generated method stub
-        return 0;
+        int myInfluence = 0;
+        int enemyInfluence = 0;
+        for (Entry<Integer, int[][]> entry : influence.entrySet()) {
+            if (entry.getKey().equals(0))
+                myInfluence = entry.getValue()[tile.getRow()][tile.getCol()];
+            else
+                enemyInfluence += entry.getValue()[tile.getRow()][tile.getCol()];
+        }
+        return myInfluence - enemyInfluence;
     }
 
     public DefaultInfluenceMap(UnitMap map, int viewRadius2, int attackRadius2) {
@@ -29,15 +37,15 @@ public class DefaultInfluenceMap implements InfluenceMap {
             for (Unit unit : map.getUnits(player)) {
                 final Tile tile = unit.getTile();
                 playerInfluence[tile.getRow()][tile.getCol()] = MAX_INFLUENCE;
-                int mx = (int) Math.sqrt(viewRadius2);
+                int mx = (int) Math.sqrt(this.viewRadius2);
                 for (int row = -mx; row <= mx; ++row) {
                     for (int col = -mx; col <= mx; ++col) {
                         int d = row * row + col * col;
-                        if (d <= viewRadius2) {
+                        if (d <= this.viewRadius2) {
                             Tile t = map.getTile(tile, new Tile(row, col));
                             if (t.equals(tile))
                                 continue;
-                            if (d <= attackRadius2)
+                            if (d <= this.attackRadius2)
                                 playerInfluence[tile.getRow()][tile.getCol()] += 50;
                             else
                                 playerInfluence[tile.getRow()][tile.getCol()] += 10;
