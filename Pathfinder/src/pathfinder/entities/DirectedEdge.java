@@ -36,10 +36,10 @@ public class DirectedEdge extends Edge implements SearchTarget {
             startTile = getTile1();
     }
 
-    @Override
-    public int manhattanDistanceTo(SearchTarget dest) {
-        return getEnd().manhattanDistanceTo(dest.getTargetTile());
-    }
+    // @Override
+    // public int manhattanDistanceTo(SearchTarget dest) {
+    // return getEnd().manhattanDistanceTo(dest.getTargetTile());
+    // }
 
     /***
      * returns the path between the two tiles, if the path is not known it is calculated.
@@ -114,9 +114,9 @@ public class DirectedEdge extends Edge implements SearchTarget {
 
     }
 
-    @Override
-    public double beelineTo(SearchTarget dest) {
-        return getEnd().beelineTo(dest.getTargetTile());
-    }
+    // @Override
+    // public double beelineTo(SearchTarget dest) {
+    // return getEnd().beelineTo(dest.getTargetTile());
+    // }
 
 }

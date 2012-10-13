@@ -7,6 +7,7 @@ import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
+import api.AbstractWraparoundMap;
 import api.Aim;
 import api.SearchTarget;
 import api.Tile;

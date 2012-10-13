@@ -2,9 +2,9 @@ package api;
 
 import java.util.List;
 
-
 /***
  * This interface provides Tiles or Edges to be used in A* and HPA*
+ * 
  * @author kases1, kustl1
  * 
  */
@@ -14,37 +14,26 @@ public interface SearchTarget {
      * 
      * @return the next SearchTarget(s) on were the path goes on.
      */
-    //List<SearchTarget> getSuccessors();
+    // List<SearchTarget> getSuccessors();
 
     /***
      * Returns true if the SearchTarget can be used for path finding.
+     * 
      * @param bParentNode
      * @return
      */
-    //boolean isSearchable(boolean bParentNode);
-
-    /***
-     * Returns the Manhattan distance to the overgiven destination {@code dest}
-     * @param dest
-     * @return
-     */
-    int manhattanDistanceTo(SearchTarget dest);
-    
-    /***
-     * Returns the beeline distance to destination {@code dest}
-     * @param dest
-     * @return
-     */
-    double beelineTo(SearchTarget dest);
+    // boolean isSearchable(boolean bParentNode);
 
     /***
      * Returns the path which this SearchTarget overcomes
+     * 
      * @return
      */
     List<Tile> getPath();
 
     /***
      * Checks if this SearchTarget is in a search space given by the parameters.
+     * 
      * @param searchSpace1
      * @param searchSpace2
      * @return
@@ -53,6 +42,7 @@ public interface SearchTarget {
 
     /***
      * returns the tile on wich this SearchTarget leds to.
+     * 
      * @return
      */
     Tile getTargetTile();
@@ -66,7 +56,7 @@ public interface SearchTarget {
     /**
      * 
      * @param to
-     * @return True if the SearchTarget is the final state (target) of the search. 
+     * @return True if the SearchTarget is the final state (target) of the search.
      */
     boolean isFinal(SearchTarget to);
 

@@ -111,6 +111,9 @@ public class MapOutput {
 
     public void addObject(List<Tile> tiles, String desc) {
 
+        if (tiles == null || tiles.size() == 0)
+            return;
+
         objects.add(new MapObject(tiles, desc));
 
     }

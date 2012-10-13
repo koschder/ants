@@ -3,10 +3,6 @@ package api;
 import java.util.Arrays;
 import java.util.List;
 
-
-
-
-
 /**
  * Represents a tile of the game map.
  */
@@ -68,7 +64,7 @@ public class Tile implements Comparable<Tile>, SearchTarget {
      */
     @Override
     public int hashCode() {
-        //TODO unschen
+        // TODO unschen
         return row * 2000 + col;
     }
 
@@ -113,15 +109,10 @@ public class Tile implements Comparable<Tile>, SearchTarget {
         }
     }
 
-
-//    @Override
-//    public boolean isSearchable(boolean bParentNode) {
-//        return Ants.getWorld().getIlk(this).isPassable() && !isOccupiedForNextMove(bParentNode);
-//    }
-
-
-
-   
+    // @Override
+    // public boolean isSearchable(boolean bParentNode) {
+    // return Ants.getWorld().getIlk(this).isPassable() && !isOccupiedForNextMove(bParentNode);
+    // }
 
     @Override
     public List<Tile> getPath() {
@@ -163,18 +154,19 @@ public class Tile implements Comparable<Tile>, SearchTarget {
         return 1;
     }
 
-    @Override
-    public int manhattanDistanceTo(SearchTarget dest) {
-            if (dest instanceof Tile)
-                return manhattanDistanceTo((Tile) dest);
-
-            throw new RuntimeException("distanceTo for a Tile to a " + dest.getClass() + "not implemented");
-    }
-
-    @Override
-    public double beelineTo(SearchTarget searchTarget) {
-        Tile dest = searchTarget.getTargetTile();
-        return Math.sqrt(Math.pow(Math.abs(dest.col - this.col)-0.01,2) + Math.pow(Math.abs(dest.row - this.row),2))-0.01;
-    }
+    // @Override
+    // public int manhattanDistanceTo(SearchTarget dest) {
+    // if (dest instanceof Tile)
+    // return manhattanDistanceTo((Tile) dest);
+    //
+    // throw new RuntimeException("distanceTo for a Tile to a " + dest.getClass() + "not implemented");
+    // }
+    //
+    // @Override
+    // public double beelineTo(SearchTarget searchTarget) {
+    // Tile dest = searchTarget.getTargetTile();
+    // return Math.sqrt(Math.pow(Math.abs(dest.col - this.col)-0.01,2) + Math.pow(Math.abs(dest.row -
+    // this.row),2))-0.01;
+    // }
 
 }

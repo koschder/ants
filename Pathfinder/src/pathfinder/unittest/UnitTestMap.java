@@ -3,7 +3,7 @@ package pathfinder.unittest;
 import java.util.ArrayList;
 import java.util.List;
 
-import pathfinder.entities.AbstractWraparoundMap;
+import api.AbstractWraparoundMap;
 import api.Aim;
 import api.SearchTarget;
 import api.Tile;
@@ -75,4 +75,5 @@ public class UnitTestMap extends AbstractWraparoundMap {
 
         return list;
     }
+
 }

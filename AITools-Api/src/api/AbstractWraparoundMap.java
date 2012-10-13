@@ -3,7 +3,6 @@ package api;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public abstract class AbstractWraparoundMap implements SearchableMap {
 
     @Override
@@ -77,6 +76,42 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
             col += getCols();
         }
         return new Tile(row, col);
+    }
+
+    @Override
+    public int manhattanDistance(Tile tStart, Tile tEnd) {
+
+        int c = 0;
+        int r = 0;
+        c = Math.abs(tStart.getCol() - tEnd.getCol());
+        r = Math.abs(tStart.getRow() - tStart.getRow());
+
+        // considering warparound
+        if (c > getCols() / 2)
+            c = c - getCols() / 2;
+
+        if (r > getRows() / 2)
+            r = r - getRows() / 2;
+
+        return r + c;
+    }
+
+    @Override
+    public double beelineTo(Tile tStart, Tile tEnd) {
+
+        int c = 0;
+        int r = 0;
+        c = Math.abs(tStart.getCol() - tEnd.getCol());
+        r = Math.abs(tStart.getRow() - tStart.getRow());
+
+        // considering warparound
+        if (c > getCols() / 2)
+            c = c - getCols() / 2;
+
+        if (r > getRows() / 2)
+            r = r - getRows() / 2;
+
+        return Math.sqrt(r * r + c * c);
     }
 
 }

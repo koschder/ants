@@ -25,4 +25,20 @@ public interface TileMap {
 
     public abstract Tile getTile(Tile tile, Tile offset);
 
+    /***
+     * Returns the beeline distance to destination {@code dest}
+     * 
+     * @param dest
+     * @return
+     */
+    public double beelineTo(Tile tStart, Tile tEnd);
+
+    /***
+     * Returns the Manhattan distance to the overgiven destination {@code dest}
+     * 
+     * @param dest
+     * @return
+     */
+    public int manhattanDistance(Tile tStart, Tile tEnd);
+
 }

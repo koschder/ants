@@ -358,4 +358,5 @@ public class World extends AbstractWraparoundMap implements UnitMap {
     public Set<Integer> getPlayers() {
         return Ants.getPopulation().getPlayers();
     }
+
 }

@@ -2,14 +2,14 @@ package pathfinder.search;
 
 import java.util.List;
 
-import api.SearchTarget;
-import api.Tile;
-
-
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
+import api.SearchTarget;
+import api.Tile;
+import api.TileMap;
+import api.WorldType;
 
 /***
  * definitions for a searchstrategy
@@ -81,7 +81,42 @@ public abstract class SearchStrategy {
     }
 
     protected boolean inSearchSpace(SearchTarget areaCheck) {
-        return areaCheck.isInSearchSpace(searchSpace1, searchSpace2);
+
+        if (searchSpace1 == null || searchSpace2 == null)
+            return true; // no searchspace defined.
+
+        if (!(areaCheck instanceof Tile))
+            return true;
+
+        Tile t = (Tile) areaCheck;
+
+        if (checkSpace(t, searchSpace1, searchSpace2))
+            return true;
+
+        TileMap m = pathFinder.getMap();
+
+        if (m.getWorldType() == WorldType.Pizza)
+            return false;
+
+        // maybe the searchspace is wraparound
+        if (checkSpace(m.getTile(t, new Tile(0, m.getCols())), searchSpace1, searchSpace2))
+            return true;
+
+        if (checkSpace(m.getTile(t, new Tile(m.getRows(), 0)), searchSpace1, searchSpace2))
+            return true;
+
+        if (checkSpace(m.getTile(t, new Tile(m.getRows(), m.getCols())), searchSpace1, searchSpace2))
+            return true;
+
+        return false;
+
+    }
+
+    private boolean checkSpace(Tile t, Tile sp1, Tile sp2) {
+        if (sp1.getRow() <= t.getRow() && sp1.getCol() <= t.getCol())
+            if (sp2.getRow() >= t.getRow() && sp2.getCol() >= t.getCol())
+                return true;
+        return false;
     }
 
     public void setMaxCost(int i) {

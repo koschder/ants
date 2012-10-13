@@ -7,15 +7,13 @@ import java.util.List;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-import api.SearchTarget;
-import api.Tile;
-
-
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import pathfinder.entities.Node;
+import api.SearchTarget;
+import api.Tile;
 
 public class AStarSearchStrategy extends SearchStrategy {
 
@@ -48,8 +46,14 @@ public class AStarSearchStrategy extends SearchStrategy {
 
         Set<SearchTarget> explored = new HashSet<SearchTarget>();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>();
-        frontier.add(new Node(from, null, 0, from.beelineTo(to)));
+        frontier.add(new Node(from, null, 0, getEstimatedCosts(from.getTargetTile(), to.getTargetTile())));
         while (!frontier.isEmpty()) {
+
+            System.out.println("Frontier is:");
+            for (Node n : frontier) {
+                System.out.println(n);
+            }
+
             Node node = frontier.poll();
             explored.add(node.getState());
 
@@ -84,7 +88,14 @@ public class AStarSearchStrategy extends SearchStrategy {
             LOGGER.debug("tile %s is not in searchspace", childState);
             return;
         }
-        children.add(new Node(childState, parent, getActualCost(parent, childState), childState.beelineTo(to)));
+        double estimatedCosts = getEstimatedCosts(childState.getTargetTile(), to.getTargetTile());
+        children.add(new Node(childState, parent, getActualCost(parent, childState), estimatedCosts));
+
+    }
+
+    private double getEstimatedCosts(Tile from, Tile to) {
+
+        return pathFinder.getMap().beelineTo(from, to);
 
     }
 
