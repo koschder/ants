@@ -4,8 +4,6 @@ import java.util.List;
 
 import api.Tile;
 
-
-
 /***
  * Describes a edge consists of to tiles as start and end node.
  * 
@@ -46,6 +44,14 @@ public class Edge {
     public Edge(Tile vertices, Tile lastVertices, List<Tile> newPath, Cluster c) {
         this(vertices, lastVertices, c);
         this.setPath(newPath);
+    }
+
+    public Edge(List<Tile> path) {
+        if (path == null || path.size() < 2)
+            throw new IllegalArgumentException("Path must have a size of at least 2");
+        v1 = path.get(0);
+        v2 = path.get(path.size() - 1);
+        this.setPath(path);
     }
 
     @Override

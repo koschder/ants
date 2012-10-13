@@ -125,39 +125,6 @@ public class Clustering extends AbstractWraparoundMap {
             }
         }
 
-        // List<Aim> suitableAims = pathFinder.getMap().getDirections(start, end);
-        // // try to find a cluster edge in direction to target (end)
-        // for (Aim side : suitableAims) {
-        // if (c.isSideScanned(side)) {
-        // Edge e = c.getEdgeOnBoarder(side);
-        // if (e != null) {
-        // List<Tile> path = pathFinder
-        // .search(PathFinder.Strategy.AStar, start, e.getTile1(), clusterSize * 2);
-        //
-        // // there is a path to the cluster boarder
-        // if (path != null) {
-        // DirectedEdge de = new DirectedEdge(start, e.getTile2(), c);
-        // de.setPath(path);
-        // return de;
-        // }
-        // }
-        // }
-        // }
-        // for (Aim a : c.getAims()) {
-        // if (c.isSideScanned(a) && !suitableAims.contains(a)) {
-        // Edge e = c.getEdgeOnBoarder(a);
-        // if (e != null) {
-        // List<Tile> path = pathFinder
-        // .search(PathFinder.Strategy.AStar, start, e.getTile1(), clusterSize * 2);
-        // // there is a path to the cluster border
-        // if (path != null) {
-        // DirectedEdge de = new DirectedEdge(start, e.getTile1(), c);
-        // de.setPath(path);
-        // return de;
-        // }
-        // }
-        // }
-        // }
         return null;
     }
 
@@ -210,188 +177,21 @@ public class Clustering extends AbstractWraparoundMap {
         }
         LOGGER.debug("Clusters updated: %s", updatedClusters);
         LOGGER.debug("Clusters compeleted: %s", completedClusters);
-        // for (int r = 0; r < getRows(); r++) {
-        // for (int c = 0; c < getCols(); c++) {
-        // LOGGER.debug(getClusters()[r][c].toString());
-        // }
-        // }
+
     }
 
-    /***
-     * Scans the North border line
+    /**
+     * scans the horizontal boarder for tiles or edges to pass
      * 
      * @param r
      * @param c
-     * @return true if scanning successful, false if not all part of the scanned line was visible
-     */
-    private boolean scanVerticalBorder(int r, int c) {
-        if (clusterType == ClusterType.Corner)
-            return verticalScan_Corners(r, c);
-
-        if (clusterType == ClusterType.Centered)
-            return verticalScan_Centered(r, c);
-
-        throw new RuntimeException("ClusterType not implemented " + clusterType);
-    }
-
-    /***
-     * Scans the East border line
-     * 
-     * @param r
-     * @param c
-     * @return true if scanning successful, false if not all part of the scanned line was visible
+     * @return
      */
     private boolean scanHorizontalBorder(int r, int c) {
-
-        if (clusterType == ClusterType.Corner)
-            return horizontalScan_Corners(r, c);
-
-        if (clusterType == ClusterType.Centered)
-            return horizontalScan_Centered(r, c);
-
-        throw new RuntimeException("ClusterType not implemented " + clusterType);
-    }
-
-    /***
-     * Scans a horizontal border an sets the connecting vertices on the corners
-     * 
-     * @param r
-     * @param c
-     * @return true if scanning successful, false if not all part of the scanned line was visible
-     */
-    private boolean horizontalScan_Corners(int r, int c) {
+        List<Tile> cornerVertices = new ArrayList<Tile>();
         List<Edge> edges = new ArrayList<Edge>();
-        Tile vertices = null;
-        Tile lastVertices = null;
-        int startRowTile = Math.max(0, r * clusterSize % pathFinder.getMap().getRows());
-        int startColTile = c * clusterSize;
+        List<Tile> centeredVertices = new ArrayList<Tile>();
 
-        // whole cluster or shorten if we are on the "end" of the grid
-        int endColTile = Math.min(pathFinder.getMap().getCols(), (c + 1) * clusterSize);
-
-        LOGGER.trace("horizontalScan on r: %s c: %s to r: %s c: %s", startRowTile, startColTile, startRowTile,
-                startColTile + clusterSize);
-        List<Tile> path = new ArrayList<Tile>();
-        for (int i = startColTile; i <= endColTile; i++) {
-            Tile tile = getWrapAroundTile(startRowTile, i);
-
-            LOGGER.trace("Check %s", tile);
-            if (pathFinder.getMap().isVisible(tile)) {
-                if (pathFinder.getMap().isPassable(tile)) {
-                    if (vertices == null) {
-                        vertices = tile;
-                        path.add(tile);
-                    } else {
-                        path.add(tile);
-                        lastVertices = tile;
-                    }
-                } else { // now blocked add the last start and endpoint to cluster.
-                    LOGGER.trace("Not passable %s", tile);
-                    if (lastVertices == null) {
-                        // todo what to do?
-                    } else {
-                        edges.add(new Edge(vertices, lastVertices, path, null));
-                        // path = new ArrayList<Tile>();
-                    }
-                    vertices = null;
-                    lastVertices = null;
-                }
-
-            } else {
-                LOGGER.trace("clustering breaked not all surrounding tiles are visible cluster r %s c %s", r, c);
-                return false;
-            }
-        }
-        if (vertices != null && lastVertices != null) {
-
-            edges.add(new Edge(vertices, lastVertices, path, null));
-        } else if (vertices != null) {
-            // todo what to do?
-        }
-        getClusters()[r][c].addEdge(Aim.NORTH, edges);
-        int rNeighbour = (r - 1 < 0) ? getRows() - 1 : r - 1;
-        try {
-            getClusters()[rNeighbour][c].addEdge(Aim.SOUTH, edges);
-            return true;
-        } catch (Exception ex) {
-            System.out.println(r + " " + rNeighbour + " " + c);
-        }
-        return false;
-    }
-
-    /***
-     * Scans a vertical border an sets the connecting vertices on the corners
-     * 
-     * @param r
-     * @param c
-     * @return true if scanning successful, false if not all part of the scanned line was visible
-     */
-    private boolean verticalScan_Corners(int r, int c) {
-        List<Edge> edges = new ArrayList<Edge>();
-        // left
-        Tile vertices = null;
-        Tile lastVertices = null;
-        int startRowTile = r * clusterSize;
-        int startColTile = Math.max(0, c * clusterSize % pathFinder.getMap().getCols());
-        // whole cluster or shorten if we are on the "end" of the grid
-        int endRowTile = Math.min(pathFinder.getMap().getRows(), (r + 1) * clusterSize);
-
-        LOGGER.trace("verticalScan on r: %s c: %s to r: %s c: %s", startRowTile, startColTile, startRowTile
-                + clusterSize, startColTile);
-        List<Tile> path = new ArrayList<Tile>();
-        for (int i = startRowTile; i <= endRowTile; i++) {
-            Tile tile = getWrapAroundTile(i, startColTile);
-            LOGGER.trace("Check %s", tile);
-
-            if (pathFinder.getMap().isVisible(tile)) {
-                if (pathFinder.getMap().isPassable(tile)) {
-                    if (vertices == null) {
-                        vertices = tile;
-                        path.add(tile);
-                    } else {
-                        path.add(tile);
-                        lastVertices = tile;
-                    }
-                } else { // now blocked add the last start and endpoint to cluster.
-                    LOGGER.trace("Not passable %s", tile);// tileNeighbour);
-                    if (lastVertices == null) {
-                        // todo what to do?
-                    } else {
-
-                        edges.add(new Edge(vertices, lastVertices, path, null));
-                        // path = new ArrayList<Tile>();
-                    }
-                    vertices = null;
-                    lastVertices = null;
-                }
-
-            } else {
-                LOGGER.trace("clustering breaked not all surrounding tiles are visible cluster r %s c %s", r, c);
-                return false;
-            }
-        }
-        if (vertices != null && lastVertices != null) {
-            edges.add(new Edge(vertices, lastVertices, path, null));
-        } else if (vertices != null) {
-            // todo what to do?
-        }
-
-        getClusters()[r][c].addEdge(Aim.WEST, edges);
-        int cNeighbour = (c - 1 < 0) ? getCols() - 1 : c - 1;
-        getClusters()[r][cNeighbour].addEdge(Aim.EAST, edges);
-        return true;
-
-    }
-
-    /***
-     * Scans a horizontal border an stores every center vertex of each passage connecting a neighbour cluster
-     * 
-     * @param r
-     * @param c
-     * @return true if scanning successful, false if not all part of the scanned line was visible
-     */
-    private boolean horizontalScan_Centered(int r, int c) {
-        List<Tile> tiles = new ArrayList<Tile>();
         int startRowTile = Math.max(0, r * clusterSize % pathFinder.getMap().getRows());
         int startColTile = c * clusterSize;
         // whole cluster or shorten if we are on the "end" of the grid
@@ -405,8 +205,12 @@ public class Clustering extends AbstractWraparoundMap {
                 if (pathFinder.getMap().isPassable(tile)) {
                     path.add(tile);
                 } else { // now blocked add the last start and endpoint to cluster.
+                    if (path.size() == 1)
+                        cornerVertices.add(path.get(0));
+                    else if (path.size() > 1)
+                        edges.add(new Edge(path));
                     if (path.size() > 0)
-                        tiles.add(path.get(path.size() / 2));
+                        centeredVertices.add(path.get(path.size() / 2));
                     path = new ArrayList<Tile>();
                 }
             } else {
@@ -414,24 +218,32 @@ public class Clustering extends AbstractWraparoundMap {
                 return false;
             }
         }
+        if (path.size() == 1)
+            cornerVertices.add(path.get(0));
+        else if (path.size() > 1)
+            edges.add(new Edge(path));
         if (path.size() > 0)
-            tiles.add(path.get(path.size() / 2));
+            centeredVertices.add(path.get(path.size() / 2));
 
         int neighbourCluster = (r - 1 < 0) ? getRows() - 1 : r - 1;
-        getClusters()[r][c].addTiles(Aim.NORTH, tiles);
-        getClusters()[neighbourCluster][c].addTiles(Aim.SOUTH, tiles);
+
+        if (clusterType == ClusterType.Centered) {
+            getClusters()[r][c].addTiles(Aim.NORTH, centeredVertices);
+            getClusters()[neighbourCluster][c].addTiles(Aim.SOUTH, centeredVertices);
+        } else {
+            getClusters()[r][c].addEdge(Aim.NORTH, edges);
+            getClusters()[r][c].addTiles(Aim.NORTH, cornerVertices);
+            getClusters()[neighbourCluster][c].addEdge(Aim.SOUTH, edges);
+            getClusters()[neighbourCluster][c].addTiles(Aim.SOUTH, cornerVertices);
+        }
         return true;
     }
 
-    /***
-     * Scans a vertical border an stores every center vertex of each passage connecting a neighbour cluster
-     * 
-     * @param r
-     * @param c
-     * @return true if scanning successful, false if not all part of the scanned line was visible
-     */
-    private boolean verticalScan_Centered(int r, int c) {
-        List<Tile> tiles = new ArrayList<Tile>();
+    private boolean scanVerticalBorder(int r, int c) {
+        List<Tile> centeredVertices = new ArrayList<Tile>();
+        List<Edge> edges = new ArrayList<Edge>();
+        List<Tile> cornerVertices = new ArrayList<Tile>();
+
         int startRowTile = r * clusterSize;
         int startColTile = Math.max(0, c * clusterSize % pathFinder.getMap().getCols());
         // whole cluster or shorten if we are on the "end" of the grid
@@ -444,8 +256,12 @@ public class Clustering extends AbstractWraparoundMap {
                 if (pathFinder.getMap().isPassable(tile)) {
                     path.add(tile);
                 } else { // now blocked add the last start and endpoint to cluster.
+                    if (path.size() == 1)
+                        cornerVertices.add(path.get(0));
+                    else if (path.size() > 1)
+                        edges.add(new Edge(path));
                     if (path.size() > 0)
-                        tiles.add(path.get(path.size() / 2));
+                        centeredVertices.add(path.get(path.size() / 2));
                     path = new ArrayList<Tile>();
                 }
             } else {
@@ -453,12 +269,24 @@ public class Clustering extends AbstractWraparoundMap {
                 return false;
             }
         }
+        if (path.size() == 1)
+            cornerVertices.add(path.get(0));
+        else if (path.size() > 1)
+            edges.add(new Edge(path));
         if (path.size() > 0)
-            tiles.add(path.get(path.size() / 2));
+            centeredVertices.add(path.get(path.size() / 2));
 
         int neighbourCluster = (c - 1 < 0) ? getCols() - 1 : c - 1;
-        getClusters()[r][c].addTiles(Aim.WEST, tiles);
-        getClusters()[r][neighbourCluster].addTiles(Aim.EAST, tiles);
+        if (clusterType == ClusterType.Centered) {
+            getClusters()[r][c].addTiles(Aim.WEST, centeredVertices);
+            getClusters()[r][neighbourCluster].addTiles(Aim.EAST, centeredVertices);
+        } else {
+            getClusters()[r][c].addTiles(Aim.WEST, cornerVertices);
+            getClusters()[r][c].addEdge(Aim.WEST, edges);
+            getClusters()[r][neighbourCluster].addTiles(Aim.EAST, cornerVertices);
+            getClusters()[r][neighbourCluster].addEdge(Aim.EAST, edges);
+        }
+
         return true;
 
     }
@@ -498,6 +326,16 @@ public class Clustering extends AbstractWraparoundMap {
 
     public void setWorldType(WorldType t) {
         // TODO
+    }
+
+    public void printVertices() {
+        for (Cluster[] cs : getClusters())
+            for (Cluster c : cs) {
+                System.out.println("cluster: " + c.name);
+                for (Vertex v : c.vertices) {
+                    System.out.println(v);
+                }
+            }
     }
 
     @Override

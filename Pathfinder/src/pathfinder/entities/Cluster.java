@@ -340,8 +340,18 @@ public class Cluster {
         for (Edge e : newEdges) {
             e.setEdgeType(getEdgeType(newaim));
             e.setCluster(this);
-            processVertex(e.getTile1(), e);
-            processVertex(e.getTile2(), e);
+            // add new vertex to the list if not already exists
+            if (processVertex(e.getTile1(), e))
+                for (Vertex x : vertices)
+                    // vertex is new, we try to connect it with existing vertices
+                    findNewEdge(e.getTile1(), x);
+
+            // add new vertex to the list if not already exists
+            if (processVertex(e.getTile2(), e))
+                // vertex is new, we try to connect it with existing vertices
+                for (Vertex x : vertices)
+                    findNewEdge(e.getTile2(), x);
+
         }
 
     }
@@ -380,7 +390,7 @@ public class Cluster {
             }
             edges.addAll(hardCopy);
             processNewEdgesVertices(hardCopy, newaim);
-            createNewPath(hardCopy);
+            // createNewPath(hardCopy);
             debugEdges();
             if (isClustered()) {
                 LOGGER.debug("%s is clustered_now! Vertices: %s Edges: %s", name, vertices.size(), edges.size());

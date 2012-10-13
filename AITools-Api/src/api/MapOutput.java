@@ -104,8 +104,8 @@ public class MapOutput {
         if (i % clusterSize == 0 || i % clusterSize == clusterSize - 1)
             return true;
 
-        if (maxSize <= i + 2)
-            return true;
+        // if (maxSize <= i + 2)
+        // return true;
         return false;
     }
 
