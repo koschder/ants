@@ -2,15 +2,13 @@ package pathfinder.search;
 
 import java.util.List;
 
-import api.SearchTarget;
-import api.Tile;
-
-
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import pathfinder.entities.DirectedEdge;
+import api.SearchTarget;
+import api.Tile;
 
 public class HPAStarSearchStrategy extends SearchStrategy {
 
@@ -39,17 +37,11 @@ public class HPAStarSearchStrategy extends SearchStrategy {
         LOGGER.debug("HPAstar: Connecting edges to Cluster edge are:");
         LOGGER.debug("     for start tile %s the edge is : %s", start, edgeStart);
         LOGGER.debug("     for end tile %s the edge is : %s", end, endEdge);
-        
-        
-       // List<Tile> path = findPathWithAStar(edgeStart, endEdge, maxCost);
-        
-        ClusteredMap cmap = new ClusteredMap(pathFinder.getClustering());
-        
+
         PathFinder pf = new PathFinder();
-        pf.setMap(cmap);
+        pf.setMap(pathFinder.getClustering());
         List<Tile> path = pf.search(PathFinder.Strategy.AStar, edgeStart, endEdge, maxCost);
-        
-        
+
         if (path != null)
             path.addAll(endEdge.getPath());
 

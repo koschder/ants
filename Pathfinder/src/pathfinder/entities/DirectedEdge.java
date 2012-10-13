@@ -5,11 +5,11 @@ import java.util.List;
 import api.SearchTarget;
 import api.Tile;
 
-
 /***
  * DirectedEdge is used to define which is the start and the end node of the Edge
+ * 
  * @author kaeserst
- *
+ * 
  */
 public class DirectedEdge extends Edge implements SearchTarget {
 
@@ -20,21 +20,27 @@ public class DirectedEdge extends Edge implements SearchTarget {
         startTile = vertices;
     }
 
+    public DirectedEdge(Tile vertices, Tile lastVertices, Cluster c, List<Tile> path) {
+        super(vertices, lastVertices, c, null);
+        startTile = vertices;
+        setPath(path);
+    }
+
     /**
-     *change direction. start is end and vice versa
+     * change direction. start is end and vice versa
      */
     public void reverseEdge() {
         if (startTile == getTile1())
             startTile = getTile2();
         else
-            startTile =  getTile1();
+            startTile = getTile1();
     }
 
     @Override
     public int manhattanDistanceTo(SearchTarget dest) {
         return getEnd().manhattanDistanceTo(dest.getTargetTile());
     }
-    
+
     /***
      * returns the path between the two tiles, if the path is not known it is calculated.
      */
@@ -50,12 +56,12 @@ public class DirectedEdge extends Edge implements SearchTarget {
      * @return the end node of this edge
      */
     public Tile getEnd() {
-        return  getTile1().equals(startTile) ?  getTile2() :  getTile1();
+        return getTile1().equals(startTile) ? getTile2() : getTile1();
     }
 
     /***
      * 
-     * @return  the start node of this edge
+     * @return the start node of this edge
      */
     public Tile getStart() {
         return this.startTile;
@@ -86,7 +92,7 @@ public class DirectedEdge extends Edge implements SearchTarget {
             return false;
         DirectedEdge other = (DirectedEdge) obj;
         return other.getEnd().equals(getEnd()) && other.getStart().equals(getStart());
-        
+
     }
 
     @Override
@@ -109,7 +115,7 @@ public class DirectedEdge extends Edge implements SearchTarget {
     }
 
     @Override
-    public double beelineTo(SearchTarget dest) {     
+    public double beelineTo(SearchTarget dest) {
         return getEnd().beelineTo(dest.getTargetTile());
     }
 

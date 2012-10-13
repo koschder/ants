@@ -5,15 +5,14 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import api.Aim;
-import api.SearchTarget;
-import api.Tile;
-
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import pathfinder.entities.Edge.EdgeType;
+import api.Aim;
+import api.SearchTarget;
+import api.Tile;
 
 /***
  * a cluster is an area on the map. the cluster connects the neighbour cluster throw passable edges along the cluster
@@ -305,9 +304,9 @@ public class Cluster {
         for (Edge e : c.edges) {
             // LOGGER_PATH.debug("scan edge %s ", e);
             if (e.getTile1().equals(start)) {
-                list.add(new DirectedEdge(e.getTile1(), e.getTile2(), c));
+                list.add(new DirectedEdge(e.getTile1(), e.getTile2(), c, e.path));
             } else if (e.getTile2().equals(start)) {
-                list.add(new DirectedEdge(e.getTile2(), e.getTile1(), c));
+                list.add(new DirectedEdge(e.getTile2(), e.getTile1(), c, e.path));
             }
         }
         LOGGER_PATH.debug("edge found %s they are: %s", list.size(), list);

@@ -33,9 +33,9 @@ public class MapOutput {
             for (int j = 0; j < map.getCols(); j++) {
 
                 String cssclass = "";
-                if (isClusterline(i) || (clusterSize != -1 && map.getRows() <= i + 2))
+                if (isClusterline(i, map.getRows()))
                     cssclass += "horzBorder ";
-                if (isClusterline(j) || (clusterSize != -1 && map.getCols() <= j + 2))
+                if (isClusterline(j, map.getCols()))
                     cssclass += "vertBorder ";
 
                 String background = map.isPassable(new Tile(i, j)) ? "land" : "water";
@@ -66,6 +66,7 @@ public class MapOutput {
             output = new BufferedWriter(new FileWriter(file));
             output.write(text);
             output.close();
+            System.out.println("Log file saved: " + fName);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -96,13 +97,15 @@ public class MapOutput {
         return sb.toString();
     }
 
-    private boolean isClusterline(int i) {
+    private boolean isClusterline(int i, int maxSize) {
         if (clusterSize == -1)
             return false;
 
         if (i % clusterSize == 0 || i % clusterSize == clusterSize - 1)
             return true;
 
+        if (maxSize <= i + 2)
+            return true;
         return false;
     }
 

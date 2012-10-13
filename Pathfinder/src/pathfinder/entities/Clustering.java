@@ -8,10 +8,11 @@ import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import api.Aim;
+import api.SearchTarget;
 import api.Tile;
 import api.WorldType;
 
-public class Clustering {
+public class Clustering extends AbstractWraparoundMap {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.CLUSTERING);
     private Cluster[][] clusters;
@@ -475,7 +476,7 @@ public class Clustering {
         return new Tile(r % mapRows, c % mapCols);
     }
 
-    /***
+    /**
      * 
      * @return the current pathfinder
      */
@@ -483,19 +484,11 @@ public class Clustering {
         return pathFinder;
     }
 
-    // public List<SearchTarget> getSuccessors(DirectedEdge state) {
-    // List<SearchTarget> list = new ArrayList<SearchTarget>();
-    // if (state.getCluster() == null)
-    // return list;
-    // list.addAll(state.getCluster().getEdgeWithNeighbourCluster(state));
-    // return list;
-    // }
-
     public List<Tile> getAllVertices() {
         List<Tile> verts = new ArrayList<Tile>();
         for (Cluster[] cs : getClusters())
             for (Cluster c : cs) {
-                System.out.println("clsuter: " + c.name);
+                System.out.println("cluster: " + c.name);
                 for (Vertex v : c.vertices) {
                     verts.add(v.getTargetTile());
                 }
@@ -505,6 +498,38 @@ public class Clustering {
 
     public void setWorldType(WorldType t) {
         // TODO
+    }
+
+    @Override
+    public List<SearchTarget> getSuccessor(SearchTarget currentEdge, boolean isNextMove) {
+        if (!(currentEdge instanceof DirectedEdge)) {
+            throw new IllegalArgumentException("SearchTarget must be of the type DirectedEdge");
+        }
+
+        DirectedEdge e = (DirectedEdge) currentEdge;
+
+        return e.getCluster().getEdgeWithNeighbourCluster(e);
+    }
+
+    @Override
+    public boolean isPassable(Tile tile) {
+        return true;
+    }
+
+    @Override
+    public boolean isVisible(Tile tile) {
+        return true;
+    }
+
+    public void printEdges() {
+        for (Cluster[] cs : getClusters())
+            for (Cluster c : cs) {
+                System.out.println("cluster: " + c.name);
+                for (Edge e : c.edges) {
+                    System.out.println(String.format("C: %s Edge: %s PathLength: %s", c.index, e,
+                            e.path == null ? "Null" : e.path.size()));
+                }
+            }
     }
 
 }

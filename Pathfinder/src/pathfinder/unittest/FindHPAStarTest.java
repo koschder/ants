@@ -15,8 +15,8 @@ public class FindHPAStarTest {
 
     @Test
     public void baseTest() {
-        baseTestbyType(ClusterType.Centered);
         baseTestbyType(ClusterType.Corner);
+        baseTestbyType(ClusterType.Centered);
     }
 
     private void baseTestbyType(ClusterType type) {
@@ -28,6 +28,9 @@ public class FindHPAStarTest {
         pf.setMap(map);
         pf.initClustering(clusterSize, type);
         pf.cluster();
+
+        // pf.getClustering().printEdges();
+
         List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, new Tile(10, 10), new Tile(15, 15), 20);
 
         MapOutput put = new MapOutput();
@@ -40,35 +43,45 @@ public class FindHPAStarTest {
         Assert.assertNotNull(path);
     }
 
-    // @Test
-    // public void someWaterTest() {
-    // System.out.println("SomeWaterTest");
-    // String sMap = "";
-    // sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
-    // sMap += "woooooooooowwwwwwwwwwooooooooooooooow";
-    // sMap += "woooooooooowwwwwwwwwwooooooooooooooow";
-    // sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
-    // sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
-    // sMap += "wooooooowwwwwwwwwwwwwooooowooooooooow";
-    // sMap += "woooooooooooowoooooooooooowooooooooow";
-    // sMap += "woooooooooooowoooowooooooowooooooooow";
-    // sMap += "wooooooooooooooooowooooooowooooooooow";
-    // sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
-    //
-    // UnitTestMap map = new UnitTestMap(37, sMap);
-    // PathFinder pf = new PathFinder();
-    // pf.setMap(map);
-    // List<Tile> path = pf.search(PathFinder.Strategy.AStar, new Tile(2, 2), new Tile(2, 35), -1);
-    //
-    // MapOutput put = new MapOutput();
-    // put.setMap(pf.getMap());
-    // put.addObject(path, "HpaStar Path");
-    // put.setClusterSize(clusterSize);
-    // put.addObject(pf.getClustering().getAllVertices(), "Cluster Points");
-    // put.saveHtmlMap(name);
-    //
-    // Assert.assertNotNull(path);
-    // }
+    @Test
+    public void someWaterTest() {
+        someWaterTestbyType(ClusterType.Corner);
+        someWaterTestbyType(ClusterType.Centered);
+    }
+
+    public void someWaterTestbyType(ClusterType type) {
+        String name = "FindHPAStarTest_SomeWaterTest_" + type;
+        System.out.println();
+        String sMap = "";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+        sMap += "woooooooooowwwwwwwwwwooooooooooooooow";
+        sMap += "woooooooooowwwwwwwwwwooooooooooooooow";
+        sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
+        sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
+        sMap += "wooooooowwwwwwwwwwwwwooooowooooooooow";
+        sMap += "woooooooooooowoooooooooooowooooooooow";
+        sMap += "woooooooooooowoooowooooooowooooooooow";
+        sMap += "wooooooooooooooooowooooooowooooooooow";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+
+        UnitTestMap map = new UnitTestMap(37, sMap);
+        PathFinder pf = new PathFinder();
+        int clusterSize = 8;
+        pf.setMap(map);
+        pf.initClustering(clusterSize, type);
+        pf.cluster();
+        pf.setMap(map);
+        List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, new Tile(2, 2), new Tile(2, 35), -1);
+
+        MapOutput put = new MapOutput();
+        put.setMap(pf.getMap());
+        put.addObject(path, "HpaStar Path");
+        put.setClusterSize(clusterSize);
+        put.addObject(pf.getClustering().getAllVertices(), "Cluster Points");
+        put.saveHtmlMap(name);
+
+        Assert.assertNotNull(path);
+    }
     //
     // @Test
     // public void globeTest() {
