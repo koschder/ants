@@ -49,10 +49,10 @@ public class AStarSearchStrategy extends SearchStrategy {
         frontier.add(new Node(from, null, 0, getEstimatedCosts(from.getTargetTile(), to.getTargetTile())));
         while (!frontier.isEmpty()) {
 
-            System.out.println("Frontier is:");
-            for (Node n : frontier) {
-                System.out.println(n);
-            }
+            // System.out.println("Frontier is:");
+            // for (Node n : frontier) {
+            // System.out.println(n);
+            // }
 
             Node node = frontier.poll();
             explored.add(node.getState());

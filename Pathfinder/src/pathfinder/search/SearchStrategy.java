@@ -99,13 +99,13 @@ public abstract class SearchStrategy {
             return false;
 
         // maybe the searchspace is wraparound
-        if (checkSpace(m.getTile(t, new Tile(0, m.getCols())), searchSpace1, searchSpace2))
+        if (checkSpace(new Tile(t.getRow(), t.getCol() + m.getCols()), searchSpace1, searchSpace2))
             return true;
 
-        if (checkSpace(m.getTile(t, new Tile(m.getRows(), 0)), searchSpace1, searchSpace2))
+        if (checkSpace(new Tile(t.getRow() + m.getRows(), t.getCol()), searchSpace1, searchSpace2))
             return true;
 
-        if (checkSpace(m.getTile(t, new Tile(m.getRows(), m.getCols())), searchSpace1, searchSpace2))
+        if (checkSpace(new Tile(m.getRows(), t.getCol() + m.getCols()), searchSpace1, searchSpace2))
             return true;
 
         return false;
