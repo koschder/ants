@@ -37,4 +37,48 @@ public class InfluenceTest {
         put.saveHtmlMap("frickling_safetyInfluenceTest");
 
     }
+
+    @Test
+    public void safetyInfluenceUpdateTest() {
+
+        System.out.println("safetyInfluenceTest");
+        String sMap = "";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+        sMap += "woooooooooowwwwwwwwwwooooooooooooooow";
+        sMap += "woo0o1ooooowwwwwwwwwwoo2ooooooo0oooow";
+        sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
+        sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
+        sMap += "wooo0ooowwwwwwwwwwwwwooooowooo1ooooow";
+        sMap += "woooooooooooowoooooooooooowooooooooow";
+        sMap += "wooooooooooo0woooowoooooo2wooooooooow";
+        sMap += "woooo1oooooooooooowooooooowooooooooow";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+
+        UnitTestInfluenceMap initialMap = new UnitTestInfluenceMap(37, sMap);
+
+        sMap = "";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+        sMap += "woooooooooowwwwwwwwwwooooooooooooooow";
+        sMap += "wo0ooo1oooowwwwwwwwwwooo2ooooo0ooooow";
+        sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
+        sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
+        sMap += "wooooooowwwwwwwwwwwwwooooowooooooooow";
+        sMap += "wooo0oooooooowooooooooooo2wooo1ooooow";
+        sMap += "woooo1ooooo0owoooowooooooowooooooooow";
+        sMap += "wooooooooooooooooowooooooowooooooooow";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+
+        UnitTestInfluenceMap updateMap = new UnitTestInfluenceMap(37, sMap);
+
+        DefaultInfluenceMap iMap = new DefaultInfluenceMap(initialMap, 8, 4);
+        iMap.update(updateMap);
+
+        MapOutput put = new MapOutput();
+        put.setMap(updateMap);
+        put.setClusterSize(5);
+        put.setInfluenceMap(iMap);
+        put.addAllUnits();
+        put.saveHtmlMap("frickling_safetyInfluenceUpdateTest");
+
+    }
 }

@@ -59,14 +59,15 @@ public class MapOutput {
         sb.append("\n</body>\n</html>\n");
 
         try {
-            String fName = "logs/" + fileName + ".html";
+            File logdir = new File("logs");
+            logdir.mkdirs();
             Writer output = null;
             String text = sb.toString();
-            File file = new File(fName);
+            File file = new File(logdir, fileName + ".html");
             output = new BufferedWriter(new FileWriter(file));
             output.write(text);
             output.close();
-            System.out.println("Log file saved: " + fName);
+            System.out.println("Log file saved: " + file);
         } catch (Exception ex) {
             ex.printStackTrace();
         }

@@ -34,22 +34,27 @@ public class DefaultInfluenceMap implements InfluenceMap {
         for (Integer player : map.getPlayers()) {
             final int[][] playerInfluence = new int[map.getRows()][map.getCols()];
             influence.put(player, playerInfluence);
-            for (Unit unit : map.getUnits(player)) {
-                final Tile tile = unit.getTile();
-                playerInfluence[tile.getRow()][tile.getCol()] = MAX_INFLUENCE;
-                int mx = (int) Math.sqrt(this.viewRadius2);
-                for (int row = -mx; row <= mx; ++row) {
-                    for (int col = -mx; col <= mx; ++col) {
-                        int d = row * row + col * col;
-                        if (d <= this.viewRadius2) {
-                            Tile tRadius = map.getTile(tile, new Tile(row, col));
-                            if (tRadius.equals(tile))
-                                continue;
-                            if (d <= this.attackRadius2)
-                                playerInfluence[tRadius.getRow()][tRadius.getCol()] += 50;
-                            else
-                                playerInfluence[tRadius.getRow()][tRadius.getCol()] += 10;
-                        }
+            updateInfluence(map, player, 0);
+        }
+    }
+
+    private void updateInfluence(UnitMap map, Integer player, double decay) {
+        decayInfluence(player, decay);
+        for (Unit unit : map.getUnits(player)) {
+            final Tile tile = unit.getTile();
+            updateTileInfluence(tile, player, MAX_INFLUENCE, decay);
+            int mx = (int) Math.sqrt(this.viewRadius2);
+            for (int row = -mx; row <= mx; ++row) {
+                for (int col = -mx; col <= mx; ++col) {
+                    int d = row * row + col * col;
+                    if (d <= this.viewRadius2) {
+                        Tile tRadius = map.getTile(tile, new Tile(row, col));
+                        if (tRadius.equals(tile) || !map.isPassable(tRadius))
+                            continue;
+                        if (d <= this.attackRadius2)
+                            updateTileInfluence(tRadius, player, 50, decay);
+                        else
+                            updateTileInfluence(tRadius, player, 10, decay);
                     }
                 }
             }
@@ -57,7 +62,24 @@ public class DefaultInfluenceMap implements InfluenceMap {
     }
 
     public void update(UnitMap map) {
+        for (Integer player : map.getPlayers()) {
+            if (!influence.containsKey(player))
+                influence.put(player, new int[map.getRows()][map.getCols()]);
+            updateInfluence(map, player, 0.5);
+        }
+    }
 
+    private void decayInfluence(Integer player, double decay) {
+        final int[][] playerInfluence = influence.get(player);
+        for (int i = 0; i < playerInfluence.length; i++) {
+            for (int j = 0; j < playerInfluence[i].length; j++) {
+                playerInfluence[i][j] = ((int) Math.floor(playerInfluence[i][j] * decay));
+            }
+        }
+    }
+
+    private void updateTileInfluence(Tile tile, Integer player, int newInfluence, double decay) {
+        influence.get(player)[tile.getRow()][tile.getCol()] += (int) Math.ceil(newInfluence * (1 - decay));
     }
 
 }
