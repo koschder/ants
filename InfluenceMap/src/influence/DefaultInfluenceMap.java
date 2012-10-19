@@ -27,6 +27,18 @@ public class DefaultInfluenceMap implements InfluenceMap {
         return myInfluence - enemyInfluence;
     }
 
+    @Override
+    public int getTotalInfluence(Integer player) {
+        int totalInfluence = 0;
+        final int[][] playerInfluence = influence.get(player);
+        for (int i = 0; i < playerInfluence.length; i++) {
+            for (int j = 0; j < playerInfluence[i].length; j++) {
+                totalInfluence += playerInfluence[i][j];
+            }
+        }
+        return totalInfluence;
+    }
+
     public DefaultInfluenceMap(UnitMap map, int viewRadius2, int attackRadius2) {
         this.viewRadius2 = viewRadius2;
         this.attackRadius2 = attackRadius2;
