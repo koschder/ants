@@ -82,7 +82,7 @@ public class Clustering extends AbstractWraparoundMap {
         return cols;
     }
 
-    protected Cluster[][] getClusters() {
+    public Cluster[][] getClusters() {
         return clusters;
     }
 

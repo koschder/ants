@@ -101,34 +101,6 @@ public class Cluster {
     }
 
     /***
-     * if a new edge is added to the cluster we connect it with all existing edges.
-     * 
-     * @param newEdge
-     */
-    private void createNewPath(Edge newEdge) {
-        for (int i = 0; i < edges.size(); i++) {
-            Edge e = edges.get(i);
-            findNewEdge(e.getTile1(), newEdge.getTile1());
-            findNewEdge(e.getTile2(), newEdge.getTile2());
-            findNewEdge(e.getTile1(), newEdge.getTile2());
-            findNewEdge(e.getTile2(), newEdge.getTile1());
-        }
-
-    }
-
-    /***
-     * for all new edges added we connect them with the existing edges.
-     * 
-     * @param newEdges
-     */
-    private void createNewPath(List<Edge> newEdges) {
-        for (Edge e : newEdges) {
-            LOGGER.trace("%s: createNewPath for e: %s", name, e);
-            createNewPath(e);
-        }
-    }
-
-    /***
      * print all edges of the cluster into the log file.
      */
     public void debugEdges() {
@@ -168,7 +140,7 @@ public class Cluster {
 
         // path limit costs are the manhattanDistance plus a factor for a maybe
         // way around
-        int costs = clustering.getPathFinder().getMap().manhattanDistance(tStart, tEnd);
+        int costs = clustering.getPathFinder().getMap().manhattanDistance(tStart, tEnd) * 2;
         // int costs = tStart.manhattanDistanceTo(tEnd) + 3;
         // List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, tStart,
         // tEnd, costs);
@@ -365,8 +337,11 @@ public class Cluster {
      * @return true if the tile is a new vertices and was added
      */
     private boolean processVertex(Tile t, Edge e) {
-        if (vertices.contains(t) && e != null) {
-            vertices.get(vertices.indexOf(t)).addEdge(e);
+        if (vertices.contains(t)) {
+            if (e != null) {
+                Vertex v = vertices.get(vertices.indexOf(t));
+                v.addEdge(e);
+            }
             return false;
         } else {
             vertices.add(new Vertex(t, e));
@@ -384,10 +359,12 @@ public class Cluster {
         scannedAims.add(newaim);
         LOGGER.trace("%s: New edges arrived from aim %s E: %s", name, newaim, newEdges);
         if (newEdges.size() > 0) {
-
             List<Edge> hardCopy = new ArrayList<Edge>();
             for (Edge e : newEdges) {
+                if (edges.contains(e))
+                    continue;
                 hardCopy.add(new Edge(e.getTile1(), e.getTile2(), e.getPath(), e.getCluster()));
+
             }
             edges.addAll(hardCopy);
             processNewEdgesVertices(hardCopy, newaim);
@@ -420,5 +397,9 @@ public class Cluster {
                     findNewEdge(t, x);
             }
         }
+    }
+
+    public List<Vertex> getVertices() {
+        return vertices;
     }
 }

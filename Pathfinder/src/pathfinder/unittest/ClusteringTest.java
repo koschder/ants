@@ -2,9 +2,12 @@ package pathfinder.unittest;
 
 import java.util.List;
 
+import junit.framework.Assert;
+
 import org.junit.Test;
 
 import pathfinder.PathFinder;
+import pathfinder.entities.Cluster;
 import pathfinder.entities.Clustering;
 import pathfinder.entities.Clustering.ClusterType;
 import api.MapOutput;
@@ -107,5 +110,91 @@ public class ClusteringTest {
         put.addObject(pf.getClustering().getAllVertices(), "Cluster Points");
         put.saveHtmlMap(name);
 
+        Cluster c = pf.getClustering().getClusters()[0][3];
+        // the last cluster should have 3 egdes and 3 vertices
+        Assert.assertEquals(3, c.getEdges().size());
+        Assert.assertEquals(3, c.getVertices().size());
+
     }
+
+    @Test
+    public void oneClusterTestCorner() {
+        oneClusterTest(ClusterType.Corner);
+
+    }
+
+    @Test
+    public void oneClusterTestCentered() {
+        globeTestbyType(ClusterType.Centered);
+    }
+
+    public void oneClusterTest(ClusterType type) {
+        String name = "ClusteringTest_oneClusterTest_" + type;
+        System.out.println(name);
+        String sMap = "";
+        sMap += "oooooooooo";
+        sMap += "oooooooooo";
+        sMap += "oowwoooooo";
+        sMap += "oooooooooo";
+        sMap += "oooooooooo";
+        sMap += "oooooooooo";
+        sMap += "oooooooooo";
+        sMap += "oooooooooo";
+        sMap += "oooooooooo";
+        sMap += "oooooooooo";
+
+        UnitTestMap map = new UnitTestMap(10, sMap);
+        PathFinder pf = new PathFinder();
+        int clusterSize = 5;
+        pf.setMap(map);
+        pf.initClustering(clusterSize, type);
+        pf.cluster();
+        pf.setMap(map);
+
+        pf.getClustering().printEdges();
+        pf.getClustering().printVertices();
+
+        MapOutput put = new MapOutput();
+        put.setMap(pf.getMap());
+        put.setClusterSize(clusterSize);
+        put.addObject(pf.getClustering().getAllVertices(), "Cluster Points");
+        put.saveHtmlMap(name);
+
+        for (int i = 0; i < pf.getClustering().getClusters().length; i++) {
+            for (int j = 0; j < pf.getClustering().getClusters()[0].length; j++) {
+                Cluster c = pf.getClustering().getClusters()[i][j];
+                Assert.assertEquals(6, c.getEdges().size());
+                Assert.assertEquals(4, c.getVertices().size());
+
+            }
+
+        }
+
+    }
+
+    @Test
+    public void beeLineTest() {
+
+        String sMap = "";
+        sMap += "wowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+        sMap += "woooooooooowwwwwwwwwwooooooooooooooow";
+        sMap += "woooooooooowwwwwwwwwwooooooooooooooow";
+        sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
+        sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
+        sMap += "wooooooowwwwwwwwwwwwwooooowooooooooow";
+        sMap += "woooooooooooowoooooooooooowoooooooooo";
+        sMap += "ooooooooooooowoooowooooooowoooooooooo";
+        sMap += "wooooooooooooooooowooooooowooooooooow";
+        sMap += "wowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+
+        UnitTestMap map = new UnitTestMap(37, sMap);
+
+        double line = map.beelineTo(new Tile(4, 34), new Tile(7, 0));
+        double man = map.manhattanDistance(new Tile(4, 34), new Tile(7, 0));
+        boolean beeIsShorter = line < man;
+        Assert.assertTrue("beeline must be shorter", beeIsShorter);
+        Assert.assertTrue("beeline must be under 15", line < 15);
+
+    }
+
 }

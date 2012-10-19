@@ -43,16 +43,18 @@ public class AStarSearchStrategy extends SearchStrategy {
     private List<Tile> calculateBestPath(SearchTarget from, SearchTarget to) {
         if (from.equals(to))
             return to.getPath();
-
+        boolean bPrintFrontier = false;
         Set<SearchTarget> explored = new HashSet<SearchTarget>();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>();
         frontier.add(new Node(from, null, 0, getEstimatedCosts(from.getTargetTile(), to.getTargetTile())));
         while (!frontier.isEmpty()) {
 
-            // System.out.println("Frontier is:");
-            // for (Node n : frontier) {
-            // System.out.println(n);
-            // }
+            if (bPrintFrontier) {
+                System.out.println("Frontier is:");
+                for (Node n : frontier) {
+                    System.out.println(n);
+                }
+            }
 
             Node node = frontier.poll();
             explored.add(node.getState());
