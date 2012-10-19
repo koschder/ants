@@ -197,6 +197,13 @@ public enum Ants {
     }
 
     /**
+     * For testing only: set a Population instance
+     */
+    public static void setPopulation(Population population) {
+        INSTANCE.population = population;
+    }
+
+    /**
      * 
      * @return the singleton instance of Orders
      */

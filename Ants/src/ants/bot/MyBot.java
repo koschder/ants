@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 
 import logging.LogLevel;
 import logging.Logger;
@@ -18,6 +17,7 @@ import ants.LogCategory;
 import ants.entities.Ant;
 import ants.state.Ants;
 import ants.state.World;
+import ants.strategy.ResourceAllocator;
 import ants.tasks.AttackHillsTask;
 import ants.tasks.ClearHillTask;
 import ants.tasks.ClusteringTask;
@@ -27,6 +27,7 @@ import ants.tasks.FollowTask;
 import ants.tasks.GatherFoodTask;
 import ants.tasks.MissionTask;
 import ants.tasks.Task;
+import ants.tasks.Task.Type;
 import api.InfluenceMap;
 
 /**
@@ -78,7 +79,7 @@ public class MyBot extends Bot {
         LoggingConfig.configure(pathfinder.LogCategory.HPASTAR, LogLevel.INFO);
     }
 
-    private Map<Task, Integer> taskResources = new HashMap<Task, Integer>();
+    private Map<Task.Type, Task> tasks = new HashMap<Task.Type, Task>();
 
     // generating a history how many ants we have in each turn
     private List<Integer> statAntsAmountHistory = new ArrayList<Integer>();
@@ -99,12 +100,11 @@ public class MyBot extends Bot {
          * This is the main loop of the bot. All the actual work is done in the tasks that are executed in the order
          * they are defined.
          */
-        for (Entry<Task, Integer> taskEntry : taskResources.entrySet()) {
-            Task task = taskEntry.getKey();
+        for (Task task : tasks.values()) {
             long start = System.currentTimeMillis();
             int unemployed = Ants.getPopulation().getMyUnemployedAnts().size();
             LOGGER_PERFORMANCE.info("task started:: %s at %s", task.getClass().getSimpleName(), start);
-            task.perform(taskEntry.getValue()); // TODO
+            task.perform();
             LOGGER_TASKS.debug("Task %s found jobs for %s of %s unemployed ants", task.getClass().getSimpleName(),
                     unemployed - Ants.getPopulation().getMyUnemployedAnts().size(), unemployed);
             LOGGER_PERFORMANCE.info("task ended  :: %s, took %s ms", task.getClass().getSimpleName(),
@@ -149,25 +149,20 @@ public class MyBot extends Bot {
      * setup duties.
      */
     private void initTasks() {
-        if (taskResources.isEmpty()) {
-            taskResources.put(new MissionTask(), Integer.MAX_VALUE);
-            taskResources.put(new GatherFoodTask(), Integer.MAX_VALUE);
-            taskResources.put(new AttackHillsTask(), Integer.MAX_VALUE);
-            taskResources.put(new CombatTask(), Integer.MAX_VALUE);
-            taskResources.put(new ExploreTask(), Integer.MAX_VALUE);
-            taskResources.put(new FollowTask(), Integer.MAX_VALUE);
-            taskResources.put(new ClearHillTask(), Integer.MAX_VALUE);
-            taskResources.put(new ClusteringTask(), Integer.MAX_VALUE);
+        if (tasks.isEmpty()) {
+            tasks.put(Type.MISSION, new MissionTask());
+            tasks.put(Type.GATHER_FOOD, new GatherFoodTask());
+            tasks.put(Type.ATTACK_HILLS, new AttackHillsTask());
+            tasks.put(Type.COMBAT, new CombatTask());
+            tasks.put(Type.EXPLORE, new ExploreTask());
+            tasks.put(Type.FOLLOW, new FollowTask());
+            tasks.put(Type.CLEAR_HILL, new ClearHillTask());
+            tasks.put(Type.CLUSTERING, new ClusteringTask());
         }
-        allocateResources();
-        for (Task task : taskResources.keySet()) {
+        new ResourceAllocator(tasks, influence).allocateResources();
+        for (Task task : tasks.values()) {
             task.setup();
         }
-    }
-
-    private void allocateResources() {
-        // TODO Auto-generated method stub
-
     }
 
     @Override

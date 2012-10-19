@@ -8,16 +8,35 @@ package ants.tasks;
  */
 public interface Task {
 
+    public enum Type {
+        ATTACK_HILLS,
+        CLEAR_HILL,
+        CLUSTERING,
+        COMBAT,
+        DEFEND_AREA,
+        EXPLORE,
+        FOLLOW,
+        GATHER_FOOD,
+        MISSION,
+        VALIDATE_ORDERS;
+    }
+
     /**
      * Performs the task; called each turn
      * 
-     * @param maxResources
-     *            How many ants is the task allowed to assign missions to?
      */
-    public void perform(Integer maxResources);
+    public void perform();
 
     /**
      * Prepare the task; called at the beginning of each turn.
      */
     public void setup();
+
+    /**
+     * @param maxResources
+     *            How many ants is the task allowed to assign missions to?
+     */
+    public void setMaxResources(Integer maxResources);
+
+    public Integer getMaxResources();
 }

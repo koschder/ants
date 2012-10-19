@@ -29,14 +29,23 @@ public abstract class BaseTask implements Task {
     }
 
     @Override
-    public void perform(Integer maxResources) {
-        this.maxResources = maxResources;
+    public void perform() {
         allocatedResources = 0;
         try {
             doPerform();
         } catch (InsufficientResourcesException e) {
             LOGGER.info("Task %s reached its resource limit: %s", getClass().getSimpleName(), this.maxResources);
         }
+    }
+
+    @Override
+    public void setMaxResources(Integer maxResources) {
+        this.maxResources = maxResources;
+    }
+
+    @Override
+    public Integer getMaxResources() {
+        return this.maxResources;
     }
 
     protected void doPerform() {
