@@ -2,11 +2,11 @@ package pathfinder.entities;
 
 import api.SearchTarget;
 
-
 /***
  * this class is used in the as item in the frontier and in the explored list at A* algorithm.
+ * 
  * @author kaeserst
- *
+ * 
  */
 public class Node implements Comparable<Node> {
 
@@ -27,11 +27,11 @@ public class Node implements Comparable<Node> {
      */
     private int costActual;
 
-    public Node(SearchTarget state, Node parent, int costActual, double costEstimated) {
+    public Node(SearchTarget state, Node parent, int cActual, double costEstimated) {
         this.state = state;
         this.parent = parent;
-        this.costActual = costActual+state.getCost();
-        this.costEstimated = costActual+costEstimated;
+        this.costActual = cActual + state.getCost();
+        this.costEstimated = costActual + costEstimated;
     }
 
     /***
@@ -49,25 +49,26 @@ public class Node implements Comparable<Node> {
     public int getAcutalCost() {
         return costActual;
     }
-    
+
     public double getEstimatedCost() {
         return costEstimated;
     }
 
     @Override
     public String toString() {
-        return "Node [state=" + state + ", actual cost=" + costActual + ", estimated cost= "+costEstimated+"]";
-        //return "Node [state=" + state + ", parent=" + (parent != null ? parent.state : "null") + ", cost=" + cost + "]";
+        return "Node [state=" + state + ", actual cost=" + costActual + ", estimated cost= " + costEstimated + "]";
+        // return "Node [state=" + state + ", parent=" + (parent != null ? parent.state : "null") + ", cost=" + cost +
+        // "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         double result = 1;
-        result = prime * result + costActual +costEstimated;
+        result = prime * result + costActual + costEstimated;
         result = prime * result + ((parent == null) ? 0 : parent.hashCode());
         result = prime * result + ((state == null) ? 0 : state.hashCode());
-        return (int)result;
+        return (int) result;
     }
 
     @Override
@@ -92,10 +93,10 @@ public class Node implements Comparable<Node> {
      * consider the digit behind the comma.
      */
     public int compareTo(Node o) {
-        return ((int)costEstimated*100) - ((int)o.costEstimated*100);
+        return ((int) costEstimated * 100) - ((int) o.costEstimated * 100);
     }
 
-    public int getActualCost() {   
+    public int getActualCost() {
         return this.costActual;
     }
 }

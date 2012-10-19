@@ -5,12 +5,11 @@ import java.util.List;
 
 import api.Tile;
 
-
-
 /***
  * Describes a node in a search path and stores the sucessor edges.
+ * 
  * @author kases1, kustl1
- *
+ * 
  */
 public class Vertex extends Tile {
 
@@ -22,9 +21,10 @@ public class Vertex extends Tile {
     }
 
     public void addEdge(Edge e) {
-        edges.add(e);
+        if (!edges.contains(e))
+            edges.add(e);
     }
-    
+
     @Override
     public boolean equals(Object o) {
         boolean result = false;
@@ -34,13 +34,12 @@ public class Vertex extends Tile {
         return result;
     }
 
-    
-//    public int compareTo(Vertex o) {
-//        return hashCode() - hashCode();
-//    }
-//    
-//    public int hashCode() {
-//        return super.hashCode();
-//    }
+    // public int compareTo(Vertex o) {
+    // return hashCode() - hashCode();
+    // }
+    //
+    // public int hashCode() {
+    // return super.hashCode();
+    // }
 
 }
