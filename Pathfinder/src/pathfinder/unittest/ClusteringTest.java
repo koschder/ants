@@ -73,9 +73,14 @@ public class ClusteringTest {
     }
 
     @Test
-    public void globeTest() {
+    public void globeCornerTest() {
         globeTestbyType(ClusterType.Corner);
         // globeTestbyType(ClusterType.Centered);
+    }
+
+    @Test
+    public void globeCenteredTest() {
+        globeTestbyType(ClusterType.Centered);
     }
 
     public void globeTestbyType(ClusterType type) {
@@ -112,9 +117,13 @@ public class ClusteringTest {
 
         Cluster c = pf.getClustering().getClusters()[0][3];
         // the last cluster should have 3 egdes and 3 vertices
-        Assert.assertEquals(3, c.getEdges().size());
-        Assert.assertEquals(3, c.getVertices().size());
-
+        if (type == ClusterType.Centered) {
+            Assert.assertEquals(1, c.getEdges().size());
+            Assert.assertEquals(2, c.getVertices().size());
+        } else {
+            Assert.assertEquals(3, c.getEdges().size());
+            Assert.assertEquals(3, c.getVertices().size());
+        }
     }
 
     @Test
@@ -125,7 +134,7 @@ public class ClusteringTest {
 
     @Test
     public void oneClusterTestCentered() {
-        globeTestbyType(ClusterType.Centered);
+        oneClusterTest(ClusterType.Centered);
     }
 
     public void oneClusterTest(ClusterType type) {
