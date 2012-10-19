@@ -75,7 +75,6 @@ public class ClusteringTest {
     @Test
     public void globeCornerTest() {
         globeTestbyType(ClusterType.Corner);
-        // globeTestbyType(ClusterType.Centered);
     }
 
     @Test

@@ -141,11 +141,8 @@ public class Cluster {
         // path limit costs are the manhattanDistance plus a factor for a maybe
         // way around
         int costs = clustering.getPathFinder().getMap().manhattanDistance(tStart, tEnd) * 2;
-        // int costs = tStart.manhattanDistanceTo(tEnd) + 3;
-        // List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, tStart,
-        // tEnd, costs);
+
         Tile searchSpace0 = new Tile(row * clusterSize, col * clusterSize);
-        // todo is +1 correct?
         Tile searchSpace1 = new Tile((row + 1) * clusterSize + 1, (col + 1) * clusterSize + 1);
         List<Tile> path = clustering.getPathFinder().search(PathFinder.Strategy.AStar, tStart, tEnd, searchSpace0,
                 searchSpace1, costs);

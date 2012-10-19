@@ -1,12 +1,7 @@
 package pathfinder;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import api.SearchTarget;
-import api.SearchableMap;
-import api.Tile;
-
-
 
 import pathfinder.entities.Clustering;
 import pathfinder.entities.Clustering.ClusterType;
@@ -14,6 +9,9 @@ import pathfinder.search.AStarSearchStrategy;
 import pathfinder.search.HPAStarSearchStrategy;
 import pathfinder.search.SearchStrategy;
 import pathfinder.search.SimpleSearchStrategy;
+import api.SearchTarget;
+import api.SearchableMap;
+import api.Tile;
 
 /***
  * this is the main class of the pathfinder framework
@@ -116,6 +114,51 @@ public class PathFinder {
             return new HPAStarSearchStrategy(this);
 
         throw new RuntimeException("Strategy not implemented: " + strategy);
+    }
+
+    public List<Tile> smoothPath(List<Tile> path) {
+        return smoothPath(path, 5, 1);
+    }
+
+    public List<Tile> smoothPath(List<Tile> path, int size, int loops) {
+
+        for (int i = 0; i < loops; i++) {
+            path = smoothPath(path, size);
+        }
+
+        return path;
+    }
+
+    private List<Tile> smoothPath(List<Tile> path, int size) {
+        if (path == null || path.size() < size)
+            return path;
+        boolean isRecursiv = false; // TODO
+        int start = 0;
+        int current = size;
+        List<Tile> newPath = new ArrayList<Tile>();
+        // do while the last tile of path is new path
+        while (path.get(path.size() - 1).equals(newPath.get(path.size() - 1))) {
+
+            List<Tile> subPath = path.subList(start, current);
+            int manDist = map.manhattanDistance(subPath.get(0), subPath.get(subPath.size() - 1));
+
+            List<Tile> newSubPath = null;
+            if (manDist <= subPath.size()) {
+                newSubPath = search(Strategy.AStar, subPath.get(0), subPath.get(subPath.size() - 1), subPath.size() - 1);
+            }
+            if (newSubPath != null) {
+                if (isRecursiv) {
+                    newPath.addAll(newSubPath);
+                    newPath = smoothPath(newPath, newPath.size());
+                }
+            } else {
+                newPath.addAll(subPath);
+            }
+            start = current;
+            current = Math.min(current + size, path.size());
+        }
+
+        return newPath;
     }
 
     /***
