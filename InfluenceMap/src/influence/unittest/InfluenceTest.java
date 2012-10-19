@@ -1,5 +1,6 @@
 package influence.unittest;
 
+import static org.junit.Assert.assertEquals;
 import influence.DefaultInfluenceMap;
 
 import org.junit.Test;
@@ -97,11 +98,9 @@ public class InfluenceTest {
 
         InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
 
-        MapOutput put = new MapOutput();
-        put.setMap(map);
-        put.setClusterSize(5);
-        put.addAllUnits();
-        put.saveHtmlMap("frickling_totalInfluenceTest", getSafetyDecorator(iMap));
+        assertEquals(2820, iMap.getTotalInfluence(0));
+        assertEquals(2110, iMap.getTotalInfluence(1));
+        assertEquals(1300, iMap.getTotalInfluence(2));
 
     }
 }
