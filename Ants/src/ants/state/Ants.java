@@ -189,6 +189,13 @@ public enum Ants {
     }
 
     /**
+     * For testing only: set a Population instance
+     */
+    public static void setWorld(World world) {
+        INSTANCE.world = world;
+    }
+
+    /**
      * 
      * @return the singleton instance of Population
      */
@@ -257,15 +264,6 @@ public enum Ants {
      */
     public int getTimeRemaining() {
         return turnTime - (int) (System.currentTimeMillis() - turnStartTime);
-    }
-
-    /**
-     * Only for testing
-     * 
-     * @param newW
-     */
-    public void setWorld(World newW) {
-        world = newW;
     }
 
     /**

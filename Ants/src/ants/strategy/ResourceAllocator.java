@@ -1,56 +1,44 @@
 package ants.strategy;
 
-import java.util.HashMap;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
-import ants.state.Ants;
+import ants.strategy.rules.PercentExploredRule;
+import ants.strategy.rules.PopulationSizeRule;
+import ants.strategy.rules.RelativeInfluenceRule;
+import ants.strategy.rules.ResourceAllocationRule;
 import ants.tasks.Task;
 import ants.tasks.Task.Type;
 import api.InfluenceMap;
 
 public class ResourceAllocator {
 
-    private Map<Task.Type, Task> tasks = new HashMap<Task.Type, Task>();
-    private InfluenceMap influence;
+    private List<ResourceAllocationRule> rules = new ArrayList<ResourceAllocationRule>();
+
+    private Map<Task.Type, Task> tasks;
 
     public ResourceAllocator(Map<Type, Task> tasks, InfluenceMap influence) {
         this.tasks = tasks;
-        this.influence = influence;
+        // init the allocation with evenly distributed default values
+        this.tasks.get(Type.GATHER_FOOD).setMaxResources(25);
+        this.tasks.get(Type.ATTACK_HILLS).setMaxResources(25);
+        this.tasks.get(Type.COMBAT).setMaxResources(25);
+        this.tasks.get(Type.EXPLORE).setMaxResources(25);
 
-        tasks.get(Type.GATHER_FOOD).setMaxResources(40);
-        tasks.get(Type.ATTACK_HILLS).setMaxResources(20);
-        tasks.get(Type.COMBAT).setMaxResources(20);
-        tasks.get(Type.EXPLORE).setMaxResources(20);
+        rules.add(new PopulationSizeRule());
+        rules.add(new RelativeInfluenceRule(influence));
+        rules.add(new PercentExploredRule());
     }
 
     public void allocateResources() {
-
-        if (Ants.getPopulation().getMyAnts().size() < 10) {
-
+        for (ResourceAllocationRule rule : rules) {
+            rule.allocateResources(tasks);
         }
-        if (influence.getTotalInfluence(0) > influence.getTotalOpponentInfluence()) {
-            incrementResources(Type.EXPLORE, 5, Type.GATHER_FOOD);
-            incrementResources(Type.ATTACK_HILLS, 2, Type.GATHER_FOOD);
-            incrementResources(Type.COMBAT, 2, Type.GATHER_FOOD);
-        }
-
     }
 
-    private void incrementResources(Type taskType, int increment, Type... tasksToDecrement) {
-        if ((increment % tasksToDecrement.length) != 0)
-            throw new IllegalArgumentException("Cannot evenly distribute the increment");
-        final int decrementPerTask = increment / tasksToDecrement.length;
-        for (Type type : tasksToDecrement) {
-            final Task taskToDecrement = tasks.get(type);
-            int maxResources = taskToDecrement.getMaxResources();
-            int newMax = maxResources - decrementPerTask;
-            if (newMax < 0) {
-                increment = increment + newMax;
-                newMax = 0;
-            }
-            taskToDecrement.setMaxResources(newMax);
-        }
-        final Task taskToIncrement = tasks.get(taskType);
-        taskToIncrement.setMaxResources(taskToIncrement.getMaxResources() + increment);
+    public void setRules(List<ResourceAllocationRule> rules) {
+        this.rules = rules;
     }
+
 }

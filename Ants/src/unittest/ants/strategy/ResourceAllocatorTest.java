@@ -13,6 +13,7 @@ import org.junit.Test;
 import ants.entities.Ant;
 import ants.state.Ants;
 import ants.state.Population;
+import ants.state.World;
 import ants.strategy.ResourceAllocator;
 import ants.tasks.AttackHillsTask;
 import ants.tasks.CombatTask;
@@ -30,12 +31,26 @@ public class ResourceAllocatorTest {
 
     @Before
     public void setUp() {
-        Ants.setPopulation(getPopulation(10));
         tasks.put(Type.GATHER_FOOD, new GatherFoodTask());
         tasks.put(Type.ATTACK_HILLS, new AttackHillsTask());
         tasks.put(Type.COMBAT, new CombatTask());
         tasks.put(Type.EXPLORE, new ExploreTask());
         resourceAllocator = new ResourceAllocator(tasks, influence);
+    }
+
+    @Test
+    public void testAllocateResources() {
+
+        Ants.setPopulation(getPopulation(10));
+        Ants.setWorld(getWorld(50));
+        influence.setTotalOpponentInfluence(1000);
+        influence.setTotalInfluence(0, 2000);
+
+        final Integer foodResources = tasks.get(Type.GATHER_FOOD).getMaxResources();
+        // method under test
+        resourceAllocator.allocateResources();
+
+        assertEquals(Integer.valueOf(foodResources - 9), tasks.get(Type.GATHER_FOOD).getMaxResources());
     }
 
     private Population getPopulation(final int myAnts) {
@@ -51,16 +66,12 @@ public class ResourceAllocatorTest {
         };
     }
 
-    @Test
-    public void testAllocateResources() {
-        influence.setTotalOpponentInfluence(1000);
-        influence.setTotalInfluence(0, 2000);
-
-        final Integer foodResources = tasks.get(Type.GATHER_FOOD).getMaxResources();
-        // method under test
-        resourceAllocator.allocateResources();
-
-        assertEquals(Integer.valueOf(foodResources - 9), tasks.get(Type.GATHER_FOOD).getMaxResources());
+    private World getWorld(final int percentVisibleTiles) {
+        return new World() {
+            @Override
+            public int getVisibleTilesPercent() {
+                return percentVisibleTiles;
+            }
+        };
     }
-
 }

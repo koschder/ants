@@ -49,6 +49,12 @@ public class World extends AbstractWraparoundMap implements UnitMap {
 
     private Set<Tile> foodTiles = new HashSet<Tile>();
 
+    /**
+     * default constructor for testing only
+     */
+    public World() {
+    }
+
     public World(int rows, int cols, int viewRadius2, int attackRadius2, int spawnRadius2) {
         this.rows = rows;
         this.cols = cols;
@@ -342,6 +348,11 @@ public class World extends AbstractWraparoundMap implements UnitMap {
     @Override
     public boolean isVisible(Tile tile) {
         return visible[tile.getRow()][tile.getCol()];
+    }
+
+    public int getVisibleTilesPercent() {
+        int totalTiles = rows * cols;
+        return Math.round((visionOffsets.size() / totalTiles) * 100);
     }
 
     @Override
