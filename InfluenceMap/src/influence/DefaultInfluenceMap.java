@@ -39,6 +39,16 @@ public class DefaultInfluenceMap implements InfluenceMap {
         return totalInfluence;
     }
 
+    @Override
+    public int getTotalOpponentInfluence() {
+        int totalInfluence = 0;
+        for (Integer player : influence.keySet()) {
+            if (player != 0)
+                totalInfluence += getTotalInfluence(player);
+        }
+        return totalInfluence;
+    }
+
     public DefaultInfluenceMap(UnitMap map, int viewRadius2, int attackRadius2) {
         this.viewRadius2 = viewRadius2;
         this.attackRadius2 = attackRadius2;

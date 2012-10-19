@@ -5,7 +5,10 @@ import influence.DefaultInfluenceMap;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
 import logging.LogLevel;
 import logging.Logger;
@@ -75,7 +78,7 @@ public class MyBot extends Bot {
         LoggingConfig.configure(pathfinder.LogCategory.HPASTAR, LogLevel.INFO);
     }
 
-    private List<Task> tasks = new ArrayList<Task>();
+    private Map<Task, Integer> taskResources = new HashMap<Task, Integer>();
 
     // generating a history how many ants we have in each turn
     private List<Integer> statAntsAmountHistory = new ArrayList<Integer>();
@@ -96,11 +99,12 @@ public class MyBot extends Bot {
          * This is the main loop of the bot. All the actual work is done in the tasks that are executed in the order
          * they are defined.
          */
-        for (Task task : tasks) {
+        for (Entry<Task, Integer> taskEntry : taskResources.entrySet()) {
+            Task task = taskEntry.getKey();
             long start = System.currentTimeMillis();
             int unemployed = Ants.getPopulation().getMyUnemployedAnts().size();
             LOGGER_PERFORMANCE.info("task started:: %s at %s", task.getClass().getSimpleName(), start);
-            task.perform(Integer.MAX_VALUE); // TODO
+            task.perform(taskEntry.getValue()); // TODO
             LOGGER_TASKS.debug("Task %s found jobs for %s of %s unemployed ants", task.getClass().getSimpleName(),
                     unemployed - Ants.getPopulation().getMyUnemployedAnts().size(), unemployed);
             LOGGER_PERFORMANCE.info("task ended  :: %s, took %s ms", task.getClass().getSimpleName(),
@@ -145,19 +149,25 @@ public class MyBot extends Bot {
      * setup duties.
      */
     private void initTasks() {
-        if (tasks.isEmpty()) {
-            tasks.add(new MissionTask());
-            tasks.add(new GatherFoodTask());
-            tasks.add(new AttackHillsTask());
-            tasks.add(new CombatTask());
-            tasks.add(new ExploreTask());
-            tasks.add(new FollowTask());
-            tasks.add(new ClearHillTask());
-            tasks.add(new ClusteringTask());
+        if (taskResources.isEmpty()) {
+            taskResources.put(new MissionTask(), Integer.MAX_VALUE);
+            taskResources.put(new GatherFoodTask(), Integer.MAX_VALUE);
+            taskResources.put(new AttackHillsTask(), Integer.MAX_VALUE);
+            taskResources.put(new CombatTask(), Integer.MAX_VALUE);
+            taskResources.put(new ExploreTask(), Integer.MAX_VALUE);
+            taskResources.put(new FollowTask(), Integer.MAX_VALUE);
+            taskResources.put(new ClearHillTask(), Integer.MAX_VALUE);
+            taskResources.put(new ClusteringTask(), Integer.MAX_VALUE);
         }
-        for (Task task : tasks) {
+        allocateResources();
+        for (Task task : taskResources.keySet()) {
             task.setup();
         }
+    }
+
+    private void allocateResources() {
+        // TODO Auto-generated method stub
+
     }
 
     @Override

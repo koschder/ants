@@ -5,5 +5,7 @@ public interface InfluenceMap {
 
     public int getTotalInfluence(Integer player);
 
+    public int getTotalOpponentInfluence();
+
     public abstract void update(UnitMap map);
 }
