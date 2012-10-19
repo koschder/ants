@@ -84,7 +84,7 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         int c = 0;
         int r = 0;
         c = Math.abs(tStart.getCol() - tEnd.getCol());
-        r = Math.abs(tStart.getRow() - tStart.getRow());
+        r = Math.abs(tStart.getRow() - tEnd.getRow());
 
         // considering warparound
         if (c > getCols() / 2)
