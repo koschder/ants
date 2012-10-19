@@ -1,5 +1,7 @@
 package ants.bot;
 
+import influence.DefaultInfluenceMap;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,6 +14,7 @@ import logging.LoggingConfig;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.state.Ants;
+import ants.state.World;
 import ants.tasks.AttackHillsTask;
 import ants.tasks.ClearHillTask;
 import ants.tasks.ClusteringTask;
@@ -21,6 +24,7 @@ import ants.tasks.FollowTask;
 import ants.tasks.GatherFoodTask;
 import ants.tasks.MissionTask;
 import ants.tasks.Task;
+import api.InfluenceMap;
 
 /**
  * Bot implementation. This was originally based on the sample bot from the starter package, but the implementation is
@@ -33,6 +37,7 @@ public class MyBot extends Bot {
     private static final Logger LOGGER_PERFORMANCE = LoggerFactory.getLogger(LogCategory.PERFORMANCE);
     private static final Logger LOGGER_TASKS = LoggerFactory.getLogger(LogCategory.EXECUTE_TASKS);
     private static final Logger LOGGER_STATISTICS = LoggerFactory.getLogger(LogCategory.STATISTICS);
+    private InfluenceMap influence;
 
     /**
      * Main method executed by the game engine for starting the bot.
@@ -84,6 +89,7 @@ public class MyBot extends Bot {
         LOGGER.info("------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------",
                 Ants.getAnts().getTurn(), Ants.getPopulation().getMyAnts().size(), Ants.getOrders().getMissions()
                         .size());
+        calculateInfluence();
         initTasks();
         doStatistics();
         /*
@@ -103,6 +109,17 @@ public class MyBot extends Bot {
         final Collection<Ant> myUnemployedAnts = Ants.getPopulation().getMyUnemployedAnts();
         LOGGER_TASKS.debug("Unemployed Ants (%s total): %s", myUnemployedAnts.size(), myUnemployedAnts);
         Ants.getOrders().issueOrders();
+    }
+
+    private void calculateInfluence() {
+        long start = System.currentTimeMillis();
+        final World world = Ants.getWorld();
+        if (influence == null) {
+            influence = new DefaultInfluenceMap(world, world.getViewRadius2(), world.getAttackRadius2());
+        } else {
+            influence.update(world);
+        }
+        LOGGER_PERFORMANCE.info("Calculating Influence took %s ms", System.currentTimeMillis() - start);
     }
 
     /**

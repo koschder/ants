@@ -61,6 +61,7 @@ public class DefaultInfluenceMap implements InfluenceMap {
         }
     }
 
+    @Override
     public void update(UnitMap map) {
         for (Integer player : map.getPlayers()) {
             if (!influence.containsKey(player))
