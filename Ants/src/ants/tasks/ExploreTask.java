@@ -7,7 +7,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-
 import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
@@ -34,7 +33,7 @@ public class ExploreTask extends BaseTask {
     private int MAXDISTANCE = 600;
 
     @Override
-    public void perform() {
+    public void doPerform() {
         invisibleTiles = new HashSet<Tile>();
         for (int row = 0; row < Ants.getWorld().getRows(); row++) {
             for (int col = 0; col < Ants.getWorld().getCols(); col++) {
@@ -79,7 +78,7 @@ public class ExploreTask extends BaseTask {
                         .bestPath(AntsPathFinder.SIMPLE, route.getStart(), route.getEnd());
                 if (path == null)
                     continue;
-                Ants.getOrders().addMission(new ExploreMission(route.getAnt(), path));
+                addMission(new ExploreMission(route.getAnt(), path));
                 break;
             }
         }

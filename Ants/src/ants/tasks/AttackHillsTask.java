@@ -4,9 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
-
-
 import ants.entities.Ant;
 import ants.entities.Route;
 import ants.missions.AttackHillMission;
@@ -25,7 +22,7 @@ public class AttackHillsTask extends BaseTask {
     private int cutoff = 100;
 
     @Override
-    public void perform() {
+    public void doPerform() {
         // attack hills
         List<Route> hillRoutes = new ArrayList<Route>();
         for (Tile hillLoc : Ants.getWorld().getEnemyHills()) {
@@ -42,9 +39,9 @@ public class AttackHillsTask extends BaseTask {
         }
         Collections.sort(hillRoutes);
         for (Route route : hillRoutes) {
-            List<Tile> path =Ants.getPathFinder().bestPath(AntsPathFinder.A_STAR, route.getStart(), route.getEnd());
+            List<Tile> path = Ants.getPathFinder().bestPath(AntsPathFinder.A_STAR, route.getStart(), route.getEnd());
             if (path != null)
-                Ants.getOrders().addMission(new AttackHillMission(route.getAnt(), path));
+                addMission(new AttackHillMission(route.getAnt(), path));
         }
     }
 

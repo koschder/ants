@@ -9,7 +9,7 @@ package ants.tasks;
 public class DefendAreaTask extends BaseTask {
 
     @Override
-    public void perform() {
+    public void doPerform() {
         // TODO not implemented yet
 
     }

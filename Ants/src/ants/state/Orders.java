@@ -5,13 +5,13 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-
 import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Move;
 import ants.missions.Mission;
+import ants.tasks.BaseTask;
 import ants.util.LiveInfo;
 import api.Aim;
 import api.Tile;
@@ -75,6 +75,10 @@ public class Orders {
      * @param newMission
      */
     public void addMission(Mission newMission) {
+        final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
+        if (!stackTrace[2].getClassName().equals(BaseTask.class.getCanonicalName())) {
+            throw new IllegalStateException("addMission must only be called from BaseTask");
+        }
         if (missions.add(newMission)) {
             newMission.execute();
             LOGGER_MISSIONS.debug("New mission created: %s", newMission);

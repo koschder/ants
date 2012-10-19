@@ -100,7 +100,7 @@ public class MyBot extends Bot {
             long start = System.currentTimeMillis();
             int unemployed = Ants.getPopulation().getMyUnemployedAnts().size();
             LOGGER_PERFORMANCE.info("task started:: %s at %s", task.getClass().getSimpleName(), start);
-            task.perform();
+            task.perform(Integer.MAX_VALUE); // TODO
             LOGGER_TASKS.debug("Task %s found jobs for %s of %s unemployed ants", task.getClass().getSimpleName(),
                     unemployed - Ants.getPopulation().getMyUnemployedAnts().size(), unemployed);
             LOGGER_PERFORMANCE.info("task ended  :: %s, took %s ms", task.getClass().getSimpleName(),

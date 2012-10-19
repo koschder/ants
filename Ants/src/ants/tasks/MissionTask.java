@@ -29,7 +29,7 @@ public class MissionTask extends BaseTask {
     }
 
     @Override
-    public void perform() {
+    public void doPerform() {
 
         Set<Mission> missions = Ants.getOrders().getMissions();
         LOGGER.debug("Current mission count: %s", missions.size());

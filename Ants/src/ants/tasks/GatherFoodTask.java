@@ -7,7 +7,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeSet;
 
-
 import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
@@ -31,7 +30,7 @@ public class GatherFoodTask extends BaseTask {
     private int MAXDISTANCE = 50;
 
     @Override
-    public void perform() {
+    public void doPerform() {
         Map<Tile, Tile> foodTargets;
         List<Route> foodRoutes;
         TreeSet<Tile> sortedFood;
@@ -65,7 +64,7 @@ public class GatherFoodTask extends BaseTask {
                     path = Ants.getPathFinder().bestPath(AntsPathFinder.A_STAR, route.getStart(), route.getEnd());
                 if (path == null)
                     continue;
-                Ants.getOrders().addMission(new GatherFoodMission(route.getAnt(), path));
+                addMission(new GatherFoodMission(route.getAnt(), path));
                 foodTargets.put(route.getEnd(), route.getStart());
             }
         }

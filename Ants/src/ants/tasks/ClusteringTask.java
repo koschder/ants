@@ -9,7 +9,7 @@ package ants.tasks;
 public class ClusteringTask extends BaseTask {
 
     @Override
-    public void perform() {
+    public void doPerform() {
     }
 
 }

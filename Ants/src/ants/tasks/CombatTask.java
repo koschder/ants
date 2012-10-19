@@ -4,8 +4,6 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
 
-
-
 import ants.entities.Ant;
 import ants.missions.AttackAntMission;
 import ants.search.AntsPathFinder;
@@ -21,7 +19,7 @@ import api.Tile;
 public class CombatTask extends BaseTask {
 
     @Override
-    public void perform() {
+    public void doPerform() {
         for (Ant enemy : Ants.getPopulation().getEnemyAnts()) {
             List<Ant> myAntsInRange = enemy.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), true);
             removeEmployedAnts(myAntsInRange);
@@ -43,7 +41,7 @@ public class CombatTask extends BaseTask {
         for (Ant ant : friends) {
             List<Tile> path = Ants.getPathFinder().bestPath(AntsPathFinder.A_STAR, ant.getTile(), enemy.getTile());
             if (path != null)
-                Ants.getOrders().addMission(new AttackAntMission(ant, path));
+                addMission(new AttackAntMission(ant, path));
         }
     }
 }

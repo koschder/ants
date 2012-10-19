@@ -2,8 +2,6 @@ package ants.tasks;
 
 import java.util.Iterator;
 
-
-
 import ants.entities.Ant;
 import ants.missions.FollowMission;
 import ants.missions.Mission;
@@ -22,7 +20,7 @@ public class FollowTask extends BaseTask {
     private final int MAX_DISTANCE_TO_START_FOLLOW = 6;
 
     @Override
-    public void perform() {
+    public void doPerform() {
         for (Ant ant : Ants.getPopulation().getMyUnemployedAnts()) {
             final Tile antLoc = ant.getTile();
 
@@ -31,7 +29,7 @@ public class FollowTask extends BaseTask {
                 Ant a = m.getAnt();
                 int distance = antLoc.manhattanDistanceTo(a.getTile());
                 if (MAX_DISTANCE_TO_START_FOLLOW > distance) {
-                    Ants.getOrders().addMission(new FollowMission(ant, m));
+                    addMission(new FollowMission(ant, m));
                     break;
                 }
             }

@@ -14,7 +14,7 @@ import api.Aim;
 public class ClearHillTask extends BaseTask {
 
     @Override
-    public void perform() {
+    public void doPerform() {
         for (Ant ant : Ants.getPopulation().getMyUnemployedAnts()) {
             for (Aim aim : Aim.values()) {
                 if (Ants.getOrders().issueOrder(ant, aim, getClass().getSimpleName()))
