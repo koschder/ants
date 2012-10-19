@@ -9,8 +9,6 @@ import java.util.List;
 
 public class MapOutput {
 
-    private InfluenceMap influenceMap;
-
     private TileMap map;
 
     private int clusterSize = -1;
@@ -19,8 +17,7 @@ public class MapOutput {
 
     private List<MapObject> objects = new ArrayList<MapObject>();
 
-    public void saveHtmlMap(String fileName) {
-
+    public void saveHtmlMap(String fileName, PixelDecorator decorator) {
         if (map == null)
             throw new IllegalArgumentException("map must be defined");
 
@@ -44,8 +41,8 @@ public class MapOutput {
                 String dots = getObjects(i, j);
 
                 String content = "";
-                if (influenceMap != null)
-                    content = influenceMap.getSafety(new Tile(i, j)) + "";
+                if (decorator != null)
+                    content = decorator.getLabel(new Tile(i, j));
 
                 sbRow.append(String.format("<td class=\"%s\">%s%s</td>", cssclass, content, dots));
 
@@ -71,6 +68,10 @@ public class MapOutput {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
+    }
+
+    public void saveHtmlMap(String fileName) {
+        saveHtmlMap(fileName, null);
     }
 
     private String getObjects(int i, int j) {
@@ -134,10 +135,6 @@ public class MapOutput {
             }
 
         }
-    }
-
-    public void setInfluenceMap(InfluenceMap influenceMap) {
-        this.influenceMap = influenceMap;
     }
 
     public void setMap(TileMap map) {
