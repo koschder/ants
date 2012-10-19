@@ -15,5 +15,6 @@ public enum LogCategory implements logging.LogCategory {
     PERFORMANCE,
     SETUP,
     STATISTICS,
-    TURN;
+    TURN,
+    RESOURCE_ALLOCATION;
 }

@@ -2,7 +2,9 @@ package ants.tasks;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import ants.entities.Ant;
 import ants.entities.Route;
@@ -38,10 +40,13 @@ public class AttackHillsTask extends BaseTask {
             }
         }
         Collections.sort(hillRoutes);
+        Set<Ant> employed = new HashSet<Ant>();
         for (Route route : hillRoutes) {
             List<Tile> path = Ants.getPathFinder().bestPath(AntsPathFinder.A_STAR, route.getStart(), route.getEnd());
-            if (path != null)
+            if (path != null && !employed.contains(route.getAnt())) {
                 addMission(new AttackHillMission(route.getAnt(), path));
+                employed.add(route.getAnt());
+            }
         }
     }
 

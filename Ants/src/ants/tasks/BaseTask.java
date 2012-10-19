@@ -22,7 +22,8 @@ public abstract class BaseTask implements Task {
     }
 
     private int maxResources = Integer.MAX_VALUE;
-    private int allocatedResources = 0;
+    private int maxAnts = 0;
+    private int allocatedAnts = 0;
 
     @Override
     public void setup() {
@@ -30,7 +31,7 @@ public abstract class BaseTask implements Task {
 
     @Override
     public void perform() {
-        allocatedResources = 0;
+        allocatedAnts = 0;
         try {
             doPerform();
         } catch (InsufficientResourcesException e) {
@@ -41,6 +42,7 @@ public abstract class BaseTask implements Task {
     @Override
     public void setMaxResources(Integer maxResources) {
         this.maxResources = maxResources;
+        this.maxAnts = (int) (Ants.getPopulation().getMyAnts().size() * (this.maxResources / 100.0));
     }
 
     @Override
@@ -53,10 +55,10 @@ public abstract class BaseTask implements Task {
     }
 
     protected void addMission(Mission mission) {
-        if (allocatedResources >= maxResources)
+        if (allocatedAnts >= maxAnts)
             throw new InsufficientResourcesException();
 
         Ants.getOrders().addMission(mission);
-        allocatedResources++;
+        allocatedAnts++;
     }
 }

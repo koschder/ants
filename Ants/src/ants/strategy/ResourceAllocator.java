@@ -3,7 +3,11 @@ package ants.strategy;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
+import logging.Logger;
+import logging.LoggerFactory;
+import ants.LogCategory;
 import ants.strategy.rules.PercentExploredRule;
 import ants.strategy.rules.PopulationSizeRule;
 import ants.strategy.rules.RelativeInfluenceRule;
@@ -13,7 +17,7 @@ import ants.tasks.Task.Type;
 import api.InfluenceMap;
 
 public class ResourceAllocator {
-
+    Logger LOGGER = LoggerFactory.getLogger(LogCategory.RESOURCE_ALLOCATION);
     private List<ResourceAllocationRule> rules = new ArrayList<ResourceAllocationRule>();
 
     private Map<Task.Type, Task> tasks;
@@ -35,6 +39,10 @@ public class ResourceAllocator {
         for (ResourceAllocationRule rule : rules) {
             rule.allocateResources(tasks);
         }
+        for (Entry<Task.Type, Task> entry : tasks.entrySet()) {
+            LOGGER.info("Allocated %s percent of ants to task %s", entry.getValue().getMaxResources(), entry.getKey());
+        }
+
     }
 
     public void setRules(List<ResourceAllocationRule> rules) {

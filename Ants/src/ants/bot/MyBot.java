@@ -5,7 +5,7 @@ import influence.DefaultInfluenceMap;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -73,13 +73,14 @@ public class MyBot extends Bot {
         LoggingConfig.configure(LogCategory.SETUP, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.STATISTICS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.TURN, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.RESOURCE_ALLOCATION, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.PATHFINDING, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.CLUSTERING, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.CLUSTERED_ASTAR, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.HPASTAR, LogLevel.INFO);
     }
 
-    private Map<Task.Type, Task> tasks = new HashMap<Task.Type, Task>();
+    private Map<Task.Type, Task> tasks = new LinkedHashMap<Task.Type, Task>();
 
     // generating a history how many ants we have in each turn
     private List<Integer> statAntsAmountHistory = new ArrayList<Integer>();
