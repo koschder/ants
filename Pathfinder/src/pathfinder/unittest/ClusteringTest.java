@@ -10,8 +10,8 @@ import pathfinder.PathFinder;
 import pathfinder.entities.Cluster;
 import pathfinder.entities.Clustering;
 import pathfinder.entities.Clustering.ClusterType;
-import api.MapOutput;
-import api.Tile;
+import api.entities.Tile;
+import api.test.MapOutput;
 
 public class ClusteringTest {
     @Test

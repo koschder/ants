@@ -8,7 +8,7 @@ import ants.entities.Ant;
 import ants.missions.AttackAntMission;
 import ants.search.AntsPathFinder;
 import ants.state.Ants;
-import api.Tile;
+import api.entities.Tile;
 
 /**
  * This task identifies vulnerable enemy ants and sends a troop of our ants to attack them.

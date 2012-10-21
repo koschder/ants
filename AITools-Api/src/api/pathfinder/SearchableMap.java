@@ -1,6 +1,10 @@
-package api;
+package api.pathfinder;
 
 import java.util.List;
+
+import api.entities.Aim;
+import api.entities.Tile;
+import api.map.TileMap;
 
 public interface SearchableMap extends TileMap {
 

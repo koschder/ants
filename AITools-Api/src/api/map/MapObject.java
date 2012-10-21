@@ -1,6 +1,8 @@
-package api;
+package api.map;
 
 import java.util.List;
+
+import api.entities.Tile;
 
 public class MapObject {
 

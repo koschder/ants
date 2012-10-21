@@ -11,7 +11,7 @@ import ants.entities.Route;
 import ants.missions.AttackHillMission;
 import ants.search.AntsPathFinder;
 import ants.state.Ants;
-import api.Tile;
+import api.entities.Tile;
 
 /**
  * Task that identifies enemy hills suitable for attacking and sends Ants to attack them.

@@ -1,11 +1,11 @@
 package ants.entities;
 
 import ants.state.Ants;
-import api.Tile;
+import api.entities.Tile;
 
 /**
- * Represents a route from one tile to another. stores the selected ant for the route. the distance of 
- * the route is represented by distance.
+ * Represents a route from one tile to another. stores the selected ant for the route. the distance of the route is
+ * represented by distance.
  */
 public class Route implements Comparable<Route> {
     private Ant ant;

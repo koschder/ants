@@ -3,7 +3,7 @@ package pathfinder.entities;
 import java.util.ArrayList;
 import java.util.List;
 
-import api.Tile;
+import api.entities.Tile;
 
 /***
  * Describes a node in a search path and stores the sucessor edges.

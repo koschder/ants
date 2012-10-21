@@ -8,11 +8,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.TreeMap;
 
-import api.Tile;
-import api.Unit;
-
-
-
+import api.entities.Tile;
+import api.entities.Unit;
 
 public class Ant implements Comparable<Ant>, Unit {
     public static final int MINE = 0;
@@ -61,6 +58,7 @@ public class Ant implements Comparable<Ant>, Unit {
 
     /**
      * Returns all friendly ants in a radius of my ant.
+     * 
      * @param radius
      * @return
      */
@@ -76,8 +74,10 @@ public class Ant implements Comparable<Ant>, Unit {
 
     /**
      * returns all emenies in a radius
+     * 
      * @param radius
-     * @param onlyMyAnts to decide if alle emenies are returned, or only the current bot ones.
+     * @param onlyMyAnts
+     *            to decide if alle emenies are returned, or only the current bot ones.
      * @return
      */
     public List<Ant> getEnemiesInRadius(int radius, boolean onlyMyAnts) {

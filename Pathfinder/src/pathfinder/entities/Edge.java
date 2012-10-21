@@ -2,7 +2,7 @@ package pathfinder.entities;
 
 import java.util.List;
 
-import api.Tile;
+import api.entities.Tile;
 
 /***
  * Describes a edge consists of to tiles as start and end node.

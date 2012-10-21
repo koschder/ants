@@ -1,6 +1,8 @@
-package api;
+package api.pathfinder;
 
 import java.util.List;
+
+import api.entities.Tile;
 
 /***
  * This interface provides Tiles or Edges to be used in A* and HPA*

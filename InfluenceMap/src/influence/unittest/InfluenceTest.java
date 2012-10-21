@@ -5,10 +5,10 @@ import influence.DefaultInfluenceMap;
 
 import org.junit.Test;
 
-import api.InfluenceMap;
-import api.MapOutput;
-import api.PixelDecorator;
-import api.Tile;
+import api.entities.Tile;
+import api.strategy.InfluenceMap;
+import api.test.MapOutput;
+import api.test.PixelDecorator;
 
 public class InfluenceTest {
 

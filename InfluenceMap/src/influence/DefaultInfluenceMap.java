@@ -4,10 +4,10 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import api.InfluenceMap;
-import api.Tile;
-import api.Unit;
-import api.UnitMap;
+import api.entities.Tile;
+import api.entities.Unit;
+import api.map.UnitMap;
+import api.strategy.InfluenceMap;
 
 public class DefaultInfluenceMap implements InfluenceMap {
     private static final int MAX_INFLUENCE = 100;

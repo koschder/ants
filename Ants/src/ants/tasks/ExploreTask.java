@@ -15,7 +15,7 @@ import ants.entities.Route;
 import ants.missions.ExploreMission;
 import ants.search.AntsPathFinder;
 import ants.state.Ants;
-import api.Tile;
+import api.entities.Tile;
 
 /**
  * This task sends ants into unexplored areas of the map to discover new frontiers - to boldly go where no ant has gone

@@ -13,8 +13,8 @@ import ants.entities.Move;
 import ants.missions.Mission;
 import ants.tasks.BaseTask;
 import ants.util.LiveInfo;
-import api.Aim;
-import api.Tile;
+import api.entities.Aim;
+import api.entities.Tile;
 
 /**
  * This class tracks all orders and missions for our ants. It ensures that no conflicting orders are given.

@@ -10,9 +10,9 @@ import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import pathfinder.entities.Edge.EdgeType;
-import api.Aim;
-import api.SearchTarget;
-import api.Tile;
+import api.entities.Aim;
+import api.entities.Tile;
+import api.pathfinder.SearchTarget;
 
 /***
  * a cluster is an area on the map. the cluster connects the neighbour cluster throw passable edges along the cluster

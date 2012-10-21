@@ -1,12 +1,13 @@
 package ants.entities;
 
-import api.Aim;
-import api.Tile;
+import api.entities.Aim;
+import api.entities.Tile;
 
 /***
  * a move stores the current position and the direction where to move.
+ * 
  * @author kustl1, kases1
- *
+ * 
  */
 public class Move {
     private Tile tile;

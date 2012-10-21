@@ -1,7 +1,11 @@
-package api;
+package api.map;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import api.entities.Aim;
+import api.entities.Tile;
+import api.pathfinder.SearchableMap;
 
 public abstract class AbstractWraparoundMap implements SearchableMap {
 

@@ -2,7 +2,7 @@ package ants.bot;
 
 import ants.entities.Ilk;
 import ants.state.Ants;
-import api.Tile;
+import api.entities.Tile;
 
 /**
  * Provides basic game state handling.

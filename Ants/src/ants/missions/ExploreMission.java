@@ -2,16 +2,15 @@ package ants.missions;
 
 import java.util.List;
 
-
-
 import ants.entities.Ant;
 import ants.state.Ants;
-import api.Tile;
+import api.entities.Tile;
 
 /***
  * Mission for exploring the world
+ * 
  * @author kaeserst
- *
+ * 
  */
 public class ExploreMission extends PathMission {
 

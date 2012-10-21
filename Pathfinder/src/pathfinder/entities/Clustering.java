@@ -7,11 +7,11 @@ import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
-import api.AbstractWraparoundMap;
-import api.Aim;
-import api.SearchTarget;
-import api.Tile;
-import api.WorldType;
+import api.entities.Aim;
+import api.entities.Tile;
+import api.map.AbstractWraparoundMap;
+import api.map.WorldType;
+import api.pathfinder.SearchTarget;
 
 public class Clustering extends AbstractWraparoundMap {
 

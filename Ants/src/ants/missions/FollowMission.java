@@ -2,7 +2,6 @@ package ants.missions;
 
 import java.util.List;
 
-
 import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
@@ -10,7 +9,7 @@ import ants.entities.Ant;
 import ants.entities.Move;
 import ants.search.AntsPathFinder;
 import ants.state.Ants;
-import api.Tile;
+import api.entities.Tile;
 
 /***
  * This mission is used to let an ant follow an other ant which has already a mission.

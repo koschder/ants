@@ -3,9 +3,9 @@ package unittest.ants.strategy;
 import java.util.HashMap;
 import java.util.Map;
 
-import api.InfluenceMap;
-import api.Tile;
-import api.UnitMap;
+import api.entities.Tile;
+import api.map.UnitMap;
+import api.strategy.InfluenceMap;
 
 public class StubInfluenceMap implements InfluenceMap {
     private Map<Integer, Integer> influencePerPlayer = new HashMap<Integer, Integer>();

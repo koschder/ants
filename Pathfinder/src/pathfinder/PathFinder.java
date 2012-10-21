@@ -9,9 +9,9 @@ import pathfinder.search.AStarSearchStrategy;
 import pathfinder.search.HPAStarSearchStrategy;
 import pathfinder.search.SearchStrategy;
 import pathfinder.search.SimpleSearchStrategy;
-import api.SearchTarget;
-import api.SearchableMap;
-import api.Tile;
+import api.entities.Tile;
+import api.pathfinder.SearchTarget;
+import api.pathfinder.SearchableMap;
 
 /***
  * this is the main class of the pathfinder framework

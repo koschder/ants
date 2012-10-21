@@ -28,7 +28,7 @@ import ants.tasks.GatherFoodTask;
 import ants.tasks.MissionTask;
 import ants.tasks.Task;
 import ants.tasks.Task.Type;
-import api.InfluenceMap;
+import api.strategy.InfluenceMap;
 
 /**
  * Bot implementation. This was originally based on the sample bot from the starter package, but the implementation is

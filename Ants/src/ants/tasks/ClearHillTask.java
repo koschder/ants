@@ -2,7 +2,7 @@ package ants.tasks;
 
 import ants.entities.Ant;
 import ants.state.Ants;
-import api.Aim;
+import api.entities.Aim;
 
 /**
  * Task that ensures that no ant blocks our hills. This should be executed last, since it just issues a random order for

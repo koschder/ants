@@ -2,15 +2,14 @@ package ants.missions;
 
 import java.util.List;
 
-
-
 import ants.entities.Ant;
-import api.Tile;
+import api.entities.Tile;
 
 /***
  * This mission is created for attacking enemy ants.
+ * 
  * @author kases1,kustl1
- *
+ * 
  */
 public class AttackAntMission extends PathMission {
 

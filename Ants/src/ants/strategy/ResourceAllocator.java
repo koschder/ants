@@ -14,7 +14,7 @@ import ants.strategy.rules.RelativeInfluenceRule;
 import ants.strategy.rules.ResourceAllocationRule;
 import ants.tasks.Task;
 import ants.tasks.Task.Type;
-import api.InfluenceMap;
+import api.strategy.InfluenceMap;
 
 public class ResourceAllocator {
     Logger LOGGER = LoggerFactory.getLogger(LogCategory.RESOURCE_ALLOCATION);

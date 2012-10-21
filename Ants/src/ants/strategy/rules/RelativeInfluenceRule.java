@@ -4,7 +4,7 @@ import java.util.Map;
 
 import ants.tasks.Task;
 import ants.tasks.Task.Type;
-import api.InfluenceMap;
+import api.strategy.InfluenceMap;
 
 public class RelativeInfluenceRule extends BaseResourceAllocationRule {
     private InfluenceMap influence;

@@ -4,10 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.RandomAccessFile;
 
-import api.Tile;
-
-
-
+import api.entities.Tile;
 
 /**
  * Logger class that writes application logs to a separate log file.

@@ -1,7 +1,9 @@
-package api;
+package api.entities;
 
 import java.util.Arrays;
 import java.util.List;
+
+import api.pathfinder.SearchTarget;
 
 /**
  * Represents a tile of the game map.

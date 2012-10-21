@@ -3,14 +3,13 @@ package pathfinder.search;
 import java.util.ArrayList;
 import java.util.List;
 
-import api.Aim;
-import api.SearchTarget;
-import api.Tile;
-
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
+import api.entities.Aim;
+import api.entities.Tile;
+import api.pathfinder.SearchTarget;
 
 public class SimpleSearchStrategy extends SearchStrategy {
 

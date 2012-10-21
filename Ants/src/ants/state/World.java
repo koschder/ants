@@ -12,12 +12,12 @@ import javax.management.RuntimeErrorException;
 
 import ants.entities.Ant;
 import ants.entities.Ilk;
-import api.AbstractWraparoundMap;
-import api.Aim;
-import api.SearchTarget;
-import api.Tile;
-import api.Unit;
-import api.UnitMap;
+import api.entities.Aim;
+import api.entities.Tile;
+import api.entities.Unit;
+import api.map.AbstractWraparoundMap;
+import api.map.UnitMap;
+import api.pathfinder.SearchTarget;
 
 /**
  * This class holds state about the game world.

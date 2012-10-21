@@ -1,4 +1,6 @@
-package api;
+package api.map;
+
+import api.entities.Tile;
 
 public interface TileMap {
 

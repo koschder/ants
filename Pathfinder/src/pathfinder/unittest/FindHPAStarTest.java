@@ -8,8 +8,8 @@ import org.junit.Test;
 
 import pathfinder.PathFinder;
 import pathfinder.entities.Clustering.ClusterType;
-import api.MapOutput;
-import api.Tile;
+import api.entities.Tile;
+import api.test.MapOutput;
 
 public class FindHPAStarTest {
 

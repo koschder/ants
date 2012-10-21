@@ -6,10 +6,10 @@ import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
-import api.SearchTarget;
-import api.Tile;
-import api.TileMap;
-import api.WorldType;
+import api.entities.Tile;
+import api.map.TileMap;
+import api.map.WorldType;
+import api.pathfinder.SearchTarget;
 
 /***
  * definitions for a searchstrategy

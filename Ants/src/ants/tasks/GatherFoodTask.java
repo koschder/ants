@@ -15,7 +15,7 @@ import ants.entities.Route;
 import ants.missions.GatherFoodMission;
 import ants.search.AntsPathFinder;
 import ants.state.Ants;
-import api.Tile;
+import api.entities.Tile;
 
 /**
  * Searches for food and sends our ants to gather it.

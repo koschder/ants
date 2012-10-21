@@ -1,4 +1,4 @@
-package api;
+package api.entities;
 
 
 public interface Unit {

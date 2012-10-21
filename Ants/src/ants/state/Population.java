@@ -9,7 +9,7 @@ import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
 import ants.entities.Ant;
-import api.Tile;
+import api.entities.Tile;
 
 /**
  * This class keeps track of our and the enemies' ant populations. It also tracks which of our ants are already employed

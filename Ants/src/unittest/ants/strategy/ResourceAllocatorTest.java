@@ -21,7 +21,7 @@ import ants.tasks.ExploreTask;
 import ants.tasks.GatherFoodTask;
 import ants.tasks.Task;
 import ants.tasks.Task.Type;
-import api.Tile;
+import api.entities.Tile;
 
 public class ResourceAllocatorTest {
 

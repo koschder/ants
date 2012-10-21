@@ -7,8 +7,8 @@ import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import pathfinder.entities.DirectedEdge;
-import api.SearchTarget;
-import api.Tile;
+import api.entities.Tile;
+import api.pathfinder.SearchTarget;
 
 public class HPAStarSearchStrategy extends SearchStrategy {
 

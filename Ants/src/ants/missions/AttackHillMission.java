@@ -2,16 +2,15 @@ package ants.missions;
 
 import java.util.List;
 
-
-
 import ants.entities.Ant;
 import ants.state.Ants;
-import api.Tile;
+import api.entities.Tile;
 
 /***
  * This mission used for attacking the enemies hills
+ * 
  * @author kases1,kustl1
- *
+ * 
  */
 public class AttackHillMission extends PathMission {
 

@@ -1,4 +1,4 @@
-package api;
+package api.test;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -6,6 +6,12 @@ import java.io.FileWriter;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
+
+import api.entities.Tile;
+import api.entities.Unit;
+import api.map.MapObject;
+import api.map.TileMap;
+import api.map.UnitMap;
 
 public class MapOutput {
 
