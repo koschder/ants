@@ -50,9 +50,8 @@ public class ClusteringTest {
         sMap += "woooowwwwwwwwwwwwwooooowwww";
 
         UnitTestMap map = new UnitTestMap(cols, sMap);
-        PathFinder pf = new PathFinder();
+        PathFinder pf = new PathFinder(map);
         int clusterSize = 9;
-        pf.setMap(map);
         pf.initClustering(clusterSize, clusterType);
 
         pf.cluster();
@@ -98,12 +97,10 @@ public class ClusteringTest {
         sMap += "wowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         UnitTestMap map = new UnitTestMap(37, sMap);
-        PathFinder pf = new PathFinder();
+        PathFinder pf = new PathFinder(map);
         int clusterSize = 10;
-        pf.setMap(map);
         pf.initClustering(clusterSize, type);
         pf.cluster();
-        pf.setMap(map);
 
         pf.getClustering().printEdges();
         pf.getClustering().printVertices();
@@ -152,12 +149,10 @@ public class ClusteringTest {
         sMap += "oooooooooo";
 
         UnitTestMap map = new UnitTestMap(10, sMap);
-        PathFinder pf = new PathFinder();
+        PathFinder pf = new PathFinder(map);
         int clusterSize = 5;
-        pf.setMap(map);
         pf.initClustering(clusterSize, type);
         pf.cluster();
-        pf.setMap(map);
 
         pf.getClustering().printEdges();
         pf.getClustering().printVertices();

@@ -30,14 +30,8 @@ public class PathFinder {
     private SearchableMap map;
     private Clustering cluster;
 
-    /***
-     * setting the map for pathfinding
-     * 
-     * @param m
-     *            a instance of a searchable map
-     */
-    public void setMap(SearchableMap m) {
-        map = m;
+    public PathFinder(SearchableMap map) {
+        this.map = map;
     }
 
     /***

@@ -23,9 +23,8 @@ public class FindHPAStarTest {
         String name = "FindHPAStarTest_BaseTest_" + type;
         System.out.println();
         UnitTestMap map = new UnitTestMap(25, 25);
-        PathFinder pf = new PathFinder();
+        PathFinder pf = new PathFinder(map);
         int clusterSize = 8;
-        pf.setMap(map);
         pf.initClustering(clusterSize, type);
         pf.cluster();
 
@@ -65,12 +64,10 @@ public class FindHPAStarTest {
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         UnitTestMap map = new UnitTestMap(37, sMap);
-        PathFinder pf = new PathFinder();
+        PathFinder pf = new PathFinder(map);
         int clusterSize = 8;
-        pf.setMap(map);
         pf.initClustering(clusterSize, type);
         pf.cluster();
-        pf.setMap(map);
         List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, new Tile(2, 2), new Tile(2, 35), -1);
 
         MapOutput put = new MapOutput();
@@ -105,12 +102,10 @@ public class FindHPAStarTest {
         sMap += "wowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         UnitTestMap map = new UnitTestMap(37, sMap);
-        PathFinder pf = new PathFinder();
+        PathFinder pf = new PathFinder(map);
         int clusterSize = 10;
-        pf.setMap(map);
         pf.initClustering(clusterSize, type);
         pf.cluster();
-        pf.setMap(map);
         List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, new Tile(2, 2), new Tile(2, 35), -1);
 
         MapOutput put = new MapOutput();

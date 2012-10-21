@@ -16,8 +16,7 @@ public class SimpleSearchTest {
     public void baseTest() {
         System.out.println("BaseTest");
         UnitTestMap map = new UnitTestMap(25, 25);
-        PathFinder pf = new PathFinder();
-        pf.setMap(map);
+        PathFinder pf = new PathFinder(map);
         List<Tile> path = pf.search(PathFinder.Strategy.Simple, new Tile(10, 10), new Tile(15, 15), 20);
 
         Assert.assertNotNull(path);
@@ -44,8 +43,7 @@ public class SimpleSearchTest {
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         UnitTestMap map = new UnitTestMap(37, sMap);
-        PathFinder pf = new PathFinder();
-        pf.setMap(map);
+        PathFinder pf = new PathFinder(map);
         List<Tile> path = pf.search(PathFinder.Strategy.Simple, new Tile(5, 2), new Tile(8, 17), -1);
 
         MapOutput put = new MapOutput();
@@ -72,8 +70,7 @@ public class SimpleSearchTest {
         sMap += "wowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         UnitTestMap map = new UnitTestMap(37, sMap);
-        PathFinder pf = new PathFinder();
-        pf.setMap(map);
+        PathFinder pf = new PathFinder(map);
         List<Tile> path = pf.search(PathFinder.Strategy.Simple, new Tile(8, 2), new Tile(6, 34), -1);
 
         MapOutput put = new MapOutput();

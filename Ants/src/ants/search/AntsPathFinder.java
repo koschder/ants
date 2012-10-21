@@ -21,10 +21,7 @@ public class AntsPathFinder {
     private PathFinder pathfinder;
 
     public AntsPathFinder() {
-        pathfinder = new PathFinder();
-        Ants.getAnts();
-        // pathfinder.setWorldType(WorldType.Globe);
-        pathfinder.setMap(Ants.getWorld());
+        pathfinder = new PathFinder(Ants.getWorld());
     }
 
     /***

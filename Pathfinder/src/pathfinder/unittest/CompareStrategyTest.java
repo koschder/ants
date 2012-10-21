@@ -39,10 +39,7 @@ public class CompareStrategyTest {
     }
 
     private PathFinder initPathFinder() {
-        UnitTestMap map = initMap();
-        PathFinder pf = new PathFinder();
-        pf.setMap(map);
-        return pf;
+        return new PathFinder(initMap());
     }
 
     private UnitTestMap initMap() {

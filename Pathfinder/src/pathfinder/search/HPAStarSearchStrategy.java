@@ -38,8 +38,7 @@ public class HPAStarSearchStrategy extends SearchStrategy {
         LOGGER.debug("     for start tile %s the edge is : %s", start, edgeStart);
         LOGGER.debug("     for end tile %s the edge is : %s", end, endEdge);
 
-        PathFinder pf = new PathFinder();
-        pf.setMap(pathFinder.getClustering());
+        PathFinder pf = new PathFinder(pathFinder.getClustering());
         List<Tile> path = pf.search(PathFinder.Strategy.AStar, edgeStart, endEdge, maxCost);
 
         if (path != null)
