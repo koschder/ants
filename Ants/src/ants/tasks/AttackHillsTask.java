@@ -6,10 +6,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import pathfinder.PathFinder;
 import ants.entities.Ant;
 import ants.entities.Route;
 import ants.missions.AttackHillMission;
-import ants.search.AntsPathFinder;
 import ants.state.Ants;
 import api.entities.Tile;
 
@@ -42,7 +42,7 @@ public class AttackHillsTask extends BaseTask {
         Collections.sort(hillRoutes);
         Set<Ant> employed = new HashSet<Ant>();
         for (Route route : hillRoutes) {
-            List<Tile> path = Ants.getPathFinder().bestPath(AntsPathFinder.A_STAR, route.getStart(), route.getEnd());
+            List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.AStar, route.getStart(), route.getEnd());
             if (path != null && !employed.contains(route.getAnt())) {
                 addMission(new AttackHillMission(route.getAnt(), path));
                 employed.add(route.getAnt());

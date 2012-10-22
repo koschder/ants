@@ -6,6 +6,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
+import pathfinder.ClusteringPathFinder;
 import pathfinder.PathFinder;
 import pathfinder.entities.Clustering.ClusterType;
 import api.entities.Tile;
@@ -23,10 +24,9 @@ public class FindHPAStarTest {
         String name = "FindHPAStarTest_BaseTest_" + type;
         System.out.println();
         UnitTestMap map = new UnitTestMap(25, 25);
-        PathFinder pf = new PathFinder(map);
         int clusterSize = 8;
-        pf.initClustering(clusterSize, type);
-        pf.cluster();
+        ClusteringPathFinder pf = new ClusteringPathFinder(map, clusterSize, type);
+        pf.update();
 
         // pf.getClustering().printEdges();
 
@@ -64,10 +64,9 @@ public class FindHPAStarTest {
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         UnitTestMap map = new UnitTestMap(37, sMap);
-        PathFinder pf = new PathFinder(map);
         int clusterSize = 8;
-        pf.initClustering(clusterSize, type);
-        pf.cluster();
+        ClusteringPathFinder pf = new ClusteringPathFinder(map, clusterSize, type);
+        pf.update();
         List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, new Tile(2, 2), new Tile(2, 35), -1);
 
         MapOutput put = new MapOutput();
@@ -102,10 +101,9 @@ public class FindHPAStarTest {
         sMap += "wowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         UnitTestMap map = new UnitTestMap(37, sMap);
-        PathFinder pf = new PathFinder(map);
         int clusterSize = 10;
-        pf.initClustering(clusterSize, type);
-        pf.cluster();
+        ClusteringPathFinder pf = new ClusteringPathFinder(map, clusterSize, type);
+        pf.update();
         List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, new Tile(2, 2), new Tile(2, 35), -1);
 
         MapOutput put = new MapOutput();

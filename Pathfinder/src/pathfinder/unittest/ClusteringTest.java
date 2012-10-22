@@ -6,7 +6,7 @@ import junit.framework.Assert;
 
 import org.junit.Test;
 
-import pathfinder.PathFinder;
+import pathfinder.ClusteringPathFinder;
 import pathfinder.entities.Cluster;
 import pathfinder.entities.Clustering;
 import pathfinder.entities.Clustering.ClusterType;
@@ -50,11 +50,10 @@ public class ClusteringTest {
         sMap += "woooowwwwwwwwwwwwwooooowwww";
 
         UnitTestMap map = new UnitTestMap(cols, sMap);
-        PathFinder pf = new PathFinder(map);
         int clusterSize = 9;
-        pf.initClustering(clusterSize, clusterType);
+        ClusteringPathFinder pf = new ClusteringPathFinder(map, clusterSize, clusterType);
 
-        pf.cluster();
+        pf.update();
 
         Clustering clusterd = pf.getClustering();
 
@@ -97,10 +96,9 @@ public class ClusteringTest {
         sMap += "wowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         UnitTestMap map = new UnitTestMap(37, sMap);
-        PathFinder pf = new PathFinder(map);
         int clusterSize = 10;
-        pf.initClustering(clusterSize, type);
-        pf.cluster();
+        ClusteringPathFinder pf = new ClusteringPathFinder(map, clusterSize, type);
+        pf.update();
 
         pf.getClustering().printEdges();
         pf.getClustering().printVertices();
@@ -149,10 +147,9 @@ public class ClusteringTest {
         sMap += "oooooooooo";
 
         UnitTestMap map = new UnitTestMap(10, sMap);
-        PathFinder pf = new PathFinder(map);
         int clusterSize = 5;
-        pf.initClustering(clusterSize, type);
-        pf.cluster();
+        ClusteringPathFinder pf = new ClusteringPathFinder(map, clusterSize, type);
+        pf.update();
 
         pf.getClustering().printEdges();
         pf.getClustering().printVertices();

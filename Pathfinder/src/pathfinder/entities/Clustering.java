@@ -7,6 +7,7 @@ import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
+import pathfinder.SimplePathFinder;
 import api.entities.Aim;
 import api.entities.Tile;
 import api.map.AbstractWraparoundMap;
@@ -22,7 +23,7 @@ public class Clustering extends AbstractWraparoundMap {
     private int cols = 0;
     private int mapRows = 0;
     private int mapCols = 0;
-    private PathFinder pathFinder;
+    private SimplePathFinder pathFinder;
     private ClusterType clusterType;
 
     public enum ClusterType {
@@ -38,7 +39,7 @@ public class Clustering extends AbstractWraparoundMap {
      * @param mapHeight
      * @param mapWidth
      */
-    public Clustering(PathFinder s, int clusterSize, int mapHeight, int mapWidth) {
+    public Clustering(SimplePathFinder s, int clusterSize, int mapHeight, int mapWidth) {
         this.pathFinder = s;
         this.clusterType = ClusterType.Corner;
         init(clusterSize, mapHeight, mapWidth);
@@ -142,7 +143,7 @@ public class Clustering extends AbstractWraparoundMap {
     /***
      * start clustering the map
      */
-    public void perform() {
+    public void updateClusters() {
         for (int r = 0; r < getRows(); r++) {
             for (int c = 0; c < getCols(); c++) {
                 LOGGER.trace("Cluster_overview:" + getClusters()[r][c]);
@@ -309,7 +310,7 @@ public class Clustering extends AbstractWraparoundMap {
      * 
      * @return the current pathfinder
      */
-    protected PathFinder getPathFinder() {
+    protected SimplePathFinder getPathFinder() {
         return pathFinder;
     }
 

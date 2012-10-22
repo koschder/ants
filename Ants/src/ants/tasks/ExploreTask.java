@@ -9,11 +9,11 @@ import java.util.Set;
 
 import logging.Logger;
 import logging.LoggerFactory;
+import pathfinder.PathFinder;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Route;
 import ants.missions.ExploreMission;
-import ants.search.AntsPathFinder;
 import ants.state.Ants;
 import api.entities.Tile;
 
@@ -74,8 +74,8 @@ public class ExploreTask extends BaseTask {
             for (Route route : unseenRoutes) {
                 if (route.getDistance() > minDistance * 2)
                     break;
-                List<Tile> path = Ants.getPathFinder()
-                        .bestPath(AntsPathFinder.SIMPLE, route.getStart(), route.getEnd());
+                List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.Simple, route.getStart(),
+                        route.getEnd());
                 if (path == null)
                     continue;
                 addMission(new ExploreMission(route.getAnt(), path));

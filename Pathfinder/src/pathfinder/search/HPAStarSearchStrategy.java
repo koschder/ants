@@ -6,6 +6,8 @@ import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
+import pathfinder.SimplePathFinder;
+import pathfinder.entities.Clustering;
 import pathfinder.entities.DirectedEdge;
 import api.entities.Tile;
 import api.pathfinder.SearchTarget;
@@ -14,8 +16,11 @@ public class HPAStarSearchStrategy extends SearchStrategy {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.HPASTAR);
 
-    public HPAStarSearchStrategy(PathFinder f) {
+    private Clustering clustering;
+
+    public HPAStarSearchStrategy(PathFinder f, Clustering clustering) {
         super(f);
+        this.clustering = clustering;
     }
 
     /***
@@ -26,8 +31,8 @@ public class HPAStarSearchStrategy extends SearchStrategy {
 
         Tile start = from.getTargetTile();
         Tile end = to.getTargetTile();
-        DirectedEdge edgeStart = pathFinder.getClustering().getStartEdge(start, end);
-        DirectedEdge endEdge = pathFinder.getClustering().getStartEdge(end, start);
+        DirectedEdge edgeStart = clustering.getStartEdge(start, end);
+        DirectedEdge endEdge = clustering.getStartEdge(end, start);
 
         if (edgeStart == null || endEdge == null) {
             LOGGER.debug("HPAstar: Clustering not avaiable, try to find path with A*");
@@ -38,7 +43,7 @@ public class HPAStarSearchStrategy extends SearchStrategy {
         LOGGER.debug("     for start tile %s the edge is : %s", start, edgeStart);
         LOGGER.debug("     for end tile %s the edge is : %s", end, endEdge);
 
-        PathFinder pf = new PathFinder(pathFinder.getClustering());
+        PathFinder pf = new SimplePathFinder(clustering);
         List<Tile> path = pf.search(PathFinder.Strategy.AStar, edgeStart, endEdge, maxCost);
 
         if (path != null)

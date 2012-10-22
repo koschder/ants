@@ -1,5 +1,7 @@
 package ants.tasks;
 
+import ants.state.Ants;
+
 /**
  * This task is responsible for dividing up the map into clusters.
  * 
@@ -10,6 +12,7 @@ public class ClusteringTask extends BaseTask {
 
     @Override
     public void doPerform() {
+        Ants.getPathFinder().update();
     }
 
 }

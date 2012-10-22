@@ -4,10 +4,10 @@ import java.util.List;
 
 import logging.Logger;
 import logging.LoggerFactory;
+import pathfinder.PathFinder;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Move;
-import ants.search.AntsPathFinder;
 import ants.state.Ants;
 import api.entities.Tile;
 
@@ -64,7 +64,7 @@ public class FollowMission extends BaseMission {
         Move m = mastermission.getLastMove();
         if (m == null || m.getTile().equals(ant.getTile())) // no move done yet, wait to the next round;
             return;
-        List<Tile> path = Ants.getPathFinder().bestPath(AntsPathFinder.SIMPLE, ant.getTile(), m.getTile());
+        List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.Simple, ant.getTile(), m.getTile());
         if (path == null)
             abandonMission();
         else

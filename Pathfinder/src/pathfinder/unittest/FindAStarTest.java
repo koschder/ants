@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import pathfinder.PathFinder;
+import pathfinder.SimplePathFinder;
 import api.entities.Tile;
 import api.test.MapOutput;
 
@@ -16,7 +17,7 @@ public class FindAStarTest {
     public void baseTest() {
         System.out.println("BaseTest");
         UnitTestMap map = new UnitTestMap(25, 25);
-        PathFinder pf = new PathFinder(map);
+        SimplePathFinder pf = new SimplePathFinder(map);
         List<Tile> path = pf.search(PathFinder.Strategy.AStar, new Tile(10, 10), new Tile(15, 15), 20);
         MapOutput put = new MapOutput();
         put.setMap(pf.getMap());
@@ -42,7 +43,7 @@ public class FindAStarTest {
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         UnitTestMap map = new UnitTestMap(37, sMap);
-        PathFinder pf = new PathFinder(map);
+        SimplePathFinder pf = new SimplePathFinder(map);
         List<Tile> path = pf.search(PathFinder.Strategy.AStar, new Tile(2, 2), new Tile(2, 35), -1);
 
         MapOutput put = new MapOutput();
@@ -69,7 +70,7 @@ public class FindAStarTest {
         sMap += "wowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         UnitTestMap map = new UnitTestMap(37, sMap);
-        PathFinder pf = new PathFinder(map);
+        SimplePathFinder pf = new SimplePathFinder(map);
         List<Tile> path = pf.search(PathFinder.Strategy.AStar, new Tile(2, 2), new Tile(2, 35), -1);
 
         MapOutput put = new MapOutput();

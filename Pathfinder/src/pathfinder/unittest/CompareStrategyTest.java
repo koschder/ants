@@ -10,6 +10,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import pathfinder.PathFinder;
+import pathfinder.SimplePathFinder;
 import api.entities.Tile;
 import api.test.MapOutput;
 
@@ -19,7 +20,7 @@ public class CompareStrategyTest {
     public void aStarTest() {
         String sTestName = "AStarTest";
         System.out.println(sTestName);
-        PathFinder pf = initPathFinder();
+        SimplePathFinder pf = initPathFinder();
         Tile start = new Tile(25, 70);
         Tile end = new Tile(45, 20);
         List<Tile> path = pf.search(PathFinder.Strategy.AStar, start, end, -1);
@@ -38,8 +39,8 @@ public class CompareStrategyTest {
 
     }
 
-    private PathFinder initPathFinder() {
-        return new PathFinder(initMap());
+    private SimplePathFinder initPathFinder() {
+        return new SimplePathFinder(initMap());
     }
 
     private UnitTestMap initMap() {

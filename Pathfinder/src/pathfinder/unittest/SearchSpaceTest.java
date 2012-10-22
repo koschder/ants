@@ -7,6 +7,7 @@ import junit.framework.Assert;
 import org.junit.Test;
 
 import pathfinder.PathFinder;
+import pathfinder.SimplePathFinder;
 import api.entities.Tile;
 import api.test.MapOutput;
 
@@ -26,7 +27,7 @@ public class SearchSpaceTest {
         sMap += "oooooooooooooooo";
 
         UnitTestMap map = new UnitTestMap(16, sMap);
-        PathFinder pf = new PathFinder(map);
+        SimplePathFinder pf = new SimplePathFinder(map);
         Tile sp1 = new Tile(4, 4);
         Tile sp2 = new Tile(80, 80);
 
@@ -54,7 +55,7 @@ public class SearchSpaceTest {
         sMap += "oooooooooooooooo";
 
         UnitTestMap map = new UnitTestMap(16, sMap);
-        PathFinder pf = new PathFinder(map);
+        SimplePathFinder pf = new SimplePathFinder(map);
         Tile sp1 = new Tile(0, 10);
         Tile sp2 = new Tile(8, 17);
 
@@ -82,7 +83,7 @@ public class SearchSpaceTest {
         sMap += "oooooooooooooooo";
 
         UnitTestMap map = new UnitTestMap(16, sMap);
-        PathFinder pf = new PathFinder(map);
+        SimplePathFinder pf = new SimplePathFinder(map);
         Tile sp1 = new Tile(0, 10);
         Tile sp2 = new Tile(8, 20);
 

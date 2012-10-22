@@ -21,6 +21,12 @@ public abstract class SearchStrategy {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.PATHFINDING);
 
+    protected PathFinder pathFinder;
+    protected int maxCost;
+    protected Tile searchSpace1;
+    protected Tile searchSpace2;
+    private long timeElapsed = -1;
+
     public SearchStrategy(PathFinder f) {
         pathFinder = f;
     }
@@ -68,12 +74,6 @@ public abstract class SearchStrategy {
                 from.toShortString(), to.toShortString(), searchSpaceInfo, getTimeElapsed(), pathlength);
 
     }
-
-    protected PathFinder pathFinder;
-    protected int maxCost;
-    protected Tile searchSpace1;
-    protected Tile searchSpace2;
-    private long timeElapsed = -1;
 
     public void setSearchSpace(Tile p1, Tile p2) {
         this.searchSpace1 = p1;
@@ -123,18 +123,11 @@ public abstract class SearchStrategy {
         maxCost = i;
     }
 
-    public List<Tile> search(int xStart, int yStart, int xTarget, int yTarget) {
-
-        Tile start = new Tile(xStart, yStart);
-        Tile target = new Tile(xTarget, yTarget);
-        return searchPath(start, target);
-    }
-
-    public long getTimeElapsed() {
+    private long getTimeElapsed() {
         return timeElapsed;
     }
 
-    public void setTimeElapsed(long timeElapsed) {
+    private void setTimeElapsed(long timeElapsed) {
         this.timeElapsed = timeElapsed;
     }
 }
