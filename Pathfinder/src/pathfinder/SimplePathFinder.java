@@ -66,4 +66,16 @@ public class SimplePathFinder implements PathFinder {
         // nothing to do
     }
 
+    public boolean validatePath(List<Tile> tile) {
+        boolean ret = true;
+        for (int i = 0; i < tile.size() - 2; i++) {
+            int dist = map.manhattanDistance(tile.get(i), tile.get(i + 1));
+            if (dist != 1) {
+                System.out.println(String.format("Invalid manhattanDistance between %s and %s ", tile.get(i),
+                        tile.get(i + 1)));
+                ret = false;
+            }
+        }
+        return ret;
+    }
 }

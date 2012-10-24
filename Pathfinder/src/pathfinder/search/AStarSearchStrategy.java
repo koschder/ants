@@ -34,9 +34,9 @@ public class AStarSearchStrategy extends SearchStrategy {
     public List<Tile> searchPath(SearchTarget from, SearchTarget to) {
         this.to = to;
         List<Tile> list = calculateBestPath(from, to);
-        if (list != null && list.size() > 1) {
-            list.remove(0); // first path-tile is position of ant (not the next step)
-        }
+        // if (list != null && list.size() > 1) {
+        // list.remove(0); // first path-tile is position of ant (not the next step)
+        // }
         return list;
     }
 
@@ -64,8 +64,9 @@ public class AStarSearchStrategy extends SearchStrategy {
                 if (frontier.contains(child) || explored.contains(child.getState()) || maxCostReached(child, to)) {
                     continue;
                 }
-                if (child.getState().isFinal(to))
-                    return path(child); // success
+                if (child.getState().isFinal(to)) {
+                    return path(child);
+                }
                 frontier.add(child);
             }
         }
@@ -109,14 +110,17 @@ public class AStarSearchStrategy extends SearchStrategy {
     private List<Tile> path(Node child) {
         List<Tile> path = new ArrayList<Tile>();
         addToPath(path, child);
-        Collections.reverse(path);
         return path;
     }
 
     private void addToPath(List<Tile> path, Node child) {
         if (child == null)
             return;
-        path.addAll(child.getState().getPath());
+        List<Tile> newpath = child.getState().getPath();
+        Collections.reverse(newpath);
+        if (path.size() > 0 && path.get(path.size() - 1).equals(newpath.get(0)))
+            newpath = newpath.subList(1, newpath.size() - 1);
+        path.addAll(newpath);
         addToPath(path, child.getParent());
     }
 

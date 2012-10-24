@@ -151,8 +151,8 @@ public class MapOutput {
         this.clusterSize = clusterSize;
     }
 
-    public void setComment(String comment) {
-        this.comment = comment;
+    public void addComment(String comment) {
+        this.comment += "<br/>" + comment.replace(">", "&gt;").replace("<", "&lt;");
     }
 
 }

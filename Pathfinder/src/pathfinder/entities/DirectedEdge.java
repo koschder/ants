@@ -1,5 +1,6 @@
 package pathfinder.entities;
 
+import java.util.Collections;
 import java.util.List;
 
 import api.entities.Tile;
@@ -46,9 +47,15 @@ public class DirectedEdge extends Edge implements SearchTarget {
      */
     @Override
     public List<Tile> getPath() {
-        if (path != null)
+        if (path == null)
+            throw new RuntimeException("path is null, it must be calculated before instanced the object");
+
+        if (path.get(0).equals(getEnd())) {
+            Collections.reverse(path);
             return path;
-        throw new RuntimeException("path is null, it must be calculated before instanced the object");
+        } else {
+            return path;
+        }
     }
 
     /***

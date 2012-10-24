@@ -1,5 +1,6 @@
 package pathfinder.search;
 
+import java.util.Collections;
 import java.util.List;
 
 import logging.Logger;
@@ -31,6 +32,7 @@ public class HPAStarSearchStrategy extends SearchStrategy {
 
         Tile start = from.getTargetTile();
         Tile end = to.getTargetTile();
+
         DirectedEdge edgeStart = clustering.getStartEdge(start, end);
         DirectedEdge endEdge = clustering.getStartEdge(end, start);
 
@@ -46,9 +48,11 @@ public class HPAStarSearchStrategy extends SearchStrategy {
         PathFinder pf = new SimplePathFinder(clustering);
         List<Tile> path = pf.search(PathFinder.Strategy.AStar, edgeStart, endEdge, maxCost);
 
-        if (path != null)
-            path.addAll(endEdge.getPath());
+        if (path != null) {
+            Collections.reverse(path);
+            path.addAll(endEdge.getPath().subList(1, endEdge.getPath().size() - 1));
 
+        }
         return path;
 
     }

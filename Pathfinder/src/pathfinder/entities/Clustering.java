@@ -366,8 +366,8 @@ public class Clustering extends AbstractWraparoundMap {
             for (Cluster c : cs) {
                 System.out.println("cluster: " + c.name);
                 for (Edge e : c.edges) {
-                    System.out.println(String.format("C: %s Edge: %s PathLength: %s", c.index, e,
-                            e.path == null ? "Null" : e.path.size()));
+                    System.out.println(String.format("C: %s Edge: %s PathLength:%s %s", c.index, e,
+                            e.path == null ? "Null" : e.path.size(), e.path == null ? "Null" : e.path));
                 }
             }
     }

@@ -151,6 +151,8 @@ public class Cluster {
         if (path == null)
             return;
 
+        // path.add(0, tEnd); // TODO may be adding tEnd must be done by a star
+
         LOGGER.trace("%s: found!!", name);
         edge.setPath(path);
         edges.add(edge);

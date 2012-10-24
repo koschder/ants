@@ -1,6 +1,7 @@
 package pathfinder;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import pathfinder.entities.Clustering;
@@ -43,15 +44,13 @@ public class ClusteringPathFinder extends SimplePathFinder {
     }
 
     public List<Tile> smoothPath(List<Tile> path) {
-        return smoothPath(path, 5, 1);
+        return smoothPath(path, 10, 1);
     }
 
     public List<Tile> smoothPath(List<Tile> path, int size, int loops) {
-
-        for (int i = 0; i < loops; i++) {
-            path = smoothPath(path, size);
+        for (int i = 1; i <= loops; i++) {
+            path = smoothPath(path, size * i);
         }
-
         return path;
     }
 
@@ -93,18 +92,19 @@ public class ClusteringPathFinder extends SimplePathFinder {
         int current = size;
         List<Tile> newPath = new ArrayList<Tile>();
         // do while the last tile of path is new path
-        while (path.get(path.size() - 1).equals(newPath.get(path.size() - 1))) {
+        do {
 
             List<Tile> subPath = path.subList(start, current);
-            int manDist = map.manhattanDistance(subPath.get(0), subPath.get(subPath.size() - 1));
+            int manDist = map.manhattanDistance(subPath.get(0), subPath.get(subPath.size() - 1)) + 1;
 
             List<Tile> newSubPath = null;
-            if (manDist <= subPath.size()) {
+            if (manDist < subPath.size()) {
                 newSubPath = search(Strategy.AStar, subPath.get(0), subPath.get(subPath.size() - 1), subPath.size() - 1);
             }
             if (newSubPath != null) {
+                Collections.reverse(newSubPath); // todo why is here the path the other way round.
+                newPath.addAll(newSubPath);
                 if (isRecursiv) {
-                    newPath.addAll(newSubPath);
                     newPath = smoothPath(newPath, newPath.size());
                 }
             } else {
@@ -112,7 +112,7 @@ public class ClusteringPathFinder extends SimplePathFinder {
             }
             start = current;
             current = Math.min(current + size, path.size());
-        }
+        } while (!path.get(path.size() - 1).equals(newPath.get(newPath.size() - 1)));
 
         return newPath;
     }
