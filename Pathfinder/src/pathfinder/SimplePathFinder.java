@@ -18,7 +18,10 @@ public class SimplePathFinder implements PathFinder {
     public List<Tile> search(Strategy strategy, SearchTarget start, SearchTarget end, int maxCost) {
         SearchStrategy searchStrat = getStrategy(strategy);
         searchStrat.setMaxCost(maxCost);
-        return searchStrat.search(start, end);
+        final List<Tile> path = searchStrat.search(start, end);
+        if (path != null)
+            validatePath(path);
+        return path;
     }
 
     @Override
@@ -66,13 +69,20 @@ public class SimplePathFinder implements PathFinder {
     public boolean validatePath(List<Tile> tile) {
         boolean ret = true;
         for (int i = 0; i < tile.size() - 2; i++) {
-            int dist = map.manhattanDistance(tile.get(i), tile.get(i + 1));
+            final Tile current = tile.get(i);
+            final Tile next = tile.get(i + 1);
+            if (!map.isPassable(next)) {
+                System.out.println(String.format("Tile is not passable: %s ", next));
+                ret = false;
+            }
+            int dist = map.manhattanDistance(current, next);
             if (dist != 1) {
-                System.out.println(String.format("Invalid manhattanDistance between %s and %s ", tile.get(i),
-                        tile.get(i + 1)));
+                System.out.println(String.format("Invalid manhattanDistance between %s and %s ", current, next));
                 ret = false;
             }
         }
+        if (!ret)
+            throw new IllegalStateException("Invalid path: " + tile.toString());
         return ret;
     }
 

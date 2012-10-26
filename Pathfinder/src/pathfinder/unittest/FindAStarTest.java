@@ -11,6 +11,7 @@ import api.entities.*;
 import api.test.*;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class FindAStarTest {
 
@@ -50,6 +51,7 @@ public class FindAStarTest {
         List<Tile> path = pf.search(PathFinder.Strategy.AStar, start, end, -1);
         assertEquals(start, path.get(0));
         assertEquals(end, path.get(path.size() - 1));
+        assertTrue(pf.validatePath(path));
         MapOutput put = new MapOutput();
         put.setMap(pf.getMap());
         put.addObject(path, "A Star Path");
@@ -75,7 +77,12 @@ public class FindAStarTest {
 
         UnitTestMap map = new UnitTestMap(37, sMap);
         SimplePathFinder pf = new SimplePathFinder(map);
-        List<Tile> path = pf.search(PathFinder.Strategy.AStar, new Tile(2, 2), new Tile(2, 35), -1);
+        final Tile start = new Tile(2, 2);
+        final Tile end = new Tile(2, 35);
+        List<Tile> path = pf.search(PathFinder.Strategy.AStar, start, end, -1);
+        assertEquals(start, path.get(0));
+        assertEquals(end, path.get(path.size() - 1));
+        assertTrue(pf.validatePath(path));
 
         MapOutput put = new MapOutput();
         put.setMap(pf.getMap());

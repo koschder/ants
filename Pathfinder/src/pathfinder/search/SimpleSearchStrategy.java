@@ -1,15 +1,12 @@
 package pathfinder.search;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
+import pathfinder.*;
 import pathfinder.LogCategory;
-import pathfinder.PathFinder;
-import api.entities.Aim;
-import api.entities.Tile;
-import api.pathfinder.SearchTarget;
+import api.entities.*;
+import api.pathfinder.*;
 
 public class SimpleSearchStrategy extends SearchStrategy {
 
@@ -61,6 +58,7 @@ public class SimpleSearchStrategy extends SearchStrategy {
             return null;
 
         path.addAll(firstLeg);
+        // secondLeg.remove(0);
         path.addAll(secondLeg);
         if (path.size() > maxCost && maxCost != -1)
             return null; // pfad zu lang.
@@ -85,10 +83,12 @@ public class SimpleSearchStrategy extends SearchStrategy {
             return null;
 
         Tile t = from;
-        while (!t.equals(to)) {
+        while (true) {
             t = pathFinder.getMap().getTile(t, aim);
             if (!pathFinder.getMap().isPassable(t) || !inSearchSpace(t))
                 return null; // straight path is blocked
+            if (t.equals(to))
+                break;
             path.add(t);
         }
         path.add(to);
