@@ -1,27 +1,17 @@
 package unittest.ants.strategy;
 
-import static org.junit.Assert.assertEquals;
+import java.util.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import org.junit.*;
 
-import org.junit.Before;
-import org.junit.Test;
-
-import ants.entities.Ant;
-import ants.state.Ants;
-import ants.state.Population;
-import ants.state.World;
-import ants.strategy.ResourceAllocator;
-import ants.tasks.AttackHillsTask;
-import ants.tasks.CombatTask;
-import ants.tasks.ExploreTask;
-import ants.tasks.GatherFoodTask;
-import ants.tasks.Task;
+import ants.entities.*;
+import ants.state.*;
+import ants.strategy.*;
+import ants.tasks.*;
 import ants.tasks.Task.Type;
-import api.entities.Tile;
+import api.entities.*;
+
+import static org.junit.Assert.assertEquals;
 
 public class ResourceAllocatorTest {
 
@@ -35,13 +25,11 @@ public class ResourceAllocatorTest {
         tasks.put(Type.ATTACK_HILLS, new AttackHillsTask());
         tasks.put(Type.COMBAT, new CombatTask());
         tasks.put(Type.EXPLORE, new ExploreTask());
-        resourceAllocator = new ResourceAllocator(tasks, influence);
     }
 
     @Test
     public void testAllocateResources() {
-
-        Ants.setPopulation(getPopulation(10));
+        initResourceAllocator(10);
         Ants.setWorld(getWorld(50));
         influence.setTotalOpponentInfluence(1000);
         influence.setTotalInfluence(0, 2000);
@@ -50,7 +38,12 @@ public class ResourceAllocatorTest {
         // method under test
         resourceAllocator.allocateResources();
 
-        assertEquals(Integer.valueOf(foodResources - 9), tasks.get(Type.GATHER_FOOD).getMaxResources());
+        assertEquals(Integer.valueOf(foodResources - 13), tasks.get(Type.GATHER_FOOD).getMaxResources());
+    }
+
+    private void initResourceAllocator(int population) {
+        Ants.setPopulation(getPopulation(population));
+        resourceAllocator = new ResourceAllocator(tasks, influence);
     }
 
     private Population getPopulation(final int myAnts) {
