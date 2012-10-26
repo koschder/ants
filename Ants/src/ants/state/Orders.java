@@ -59,7 +59,8 @@ public class Orders {
         // Track all moves, prevent collisions
         Tile newLoc = Ants.getWorld().getTile(ant.getTile(), direction);
         if (Ants.getWorld().getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
-            LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s ant: %s", issuer, ant.getTile());
+            LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s Order:%s<br/> ant: %s", issuer,
+                    direction, ant.getTile());
             LOGGER_TASKS.debug("%1$s: Moving ant from %2$s to %3$s", issuer, ant.getTile(), newLoc);
             orders.put(newLoc, new Move(ant.getTile(), direction));
             ant.setNextTile(newLoc);

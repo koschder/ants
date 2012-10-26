@@ -35,7 +35,7 @@ public class GatherFoodMission extends PathMission {
 
     @Override
     public String toString() {
-        String direction = ((path.size() > 0) ? ant.getTile().directionTo(path.get(0)).toString() : "-");
+        String direction = "TODO"; // ((path.size() > 0) ? ant.getTile().directionTo(path.get(0)).toString() : "-");
         return "GatherFoodMission: [ant=" + ant.getTile() + ", target food=" + food + ", Next direction:=" + direction
                 + ", Path:=" + getPathString() + ", IsMissionComplete()=" + isComplete() + "]";
     }

@@ -2,6 +2,7 @@ package ants.missions;
 
 import java.util.ArrayDeque;
 import java.util.Deque;
+import java.util.List;
 
 import logging.Logger;
 import logging.LoggerFactory;
@@ -10,6 +11,7 @@ import ants.entities.Ant;
 import ants.entities.Move;
 import ants.state.Ants;
 import api.entities.Aim;
+import api.entities.Tile;
 
 /***
  * Implements the interface Mission an handles the base tasks of a mission.
@@ -89,5 +91,15 @@ public abstract class BaseMission implements Mission {
      */
     public Ant getAnt() {
         return ant;
+    }
+
+    public boolean putMissionOrder(Ant a, Tile to) {
+
+        List<Aim> aims = Ants.getWorld().getDirections(a.getTile(), to);
+        if (aims.size() != 1)
+            throw new RuntimeException(String.format("Ant cannot move from %s to %s", a.getTile(), to));
+
+        return putMissionOrder(a, aims.get(0));
+
     }
 }

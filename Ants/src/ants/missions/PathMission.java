@@ -7,7 +7,6 @@ import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
 import ants.entities.Ant;
-import api.entities.Aim;
 import api.entities.Tile;
 
 /***
@@ -39,7 +38,7 @@ public abstract class PathMission extends BaseMission {
         for (Tile t : path) {
             pathString += t + ",";
             if (previos != null) {
-                aims += previos.directionTo(t).name().charAt(0);
+                aims += "todo"; // Ants.getw previos.directionTo(t).name().charAt(0);
             }
             previos = t;
         }
@@ -67,10 +66,10 @@ public abstract class PathMission extends BaseMission {
             return false;
 
         Tile nextStep = path.remove(0);
-        Aim aim = ant.getTile().directionTo(nextStep);
+        // Aim aim = ant.getTile().directionTo(nextStep);
 
-        if (putMissionOrder(ant, aim)) {
-            LOGGER.debug("Go to: %s direction is %s", nextStep, aim);
+        if (putMissionOrder(ant, nextStep)) {
+            // LOGGER.debug("Go to: %s direction is %s", nextStep, aim);
             return true;
         }
         return false;

@@ -68,7 +68,7 @@ public class FollowMission extends BaseMission {
         if (path == null)
             abandonMission();
         else
-            putMissionOrder(ant, ant.getTile().directionTo(path.get(0)));
+            putMissionOrder(ant, path.get(0)); // ant.getTile().directionTo(path.get(0)));
     }
 
     @Override

@@ -91,25 +91,27 @@ public class Tile implements Comparable<Tile>, SearchTarget {
         return "<r:" + row + " c:" + col + ">";
     }
 
-    public Aim directionTo(Tile nextStep) {
-        if (getRow() == nextStep.getRow()) {
-            // changing in column east or west
-            int diff = getCol() - nextStep.getCol();
-            if (diff == getCol() || (diff < 0 && diff != -getCol())) {
-                return Aim.EAST;
-            } else {
-                return Aim.WEST;
-            }
-        } else {
-            // changing in row north or south
-            int diff = getRow() - nextStep.getRow();
-            if (diff == getRow() || (diff < 0 && diff != -getRow())) {
-                return Aim.SOUTH;
-            } else {
-                return Aim.NORTH;
-            }
-        }
-    }
+    // public Aim directionTo(Tile nextStep) {
+    // if (getRow() == nextStep.getRow()) {
+    // // changing in column east or west
+    // int diff = getCol() - nextStep.getCol();
+    //
+    //
+    // if (diff == getCol() || (diff < 0 && diff != -getCol())) {
+    // return Aim.EAST;
+    // } else {
+    // return Aim.WEST;
+    // }
+    // } else {
+    // // changing in row north or south
+    // int diff = getRow() - nextStep.getRow();
+    // if (diff == getRow() || (diff < 0 && diff != -getRow())) {
+    // return Aim.SOUTH;
+    // } else {
+    // return Aim.NORTH;
+    // }
+    // }
+    // }
 
     // @Override
     // public boolean isSearchable(boolean bParentNode) {
