@@ -75,9 +75,7 @@ public class MyBot extends Bot {
 
     @Override
     public void doTurn() {
-        LOGGER.info("------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------",
-                Ants.getAnts().getTurn(), Ants.getPopulation().getMyAnts().size(), Ants.getOrders().getMissions()
-                        .size());
+        LOGGER.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
         calculateInfluence();
         initTasks();
         doStatistics();

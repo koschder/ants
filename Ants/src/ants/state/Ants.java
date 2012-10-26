@@ -1,12 +1,10 @@
 package ants.state;
 
-import pathfinder.ClusteringPathFinder;
-import pathfinder.PathFinder;
-import pathfinder.entities.Clustering;
+import pathfinder.*;
+import pathfinder.entities.*;
 import pathfinder.entities.Clustering.ClusterType;
-import ants.entities.Ant;
-import ants.entities.Ilk;
-import api.entities.Tile;
+import ants.entities.*;
+import api.entities.*;
 
 /**
  * Container class for the game state. Provides access to game metadata (such as turnTime, startTime, ...) as well as
@@ -261,6 +259,15 @@ public enum Ants {
      */
     public int getTimeRemaining() {
         return turnTime - (int) (System.currentTimeMillis() - turnStartTime);
+    }
+
+    public String getTurnSummaryString() {
+        return "------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------";
+    }
+
+    public Object[] getTurnSummaryParams() {
+        return new Object[] { Ants.getAnts().getTurn(), Ants.getPopulation().getMyAnts().size(),
+                Ants.getOrders().getMissions().size() };
     }
 
 }
