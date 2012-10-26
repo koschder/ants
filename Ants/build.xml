@@ -54,7 +54,7 @@
 				<arg line="&quot;python tools/sample_bots/python/HunterBot.py&quot;" />
 				<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
 				<arg line="--log_dir logs" />
-				<arg line="--turns 160" />
+				<arg line="--turns 200" />
 				<arg line="--scenario" />
 				<arg line="--food yes" />
 				<arg line="--player_seed 7" />

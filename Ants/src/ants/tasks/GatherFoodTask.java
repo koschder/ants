@@ -1,21 +1,14 @@
 package ants.tasks;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeSet;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
-import pathfinder.PathFinder;
+import logging.*;
+import pathfinder.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.entities.Route;
-import ants.missions.GatherFoodMission;
-import ants.state.Ants;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.missions.*;
+import ants.state.*;
+import api.entities.*;
 
 /**
  * Searches for food and sends our ants to gather it.
@@ -26,8 +19,6 @@ import api.entities.Tile;
 public class GatherFoodTask extends BaseTask {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.FOOD);
-    // the maximum distance an ant can be away of a food tile to catch it.
-    private int MAXDISTANCE = 50;
 
     @Override
     public void doPerform() {
@@ -45,11 +36,9 @@ public class GatherFoodTask extends BaseTask {
         for (Tile foodLoc : sortedFood) {
             for (Ant ant : sortedAnts) {
                 final Tile antLoc = ant.getTile();
-                int distance = Ants.getWorld().getSquaredDistance(antLoc, foodLoc);
-                LOGGER.debug("Distance is %s", distance);
-                // Todo distance verwirrlich, da nicht im pixel mass.
-                if (distance > MAXDISTANCE)
+                if (!Ants.getWorld().isFoodNearby(antLoc))
                     continue;
+                int distance = Ants.getWorld().getSquaredDistance(antLoc, foodLoc);
                 Route route = new Route(antLoc, foodLoc, distance, ant);
                 foodRoutes.add(route);
             }
