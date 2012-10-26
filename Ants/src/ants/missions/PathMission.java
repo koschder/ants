@@ -1,9 +1,11 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import ants.entities.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import api.entities.Tile;
 
 /***
  * this mission is implemented to follow a path defined while creating the class
@@ -41,7 +43,7 @@ public abstract class PathMission extends BaseMission {
         for (Tile t : path) {
             pathString += t + ",";
             if (previos != null) {
-                aims += "todo"; // Ants.getw previos.directionTo(t).name().charAt(0);
+                aims += Ants.getWorld().getDirections(previos, t).get(0);
             }
             previos = t;
         }

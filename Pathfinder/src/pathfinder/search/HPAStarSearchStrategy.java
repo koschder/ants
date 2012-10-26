@@ -33,22 +33,28 @@ public class HPAStarSearchStrategy extends SearchStrategy {
         Tile end = to.getTargetTile();
 
         DirectedEdge edgeStart = clustering.getStartEdge(start, end);
-        DirectedEdge endEdge = clustering.getStartEdge(end, start);
+        DirectedEdge edgeEnd = clustering.getStartEdge(end, start);
 
-        if (edgeStart == null || endEdge == null) {
+        if (edgeStart == null || edgeEnd == null) {
             LOGGER.debug("HPAstar: Clustering not avaiable, try to find path with A*");
             return findPathWithAStar(start, end, maxCost);
         }
-        endEdge.reverseEdge();
+        edgeEnd.reverseEdge();
+
+        if (edgeStart.getEnd().equals(edgeEnd.getStart())) {
+            List<Tile> path = edgeStart.getPath();
+            path.addAll(edgeEnd.getPath().subList(1, edgeEnd.getPath().size()));
+            return path;
+        }
         LOGGER.debug("HPAstar: Connecting edges to Cluster edge are:");
         LOGGER.debug("     for start tile %s the edge is : %s", start, edgeStart);
-        LOGGER.debug("     for end tile %s the edge is : %s", end, endEdge);
+        LOGGER.debug("     for end tile %s the edge is : %s", end, edgeEnd);
 
         PathFinder pf = new SimplePathFinder(clustering);
-        List<Tile> path = pf.search(PathFinder.Strategy.AStar, edgeStart, endEdge, maxCost);
+        List<Tile> path = pf.search(PathFinder.Strategy.AStar, edgeStart, edgeEnd, maxCost);
 
         if (path != null) {
-            List<Tile> endPath = endEdge.getPath().subList(1, endEdge.getPath().size());
+            List<Tile> endPath = edgeEnd.getPath().subList(1, edgeEnd.getPath().size());
             path.addAll(endPath);
 
         }

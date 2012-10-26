@@ -2,6 +2,7 @@ package pathfinder.unittest;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import junit.framework.Assert;
@@ -31,16 +32,25 @@ public class FindHPAStarTest {
         pf.update();
 
         // pf.getClustering().printEdges();
+        Tile start = new Tile(10, 10);
+        Tile end = new Tile(15, 20);
+        List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, start, end, -1);
 
-        List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, new Tile(10, 10), new Tile(15, 15), 20);
+        List<Tile> startEnd = new ArrayList<Tile>();
+        startEnd.add(start);
+        startEnd.add(end);
 
         MapOutput put = new MapOutput();
         put.setMap(pf.getMap());
         put.addObject(path, "HpaStar Path");
+        // put.addComment("Path " + path.toString());
+        put.addComment("Start: " + start + " end: " + end);
         put.setClusterSize(clusterSize);
         put.addObject(pf.getClustering().getAllVertices(), "Cluster Points");
+        put.addObject(startEnd, "Start and End Points");
         put.saveHtmlMap(name);
-
+        assertEquals(start, path.get(0));
+        assertEquals(end, path.get(path.size() - 1));
         Assert.assertNotNull(path);
     }
 
@@ -73,12 +83,18 @@ public class FindHPAStarTest {
         final Tile end = new Tile(2, 35);
         List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, start, end, -1);
 
+        List<Tile> startEnd = new ArrayList<Tile>();
+        startEnd.add(start);
+        startEnd.add(end);
+
         MapOutput put = new MapOutput();
         put.setMap(pf.getMap());
         put.addObject(path, "HpaStar Path");
         put.setClusterSize(clusterSize);
         put.addObject(pf.getClustering().getAllVertices(), "Cluster Points");
         put.addComment("Path " + path.toString());
+        put.addObject(startEnd, "Start and End Points");
+
         put.saveHtmlMap(name);
 
         assertEquals(start, path.get(0));

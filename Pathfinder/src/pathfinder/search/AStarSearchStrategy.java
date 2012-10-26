@@ -1,13 +1,19 @@
 package pathfinder.search;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Set;
 
-import logging.*;
-import pathfinder.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.LogCategory;
-import pathfinder.entities.*;
-import api.entities.*;
-import api.pathfinder.*;
+import pathfinder.PathFinder;
+import pathfinder.entities.Node;
+import api.entities.Tile;
+import api.pathfinder.SearchTarget;
 
 public class AStarSearchStrategy extends SearchStrategy {
 
@@ -115,7 +121,7 @@ public class AStarSearchStrategy extends SearchStrategy {
         Collections.reverse(newpath);
         // patch together path sequences in case of HPA*
         if (path.size() > 0 && path.get(path.size() - 1).equals(newpath.get(0)))
-            newpath = newpath.subList(1, newpath.size() - 1);
+            newpath = newpath.subList(1, newpath.size());
         path.addAll(newpath);
         addToPath(path, child.getParent());
     }
