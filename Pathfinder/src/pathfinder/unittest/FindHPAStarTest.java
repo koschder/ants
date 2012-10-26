@@ -1,5 +1,7 @@
 package pathfinder.unittest;
 
+import static org.junit.Assert.assertEquals;
+
 import java.util.List;
 
 import junit.framework.Assert;
@@ -67,14 +69,20 @@ public class FindHPAStarTest {
         int clusterSize = 8;
         ClusteringPathFinder pf = new ClusteringPathFinder(map, clusterSize, type);
         pf.update();
-        List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, new Tile(2, 2), new Tile(2, 35), -1);
+        final Tile start = new Tile(2, 2);
+        final Tile end = new Tile(2, 35);
+        List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, start, end, -1);
 
         MapOutput put = new MapOutput();
         put.setMap(pf.getMap());
         put.addObject(path, "HpaStar Path");
         put.setClusterSize(clusterSize);
         put.addObject(pf.getClustering().getAllVertices(), "Cluster Points");
+        put.addComment("Path " + path.toString());
         put.saveHtmlMap(name);
+
+        assertEquals(start, path.get(0));
+        assertEquals(end, path.get(path.size() - 1));
 
         Assert.assertNotNull(path);
     }
