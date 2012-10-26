@@ -68,6 +68,8 @@ public class SimplePathFinder implements PathFinder {
 
     public boolean validatePath(List<Tile> tile) {
         boolean ret = true;
+        if (tile.isEmpty())
+            ret = false;
         for (int i = 0; i < tile.size() - 2; i++) {
             final Tile current = tile.get(i);
             final Tile next = tile.get(i + 1);

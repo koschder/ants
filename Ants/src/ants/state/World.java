@@ -1,23 +1,13 @@
 package ants.state;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import javax.management.RuntimeErrorException;
+import javax.management.*;
 
-import ants.entities.Ant;
-import ants.entities.Ilk;
-import api.entities.Aim;
-import api.entities.Tile;
-import api.entities.Unit;
-import api.map.AbstractWraparoundMap;
-import api.map.UnitMap;
-import api.pathfinder.SearchTarget;
+import ants.entities.*;
+import api.entities.*;
+import api.map.*;
+import api.pathfinder.*;
 
 /**
  * This class holds state about the game world.
@@ -368,6 +358,15 @@ public class World extends AbstractWraparoundMap implements UnitMap {
     @Override
     public Set<Integer> getPlayers() {
         return Ants.getPopulation().getPlayers();
+    }
+
+    public void printIlk() {
+        for (int i = 0; i < map.length; i++) {
+            for (int j = 0; j < map[i].length; j++) {
+                System.out.print(map[i][j]);
+            }
+            System.out.println();
+        }
     }
 
 }

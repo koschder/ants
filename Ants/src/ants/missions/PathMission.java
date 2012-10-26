@@ -1,13 +1,11 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import api.entities.Tile;
+import ants.entities.*;
+import api.entities.*;
 
 /***
  * this mission is implemented to follow a path defined while creating the class
@@ -22,7 +20,14 @@ public abstract class PathMission extends BaseMission {
 
     public PathMission(Ant ant, List<Tile> path) {
         super(ant);
+        setPath(path);
+    }
+
+    private void setPath(List<Tile> path) {
+        if (path.get(0).equals(ant.getTile()))
+            path.remove(0);
         this.path = path;
+
     }
 
     /***
@@ -66,8 +71,11 @@ public abstract class PathMission extends BaseMission {
             return false;
 
         Tile nextStep = path.remove(0);
+        Aim aim = ant.getTile().directionTo(nextStep);
         // Aim aim = ant.getTile().directionTo(nextStep);
 
+        if (putMissionOrder(ant, aim)) {
+            LOGGER.debug("Go to: %s direction is %s", nextStep, aim);
         if (putMissionOrder(ant, nextStep)) {
             // LOGGER.debug("Go to: %s direction is %s", nextStep, aim);
             return true;

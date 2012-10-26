@@ -1,34 +1,18 @@
 package ants.bot;
 
-import influence.DefaultInfluenceMap;
+import influence.*;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.io.*;
+import java.util.*;
 
-import logging.LogLevel;
-import logging.Logger;
-import logging.LoggerFactory;
-import logging.LoggingConfig;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import ants.state.World;
-import ants.strategy.ResourceAllocator;
-import ants.tasks.AttackHillsTask;
-import ants.tasks.ClearHillTask;
-import ants.tasks.ClusteringTask;
-import ants.tasks.CombatTask;
-import ants.tasks.ExploreTask;
-import ants.tasks.FollowTask;
-import ants.tasks.GatherFoodTask;
-import ants.tasks.MissionTask;
-import ants.tasks.Task;
+import ants.entities.*;
+import ants.state.*;
+import ants.strategy.*;
+import ants.tasks.*;
 import ants.tasks.Task.Type;
-import api.strategy.InfluenceMap;
+import api.strategy.*;
 
 /**
  * Bot implementation. This was originally based on the sample bot from the starter package, but the implementation is
@@ -140,6 +124,7 @@ public class MyBot extends Bot {
 
         // every 10 steps we write the statistic to the log
         if (Ants.getAnts().getTurn() % 10 == 0) {
+            // Ants.getWorld().printIlk();
             LOGGER_STATISTICS.info("Statistics: Influence history: %s", statAntsInfluenceHistory);
             LOGGER_STATISTICS.info("Statistics: Ants amount history: %s", statAntsAmountHistory);
         }

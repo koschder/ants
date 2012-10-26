@@ -55,4 +55,24 @@ public enum Ilk {
     public boolean hasFriendlyAnt() {
         return this == MY_ANT;
     }
+
+    @Override
+    public String toString() {
+        switch (this) {
+        case DEAD:
+            return "+";
+        case ENEMY_ANT:
+            return "E";
+        case MY_ANT:
+            return "A";
+        case FOOD:
+            return "f";
+        case LAND:
+            return ".";
+        case WATER:
+            return "W";
+        default:
+            return "";
+        }
+    }
 }
