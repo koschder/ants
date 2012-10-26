@@ -1,5 +1,7 @@
 package pathfinder;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import pathfinder.search.AStarSearchStrategy;
@@ -77,5 +79,41 @@ public class SimplePathFinder implements PathFinder {
             }
         }
         return ret;
+    }
+
+    public List<Tile> smoothPath(List<Tile> path) {
+        return smoothPath(path, 10, false);
+    }
+
+    public List<Tile> smoothPath(List<Tile> path, int size, boolean recursive) {
+        if (path == null || path.size() < size)
+            return path;
+        int start = 0;
+        int current = size;
+        List<Tile> newPath = new ArrayList<Tile>();
+        // do while the last tile of path is new path
+        do {
+
+            List<Tile> subPath = path.subList(start, current);
+            int manDist = map.manhattanDistance(subPath.get(0), subPath.get(subPath.size() - 1)) + 1;
+
+            List<Tile> newSubPath = null;
+            if (manDist < subPath.size()) {
+                newSubPath = search(Strategy.AStar, subPath.get(0), subPath.get(subPath.size() - 1), subPath.size() - 1);
+            }
+            if (newSubPath != null) {
+                Collections.reverse(newSubPath); // todo why is here the path the other way round.
+                newPath.addAll(newSubPath);
+                if (recursive) {
+                    newPath = smoothPath(newPath, newPath.size(), true);
+                }
+            } else {
+                newPath.addAll(subPath);
+            }
+            start = current;
+            current = Math.min(current + size, path.size());
+        } while (!path.get(path.size() - 1).equals(newPath.get(newPath.size() - 1)));
+
+        return newPath;
     }
 }

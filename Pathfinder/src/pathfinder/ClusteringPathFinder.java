@@ -1,16 +1,11 @@
 package pathfinder;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
 import pathfinder.entities.Clustering;
 import pathfinder.entities.Clustering.ClusterType;
 import pathfinder.search.AStarSearchStrategy;
 import pathfinder.search.HPAStarSearchStrategy;
 import pathfinder.search.SearchStrategy;
 import pathfinder.search.SimpleSearchStrategy;
-import api.entities.Tile;
 import api.pathfinder.SearchableMap;
 
 /***
@@ -43,17 +38,6 @@ public class ClusteringPathFinder extends SimplePathFinder {
         return this.cluster;
     }
 
-    public List<Tile> smoothPath(List<Tile> path) {
-        return smoothPath(path, 10, 1);
-    }
-
-    public List<Tile> smoothPath(List<Tile> path, int size, int loops) {
-        for (int i = 1; i <= loops; i++) {
-            path = smoothPath(path, size * i);
-        }
-        return path;
-    }
-
     @Override
     protected SearchStrategy getStrategy(Strategy strategy) {
         if (strategy == Strategy.Simple)
@@ -82,39 +66,6 @@ public class ClusteringPathFinder extends SimplePathFinder {
         cluster.setClusterType(clusterType);
         cluster.setWorldType(map.getWorldType());
 
-    }
-
-    private List<Tile> smoothPath(List<Tile> path, int size) {
-        if (path == null || path.size() < size)
-            return path;
-        boolean isRecursiv = false; // TODO
-        int start = 0;
-        int current = size;
-        List<Tile> newPath = new ArrayList<Tile>();
-        // do while the last tile of path is new path
-        do {
-
-            List<Tile> subPath = path.subList(start, current);
-            int manDist = map.manhattanDistance(subPath.get(0), subPath.get(subPath.size() - 1)) + 1;
-
-            List<Tile> newSubPath = null;
-            if (manDist < subPath.size()) {
-                newSubPath = search(Strategy.AStar, subPath.get(0), subPath.get(subPath.size() - 1), subPath.size() - 1);
-            }
-            if (newSubPath != null) {
-                Collections.reverse(newSubPath); // todo why is here the path the other way round.
-                newPath.addAll(newSubPath);
-                if (isRecursiv) {
-                    newPath = smoothPath(newPath, newPath.size());
-                }
-            } else {
-                newPath.addAll(subPath);
-            }
-            start = current;
-            current = Math.min(current + size, path.size());
-        } while (!path.get(path.size() - 1).equals(newPath.get(newPath.size() - 1)));
-
-        return newPath;
     }
 
 }

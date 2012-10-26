@@ -16,8 +16,18 @@ import api.test.MapOutput;
 public class PathSmoothingTest {
 
     @Test
-    public void smoothThePathMenTest() {
+    public void smoothThePathCornerTest() {
         ClusterType type = ClusterType.Corner;
+        smoothThePathMenTest(type);
+    }
+
+    @Test
+    public void smoothThePathCenteredTest() {
+        ClusterType type = ClusterType.Centered;
+        smoothThePathMenTest(type);
+    }
+
+    public void smoothThePathMenTest(ClusterType type) {
         String name = "PathSmoothingTest_smoothThePathMenTest_" + type;
         System.out.println(name);
         String sMap = "";
@@ -43,7 +53,7 @@ public class PathSmoothingTest {
 
         List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, start, end, -1);
 
-        List<Tile> pathSmoothed = pf.smoothPath(path, 8, 3);
+        List<Tile> pathSmoothed = pf.smoothPath(path, 9, true);
         // List<Tile> pathSmoothed = pf.smoothPath(pathSmoothed_, 12, 1);
         // pathSmoothed = pf.smoothPath(pathSmoothed, 12, 1);
 
