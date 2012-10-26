@@ -43,7 +43,7 @@ public abstract class PathMission extends BaseMission {
         for (Tile t : path) {
             pathString += t + ",";
             if (previos != null) {
-                aims += Ants.getWorld().getDirections(previos, t).get(0);
+                aims += Ants.getWorld().getDirections(previos, t).get(0).getSymbol();
             }
             previos = t;
         }
