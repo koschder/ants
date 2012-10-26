@@ -14,6 +14,9 @@ public class RelativeInfluenceRule extends BaseResourceAllocationRule {
     }
 
     @Override
+    /***
+     * if our in influence is the highest we force our aggressivity
+     */
     public void allocateResources(Map<Type, Task> tasks) {
         if (influence.getTotalInfluence(0) > influence.getTotalOpponentInfluence()) {
             incrementResources(tasks, Type.EXPLORE, 5, Type.GATHER_FOOD);
