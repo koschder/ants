@@ -1,18 +1,13 @@
 package pathfinder.entities;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
+import pathfinder.*;
 import pathfinder.LogCategory;
-import pathfinder.PathFinder;
-import pathfinder.SimplePathFinder;
-import api.entities.Aim;
-import api.entities.Tile;
-import api.map.AbstractWraparoundMap;
-import api.map.WorldType;
-import api.pathfinder.SearchTarget;
+import api.entities.*;
+import api.map.*;
+import api.pathfinder.*;
 
 public class Clustering extends AbstractWraparoundMap {
 
@@ -76,10 +71,18 @@ public class Clustering extends AbstractWraparoundMap {
     }
 
     public int getRows() {
+        return mapRows;
+    }
+
+    public int getClusterRows() {
         return rows;
     }
 
     public int getCols() {
+        return mapCols;
+    }
+
+    private int getClusterCols() {
         return cols;
     }
 
@@ -144,15 +147,15 @@ public class Clustering extends AbstractWraparoundMap {
      * start clustering the map
      */
     public void updateClusters() {
-        for (int r = 0; r < getRows(); r++) {
-            for (int c = 0; c < getCols(); c++) {
+        for (int r = 0; r < getClusterRows(); r++) {
+            for (int c = 0; c < getClusterCols(); c++) {
                 LOGGER.trace("Cluster_overview:" + getClusters()[r][c]);
             }
         }
         int updatedClusters = 0;
         int completedClusters = 0;
-        for (int r = 0; r < getRows(); r++) {
-            for (int c = 0; c < getCols(); c++) {
+        for (int r = 0; r < getClusterRows(); r++) {
+            for (int c = 0; c < getClusterCols(); c++) {
 
                 if (getClusters()[r][c].isClustered()) {
                     LOGGER.trace("Cluster is clustered %s", getClusters()[r][c]);
@@ -227,7 +230,7 @@ public class Clustering extends AbstractWraparoundMap {
         if (path.size() > 0)
             centeredVertices.add(path.get(path.size() / 2));
 
-        int neighbourCluster = (r - 1 < 0) ? getRows() - 1 : r - 1;
+        int neighbourCluster = (r - 1 < 0) ? getClusterRows() - 1 : r - 1;
 
         if (clusterType == ClusterType.Centered) {
             getClusters()[r][c].addTiles(Aim.NORTH, centeredVertices);
@@ -278,7 +281,7 @@ public class Clustering extends AbstractWraparoundMap {
         if (path.size() > 0)
             centeredVertices.add(path.get(path.size() / 2));
 
-        int neighbourCluster = (c - 1 < 0) ? getCols() - 1 : c - 1;
+        int neighbourCluster = (c - 1 < 0) ? getClusterCols() - 1 : c - 1;
         if (clusterType == ClusterType.Centered) {
             getClusters()[r][c].addTiles(Aim.WEST, centeredVertices);
             getClusters()[r][neighbourCluster].addTiles(Aim.EAST, centeredVertices);
