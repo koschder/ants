@@ -1,17 +1,13 @@
 package pathfinder.search;
 
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
+import pathfinder.*;
 import pathfinder.LogCategory;
-import pathfinder.PathFinder;
-import pathfinder.SimplePathFinder;
-import pathfinder.entities.Clustering;
-import pathfinder.entities.DirectedEdge;
-import api.entities.Tile;
-import api.pathfinder.SearchTarget;
+import pathfinder.entities.*;
+import api.entities.*;
+import api.pathfinder.*;
 
 public class HPAStarSearchStrategy extends SearchStrategy {
 
@@ -49,7 +45,7 @@ public class HPAStarSearchStrategy extends SearchStrategy {
         List<Tile> path = pf.search(PathFinder.Strategy.AStar, edgeStart, endEdge, maxCost);
 
         if (path != null) {
-            Collections.reverse(path);
+            // Collections.reverse(path);
             path.addAll(endEdge.getPath().subList(1, endEdge.getPath().size() - 1));
 
         }

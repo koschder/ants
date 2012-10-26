@@ -1,15 +1,10 @@
 package pathfinder;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import pathfinder.search.AStarSearchStrategy;
-import pathfinder.search.SearchStrategy;
-import pathfinder.search.SimpleSearchStrategy;
-import api.entities.Tile;
-import api.pathfinder.SearchTarget;
-import api.pathfinder.SearchableMap;
+import pathfinder.search.*;
+import api.entities.*;
+import api.pathfinder.*;
 
 public class SimplePathFinder implements PathFinder {
 
@@ -102,7 +97,7 @@ public class SimplePathFinder implements PathFinder {
                 newSubPath = search(Strategy.AStar, subPath.get(0), subPath.get(subPath.size() - 1), subPath.size() - 1);
             }
             if (newSubPath != null) {
-                Collections.reverse(newSubPath); // todo why is here the path the other way round.
+                // Collections.reverse(newSubPath); // todo why is here the path the other way round.
                 newPath.addAll(newSubPath);
                 if (recursive) {
                     newPath = smoothPath(newPath, newPath.size(), true);
