@@ -2,6 +2,7 @@ package ants.state;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -15,6 +16,7 @@ import ants.tasks.BaseTask;
 import ants.util.LiveInfo;
 import api.entities.Aim;
 import api.entities.Tile;
+import api.pathfinder.SearchTarget;
 
 /**
  * This class tracks all orders and missions for our ants. It ensures that no conflicting orders are given.
@@ -61,7 +63,7 @@ public class Orders {
         if (direction != null)
             newLoc = Ants.getWorld().getTile(ant.getTile(), direction);
 
-        if (Ants.getWorld().getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
+        if (isFreeForNextMove(newLoc)) {
             LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s Order:%s<br/> ant: %s", issuer,
                     direction, ant.getTile());
             LOGGER_TASKS.debug("%1$s: Moving ant from %2$s to %3$s", issuer, ant.getTile(), newLoc);
@@ -69,7 +71,45 @@ public class Orders {
             ant.setNextTile(newLoc);
             Ants.getPopulation().addEmployedAnt(ant);
             return true;
+        } else {
+            LOGGER_TASKS.debug("Move is not possible %s to %s", ant, newLoc);
         }
+        return false;
+    }
+
+    private boolean isFreeForNextMove(Tile nextLocation) {
+        String sLog = "isFreeForNextMove: ";
+        // there is already an order heading to this field
+        boolean hasOrder = orders.containsKey(nextLocation);
+        if (hasOrder)
+            return false;
+
+        if (Ants.getWorld().getIlk(nextLocation).isUnoccupied())
+            return true;
+        // TODO why is here getEmployedAnts() not filled??
+        // the field is occupied at the moment, but the ant is moving away with the next move.
+        // if (Ants.getPopulation().getEmployedAnts().contains(nextLocation)) {
+        sLog += "check if ant will go away neighbrs are: ";
+        List<SearchTarget> neighbours = Ants.getWorld().getSuccessor(nextLocation, false);
+        sLog += neighbours;
+        for (SearchTarget neighbour : neighbours) {
+            if (orders.containsKey(neighbour.getTargetTile())) {
+                sLog += "there is a order to neighbour " + neighbour;
+                // there is a move where a ant goes to a neighbour cell, maybe it's the ant of "nextlocation"
+                Move m = orders.get(neighbour);
+                sLog += "move comes from " + m.getTile();
+                if (m.getTile().equals(nextLocation)) {
+                    // yes it is the ant
+
+                    return true;
+                }
+            }
+        }
+        // } else {
+        // sLog += "no employeed ant on field " + nextLocation + " till now ["
+        // + Ants.getPopulation().getEmployedAnts().size() + "] ";
+        // }
+        LOGGER_TASKS.debug(sLog);
         return false;
     }
 
