@@ -1,0 +1,104 @@
+#!/usr/bin/env python
+from game_state import *
+from movement import *
+from ants import *
+import logging
+import traceback
+import datetime
+import time
+import sys
+
+# define a class with a do_turn method
+# the Ants.run method will parse and update bot input
+# it will also run the do_turn method for us
+class MyBot:
+
+	# define class level variables, will be remembered between turns
+	def __init__(self):
+		try:
+			filename = datetime.datetime.now().strftime("log\MyBot %d-%m-%Y %I.%M.%S%p.log") 
+		
+			#Setup the logger
+			logging.basicConfig(
+				#filename=filename,
+				format='%(message)s')
+			self.logger = logging.getLogger('My logger')
+			
+			# Toggle debug mode here
+			#self.logger.setLevel(logging.ERROR)
+			#self.logger.setLevel(logging.DEBUG)
+		except:
+			self.logger.error("Error: print_exc(): %s", traceback.format_exc())
+
+    # do_setup is run once at the start of the game
+    # after the bot has received the game settings
+    # the ants class is created and setup by the Ants.run method
+	def do_setup(self, ants):
+		try:
+			setup_start_time = time.time()
+			self.game_state = game_state(ants, self.logger)
+			self.movement = movement(ants, self.logger, self.game_state)
+			
+			time_left = ants.loadtime - int(1000 * (time.time() - setup_start_time))
+			self.logger.debug("Setup time remaining %d", time_left)
+		except:
+			self.logger.error("Error: print_exc(): %s", traceback.format_exc())
+		
+	# do turn is run once per turn
+	# the ants class has the game state and is updated by the Ants.run method
+	# it also has several helper methods to use
+	def do_turn(self, ants):
+		# try/catch everything
+		try:
+			# Log turn stats
+			self.logger.debug("----------------------------Do Turn %d----------------------------", self.game_state.turn)
+			
+			# Start the next turn by grabbing a bunch of info from the engine
+			self.game_state.start_turn()
+						
+			self.logger.debug("Occupy ants time remaining %d", ants.time_remaining())
+			self.game_state.occupy_ants()	
+							
+			self.logger.debug("Steping paths time remaining %d", ants.time_remaining())
+			self.movement.step_paths()
+			
+			self.logger.debug("Update diffusion map time remaining %d", ants.time_remaining())
+			self.game_state.update_diffusion()
+			
+			self.logger.debug("Clearing hills time remaining %d", ants.time_remaining())
+			self.movement.clear_hills()
+			
+			# Diffuse the map
+			if self.game_state.turn == 1:
+				self.logger.debug("Diffusing map time remaining %d at rate 5", ants.time_remaining())
+				self.game_state.diffuse(5, self.game_state.time_out_diffuse)
+			else:
+				self.logger.debug("Diffusing map time remaining %d at rate %d", ants.time_remaining(), self.game_state.diffuse_rate)
+				self.game_state.diffuse(self.game_state.diffuse_rate, self.game_state.time_out_diffuse)
+			
+			# Climb all the hills
+			self.logger.debug("Climbing hills time remaining %d", ants.time_remaining())
+			self.movement.climb_hills()
+						
+			self.game_state.render_stats()
+			
+			self.logger.debug("DONE ants time remaining %d", ants.time_remaining())
+		except:
+			self.logger.error("Error: print_exc(): %s", traceback.format_exc())
+		
+
+if __name__ == '__main__':
+    # psyco will speed up python a little, but is not needed
+    try:
+        import psyco
+        psyco.full()
+    except ImportError:
+        print('no psyco')
+    
+    try:
+        # if run is passed a class with a do_turn method, it will do the work
+        # this is not needed, in which case you will need to write your own
+        # parsing function and your own game state class
+        Ants.run(MyBot())
+    except KeyboardInterrupt:
+        print('ctrl-c, leaving ...')

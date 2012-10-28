@@ -1,0 +1,48 @@
+#!/usr/bin/env python
+
+# Some variables that control aggression
+CONFIDENCE_LEVEL = 2
+CONFIDENCE_SIZE = 100
+ATTACK_BUFFER = 2
+DEFEND_BUFFER = 1
+ENEMY_BUFFER = 3
+MY_DISTANCE = 8
+SCAN_LIMIT = 50
+
+# Combat
+KILL_TIME = 1.00
+ATTACK_LIMIT = 100
+
+# Score for each object (Higher == better)
+ENEMY_HILL = 100
+ENEMY_ANT = 0
+ENEMY_DEAD_ANT = 25
+MY_DEAD_ANT = 50
+MY_SAFE_ANT =  0
+MY_DANGER_ANT = 0
+MY_SAFE_HILL = 0
+MY_DANGER_HILL = 10
+FOOD_VALUE = 10
+EXPLORE = 0.01
+FOG = 0.001
+BLOCKED = 0
+
+# Varibles that control the attractiveness of a path
+PATH_END = 1
+PATH_BEGIN = 0.1
+PATH_DURATION = 0.5
+FOOD_PATH_STEP = 250
+ATTACK_PATH_STEP = 10
+PATH_MAX = 1
+STAR_RATIO = 0.66
+STAR_LIMIT = 300
+HILL_LIMIT = 300
+
+# The amount each cell is diffused
+DIFFUSE_RATE = 15
+COEFFICIENT = 0.12
+
+# Time out information
+TIME_OUT_BUFFER = 0.75
+TIME_OUT_VISION = 0.3
+TIME_OUT_DIFFUSE = 0.7
