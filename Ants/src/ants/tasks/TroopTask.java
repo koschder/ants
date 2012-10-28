@@ -10,11 +10,11 @@ public class TroopTask extends BaseTask {
     @Override
     public void doPerform() {
 
-        Tile hill = new Tile(66, 74);
+        Tile hill = new Tile(32, 8);
 
-        if (Ants.getAnts().getTurn() == 10) {
+        if (Ants.getAnts().getTurn() == 1) {
             Tile tp = new Tile(hill.getRow(), hill.getCol());
-            addMission(new TroopMission(tp, 4));
+            addMission(new TroopMission(tp, 8));
         }
 
         for (Mission m : Ants.getOrders().getMissions())

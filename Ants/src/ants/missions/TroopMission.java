@@ -47,7 +47,7 @@ public class TroopMission implements Mission {
             // TODO define max manhattanDistance considering amount
             int maxDistance = 1 + (amount / 4); // vierer nachbarschaft.
             if (Ants.getWorld().manhattanDistance(a.getTile(), troopPoint) > maxDistance) {
-                LOGGER.info("Ant %s it to far away for TroopPoint %s mission ins't compelete yet", a, troopPoint);
+                LOGGER.info("Ant %s it to far away of TroopPoint %s. mission insn't compelete yet", a, troopPoint);
                 return false;
             }
         }
@@ -70,20 +70,26 @@ public class TroopMission implements Mission {
     }
 
     private void moveAnt(Ant a) {
-        if (a.getTile().equals(troopPoint))
-            return;
-        List<Aim> aims = Ants.getWorld().getDirections(a.getTile(), troopPoint);
+        boolean bIssueOrderd = false;
+        if (false) {
+            // here we do the positioning
 
-        for (Aim aim : aims) {
-            if (!Ants.getWorld().isPassable(Ants.getWorld().getTile(a.getTile(), aim)))
-                continue;
-            if (Ants.getOrders().issueOrder(a, aim, "TroopMission")) {
-                LOGGER.info("TroopMission_AntMoved %s moved to %s", a, aim);
-                break;
+        } else {
+            // move towards TroopPoint
+            List<Aim> aims = Ants.getWorld().getDirections(a.getTile(), troopPoint);
+            for (Aim aim : aims) {
+                if (Ants.getOrders().issueOrder(a, aim, "TroopMission")) {
+                    LOGGER.info("TroopMission_AntMoved %s moved to %s", a, aim);
+                    bIssueOrderd = true;
+                    break;
+                }
             }
         }
-        Ants.getOrders().issueOrder(a, null, "TroopMission");
-        return;
+        if (!bIssueOrderd) {
+            // if no issue could be ordered we do a null move, so that the ant doesn't apear at the
+            // unemployeed list
+            Ants.getOrders().issueOrder(a, null, "TroopMission");
+        }
     }
 
     public void gatherAnts() {
@@ -123,6 +129,7 @@ public class TroopMission implements Mission {
     @Override
     public void setup() {
         for (Ant a : ants) {
+            LOGGER.info("TroopMission_Setup ANT %s ", a);
             a.setup();
         }
 

@@ -16,6 +16,23 @@
 			<fileset dir="${basedir}/../InfluenceMap/bin" includes="**/*.class" />
 		</jar>
 	</target>
+		<target name="jarTroop">
+		<javac srcdir="${basedir}/src" destdir="${basedir}/bin"/>
+		<javac srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin"/>
+		<javac srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin"/>
+		<javac srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin"/>
+		<javac srcdir="${basedir}/../InfluenceMap/src" destdir="${basedir}/../InfluenceMap/bin"/>
+		<jar destfile="${basedir}/TroopBot.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="ants.bot.TroopBot" />
+			</manifest>
+			<fileset dir="${basedir}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../Util/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../AITools-Api/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../Pathfinder/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../InfluenceMap/bin" includes="**/*.class" />
+		</jar>
+	</target>
 	<target name="testBot" depends="jar">
 		<exec executable="python" failonerror="true">
 			<arg line="tools/playgame.py" />
@@ -25,7 +42,7 @@
 			<arg line="--end_wait=0.25" />
 			<arg line="--verbose" />
 			<arg line="--log_dir logs" />
-			<arg line="--turns 50" />
+			<arg line="--turns 100" />
 			<arg line="--map_file tools/submission_test/test.map" />
 			<arg line="&quot;java -jar TutorialBot.jar&quot;" />
 			<arg line="&quot;python tools/submission_test/TestBot.py&quot;" />
@@ -57,6 +74,21 @@
 				<arg line="--turns 200" />
 				<arg line="--scenario" />
 				<arg line="--food yes" />
+				<arg line="--player_seed 7" />
+				<arg line="--verbose" />
+				<arg line="-e" />
+			</exec>
+		</target>
+		<target name="troopTest" depends="jarTroop">
+			<exec executable="python" failonerror="true">
+				<arg line="tools/playgame.py" />
+				<arg line="&quot;java -jar TroopBot.jar&quot;" />
+				<arg line="&quot;python tools/sample_bots/python/HunterBot.py&quot;" />
+				<arg line="--map_file tools/maps/test/troopTest.map" />
+				<arg line="--log_dir logs" />
+				<arg line="--turns 50" />
+				<arg line="--scenario" />
+				<arg line="--food none" />
 				<arg line="--player_seed 7" />
 				<arg line="--verbose" />
 				<arg line="-e" />

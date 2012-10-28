@@ -98,4 +98,8 @@ public class Population {
         employedAnts.add(ant);
     }
 
+    public Set<Ant> getEmployedAnts() {
+        return employedAnts;
+    }
+
 }
