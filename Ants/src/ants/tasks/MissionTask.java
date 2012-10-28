@@ -24,7 +24,7 @@ public class MissionTask extends BaseTask {
     public void setup() {
         super.setup();
         for (Mission m : Ants.getOrders().getMissions()) {
-            m.getAnt().setup();
+            m.setup();
         }
     }
 

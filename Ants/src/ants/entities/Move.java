@@ -14,6 +14,8 @@ public class Move {
     private Aim direction;
 
     public Move(Tile tile, Aim direction) {
+        if (tile == null)
+            throw new IllegalArgumentException("tile must be set");
         this.tile = tile;
         this.direction = direction;
     }

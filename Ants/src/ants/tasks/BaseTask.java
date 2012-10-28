@@ -22,7 +22,7 @@ public abstract class BaseTask implements Task {
     }
 
     private int maxResources = Integer.MAX_VALUE;
-    private int maxAnts = 0;
+    private int maxAnts = Integer.MAX_VALUE;
     private int allocatedAnts = 0;
 
     @Override
@@ -35,14 +35,15 @@ public abstract class BaseTask implements Task {
         try {
             doPerform();
         } catch (InsufficientResourcesException e) {
-            LOGGER.info("Task %s reached its resource limit: %s", getClass().getSimpleName(), this.maxResources);
+            LOGGER.info("Task %s reached its resource limit: %s percent (alloc: %s, max: %s) ", getClass()
+                    .getSimpleName(), this.maxResources, this.allocatedAnts, this.maxAnts);
         }
     }
 
     @Override
     public void setMaxResources(Integer maxResources) {
         this.maxResources = maxResources;
-        this.maxAnts = (int) (Ants.getPopulation().getMyAnts().size() * (this.maxResources / 100.0));
+        this.maxAnts = (int) Math.ceil(Ants.getPopulation().getMyAnts().size() * (this.maxResources / 100.0));
     }
 
     @Override

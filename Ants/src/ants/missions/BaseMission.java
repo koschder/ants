@@ -102,4 +102,9 @@ public abstract class BaseMission implements Mission {
         return putMissionOrder(a, aims.get(0));
 
     }
+
+    public void setup() {
+        if (ant != null)
+            ant.setup();
+    }
 }

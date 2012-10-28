@@ -57,7 +57,10 @@ public class Orders {
      */
     public boolean issueOrder(Ant ant, Aim direction, String issuer) {
         // Track all moves, prevent collisions
-        Tile newLoc = Ants.getWorld().getTile(ant.getTile(), direction);
+        Tile newLoc = ant.getTile();
+        if (direction != null)
+            newLoc = Ants.getWorld().getTile(ant.getTile(), direction);
+
         if (Ants.getWorld().getIlk(newLoc).isUnoccupied() && !orders.containsKey(newLoc)) {
             LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s Order:%s<br/> ant: %s", issuer,
                     direction, ant.getTile());
@@ -91,11 +94,13 @@ public class Orders {
      */
     public void issueOrders() {
         for (Move move : orders.values()) {
-            if (move != null) {
+            if (move != null && move.getDirection() != null) {
                 final String order = "o " + move.getTile().getRow() + " " + move.getTile().getCol() + " "
                         + move.getDirection().getSymbol();
                 LOGGER.debug("Issuing order: %s", order);
                 System.out.println(order);
+            } else {
+                LOGGER.debug("NOT Issuing order: %s", move.getTile());
             }
         }
     }

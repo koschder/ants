@@ -18,7 +18,8 @@ public interface Task {
         FOLLOW,
         GATHER_FOOD,
         MISSION,
-        VALIDATE_ORDERS;
+        VALIDATE_ORDERS,
+        TROOP_ANTS;
     }
 
     /**
