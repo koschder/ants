@@ -1,12 +1,15 @@
 package pathfinder.search;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import logging.*;
-import pathfinder.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.LogCategory;
-import api.entities.*;
-import api.pathfinder.*;
+import pathfinder.PathFinder;
+import api.entities.Aim;
+import api.entities.Tile;
+import api.pathfinder.SearchTarget;
 
 public class SimpleSearchStrategy extends SearchStrategy {
 
@@ -75,8 +78,8 @@ public class SimpleSearchStrategy extends SearchStrategy {
         List<Tile> path = new ArrayList<Tile>();
 
         List<Aim> directions = pathFinder.getMap().getDirections(from, to);
-        if (!(directions.size() == 1))
-            LOGGER.error("more than 1 direction from %s to %s", from, to);
+        if (directions.size() != 1)
+            LOGGER.error("more than 1 direction from %s to %s: Aims: %s", from, to, directions);
         Aim aim = directions.get(0);
 
         if (!pathFinder.getMap().isPassable(pathFinder.getMap().getTile(from, aim)))
