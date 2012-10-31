@@ -109,6 +109,21 @@
 				<arg line="-e" />
 			</exec>
 		</target>
+		<target name="mazeAgainstXathis" depends="jar">
+			<exec executable="python" failonerror="true">
+				<arg line="tools/playgame.py" />
+				<arg line="&quot;java -jar TutorialBot.jar&quot;" />
+				<arg line="&quot;java -jar tools/bots/xathis/xathis.jar&quot;" />
+				<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
+				<arg line="--log_dir logs" />
+				<arg line="--turns 200" />
+				<arg line="--scenario" />
+				<arg line="--food yes" />
+				<arg line="--player_seed 7" />
+				<arg line="--verbose" />
+				<arg line="-e" />
+			</exec>
+		</target>
 		<target name="troopTest" depends="jarTroop">
 			<exec executable="python" failonerror="true">
 				<arg line="tools/playgame.py" />
