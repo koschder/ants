@@ -17,9 +17,9 @@ import api.pathfinder.*;
  */
 public class World extends AbstractWraparoundMap implements UnitMap {
 
-    private int rows;
+    protected int rows;
 
-    private int cols;
+    protected int cols;
 
     private int viewRadius2;
 

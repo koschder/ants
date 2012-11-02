@@ -1,7 +1,4 @@
-package ants.entities;
-
-import api.entities.Aim;
-import api.entities.Tile;
+package api.entities;
 
 /***
  * a move stores the current position and the direction where to move.
@@ -28,4 +25,8 @@ public class Move {
         return direction;
     }
 
+    @Override
+    public String toString() {
+        return tile.toString() + " -->" + direction.name();
+    }
 }

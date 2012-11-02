@@ -8,10 +8,8 @@ import logging.LoggerFactory;
 import pathfinder.PathFinder.Strategy;
 import ants.LogCategory;
 import ants.entities.Ant;
-import ants.entities.Move;
 import ants.state.Ants;
-import api.entities.Aim;
-import api.entities.Tile;
+import api.entities.*;
 
 public class TroopMission implements Mission {
 

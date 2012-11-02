@@ -4,7 +4,7 @@
 		<javac srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin"/>
 		<javac srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin"/>
 		<javac srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin"/>
-		<javac srcdir="${basedir}/../InfluenceMap/src" destdir="${basedir}/../InfluenceMap/bin"/>
+		<javac srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin"/>
 		<jar destfile="${basedir}/TutorialBot.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="ants.bot.MyBot" />
@@ -13,7 +13,7 @@
 			<fileset dir="${basedir}/../Util/bin" includes="**/*.class" />
 			<fileset dir="${basedir}/../AITools-Api/bin" includes="**/*.class" />
 			<fileset dir="${basedir}/../Pathfinder/bin" includes="**/*.class" />
-			<fileset dir="${basedir}/../InfluenceMap/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../Strategy/bin" includes="**/*.class" />
 		</jar>
 	</target>
 		<target name="jarTroop">
@@ -21,7 +21,7 @@
 		<javac srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin"/>
 		<javac srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin"/>
 		<javac srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin"/>
-		<javac srcdir="${basedir}/../InfluenceMap/src" destdir="${basedir}/../InfluenceMap/bin"/>
+		<javac srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin"/>
 		<jar destfile="${basedir}/TroopBot.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="ants.bot.TroopBot" />
@@ -30,7 +30,7 @@
 			<fileset dir="${basedir}/../Util/bin" includes="**/*.class" />
 			<fileset dir="${basedir}/../AITools-Api/bin" includes="**/*.class" />
 			<fileset dir="${basedir}/../Pathfinder/bin" includes="**/*.class" />
-			<fileset dir="${basedir}/../InfluenceMap/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../Strategy/bin" includes="**/*.class" />
 		</jar>
 	</target>
 	<target name="testBot" depends="jar">

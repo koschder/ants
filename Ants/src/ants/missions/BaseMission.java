@@ -8,10 +8,8 @@ import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
 import ants.entities.Ant;
-import ants.entities.Move;
 import ants.state.Ants;
-import api.entities.Aim;
-import api.entities.Tile;
+import api.entities.*;
 
 /***
  * Implements the interface Mission an handles the base tasks of a mission.

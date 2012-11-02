@@ -1,11 +1,9 @@
 package api.map;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import api.entities.Aim;
-import api.entities.Tile;
-import api.pathfinder.SearchableMap;
+import api.entities.*;
+import api.pathfinder.*;
 
 public abstract class AbstractWraparoundMap implements SearchableMap {
 
@@ -48,6 +46,8 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
 
     @Override
     public Tile getTile(Tile tile, Aim direction) {
+        if (direction == null)
+            return tile;
         int row = (tile.getRow() + direction.getRowDelta()) % getRows();
         if (row < 0) {
             row += getRows();

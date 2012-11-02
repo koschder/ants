@@ -1,7 +1,7 @@
 package ants.missions;
 
 import ants.entities.Ant;
-import ants.entities.Move;
+import api.entities.*;
 
 /***
  * defines which method must be implemented by a mission

@@ -3,9 +3,9 @@ package unittest.ants.state;
 import org.junit.Test;
 
 import ants.entities.Ant;
-import ants.entities.Move;
 import ants.missions.Mission;
 import ants.state.Orders;
+import api.entities.*;
 
 public class OrdersTest {
     @Test(expected = IllegalStateException.class)

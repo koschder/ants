@@ -7,9 +7,8 @@ import logging.LoggerFactory;
 import pathfinder.PathFinder;
 import ants.LogCategory;
 import ants.entities.Ant;
-import ants.entities.Move;
 import ants.state.Ants;
-import api.entities.Tile;
+import api.entities.*;
 
 /***
  * This mission is used to let an ant follow an other ant which has already a mission.

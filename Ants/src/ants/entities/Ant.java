@@ -1,17 +1,11 @@
 package ants.entities;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
-import api.entities.Tile;
-import api.entities.Unit;
+import api.entities.*;
 
-public class Ant implements Comparable<Ant>, Unit {
+public class Ant implements Comparable<Ant>, Unit, Cloneable {
     public static final int MINE = 0;
     private Tile tile;
     private Tile nextTile;
@@ -156,4 +150,9 @@ public class Ant implements Comparable<Ant>, Unit {
         return tile.toString() + ", Player=" + player;
     }
 
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        // TODO Auto-generated method stub
+        return super.clone();
+    }
 }

@@ -6,6 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/Pathfinder"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/AITools-Api"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/InfluenceMap"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Strategy"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
