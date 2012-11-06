@@ -9,7 +9,9 @@ import logging.LoggerFactory;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.state.Ants;
-import api.entities.*;
+import api.entities.Aim;
+import api.entities.Move;
+import api.entities.Tile;
 
 /***
  * Implements the interface Mission an handles the base tasks of a mission.
@@ -28,7 +30,7 @@ public abstract class BaseMission implements Mission {
     }
 
     @Override
-    public final boolean isValid() {
+    public boolean isValid() {
         if (abandon)
             return false;
         boolean antIsAlive = (Ants.getWorld().getIlk(ant.getTile()).hasFriendlyAnt());
@@ -61,7 +63,7 @@ public abstract class BaseMission implements Mission {
      * @param aim
      * @return true if the move is stored and will be executed.
      */
-    protected boolean putMissionOrder(Ant ant, Aim aim) {
+    private boolean putMissionOrder(Ant ant, Aim aim) {
         if (Ants.getOrders().issueOrder(ant, aim, getVisualizeInfos())) {
             previousMoves.add(new Move(ant.getTile(), aim));
             return true;
@@ -91,7 +93,7 @@ public abstract class BaseMission implements Mission {
         return ant;
     }
 
-    public boolean putMissionOrder(Ant a, Tile to) {
+    protected boolean putMissionOrder(Ant a, Tile to) {
 
         List<Aim> aims = Ants.getWorld().getDirections(a.getTile(), to);
         if (aims.size() != 1)
