@@ -25,13 +25,13 @@ public class Node implements Comparable<Node> {
     /***
      * the path cost until this node.
      */
-    private int costActual;
+    private int actualCost;
 
-    public Node(SearchTarget state, Node parent, int cActual, double costEstimated) {
+    public Node(SearchTarget state, Node parent, int actualCosts, double costEstimated) {
         this.state = state;
         this.parent = parent;
-        this.costActual = cActual + state.getCost();
-        this.costEstimated = costActual + costEstimated;
+        this.actualCost = actualCosts;
+        this.costEstimated = actualCost + costEstimated;
     }
 
     /***
@@ -46,8 +46,8 @@ public class Node implements Comparable<Node> {
         return parent;
     }
 
-    public int getAcutalCost() {
-        return costActual;
+    public int getActualCost() {
+        return actualCost;
     }
 
     public double getEstimatedCost() {
@@ -56,16 +56,14 @@ public class Node implements Comparable<Node> {
 
     @Override
     public String toString() {
-        return "Node [state=" + state + ", actual cost=" + costActual + ", estimated cost= " + costEstimated + "]";
-        // return "Node [state=" + state + ", parent=" + (parent != null ? parent.state : "null") + ", cost=" + cost +
-        // "]";
+        return "Node [state=" + state + ", actual cost=" + actualCost + ", estimated cost= " + costEstimated + "]";
     }
 
     @Override
     public int hashCode() {
         final int prime = 31;
         double result = 1;
-        result = prime * result + costActual + costEstimated;
+        result = prime * result + actualCost + costEstimated;
         result = prime * result + ((parent == null) ? 0 : parent.hashCode());
         result = prime * result + ((state == null) ? 0 : state.hashCode());
         return (int) result;
@@ -94,9 +92,5 @@ public class Node implements Comparable<Node> {
      */
     public int compareTo(Node o) {
         return ((int) costEstimated * 100) - ((int) o.costEstimated * 100);
-    }
-
-    public int getActualCost() {
-        return this.costActual;
     }
 }

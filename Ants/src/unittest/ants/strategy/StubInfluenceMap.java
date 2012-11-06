@@ -5,6 +5,7 @@ import java.util.Map;
 
 import api.entities.Tile;
 import api.map.UnitMap;
+import api.pathfinder.SearchTarget;
 import api.strategy.InfluenceMap;
 
 public class StubInfluenceMap implements InfluenceMap {
@@ -39,6 +40,12 @@ public class StubInfluenceMap implements InfluenceMap {
 
     public void setTotalOpponentInfluence(Integer influence) {
         this.totalOppInfluence = influence;
+    }
+
+    @Override
+    public int getPathCosts(SearchTarget dest) {
+        // TODO Auto-generated method stub
+        return 0;
     }
 
 }

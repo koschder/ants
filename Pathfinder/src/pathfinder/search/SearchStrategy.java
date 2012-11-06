@@ -6,6 +6,7 @@ import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.LogCategory;
 import pathfinder.PathFinder;
+import pathfinder.entities.Node;
 import api.entities.Tile;
 import api.map.TileMap;
 import api.map.WorldType;
@@ -27,8 +28,14 @@ public abstract class SearchStrategy {
     protected Tile searchSpace2;
     private long timeElapsed = -1;
 
+    protected boolean useInflunceMap = false;
+
     public SearchStrategy(PathFinder f) {
         pathFinder = f;
+        if (f.getInfluenceMap() != null) {
+            useInflunceMap = true;
+        }
+
     }
 
     /**
@@ -40,7 +47,7 @@ public abstract class SearchStrategy {
     protected abstract List<Tile> searchPath(SearchTarget from, SearchTarget to);
 
     /***
-     * searchs the path and logs the calls
+     * Searches the path and logs the calls
      * 
      * @param from
      * @param to
@@ -78,6 +85,18 @@ public abstract class SearchStrategy {
     public void setSearchSpace(Tile p1, Tile p2) {
         this.searchSpace1 = p1;
         this.searchSpace2 = p2;
+    }
+
+    protected double getEstimatedCosts(Tile from, Tile to) {
+        return pathFinder.getMap().beelineTo(from, to);
+
+    }
+
+    protected final int getActualCost(Node current, SearchTarget dest) {
+        if (useInflunceMap) {
+            return current.getActualCost() + pathFinder.getInfluenceMap().getPathCosts(dest);
+        }
+        return current.getActualCost() + dest.getCost();
     }
 
     protected boolean inSearchSpace(SearchTarget areaCheck) {

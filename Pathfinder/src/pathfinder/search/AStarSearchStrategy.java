@@ -43,7 +43,7 @@ public class AStarSearchStrategy extends SearchStrategy {
     private List<Tile> calculateBestPath(SearchTarget from, SearchTarget to) {
         if (from.equals(to))
             return to.getPath();
-        boolean bPrintFrontier = false;
+        boolean bPrintFrontier = true;
         Set<SearchTarget> explored = new HashSet<SearchTarget>();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>();
         frontier.add(new Node(from, null, 0, getEstimatedCosts(from.getTargetTile(), to.getTargetTile())));
@@ -91,20 +91,10 @@ public class AStarSearchStrategy extends SearchStrategy {
             LOGGER.debug("tile %s is not in searchspace", childState);
             return;
         }
+        int actualCosts = getActualCost(parent, childState);
         double estimatedCosts = getEstimatedCosts(childState.getTargetTile(), to.getTargetTile());
-        children.add(new Node(childState, parent, getActualCost(parent, childState), estimatedCosts));
+        children.add(new Node(childState, parent, actualCosts, estimatedCosts));
 
-    }
-
-    private double getEstimatedCosts(Tile from, Tile to) {
-
-        return pathFinder.getMap().beelineTo(from, to);
-
-    }
-
-    private int getActualCost(Node current, SearchTarget dest) {
-
-        return current.getActualCost();
     }
 
     private List<Tile> path(Node child) {

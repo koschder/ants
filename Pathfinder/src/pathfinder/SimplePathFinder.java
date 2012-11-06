@@ -1,17 +1,28 @@
 package pathfinder;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import pathfinder.search.*;
-import api.entities.*;
-import api.pathfinder.*;
+import pathfinder.search.AStarSearchStrategy;
+import pathfinder.search.SearchStrategy;
+import pathfinder.search.SimpleSearchStrategy;
+import api.entities.Tile;
+import api.pathfinder.SearchTarget;
+import api.pathfinder.SearchableMap;
+import api.strategy.InfluenceMap;
 
 public class SimplePathFinder implements PathFinder {
 
     protected SearchableMap map;
+    protected InfluenceMap infMap;
 
     public SimplePathFinder(SearchableMap map) {
         this.map = map;
+    }
+
+    public SimplePathFinder(SearchableMap map, InfluenceMap infMap) {
+        this.map = map;
+        this.infMap = infMap;
     }
 
     @Override
@@ -122,5 +133,26 @@ public class SimplePathFinder implements PathFinder {
         } while (!path.get(path.size() - 1).equals(newPath.get(newPath.size() - 1)));
 
         return newPath;
+    }
+
+    @Override
+    public InfluenceMap getInfluenceMap() {
+        return infMap;
+    }
+
+    public int getPathCosts(List<Tile> path) {
+        int costs = 0;
+        for (Tile t : path) {
+            costs += (infMap == null) ? 1 : infMap.getPathCosts(t);
+        }
+        return costs;
+    }
+
+    public String getPathCostsString(List<Tile> path) {
+        String costs = "";
+        for (Tile t : path) {
+            costs += (infMap == null) ? ",1" : "," + infMap.getPathCosts(t);
+        }
+        return costs.length() > 0 ? costs.substring(1) : "";
     }
 }

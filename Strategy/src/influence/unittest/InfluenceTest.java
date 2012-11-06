@@ -40,7 +40,7 @@ public class InfluenceTest {
         sMap += "wooo0ooowwwwwwwwwwwwwooooowooo1ooooow";
         sMap += "woooooooooooowoooooooooooowooooooooow";
         sMap += "wooooooooooo0woooowoooooo2wooooooooow";
-        sMap += "woooo1oooooooooooowooooooowooooooooow";
+        sMap += "woooo11ooooooooooowooooooowooooooooow";
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
         return sMap;
     }

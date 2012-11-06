@@ -53,7 +53,7 @@ public class PathSmoothingTest {
 
         List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, start, end, -1);
 
-        List<Tile> pathSmoothed = pf.smoothPath(path, 9, true);
+        List<Tile> pathSmoothed = pf.smoothPath(path, 9, false);
         // List<Tile> pathSmoothed = pf.smoothPath(pathSmoothed_, 12, 1);
         // pathSmoothed = pf.smoothPath(pathSmoothed, 12, 1);
 

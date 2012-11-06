@@ -7,6 +7,7 @@ import java.util.Map.Entry;
 import api.entities.Tile;
 import api.entities.Unit;
 import api.map.UnitMap;
+import api.pathfinder.SearchTarget;
 import api.strategy.InfluenceMap;
 
 public class DefaultInfluenceMap implements InfluenceMap {
@@ -105,4 +106,20 @@ public class DefaultInfluenceMap implements InfluenceMap {
         influence.get(player)[tile.getRow()][tile.getCol()] += (int) Math.ceil(newInfluence * (1 - decay));
     }
 
+    private int maxPathCost = 5;
+    private int defaultPathCost = 1;
+
+    @Override
+    public int getPathCosts(SearchTarget dest) {
+        int maxInfluence = 200; // cost spectrum -1000 to 1000 //TODO
+
+        int costs = 0;
+        for (Tile t : dest.getPath()) {
+            // prohibit negativ values (if saftey is negativ) (maxCost + getSafety(t))
+            // reverse safety, negativ safty means the path cost must rise
+            int safteyCost = (maxInfluence + getSafety(t) * -1) * maxPathCost / (maxInfluence * 2);
+            costs += defaultPathCost + safteyCost;
+        }
+        return costs;
+    }
 }

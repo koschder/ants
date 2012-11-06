@@ -5,6 +5,7 @@ import java.util.List;
 import api.entities.Tile;
 import api.pathfinder.SearchTarget;
 import api.pathfinder.SearchableMap;
+import api.strategy.InfluenceMap;
 
 public interface PathFinder {
 
@@ -53,5 +54,7 @@ public interface PathFinder {
             Tile searchSpace1, int maxCost);
 
     public SearchableMap getMap();
+
+    public InfluenceMap getInfluenceMap();
 
 }
