@@ -9,11 +9,13 @@ import pathfinder.PathFinder.Strategy;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.state.Ants;
-import api.entities.*;
+import api.entities.Aim;
+import api.entities.Move;
+import api.entities.Tile;
 
-public class TroopMission implements Mission {
+public class ConcentrateMission implements Mission {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.TROOP);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.CONCENTRATE);
 
     public List<Ant> ants = new ArrayList<Ant>();
     public Tile troopPoint;
@@ -24,13 +26,14 @@ public class TroopMission implements Mission {
     public int maxAwayForMission = 20;
 
     /**
+     * n
      * 
      * @param tP
      *            where to troop the ants
      * @param amount
      *            how many ants to troop
      */
-    public TroopMission(Tile tP, int a) {
+    public ConcentrateMission(Tile tP, int a) {
         this.troopPoint = tP;
         this.amount = a;
         LOGGER.info("TroopMission_created TroopPoint %s Ants needed %S", troopPoint, amount);

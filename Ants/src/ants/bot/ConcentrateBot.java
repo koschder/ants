@@ -5,16 +5,16 @@ import java.io.IOException;
 import logging.LogLevel;
 import logging.LoggingConfig;
 import ants.LogCategory;
+import ants.tasks.ConcentrateTask;
 import ants.tasks.MissionTask;
 import ants.tasks.Task;
 import ants.tasks.Task.Type;
-import ants.tasks.TroopTask;
 
-public class TroopBot extends BaseBot {
+public class ConcentrateBot extends BaseBot {
 
     public static void main(String[] args) throws IOException {
         initLogging();
-        new TroopBot().readSystemInput();
+        new ConcentrateBot().readSystemInput();
     }
 
     private static void initLogging() {
@@ -27,7 +27,7 @@ public class TroopBot extends BaseBot {
         LoggingConfig.configure(LogCategory.EXECUTE_MISSIONS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.EXPLORE, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.FOLLOW, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.TROOP, LogLevel.DEBUG);
+        LoggingConfig.configure(LogCategory.CONCENTRATE, LogLevel.DEBUG);
         LoggingConfig.configure(LogCategory.ORDERS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.PERFORMANCE, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.SETUP, LogLevel.INFO);
@@ -43,7 +43,7 @@ public class TroopBot extends BaseBot {
     protected void initTasks() {
         if (tasks.isEmpty()) {
             tasks.put(Type.MISSION, new MissionTask());
-            tasks.put(Type.TROOP_ANTS, new TroopTask());
+            tasks.put(Type.CONCENTRATE_ANTS, new ConcentrateTask());
         }
         for (Task task : tasks.values()) {
             task.setup();

@@ -35,14 +35,15 @@ public class InfluenceMapAstar {
 
         MapOutput put = new MapOutput();
         put.setMap(map);
-        put.addObject(path, "Path without Influence");
-        put.addObject(pathInf, "Path with Influence");
-        put.addComment("Path costs of path 1 without influence map:" + pf.getPathCosts(path));
-        put.addComment("Path costs of path 1 with influence map:" + pfInf.getPathCosts(path) + " ["
-                + pfInf.getPathCostsString(path) + "]");
-        put.addComment("Path costs of path 2 without influence map:" + pf.getPathCosts(pathInf));
-        put.addComment("Path costs of path 2 with influence map:" + pfInf.getPathCosts(pathInf) + " ["
-                + pfInf.getPathCostsString(pathInf) + "]");
+        put.addObject(path, "Cheapest path without influence");
+        put.addObject(pathInf, "Cheapest path considering influence");
+        put.addComment("Path costs yellow path without influence map:" + pf.getPathCosts(path));
+        put.addComment("Path costs yellow path with influence map:" + pfInf.getPathCosts(path));
+        put.addComment(" Detail costs: [" + pfInf.getPathCostsString(path) + "]");
+        put.addComment("&nbsp;");
+        put.addComment("Path costs of blue path without influence map:" + pf.getPathCosts(pathInf));
+        put.addComment("Path costs of blue path with influence map:" + pfInf.getPathCosts(pathInf));
+        put.addComment(" Detail costs:  [" + pfInf.getPathCostsString(pathInf) + "]");
         put.setClusterSize(5);
         put.addAllUnits();
         put.saveHtmlMap("InfluenceMapAstar_aStarInfluenceTest", getSafetyDecorator(iMap));

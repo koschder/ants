@@ -12,7 +12,7 @@ public enum LogCategory implements logging.LogCategory {
     FOLLOW(false),
     FOOD(false),
     ORDERS(false),
-    TROOP(false),
+    CONCENTRATE(false),
     PERFORMANCE(false),
     SETUP(false),
     STATISTICS(false),
