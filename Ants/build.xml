@@ -16,7 +16,7 @@
 			<fileset dir="${basedir}/../Strategy/bin" includes="**/*.class" />
 		</jar>
 	</target>
-		<target name="jarTroop">
+		<target name="jarConcentrateBot">
 		<javac srcdir="${basedir}/src" destdir="${basedir}/bin"/>
 		<javac srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin"/>
 		<javac srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin"/>
@@ -24,7 +24,7 @@
 		<javac srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin"/>
 		<jar destfile="${basedir}/TroopBot.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
-				<attribute name="Main-Class" value="ants.bot.TroopBot" />
+				<attribute name="Main-Class" value="ants.bot.ConcentrateBot" />
 			</manifest>
 			<fileset dir="${basedir}/bin" includes="**/*.class" />
 			<fileset dir="${basedir}/../Util/bin" includes="**/*.class" />
@@ -139,7 +139,7 @@
 				<arg line="-e" />
 			</exec>
 		</target>
-		<target name="troopTest" depends="jarTroop">
+		<target name="troopTest" depends="jarConcentrateBot">
 			<exec executable="python" failonerror="true">
 				<arg line="tools/playgame.py" />
 				<arg line="&quot;java -jar TroopBot.jar&quot;" />
