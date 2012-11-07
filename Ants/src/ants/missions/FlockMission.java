@@ -1,15 +1,11 @@
 package ants.missions;
 
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import pathfinder.PathFinder;
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Move;
-import api.entities.Tile;
+import pathfinder.*;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 public class FlockMission extends BaseMission {
     public FlockMission(Ant ant) {
@@ -22,11 +18,6 @@ public class FlockMission extends BaseMission {
     @Override
     public boolean isComplete() {
         return false;
-    }
-
-    @Override
-    public boolean isValid() {
-        return true;
     }
 
     @Override
@@ -72,23 +63,8 @@ public class FlockMission extends BaseMission {
     }
 
     @Override
-    public Ant getAnt() {
-        return null;
-    }
-
-    @Override
-    public Move getLastMove() {
-        return null;
-    }
-
-    @Override
-    public void setup() {
-
-    }
-
-    @Override
     protected boolean isSpecificMissionValid() {
-        return false;
+        return true;
     }
 
 }

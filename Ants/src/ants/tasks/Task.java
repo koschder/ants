@@ -15,7 +15,6 @@ public interface Task {
         COMBAT,
         DEFEND_AREA,
         EXPLORE,
-        FOLLOW,
         GATHER_FOOD,
         MISSION,
         VALIDATE_ORDERS,

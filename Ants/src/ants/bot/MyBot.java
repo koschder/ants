@@ -1,20 +1,11 @@
 package ants.bot;
 
-import java.io.IOException;
+import java.io.*;
 
-import logging.LogLevel;
-import logging.LoggingConfig;
+import logging.*;
 import ants.LogCategory;
-import ants.strategy.ResourceAllocator;
-import ants.tasks.AttackHillsTask;
-import ants.tasks.ClearHillTask;
-import ants.tasks.ClusteringTask;
-import ants.tasks.CombatTask;
-import ants.tasks.ExploreTask;
-import ants.tasks.FollowTask;
-import ants.tasks.GatherFoodTask;
-import ants.tasks.MissionTask;
-import ants.tasks.Task;
+import ants.strategy.*;
+import ants.tasks.*;
 import ants.tasks.Task.Type;
 
 /**
@@ -68,7 +59,6 @@ public class MyBot extends BaseBot {
             tasks.put(Type.ATTACK_HILLS, new AttackHillsTask());
             tasks.put(Type.COMBAT, new CombatTask());
             tasks.put(Type.EXPLORE, new ExploreTask());
-            tasks.put(Type.FOLLOW, new FollowTask());
             tasks.put(Type.CLEAR_HILL, new ClearHillTask());
             tasks.put(Type.CLUSTERING, new ClusteringTask());
         }
