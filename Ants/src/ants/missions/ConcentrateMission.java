@@ -1,13 +1,16 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
-import logging.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.PathFinder.Strategy;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import api.entities.Aim;
+import api.entities.Tile;
 
 public class ConcentrateMission extends BaseMission {
 
@@ -94,38 +97,16 @@ public class ConcentrateMission extends BaseMission {
         LOGGER.info("TroopMission_calculateBalancePoint x: %s y: %s offsetPoint %s", diffx, diffy, offsetPoint);
     }
 
-    private void moveAntOld(Ant a) {
-        boolean bIssueOrderd = false;
-        if (!bIssueOrderd && !a.getTile().equals(troopPoint)) {
-            // move towards TroopPoint
-            List<Aim> aims = Ants.getWorld().getDirections(a.getTile(), offsetPoint);
-            Collections.shuffle(aims);
-            for (Aim ai : aims) {
-                if (Ants.getOrders().issueOrder(a, ai, "TroopMission")) {
-                    LOGGER.info("TroopMission_AntMoved %s moved to %s", a, ai);
-                    bIssueOrderd = true;
-                    break;
-                }
-            }
-        }
-        if (!bIssueOrderd) {
-            // if no issue could be ordered we do a null move, so that the ant doesn't apear at the
-            // unemployeed list
-            Ants.getOrders().issueOrder(a, null, "TroopMission");
-        }
-
-    }
-
     private void moveAnt(Ant a) {
         boolean bIssueOrderd = false;
         int maxDistance = (amount / 4); // vierer nachbarschaft.
         if (Ants.getWorld().manhattanDistance(a.getTile(), troopPoint) < maxDistance) {
             Aim aim = null;
-            if (diffx < diffy) {
-                boolean north = (diffx < 0);
+            if (diffx > diffy) {
+                boolean north = (diffx > 0);
                 aim = north ? Aim.NORTH : Aim.SOUTH;
             } else {
-                boolean east = (diffy < 0);
+                boolean east = (diffy > 0);
                 aim = east ? Aim.EAST : Aim.WEST;
             }
             if (Ants.getOrders().issueOrder(a, aim, "TroopMission")) {
@@ -144,7 +125,7 @@ public class ConcentrateMission extends BaseMission {
                     break;
                 }
             }
-        } else {
+        } else if (!bIssueOrderd) {
             Aim[] aims = { Aim.NORTH, Aim.WEST, Aim.SOUTH, Aim.EAST };
             // Collections.shuffle(aims);
             for (Aim ai : aims) {
