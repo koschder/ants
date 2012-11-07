@@ -110,6 +110,19 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return neighbours;
     }
 
+    public List<Tile> get8Neighbours(Tile center) {
+        List<Tile> neighbours = new ArrayList<Tile>();
+        for (Aim aim : Aim.values()) {
+            neighbours.add(getTile(center, aim));
+        }
+        neighbours.add(getTile(center, new Tile(1, 1)));
+        neighbours.add(getTile(center, new Tile(-1, -1)));
+        neighbours.add(getTile(center, new Tile(1, -1)));
+        neighbours.add(getTile(center, new Tile(-1, 1)));
+
+        return neighbours;
+    }
+
     @Override
     public double beelineTo(Tile tStart, Tile tEnd) {
 
