@@ -1,9 +1,15 @@
 package ants.entities;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
-import api.entities.*;
+import api.entities.Tile;
+import api.entities.Unit;
 
 public class Ant implements Comparable<Ant>, Unit, Cloneable {
     public static final int MINE = 0;
@@ -109,7 +115,7 @@ public class Ant implements Comparable<Ant>, Unit, Cloneable {
 
     }
 
-    class DistanceComparator implements Comparator<Ant> {
+    public static class DistanceComparator implements Comparator<Ant> {
 
         Map<Ant, Integer> base;
 

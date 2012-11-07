@@ -1,9 +1,11 @@
 package api.map;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import api.entities.*;
-import api.pathfinder.*;
+import api.entities.Aim;
+import api.entities.Tile;
+import api.pathfinder.SearchableMap;
 
 public abstract class AbstractWraparoundMap implements SearchableMap {
 
@@ -98,6 +100,14 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
             r = getRows() - r;
 
         return r + c;
+    }
+
+    public List<Tile> get4Neighbours(Tile center) {
+        List<Tile> neighbours = new ArrayList<Tile>();
+        for (Aim aim : Aim.values()) {
+            neighbours.add(getTile(center, aim));
+        }
+        return neighbours;
     }
 
     @Override

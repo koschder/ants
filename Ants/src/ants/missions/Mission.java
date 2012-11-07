@@ -1,7 +1,7 @@
 package ants.missions;
 
 import ants.entities.Ant;
-import api.entities.*;
+import api.entities.Move;
 
 /***
  * defines which method must be implemented by a mission
@@ -16,6 +16,7 @@ public interface Mission {
 
     public void execute();
 
+    // TODO remove
     public Ant getAnt();
 
     public Move getLastMove();
