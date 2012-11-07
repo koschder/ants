@@ -1,10 +1,10 @@
 package ants.missions;
 
-import java.util.List;
+import java.util.*;
 
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 /***
  * Mission for gathering a food tile
@@ -36,8 +36,8 @@ public class GatherFoodMission extends PathMission {
     @Override
     public String toString() {
         String direction = "TODO"; // ((path.size() > 0) ? ant.getTile().directionTo(path.get(0)).toString() : "-");
-        return "GatherFoodMission: [ant=" + ant.getTile() + ", target food=" + food + ", Next direction:=" + direction
-                + ", Path:=" + getPathString() + ", IsMissionComplete()=" + isComplete() + "]";
+        return "GatherFoodMission: [ant=" + getAnt().getTile() + ", target food=" + food + ", Next direction:="
+                + direction + ", Path:=" + getPathString() + ", IsMissionComplete()=" + isComplete() + "]";
     }
 
     @Override

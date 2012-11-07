@@ -1,24 +1,18 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import pathfinder.PathFinder.Strategy;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Aim;
-import api.entities.Move;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
-public class ConcentrateMission implements Mission {
+public class ConcentrateMission extends BaseMission {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.CONCENTRATE);
 
-    public List<Ant> ants = new ArrayList<Ant>();
     public Tile troopPoint;
     public Tile offsetPoint;
     public int amount;
@@ -66,11 +60,6 @@ public class ConcentrateMission implements Mission {
         }
 
         LOGGER.info("TroopMission_completed TroopPoint %s Ants needed %S Ants: %s", troopPoint, amount, ants);
-        return true;
-    }
-
-    @Override
-    public boolean isValid() {
         return true;
     }
 
@@ -195,29 +184,14 @@ public class ConcentrateMission implements Mission {
         }
     }
 
-    @Override
-    public Ant getAnt() {
-        // TODO use it like this?
-        return ants.size() > 0 ? ants.get(0) : null;
-    }
-
-    @Override
-    public Move getLastMove() {
-        // TODO was hier
-        return null;
-    }
-
-    @Override
-    public void setup() {
-        for (Ant a : ants) {
-            LOGGER.info("TroopMission_Setup ANT %s ", a);
-            a.setup();
-        }
-
-    }
-
     public String toString() {
         return String.format("TroopMission Point: %s Ants %s", troopPoint, ants);
+    }
+
+    @Override
+    protected boolean isSpecificMissionValid() {
+        // TODO Auto-generated method stub
+        return true;
     }
 
 }

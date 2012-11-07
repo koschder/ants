@@ -1,17 +1,12 @@
 package ants.missions;
 
-import java.util.ArrayDeque;
-import java.util.Deque;
-import java.util.List;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Aim;
-import api.entities.Move;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 /***
  * Implements the interface Mission an handles the base tasks of a mission.
@@ -21,31 +16,33 @@ import api.entities.Tile;
  */
 public abstract class BaseMission implements Mission {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.EXECUTE_MISSIONS);
-    protected Ant ant;
-    protected Deque<Move> previousMoves = new ArrayDeque<Move>();
+    protected List<Ant> ants;
     private boolean abandon = false;
 
-    public BaseMission(Ant ant) {
-        this.ant = ant;
+    public BaseMission(Ant... ants) {
+        this.ants = new ArrayList<Ant>();
+        for (Ant ant : ants) {
+            this.ants.add(ant);
+        }
     }
 
     @Override
     public boolean isValid() {
         if (abandon)
             return false;
+        for (Ant ant : this.ants) {
+            if (!isAntAlive(ant))
+                return false;
+        }
+        return isSpecificMissionValid();
+    }
+
+    private boolean isAntAlive(Ant ant) {
         boolean antIsAlive = (Ants.getWorld().getIlk(ant.getTile()).hasFriendlyAnt());
         if (!antIsAlive) {
             LOGGER.debug("isMissionValid(): no ant at %s", ant.getTile());
         }
-        return (antIsAlive && isSpecificMissionValid());
-    }
-
-    /***
-     * 
-     * @return Last move of this mission or null if no move is performed yet.
-     */
-    public Move getLastMove() {
-        return previousMoves.isEmpty() ? null : previousMoves.getLast();
+        return antIsAlive;
     }
 
     /***
@@ -64,11 +61,7 @@ public abstract class BaseMission implements Mission {
      * @return true if the move is stored and will be executed.
      */
     private boolean putMissionOrder(Ant ant, Aim aim) {
-        if (Ants.getOrders().issueOrder(ant, aim, getVisualizeInfos())) {
-            previousMoves.add(new Move(ant.getTile(), aim));
-            return true;
-        }
-        return false;
+        return Ants.getOrders().issueOrder(ant, aim, getVisualizeInfos());
     }
 
     /***
@@ -86,13 +79,6 @@ public abstract class BaseMission implements Mission {
      */
     protected abstract boolean isSpecificMissionValid();
 
-    /***
-     * return the ant which executes this mission
-     */
-    public Ant getAnt() {
-        return ant;
-    }
-
     protected boolean putMissionOrder(Ant a, Tile to) {
 
         List<Aim> aims = Ants.getWorld().getDirections(a.getTile(), to);
@@ -104,7 +90,8 @@ public abstract class BaseMission implements Mission {
     }
 
     public void setup() {
-        if (ant != null)
+        for (Ant ant : this.ants) {
             ant.setup();
+        }
     }
 }
