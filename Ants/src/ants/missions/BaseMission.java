@@ -1,12 +1,15 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import logging.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import api.entities.Aim;
+import api.entities.Tile;
 
 /***
  * Implements the interface Mission an handles the base tasks of a mission.
@@ -94,8 +97,13 @@ public abstract class BaseMission implements Mission {
     }
 
     public void setup() {
+        List<Ant> deadlyList = new ArrayList<Ant>();
         for (Ant ant : this.ants) {
             ant.setup();
+            if (!isAntAlive(ant)) {
+                deadlyList.add(ant);
+            }
         }
+        ants.removeAll(deadlyList);
     }
 }
