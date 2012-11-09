@@ -1,6 +1,7 @@
 package ants.missions;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import logging.Logger;
@@ -37,6 +38,9 @@ public abstract class BaseMission implements Mission {
     public boolean isValid() {
         if (abandon)
             return false;
+        if (ants.size() == 0)
+            return false;
+
         for (Ant ant : this.ants) {
             if (!isAntAlive(ant))
                 return false;
