@@ -19,6 +19,7 @@ public interface Task {
         MISSION,
         VALIDATE_ORDERS,
         CONCENTRATE_ANTS,
+        FLOCK,
         SWARMPATH;
     }
 

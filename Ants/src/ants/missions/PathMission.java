@@ -1,11 +1,10 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 /***
  * this mission is implemented to follow a path defined while creating the class
@@ -15,7 +14,6 @@ import api.entities.Tile;
  */
 public abstract class PathMission extends BaseMission {
 
-    // private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.EXECUTE_MISSIONS);
     public List<Tile> path = new ArrayList<Tile>();
 
     public PathMission(Ant ant, List<Tile> path) {

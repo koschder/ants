@@ -323,9 +323,24 @@ public class World extends AbstractWraparoundMap implements UnitMap {
         return visible[tile.getRow()][tile.getCol()];
     }
 
+    public List<Tile> getVisibleTiles(Ant ant) {
+        List<Tile> visibleTiles = new ArrayList<Tile>();
+        for (Tile offset : visionOffsets) {
+            visibleTiles.add(getTile(ant.getTile(), offset));
+        }
+        return visibleTiles;
+    }
+
     public int getVisibleTilesPercent() {
         int totalTiles = rows * cols;
-        return Math.round((visionOffsets.size() / totalTiles) * 100);
+        int visibleTiles = 0;
+        for (boolean[] row : visible) {
+            for (boolean col : row) {
+                if (col)
+                    visibleTiles++;
+            }
+        }
+        return Math.round((visibleTiles / (float) totalTiles) * 100);
     }
 
     @Override

@@ -1,10 +1,10 @@
 <project default="runTutorial">
 	<target name="jarMyBot">
-		<javac srcdir="${basedir}/src" destdir="${basedir}/bin"/>
-		<javac srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin"/>
-		<javac srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin"/>
-		<javac srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin"/>
-		<javac srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin"/>
+		<javac srcdir="${basedir}/src" destdir="${basedir}/bin" />
+		<javac srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin" />
+		<javac srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin" />
+		<javac srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin" />
+		<javac srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin" />
 		<jar destfile="${basedir}/MyBot.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="ants.bot.impl.MyBot" />
@@ -16,12 +16,12 @@
 			<fileset dir="${basedir}/../Strategy/bin" includes="**/*.class" />
 		</jar>
 	</target>
-		<target name="jarConcentrateBot">
-		<javac srcdir="${basedir}/src" destdir="${basedir}/bin"/>
-		<javac srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin"/>
-		<javac srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin"/>
-		<javac srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin"/>
-		<javac srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin"/>
+	<target name="jarConcentrateBot">
+		<javac srcdir="${basedir}/src" destdir="${basedir}/bin" />
+		<javac srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin" />
+		<javac srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin" />
+		<javac srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin" />
+		<javac srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin" />
 		<jar destfile="${basedir}/ConcentrateBot.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="ants.bot.impl.ConcentrateBot" />
@@ -34,14 +34,31 @@
 		</jar>
 	</target>
 	<target name="jarSwarmBot">
-		<javac srcdir="${basedir}/src" destdir="${basedir}/bin"/>
-		<javac srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin"/>
-		<javac srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin"/>
-		<javac srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin"/>
-		<javac srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin"/>
+		<javac srcdir="${basedir}/src" destdir="${basedir}/bin" />
+		<javac srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin" />
+		<javac srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin" />
+		<javac srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin" />
+		<javac srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin" />
 		<jar destfile="${basedir}/SwarmBot.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="ants.bot.impl.SwarmBot" />
+			</manifest>
+			<fileset dir="${basedir}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../Util/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../AITools-Api/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../Pathfinder/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../Strategy/bin" includes="**/*.class" />
+		</jar>
+	</target>
+	<target name="flockBot">
+		<javac srcdir="${basedir}/src" destdir="${basedir}/bin" />
+		<javac srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin" />
+		<javac srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin" />
+		<javac srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin" />
+		<javac srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin" />
+		<jar destfile="${basedir}/FlockBot.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="ants.bot.impl.FlockBot" />
 			</manifest>
 			<fileset dir="${basedir}/bin" includes="**/*.class" />
 			<fileset dir="${basedir}/../Util/bin" includes="**/*.class" />
@@ -82,108 +99,123 @@
 		</exec>
 	</target>
 	<target name="mazeAgainstGreentea" depends="jarMyBot">
-			<exec executable="python" failonerror="true">
-				<arg line="tools/playgame.py" />
-				<arg line="&quot;java -jar MyBot.jar&quot;" />
-				<arg line="&quot;java -jar tools/bots/greentea/SixPoolRush.jar&quot;" />
-				<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
-				<arg line="--log_dir logs" />
-				<arg line="--turns 200" />
-				<arg line="--scenario" />
-				<arg line="--food yes" />
-				<arg line="--player_seed 7" />
-				<arg line="--verbose" />
-				<arg line="-e" />
-			</exec>
-		</target>
-				<target name="mazeAgainstWraithan" depends="jarMyBot">
-			<exec executable="python" failonerror="true">
-				<arg line="tools/playgame.py" />
-				<arg line="&quot;java -jar MyBot.jar&quot;" />
-				<arg line="&quot;python tools/bots/wraithan/MyBot.pypy&quot;" />
-				<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
-				<arg line="--log_dir logs" />
-				<arg line="--turns 200" />
-				<arg line="--scenario" />
-				<arg line="--food yes" />
-				<arg line="--player_seed 7" />
-				<arg line="--verbose" />
-				<arg line="-e" />
-			</exec>
-		</target>
-		<target name="mazeAgainstEgreavette" depends="jarMyBot">
-			<exec executable="python" failonerror="true">
-				<arg line="tools/playgame.py" />
-				<arg line="&quot;java -jar MyBot.jar&quot;" />
-				<arg line="&quot;python tools/bots/egreavette/mybotV10/MyBotV10.pypy&quot;" />
-				<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
-				<arg line="--log_dir logs" />
-				<arg line="--turns 200" />
-				<arg line="--scenario" />
-				<arg line="--food yes" />
-				<arg line="--player_seed 7" />
-				<arg line="--verbose" />
-				<arg line="-e" />
-			</exec>
-		</target>
-		<target name="mazeAgainstNHaehnle" depends="jarMyBot">
-			<exec executable="python" failonerror="true">
-				<arg line="tools/playgame.py" />
-				<arg line="&quot;java -jar MyBot.jar&quot;" />
-				<arg line="&quot;c++ tools/bots/nhaehnle/MyBot.cc&quot;" />
-				<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
-				<arg line="--log_dir logs" />
-				<arg line="--turns 200" />
-				<arg line="--scenario" />
-				<arg line="--food yes" />
-				<arg line="--player_seed 7" />
-				<arg line="--verbose" />
-				<arg line="-e" />
-			</exec>
-		</target>
-		<target name="mazeAgainstXathis" depends="jarMyBot">
-			<exec executable="python" failonerror="true">
-				<arg line="tools/playgame.py" />
-				<arg line="&quot;java -jar MyBot.jar&quot;" />
-				<arg line="&quot;java -jar tools/bots/xathis/xathis.jar&quot;" />
-				<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
-				<arg line="--log_dir logs" />
-				<arg line="--turns 200" />
-				<arg line="--scenario" />
-				<arg line="--food yes" />
-				<arg line="--player_seed 7" />
-				<arg line="--verbose" />
-				<arg line="-e" />
-			</exec>
-		</target>
-		<target name="ConcentrateBotTest" depends="jarConcentrateBot">
-			<exec executable="python" failonerror="true">
-				<arg line="tools/playgame.py" />
-				<arg line="&quot;java -jar ConcentrateBot.jar&quot;" />
-				<arg line="&quot;python tools/sample_bots/python/HunterBot.py&quot;" />
-				<arg line="--map_file tools/maps/test/troopTest.map" />
-				<arg line="--log_dir logs" />
-				<arg line="--turns 50" />
-				<arg line="--scenario" />
-				<arg line="--food none" />
-				<arg line="--player_seed 7" />
-				<arg line="--verbose" />
-				<arg line="-e" />
-			</exec>
-		</target>
-				<target name="SwarmBotTest" depends="jarSwarmBot">
-			<exec executable="python" failonerror="true">
-				<arg line="tools/playgame.py" />
-				<arg line="&quot;java -jar SwarmBot.jar&quot;" />
-				<arg line="&quot;python tools/sample_bots/python/HunterBot.py&quot;" />
-				<arg line="--map_file tools/maps/test/swarmTest.map" />
-				<arg line="--log_dir logs" />
-				<arg line="--turns 150" />
-				<arg line="--scenario" />
-				<arg line="--food none" />
-				<arg line="--player_seed 7" />
-				<arg line="--verbose" />
-				<arg line="-e" />
-			</exec>
-		</target>
+		<exec executable="python" failonerror="true">
+			<arg line="tools/playgame.py" />
+			<arg line="&quot;java -jar MyBot.jar&quot;" />
+			<arg line="&quot;java -jar tools/bots/greentea/SixPoolRush.jar&quot;" />
+			<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
+			<arg line="--log_dir logs" />
+			<arg line="--turns 200" />
+			<arg line="--scenario" />
+			<arg line="--food yes" />
+			<arg line="--player_seed 7" />
+			<arg line="--verbose" />
+			<arg line="-e" />
+		</exec>
+	</target>
+	<target name="mazeAgainstWraithan" depends="jarMyBot">
+		<exec executable="python" failonerror="true">
+			<arg line="tools/playgame.py" />
+			<arg line="&quot;java -jar MyBot.jar&quot;" />
+			<arg line="&quot;python tools/bots/wraithan/MyBot.pypy&quot;" />
+			<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
+			<arg line="--log_dir logs" />
+			<arg line="--turns 200" />
+			<arg line="--scenario" />
+			<arg line="--food yes" />
+			<arg line="--player_seed 7" />
+			<arg line="--verbose" />
+			<arg line="-e" />
+		</exec>
+	</target>
+	<target name="mazeAgainstEgreavette" depends="jarMyBot">
+		<exec executable="python" failonerror="true">
+			<arg line="tools/playgame.py" />
+			<arg line="&quot;java -jar MyBot.jar&quot;" />
+			<arg line="&quot;python tools/bots/egreavette/mybotV10/MyBotV10.pypy&quot;" />
+			<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
+			<arg line="--log_dir logs" />
+			<arg line="--turns 200" />
+			<arg line="--scenario" />
+			<arg line="--food yes" />
+			<arg line="--player_seed 7" />
+			<arg line="--verbose" />
+			<arg line="-e" />
+		</exec>
+	</target>
+	<target name="mazeAgainstNHaehnle" depends="jarMyBot">
+		<exec executable="python" failonerror="true">
+			<arg line="tools/playgame.py" />
+			<arg line="&quot;java -jar MyBot.jar&quot;" />
+			<arg line="&quot;c++ tools/bots/nhaehnle/MyBot.cc&quot;" />
+			<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
+			<arg line="--log_dir logs" />
+			<arg line="--turns 200" />
+			<arg line="--scenario" />
+			<arg line="--food yes" />
+			<arg line="--player_seed 7" />
+			<arg line="--verbose" />
+			<arg line="-e" />
+		</exec>
+	</target>
+	<target name="mazeAgainstXathis" depends="jarMyBot">
+		<exec executable="python" failonerror="true">
+			<arg line="tools/playgame.py" />
+			<arg line="&quot;java -jar MyBot.jar&quot;" />
+			<arg line="&quot;java -jar tools/bots/xathis/xathis.jar&quot;" />
+			<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
+			<arg line="--log_dir logs" />
+			<arg line="--turns 200" />
+			<arg line="--scenario" />
+			<arg line="--food yes" />
+			<arg line="--player_seed 7" />
+			<arg line="--verbose" />
+			<arg line="-e" />
+		</exec>
+	</target>
+	<target name="ConcentrateBotTest" depends="jarConcentrateBot">
+		<exec executable="python" failonerror="true">
+			<arg line="tools/playgame.py" />
+			<arg line="&quot;java -jar ConcentrateBot.jar&quot;" />
+			<arg line="&quot;python tools/sample_bots/python/HunterBot.py&quot;" />
+			<arg line="--map_file tools/maps/test/troopTest.map" />
+			<arg line="--log_dir logs" />
+			<arg line="--turns 50" />
+			<arg line="--scenario" />
+			<arg line="--food none" />
+			<arg line="--player_seed 7" />
+			<arg line="--verbose" />
+			<arg line="-e" />
+		</exec>
+	</target>
+	<target name="SwarmBotTest" depends="jarSwarmBot">
+		<exec executable="python" failonerror="true">
+			<arg line="tools/playgame.py" />
+			<arg line="&quot;java -jar SwarmBot.jar&quot;" />
+			<arg line="&quot;python tools/sample_bots/python/HunterBot.py&quot;" />
+			<arg line="--map_file tools/maps/test/swarmTest.map" />
+			<arg line="--log_dir logs" />
+			<arg line="--turns 150" />
+			<arg line="--scenario" />
+			<arg line="--food none" />
+			<arg line="--player_seed 7" />
+			<arg line="--verbose" />
+			<arg line="-e" />
+		</exec>
+	</target>
+	<target name="flockTest" depends="flockBot">
+		<exec executable="python" failonerror="true">
+			<arg line="tools/playgame.py" />
+			<arg line="&quot;java -jar FlockBot.jar&quot;" />
+			<arg line="&quot;python tools/sample_bots/python/HunterBot.py&quot;" />
+			<arg line="--map_file tools/maps/test/swarmTest.map" />
+			<arg line="--log_dir logs" />
+			<arg line="--turns 50" />
+			<arg line="--scenario" />
+			<arg line="--food none" />
+			<arg line="--player_seed 7" />
+			<arg line="--verbose" />
+			<arg line="-e" />
+		</exec>
+	</target>
 </project>

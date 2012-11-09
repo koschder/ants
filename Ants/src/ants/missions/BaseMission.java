@@ -29,6 +29,10 @@ public abstract class BaseMission implements Mission {
         }
     }
 
+    public BaseMission(Collection<Ant> ants) {
+        this.ants = new ArrayList<Ant>(ants);
+    }
+
     @Override
     public boolean isValid() {
         if (abandon)
