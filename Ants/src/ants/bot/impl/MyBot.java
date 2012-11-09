@@ -1,12 +1,20 @@
 package ants.bot.impl;
 
-import java.io.*;
+import java.io.IOException;
 
-import logging.*;
+import logging.LogLevel;
+import logging.LoggingConfig;
 import ants.LogCategory;
 import ants.bot.BaseBot;
-import ants.strategy.*;
-import ants.tasks.*;
+import ants.strategy.ResourceAllocator;
+import ants.tasks.AttackHillsTask;
+import ants.tasks.ClearHillTask;
+import ants.tasks.ClusteringTask;
+import ants.tasks.CombatTask;
+import ants.tasks.ExploreTask;
+import ants.tasks.GatherFoodTask;
+import ants.tasks.MissionTask;
+import ants.tasks.Task;
 import ants.tasks.Task.Type;
 
 /**
@@ -40,7 +48,8 @@ public class MyBot extends BaseBot {
         LoggingConfig.configure(LogCategory.EXECUTE_MISSIONS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.EXPLORE, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.FOLLOW, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.FOOD, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.FOOD, LogLevel.DEBUG);
+        LoggingConfig.configure(LogCategory.PATH_MISSION, LogLevel.DEBUG);
         LoggingConfig.configure(LogCategory.ORDERS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.PERFORMANCE, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.SETUP, LogLevel.INFO);

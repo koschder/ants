@@ -78,6 +78,7 @@ public class ExploreTask extends BaseTask {
                         route.getEnd());
                 if (path == null)
                     continue;
+
                 addMission(new ExploreMission(route.getAnt(), path));
                 break;
             }
