@@ -18,7 +18,8 @@ public enum LogCategory implements logging.LogCategory {
     STATISTICS(false),
     TURN(false),
     RESOURCE_ALLOCATION(true),
-    FLOCKING(false);
+    FLOCKING(false),
+    SWARM(false);
     private boolean useCustomLogFile;
 
     private LogCategory(boolean useCustomLogFile) {

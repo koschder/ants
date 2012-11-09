@@ -30,7 +30,7 @@ public class SimplePathFinder implements PathFinder {
         SearchStrategy searchStrat = getStrategy(strategy);
         searchStrat.setMaxCost(maxCost);
         final List<Tile> path = searchStrat.search(start, end);
-        if (path != null)
+        if (path != null && path.size() > 0)
             validatePath(path);
         return path;
     }

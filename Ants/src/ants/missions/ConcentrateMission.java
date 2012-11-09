@@ -1,5 +1,7 @@
 package ants.missions;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -31,7 +33,7 @@ public class ConcentrateMission extends BaseMission {
     /**
      * How far an ant can be to get involved into the mission
      */
-    public int maxAwayForMission = 20;
+    public int maxAwayForMission = 25;
 
     /**
      * n
@@ -101,14 +103,18 @@ public class ConcentrateMission extends BaseMission {
     private void moveAnt(Ant a) {
         boolean bIssueOrderd = false;
         int maxDistance = (amount / 4); // vierer nachbarschaft.
-        if (Ants.getWorld().manhattanDistance(a.getTile(), troopPoint) < maxDistance) {
+        int manhattan = Ants.getWorld().manhattanDistance(a.getTile(), troopPoint);
+        if (manhattan < maxDistance) {
             Aim aim = null;
-            if (diffx > diffy) {
-                boolean north = (diffx > 0);
-                aim = north ? Aim.NORTH : Aim.SOUTH;
-            } else {
-                boolean east = (diffy > 0);
-                aim = east ? Aim.EAST : Aim.WEST;
+            int maxman = Math.max(manhattan, 4) / 4;
+            if (Math.random() * maxman < 0.5) { // avoid to much rotation
+                if (diffx > diffy) {
+                    boolean north = (diffx > 0);
+                    aim = north ? Aim.NORTH : Aim.SOUTH;
+                } else {
+                    boolean east = (diffy > 0);
+                    aim = east ? Aim.EAST : Aim.WEST;
+                }
             }
             if (Ants.getOrders().issueOrder(a, aim, "TroopMission")) {
                 LOGGER.info("TroopMission_AntMoved %s moved to %s", a, aim);
@@ -126,10 +132,13 @@ public class ConcentrateMission extends BaseMission {
                     break;
                 }
             }
-        } else if (!bIssueOrderd) {
+        }
+        if (!bIssueOrderd) {
             Aim[] aims = { Aim.NORTH, Aim.WEST, Aim.SOUTH, Aim.EAST };
-            // Collections.shuffle(aims);
-            for (Aim ai : aims) {
+            List<Aim> list = new ArrayList<Aim>();
+            list.addAll(Arrays.asList(aims));
+            Collections.shuffle(list);
+            for (Aim ai : list) {
                 if (Ants.getOrders().issueOrder(a, ai, "TroopMission")) {
                     LOGGER.info("TroopMission_AntMoved %s moved to %s", a, ai);
                     bIssueOrderd = true;
@@ -145,7 +154,7 @@ public class ConcentrateMission extends BaseMission {
     }
 
     public void gatherAnts() {
-        LOGGER.info("TroopMission_gatherAnts TroopPoint %s Ants %s", troopPoint, ants.toString());
+        LOGGER.info("TroopMission_gatherAnts TroopPoint %s", troopPoint);
         for (Ant a : Ants.getPopulation().getMyUnemployedAnts()) {
             if (ants.size() == amount)
                 break;
@@ -180,12 +189,12 @@ public class ConcentrateMission extends BaseMission {
 
     }
 
-    public float getDiffyToPoint() {
-        return diffy;
+    public Tile getOffSetPoint() {
+        return offsetPoint;
     }
 
-    public float getDiffxToPoint() {
-        return diffx;
+    public Tile getConcentratePoint() {
+        return troopPoint;
     }
 
 }

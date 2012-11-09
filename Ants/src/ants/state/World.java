@@ -1,13 +1,23 @@
 package ants.state;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
-import javax.management.*;
+import javax.management.RuntimeErrorException;
 
-import ants.entities.*;
-import api.entities.*;
-import api.map.*;
-import api.pathfinder.*;
+import ants.entities.Ant;
+import ants.entities.Ilk;
+import api.entities.Aim;
+import api.entities.Tile;
+import api.entities.Unit;
+import api.map.AbstractWraparoundMap;
+import api.map.UnitMap;
+import api.pathfinder.SearchTarget;
 
 /**
  * This class holds state about the game world.
@@ -271,33 +281,6 @@ public class World extends AbstractWraparoundMap implements UnitMap {
                 setIlk(new Tile(r, c), Ilk.WATER);
     }
 
-    /**
-     * For testing only
-     * 
-     * @param path
-     */
-    // TODO still needed?
-    // public void debugPathOnMap(List<Tile> path) {
-    // for (int r = 0; r < getRows(); r++) {
-    // String row = "";
-    // for (int c = 0; c < getCols(); c++) {
-    // Tile t = new Tile(r, c);
-    // Ilk lk = getIlk(t);
-    //
-    // if (path != null && path.contains(t)) {
-    // row += "P";
-    // } else if (lk.isPassable()) {
-    // row += " ";
-    // } else {
-    // row += "W";
-    // }
-    // }
-    // LiveInfo.debug(LogCategory.JUNIT, row);
-    // row = "";
-    // }
-    //
-    // }
-
     public List<SearchTarget> getSuccessor(SearchTarget target, boolean isNextMove) {
         Tile state = target.getTargetTile();
         List<SearchTarget> list = new ArrayList<SearchTarget>();
@@ -313,7 +296,7 @@ public class World extends AbstractWraparoundMap implements UnitMap {
     }
 
     private boolean isPassable(Tile tile, boolean nextMove) {
-        return isPassable(tile) && !isOccupiedForNextMove(nextMove);
+        return isPassable(tile) && !isOccupiedForNextMove(tile, nextMove);
     }
 
     @Override
@@ -321,9 +304,9 @@ public class World extends AbstractWraparoundMap implements UnitMap {
         return Ants.getWorld().getIlk(tile.getTargetTile()).isPassable();
     }
 
-    private boolean isOccupiedForNextMove(boolean bParentNode) {
+    private boolean isOccupiedForNextMove(Tile t, boolean bParentNode) {
         if (!bParentNode) // we are on the 2nd level of the search tree
-            return Ants.getOrders().getOrders().containsValue(this);
+            return Ants.getOrders().getOrders().containsValue(t);
         return false;
     }
 

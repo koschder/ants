@@ -31,6 +31,9 @@ public class SimpleSearchStrategy extends SearchStrategy {
 
         Tile from = (Tile) areaFrom;
         Tile to = (Tile) areaTo;
+        if (from.getCol() == to.getCol() && from.getRow() == to.getRow()) {
+            return new ArrayList<Tile>();
+        }
 
         if (from.getCol() == to.getCol() || from.getRow() == to.getRow())
             return getStraightPath(from, to);
