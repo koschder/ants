@@ -1,9 +1,10 @@
-package ants.bot;
+package ants.bot.impl;
 
 import java.io.*;
 
 import logging.*;
 import ants.LogCategory;
+import ants.bot.BaseBot;
 import ants.strategy.*;
 import ants.tasks.*;
 import ants.tasks.Task.Type;

@@ -73,6 +73,7 @@ public class ConcentrateMission extends BaseMission {
         for (Ant a : ants) {
             moveAnt(a);
         }
+        gatherAnts();
     }
 
     private void calculateBalancePoint() {
@@ -171,8 +172,20 @@ public class ConcentrateMission extends BaseMission {
 
     @Override
     protected boolean isSpecificMissionValid() {
-        // TODO Auto-generated method stub
         return true;
+    }
+
+    public void setTroopPoint(Tile tile) {
+        troopPoint = tile;
+
+    }
+
+    public float getDiffyToPoint() {
+        return diffy;
+    }
+
+    public float getDiffxToPoint() {
+        return diffx;
     }
 
 }

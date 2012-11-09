@@ -1,16 +1,17 @@
-package ants.bot;
+package ants.bot.impl;
 
 import java.io.IOException;
 
 import logging.LogLevel;
 import logging.LoggingConfig;
 import ants.LogCategory;
+import ants.bot.BaseBot;
 import ants.tasks.ConcentrateTask;
 import ants.tasks.MissionTask;
 import ants.tasks.Task;
 import ants.tasks.Task.Type;
 
-public class ConcentrateBot extends BaseBot {
+public class SwarmBot extends BaseBot {
 
     public static void main(String[] args) throws IOException {
         initLogging();
@@ -49,4 +50,5 @@ public class ConcentrateBot extends BaseBot {
             task.setup();
         }
     }
+
 }
