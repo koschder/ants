@@ -10,16 +10,16 @@ import ants.entities.Ant;
 import ants.state.Ants;
 import api.entities.Tile;
 
-public class MulitAntPathMission extends BaseMission {
+public class SwarmPathMission extends BaseMission {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.CONCENTRATE);
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.SWARM);
 
     ConcentrateMission cm;
     public List<Tile> path = new ArrayList<Tile>();
 
-    public MulitAntPathMission(Ant ant, List<Tile> p) {
+    public SwarmPathMission(Ant ant, List<Tile> p, int antAmount) {
         path = p;
-        cm = new ConcentrateMission(path.get(0), 8);
+        cm = new ConcentrateMission(path.get(0), antAmount);
         moveConcentratePoint();
     }
 
@@ -42,8 +42,9 @@ public class MulitAntPathMission extends BaseMission {
 
         int manhattan = Ants.getWorld().manhattanDistance(cm.getOffSetPoint(), cm.getConcentratePoint());
 
+        // if (cm.isComplete()) {
         if (manhattan < 2) {
-            int moveContcentratePoint = Math.min(1, path.size() - 1);
+            int moveContcentratePoint = Math.min(2, path.size() - 1);
             LOGGER.info("MulitAntPathMission_Pathsublist from %s to %s ", path,
                     path.subList(moveContcentratePoint, path.size()));
             path = path.subList(moveContcentratePoint, path.size());
@@ -60,7 +61,7 @@ public class MulitAntPathMission extends BaseMission {
     @Override
     public boolean isComplete() {
 
-        return path.size() < 4;
+        return path.size() < 1 && cm.isComplete();
     }
 
     public void setup() {

@@ -18,7 +18,8 @@ public interface Task {
         GATHER_FOOD,
         MISSION,
         VALIDATE_ORDERS,
-        CONCENTRATE_ANTS;
+        CONCENTRATE_ANTS,
+        SWARMPATH;
     }
 
     /**

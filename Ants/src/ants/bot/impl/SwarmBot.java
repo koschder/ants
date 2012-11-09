@@ -7,8 +7,8 @@ import logging.LoggingConfig;
 import ants.LogCategory;
 import ants.bot.BaseBot;
 import ants.tasks.ClearHillTask;
-import ants.tasks.ConcentrateTask;
 import ants.tasks.MissionTask;
+import ants.tasks.SwarmTask;
 import ants.tasks.Task;
 import ants.tasks.Task.Type;
 
@@ -16,7 +16,7 @@ public class SwarmBot extends BaseBot {
 
     public static void main(String[] args) throws IOException {
         initLogging();
-        new ConcentrateBot().readSystemInput();
+        new SwarmBot().readSystemInput();
     }
 
     private static void initLogging() {
@@ -45,7 +45,7 @@ public class SwarmBot extends BaseBot {
     protected void initTasks() {
         if (tasks.isEmpty()) {
             tasks.put(Type.MISSION, new MissionTask());
-            tasks.put(Type.CONCENTRATE_ANTS, new ConcentrateTask());
+            tasks.put(Type.SWARMPATH, new SwarmTask());
             tasks.put(Type.CLEAR_HILL, new ClearHillTask());
         }
         for (Task task : tasks.values()) {
