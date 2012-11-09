@@ -1,15 +1,12 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Aim;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 /***
  * Implements the interface Mission an handles the base tasks of a mission.
