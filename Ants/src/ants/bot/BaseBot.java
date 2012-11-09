@@ -1,21 +1,14 @@
 package ants.bot;
 
-import influence.DefaultInfluenceMap;
+import influence.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import ants.state.World;
-import ants.tasks.Task;
-import api.strategy.InfluenceMap;
+import ants.entities.*;
+import ants.state.*;
+import ants.tasks.*;
 
 /**
  * Bot implementation. This was originally based on the sample bot from the starter package, but the implementation is
@@ -28,7 +21,6 @@ public abstract class BaseBot extends Bot {
     private static final Logger LOGGER_PERFORMANCE = LoggerFactory.getLogger(LogCategory.PERFORMANCE);
     private static final Logger LOGGER_TASKS = LoggerFactory.getLogger(LogCategory.EXECUTE_TASKS);
     private static final Logger LOGGER_STATISTICS = LoggerFactory.getLogger(LogCategory.STATISTICS);
-    protected InfluenceMap influence;
 
     protected Map<Task.Type, Task> tasks = new LinkedHashMap<Task.Type, Task>();
 
@@ -71,10 +63,10 @@ public abstract class BaseBot extends Bot {
     private void calculateInfluence() {
         long start = System.currentTimeMillis();
         final World world = Ants.getWorld();
-        if (influence == null) {
-            influence = new DefaultInfluenceMap(world, world.getViewRadius2(), world.getAttackRadius2());
+        if (Ants.getInfluenceMap() == null) {
+            Ants.setInfluenceMap(new DefaultInfluenceMap(world, world.getViewRadius2(), world.getAttackRadius2()));
         } else {
-            influence.update(world);
+            Ants.getInfluenceMap().update(world);
         }
         LOGGER_PERFORMANCE.info("Calculating Influence took %s ms", System.currentTimeMillis() - start);
     }

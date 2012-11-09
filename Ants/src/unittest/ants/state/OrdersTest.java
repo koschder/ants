@@ -1,7 +1,10 @@
 package unittest.ants.state;
 
+import java.util.*;
+
 import org.junit.*;
 
+import ants.entities.*;
 import ants.missions.*;
 import ants.state.*;
 
@@ -33,6 +36,12 @@ public class OrdersTest {
             public void setup() {
                 // TODO Auto-generated method stub
 
+            }
+
+            @Override
+            public List<Ant> getAnts() {
+                // TODO Auto-generated method stub
+                return null;
             }
         });
     }

@@ -1,20 +1,16 @@
 package ants.entities;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.TreeMap;
 
-import api.entities.Tile;
-import api.entities.Unit;
+import ants.missions.*;
+import api.entities.*;
 
 public class Ant implements Comparable<Ant>, Unit, Cloneable {
     public static final int MINE = 0;
     private Tile tile;
     private Tile nextTile;
+    private Mission mission;
     private int player;
     private Map<Ant, Integer> enemies = new HashMap<Ant, Integer>();
     private Map<Ant, Integer> friends = new HashMap<Ant, Integer>();
@@ -160,5 +156,13 @@ public class Ant implements Comparable<Ant>, Unit, Cloneable {
     protected Object clone() throws CloneNotSupportedException {
         // TODO Auto-generated method stub
         return super.clone();
+    }
+
+    public Mission getMission() {
+        return mission;
+    }
+
+    public void setMission(Mission mission) {
+        this.mission = mission;
     }
 }

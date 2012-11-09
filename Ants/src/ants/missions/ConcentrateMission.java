@@ -1,18 +1,13 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import pathfinder.PathFinder.Strategy;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Aim;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 public class ConcentrateMission extends BaseMission {
 
@@ -33,7 +28,7 @@ public class ConcentrateMission extends BaseMission {
     /**
      * How far an ant can be to get involved into the mission
      */
-    public int maxAwayForMission = 25;
+    public int attractionDistance = 25;
 
     /**
      * n
@@ -43,9 +38,10 @@ public class ConcentrateMission extends BaseMission {
      * @param amount
      *            how many ants to troop
      */
-    public ConcentrateMission(Tile tP, int a) {
+    public ConcentrateMission(Tile tP, int a, int attractionDistance) {
         this.troopPoint = tP;
         this.amount = a;
+        this.attractionDistance = attractionDistance;
 
         LOGGER.info("TroopMission_created TroopPoint %s Ants needed %S", troopPoint, amount);
     }
@@ -116,7 +112,7 @@ public class ConcentrateMission extends BaseMission {
                     aim = east ? Aim.EAST : Aim.WEST;
                 }
             }
-            if (Ants.getOrders().issueOrder(a, aim, "TroopMission")) {
+            if (putMissionOrder(a, aim)) {
                 LOGGER.info("TroopMission_AntMoved %s moved to %s", a, aim);
                 bIssueOrderd = true;
             }
@@ -126,7 +122,7 @@ public class ConcentrateMission extends BaseMission {
             List<Aim> aims = Ants.getWorld().getDirections(a.getTile(), troopPoint);
             Collections.shuffle(aims);
             for (Aim ai : aims) {
-                if (Ants.getOrders().issueOrder(a, ai, "TroopMission")) {
+                if (putMissionOrder(a, ai)) {
                     LOGGER.info("TroopMission_AntMoved %s moved to %s", a, ai);
                     bIssueOrderd = true;
                     break;
@@ -139,7 +135,7 @@ public class ConcentrateMission extends BaseMission {
             list.addAll(Arrays.asList(aims));
             Collections.shuffle(list);
             for (Aim ai : list) {
-                if (Ants.getOrders().issueOrder(a, ai, "TroopMission")) {
+                if (putMissionOrder(a, ai)) {
                     LOGGER.info("TroopMission_AntMoved %s moved to %s", a, ai);
                     bIssueOrderd = true;
                     break;
@@ -149,17 +145,19 @@ public class ConcentrateMission extends BaseMission {
         if (!bIssueOrderd) {
             // if no issue could be ordered we do a null move, so that the ant doesn't apear at the
             // unemployeed list
-            Ants.getOrders().issueOrder(a, null, "TroopMission");
+            putMissionOrder(a, (Aim) null);
         }
     }
 
-    public void gatherAnts() {
+    private void gatherAnts() {
         LOGGER.info("TroopMission_gatherAnts TroopPoint %s", troopPoint);
         for (Ant a : Ants.getPopulation().getMyUnemployedAnts()) {
+            if (a.getMission() != null)
+                continue;
             if (ants.size() == amount)
                 break;
 
-            if (Ants.getWorld().manhattanDistance(a.getTile(), troopPoint) > maxAwayForMission) {
+            if (Ants.getWorld().manhattanDistance(a.getTile(), troopPoint) > attractionDistance) {
                 LOGGER.info("Ant %s it to far away for TroopPoint %s, cant join mission", a, troopPoint);
                 continue; // to far away
             }

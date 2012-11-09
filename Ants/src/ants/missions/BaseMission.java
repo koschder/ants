@@ -1,16 +1,12 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Aim;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 /***
  * Implements the interface Mission an handles the base tasks of a mission.
@@ -26,19 +22,28 @@ public abstract class BaseMission implements Mission {
     public BaseMission(Ant... ants) {
         this.ants = new ArrayList<Ant>();
         for (Ant ant : ants) {
-            this.ants.add(ant);
+            addAnt(ant);
         }
     }
 
+    protected void addAnt(Ant ant) {
+        this.ants.add(ant);
+        ant.setMission(this);
+    }
+
     public BaseMission(Collection<Ant> ants) {
-        this.ants = new ArrayList<Ant>(ants);
+        this.ants = new ArrayList<Ant>();
+        for (Ant ant : ants) {
+            addAnt(ant);
+        }
     }
 
     @Override
     public boolean isValid() {
         if (abandon)
             return false;
-        if (ants.size() == 0)
+
+        if (isCheckAnts() && ants.size() == 0)
             return false;
 
         for (Ant ant : this.ants) {
@@ -71,7 +76,7 @@ public abstract class BaseMission implements Mission {
      * @param aim
      * @return true if the move is stored and will be executed.
      */
-    private boolean putMissionOrder(Ant ant, Aim aim) {
+    protected boolean putMissionOrder(Ant ant, Aim aim) {
         return Ants.getOrders().issueOrder(ant, aim, getVisualizeInfos());
     }
 
@@ -100,6 +105,7 @@ public abstract class BaseMission implements Mission {
 
     }
 
+    @Override
     public void setup() {
         List<Ant> deadlyList = new ArrayList<Ant>();
         for (Ant ant : this.ants) {
@@ -109,5 +115,14 @@ public abstract class BaseMission implements Mission {
             }
         }
         ants.removeAll(deadlyList);
+    }
+
+    @Override
+    public List<Ant> getAnts() {
+        return ants;
+    }
+
+    protected boolean isCheckAnts() {
+        return true;
     }
 }

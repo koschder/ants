@@ -1,17 +1,12 @@
 package ants.tasks;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import pathfinder.PathFinder;
-import ants.entities.Ant;
-import ants.entities.Route;
-import ants.missions.AttackHillMission;
-import ants.state.Ants;
-import api.entities.Tile;
+import pathfinder.*;
+import ants.entities.*;
+import ants.missions.*;
+import ants.state.*;
+import api.entities.*;
 
 /**
  * Task that identifies enemy hills suitable for attacking and sends Ants to attack them.
@@ -22,9 +17,44 @@ import api.entities.Tile;
 public class AttackHillsTask extends BaseTask {
 
     private int cutoff = 100;
+    private boolean flock = true;
 
     @Override
     public void doPerform() {
+        if (!flock) {
+            doPerformNonFlocking();
+            return;
+        }
+        for (Tile hillLoc : Ants.getWorld().getEnemyHills()) {
+            if (isMissionActive(hillLoc))
+                continue;
+            List<Tile> hillZone = Ants.getWorld().getVisibleTiles(hillLoc);
+            int maxSafety = Integer.MIN_VALUE;
+            Tile rallyPoint = null;
+            for (Tile tile : hillZone) {
+                if (!Ants.getWorld().isPassable(tile))
+                    continue;
+                int safety = Ants.getInfluenceMap().getSafety(tile);
+                if (safety > maxSafety) {
+                    maxSafety = safety;
+                    rallyPoint = tile;
+                }
+            }
+            addMission(new AttackHillsInFlockMission(hillLoc, rallyPoint, 3, 25));
+        }
+    }
+
+    private boolean isMissionActive(Tile hill) {
+        for (Mission mission : Ants.getOrders().getMissions()) {
+            if (mission instanceof AttackHillsInFlockMission) {
+                if (((AttackHillsInFlockMission) mission).getHill().equals(hill))
+                    return true;
+            }
+        }
+        return false;
+    }
+
+    private void doPerformNonFlocking() {
         // attack hills
         List<Route> hillRoutes = new ArrayList<Route>();
         for (Tile hillLoc : Ants.getWorld().getEnemyHills()) {

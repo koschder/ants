@@ -1,23 +1,13 @@
 package ants.state;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import javax.management.RuntimeErrorException;
+import javax.management.*;
 
-import ants.entities.Ant;
-import ants.entities.Ilk;
-import api.entities.Aim;
-import api.entities.Tile;
-import api.entities.Unit;
-import api.map.AbstractWraparoundMap;
-import api.map.UnitMap;
-import api.pathfinder.SearchTarget;
+import ants.entities.*;
+import api.entities.*;
+import api.map.*;
+import api.pathfinder.*;
 
 /**
  * This class holds state about the game world.
@@ -324,9 +314,13 @@ public class World extends AbstractWraparoundMap implements UnitMap {
     }
 
     public List<Tile> getVisibleTiles(Ant ant) {
+        return getVisibleTiles(ant.getTile());
+    }
+
+    public List<Tile> getVisibleTiles(Tile center) {
         List<Tile> visibleTiles = new ArrayList<Tile>();
         for (Tile offset : visionOffsets) {
-            visibleTiles.add(getTile(ant.getTile(), offset));
+            visibleTiles.add(getTile(center, offset));
         }
         return visibleTiles;
     }

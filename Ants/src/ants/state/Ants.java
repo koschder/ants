@@ -5,6 +5,7 @@ import pathfinder.entities.*;
 import pathfinder.entities.Clustering.ClusterType;
 import ants.entities.*;
 import api.entities.*;
+import api.strategy.*;
 
 /**
  * Container class for the game state. Provides access to game metadata (such as turnTime, startTime, ...) as well as
@@ -36,6 +37,8 @@ public enum Ants {
     private Orders orders;
 
     private PathFinder pathFinder;
+
+    private InfluenceMap influence;
 
     /**
      * Creates new {@link Ants} object.
@@ -207,6 +210,14 @@ public enum Ants {
      */
     public static void setPopulation(Population population) {
         INSTANCE.population = population;
+    }
+
+    public static InfluenceMap getInfluenceMap() {
+        return INSTANCE.influence;
+    }
+
+    public static void setInfluenceMap(InfluenceMap influenceMap) {
+        INSTANCE.influence = influenceMap;
     }
 
     /**

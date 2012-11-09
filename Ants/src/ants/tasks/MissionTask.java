@@ -1,13 +1,12 @@
 package ants.tasks;
 
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.missions.Mission;
-import ants.state.Ants;
+import ants.entities.*;
+import ants.missions.*;
+import ants.state.*;
 
 /**
  * This task is responsible for allowing those ants that are currently following a {@link Mission} to execute the next
@@ -37,6 +36,7 @@ public class MissionTask extends BaseTask {
             Mission mission = it.next();
             LOGGER.debug("mission: %s", mission);
             if (mission.isComplete()) {
+                removeAnts(mission);
                 it.remove();
                 continue;
             }
@@ -45,9 +45,16 @@ public class MissionTask extends BaseTask {
                 LOGGER.debug("Mission performed: %s", mission);
             } else {
                 LOGGER.debug("Mission not vaild: %s. Mission is removed.", mission);
+                removeAnts(mission);
                 it.remove();
             }
         }
 
+    }
+
+    private void removeAnts(Mission mission) {
+        for (Ant ant : mission.getAnts()) {
+            ant.setMission(null);
+        }
     }
 }

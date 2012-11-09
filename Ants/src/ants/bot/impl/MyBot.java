@@ -1,20 +1,13 @@
 package ants.bot.impl;
 
-import java.io.IOException;
+import java.io.*;
 
-import logging.LogLevel;
-import logging.LoggingConfig;
+import logging.*;
 import ants.LogCategory;
-import ants.bot.BaseBot;
-import ants.strategy.ResourceAllocator;
-import ants.tasks.AttackHillsTask;
-import ants.tasks.ClearHillTask;
-import ants.tasks.ClusteringTask;
-import ants.tasks.CombatTask;
-import ants.tasks.ExploreTask;
-import ants.tasks.GatherFoodTask;
-import ants.tasks.MissionTask;
-import ants.tasks.Task;
+import ants.bot.*;
+import ants.state.*;
+import ants.strategy.*;
+import ants.tasks.*;
 import ants.tasks.Task.Type;
 
 /**
@@ -44,18 +37,20 @@ public class MyBot extends BaseBot {
         LoggingConfig.configure(LogCategory.COMBAT, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.DEFEND, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.EXCEPTION, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.EXECUTE_TASKS, LogLevel.DEBUG);
-        LoggingConfig.configure(LogCategory.EXECUTE_MISSIONS, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.EXECUTE_TASKS, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.EXECUTE_MISSIONS, LogLevel.DEBUG);
         LoggingConfig.configure(LogCategory.EXPLORE, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.FOLLOW, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.FOOD, LogLevel.DEBUG);
-        LoggingConfig.configure(LogCategory.PATH_MISSION, LogLevel.DEBUG);
-        LoggingConfig.configure(LogCategory.ORDERS, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.FOOD, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.PATH_MISSION, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.ORDERS, LogLevel.DEBUG);
         LoggingConfig.configure(LogCategory.PERFORMANCE, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.SETUP, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.STATISTICS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.TURN, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.FLOCKING, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.RESOURCE_ALLOCATION, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.CONCENTRATE, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.PATHFINDING, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.CLUSTERING, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.CLUSTERED_ASTAR, LogLevel.INFO);
@@ -72,7 +67,7 @@ public class MyBot extends BaseBot {
             tasks.put(Type.CLEAR_HILL, new ClearHillTask());
             tasks.put(Type.CLUSTERING, new ClusteringTask());
         }
-        new ResourceAllocator(tasks, influence).allocateResources();
+        new ResourceAllocator(tasks, Ants.getInfluenceMap()).allocateResources();
         for (Task task : tasks.values()) {
             task.setup();
         }

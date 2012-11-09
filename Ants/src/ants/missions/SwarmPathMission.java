@@ -1,14 +1,12 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 public class SwarmPathMission extends BaseMission {
 
@@ -19,7 +17,7 @@ public class SwarmPathMission extends BaseMission {
 
     public SwarmPathMission(Ant ant, List<Tile> p, int antAmount) {
         path = p;
-        cm = new ConcentrateMission(path.get(0), antAmount);
+        cm = new ConcentrateMission(path.get(0), antAmount, 25);
         moveConcentratePoint();
     }
 
