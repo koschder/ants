@@ -1,0 +1,40 @@
+<project name="jar">
+	<!-- Jar Targets -->
+	<target name="jar">
+		<javac srcdir="${basedir}/src" destdir="${basedir}/bin" />
+		<javac srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin" />
+		<javac srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin" />
+		<javac srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin" />
+		<javac srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin" />
+		<jar destfile="${basedir}/${bot.name}.jar" filesetmanifest="mergewithoutmain">
+			<manifest>
+				<attribute name="Main-Class" value="ants.bot.impl.${bot.name}" />
+			</manifest>
+			<fileset dir="${basedir}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../Util/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../AITools-Api/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../Pathfinder/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/../Strategy/bin" includes="**/*.class" />
+		</jar>
+	</target>
+	<target name="jarMyBot">
+		<antcall target="jar">
+			<param name="bot.name" value="MyBot" />
+		</antcall>
+	</target>
+	<target name="jarConcentrateBot">
+		<antcall target="jar">
+			<param name="bot.name" value="ConcentrateBot" />
+		</antcall>
+	</target>
+	<target name="jarSwarmBot">
+		<antcall target="jar">
+			<param name="bot.name" value="SwarmBot" />
+		</antcall>
+	</target>
+	<target name="jarFlockBot">
+		<antcall target="jar">
+			<param name="bot.name" value="FlockBot" />
+		</antcall>
+	</target>
+</project>
