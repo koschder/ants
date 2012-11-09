@@ -26,7 +26,6 @@ public class ExploreMission extends PathMission {
         for (Ant ant : this.ants) {
             // TODO really abort the mission if only one ant found something more interesting?
             if (isSomethingInterestingNearby(ant)) {
-                LOGGER.info("cancel mission of ant %s, isSomethingInteresting is Nearby", getAnt());
                 return false;
             }
         }
