@@ -1,11 +1,11 @@
 <project name="jar">
 	<!-- Jar Targets -->
 	<target name="jar">
-		<javac srcdir="${basedir}/src" destdir="${basedir}/bin" />
-		<javac srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin" />
-		<javac srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin" />
-		<javac srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin" />
-		<javac srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin" />
+		<javac  includeantruntime="false" srcdir="${basedir}/src" destdir="${basedir}/bin" />
+		<javac  includeantruntime="false" srcdir="${basedir}/../Util/src" destdir="${basedir}/../Util/bin" />
+		<javac  includeantruntime="false" srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin" />
+		<javac  includeantruntime="false" srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin" />
+		<javac  includeantruntime="false" srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin" />
 		<jar destfile="${basedir}/${bot.name}.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="ants.bot.impl.${bot.name}" />

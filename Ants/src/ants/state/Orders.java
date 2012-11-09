@@ -1,22 +1,15 @@
 package ants.state;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.missions.Mission;
-import ants.tasks.BaseTask;
-import ants.util.LiveInfo;
-import api.entities.Aim;
-import api.entities.Move;
-import api.entities.Tile;
-import api.pathfinder.SearchTarget;
+import ants.entities.*;
+import ants.missions.*;
+import ants.tasks.*;
+import ants.util.*;
+import api.entities.*;
+import api.pathfinder.*;
 
 /**
  * This class tracks all orders and missions for our ants. It ensures that no conflicting orders are given.
@@ -109,7 +102,7 @@ public class Orders {
         // sLog += "no employeed ant on field " + nextLocation + " till now ["
         // + Ants.getPopulation().getEmployedAnts().size() + "] ";
         // }
-        // LOGGER_TASKS.debug(sLog);
+        LOGGER_TASKS.debug(sLog);
         return false;
     }
 
