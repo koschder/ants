@@ -6,6 +6,7 @@ import logging.LogLevel;
 import logging.LoggingConfig;
 import ants.LogCategory;
 import ants.bot.BaseBot;
+import ants.tasks.ClearHillTask;
 import ants.tasks.ConcentrateTask;
 import ants.tasks.MissionTask;
 import ants.tasks.Task;
@@ -45,6 +46,7 @@ public class SwarmBot extends BaseBot {
         if (tasks.isEmpty()) {
             tasks.put(Type.MISSION, new MissionTask());
             tasks.put(Type.CONCENTRATE_ANTS, new ConcentrateTask());
+            tasks.put(Type.CLEAR_HILL, new ClearHillTask());
         }
         for (Task task : tasks.values()) {
             task.setup();

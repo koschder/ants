@@ -13,7 +13,9 @@ import ants.entities.Ant;
 import ants.missions.Mission;
 import ants.tasks.BaseTask;
 import ants.util.LiveInfo;
-import api.entities.*;
+import api.entities.Aim;
+import api.entities.Move;
+import api.entities.Tile;
 import api.pathfinder.SearchTarget;
 
 /**
@@ -61,7 +63,7 @@ public class Orders {
         if (direction != null)
             newLoc = Ants.getWorld().getTile(ant.getTile(), direction);
 
-        if (isFreeForNextMove(newLoc)) {
+        if (isFreeForNextMove(newLoc) || direction == null) {
             LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s Order:%s<br/> ant: %s", issuer,
                     direction, ant.getTile());
             LOGGER_TASKS.debug("%1$s: Moving ant from %2$s to %3$s", issuer, ant.getTile(), newLoc);
@@ -107,7 +109,7 @@ public class Orders {
         // sLog += "no employeed ant on field " + nextLocation + " till now ["
         // + Ants.getPopulation().getEmployedAnts().size() + "] ";
         // }
-        LOGGER_TASKS.debug(sLog);
+        // LOGGER_TASKS.debug(sLog);
         return false;
     }
 

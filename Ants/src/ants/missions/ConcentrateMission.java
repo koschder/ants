@@ -145,7 +145,7 @@ public class ConcentrateMission extends BaseMission {
     }
 
     public void gatherAnts() {
-        LOGGER.info("TroopMission_gatherAnts TroopPoint %s Ants %s", troopPoint, ants.toString());
+        LOGGER.info("TroopMission_gatherAnts TroopPoint %s", troopPoint);
         for (Ant a : Ants.getPopulation().getMyUnemployedAnts()) {
             if (ants.size() == amount)
                 break;
@@ -180,12 +180,12 @@ public class ConcentrateMission extends BaseMission {
 
     }
 
-    public float getDiffyToPoint() {
-        return diffy;
+    public Tile getOffSetPoint() {
+        return offsetPoint;
     }
 
-    public float getDiffxToPoint() {
-        return diffx;
+    public Tile getConcentratePoint() {
+        return troopPoint;
     }
 
 }
