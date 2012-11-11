@@ -32,29 +32,33 @@ public class AttackHillsTask extends BaseTask {
             doPerformNonFlocking();
             return;
         }
-        for (Tile hillLoc : Ants.getWorld().getEnemyHills()) {
-            if (isMissionActive(hillLoc))
-                continue;
-            List<Tile> hillZone = Ants.getWorld().getVisibleTiles(hillLoc);
-            int maxSafety = Integer.MIN_VALUE;
-            Tile rallyPoint = null;
-            for (Tile tile : hillZone) {
-                if (!Ants.getWorld().isPassable(tile))
+        for (Tile enemyHill : Ants.getWorld().getEnemyHills()) {
+            for (Tile myHill : Ants.getWorld().getMyHills()) {
+                if (isMissionActive(enemyHill, myHill))
                     continue;
-                int safety = Ants.getInfluenceMap().getSafety(tile);
-                if (safety > maxSafety) {
-                    maxSafety = safety;
-                    rallyPoint = tile;
+
+                List<Tile> hillZone = Ants.getWorld().getVisibleTiles(enemyHill);
+                int maxSafety = Integer.MIN_VALUE;
+                Tile rallyPoint = null;
+                for (Tile tile : hillZone) {
+                    if (!Ants.getWorld().isPassable(tile))
+                        continue;
+                    int safety = Ants.getInfluenceMap().getSafety(tile);
+                    if (safety > maxSafety) {
+                        maxSafety = safety;
+                        rallyPoint = tile;
+                    }
                 }
+                addMission(new AttackHillsInFlockMission(enemyHill,myHill, rallyPoint, 3, 10));
             }
-            addMission(new AttackHillsInFlockMission(hillLoc, rallyPoint, 3, 10));
         }
     }
 
-    private boolean isMissionActive(Tile hill) {
+    private boolean isMissionActive(Tile hill, Tile myHill) {
         for (Mission mission : Ants.getOrders().getMissions()) {
             if (mission instanceof AttackHillsInFlockMission) {
-                if (((AttackHillsInFlockMission) mission).getHill().equals(hill))
+                if (((AttackHillsInFlockMission) mission).getHill().equals(hill)
+                        || ((AttackHillsInFlockMission) mission).getStartPoint().equals(myHill))
                     return true;
             }
         }

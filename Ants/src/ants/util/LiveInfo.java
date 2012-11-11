@@ -51,8 +51,8 @@ public class LiveInfo {
             }
             String msg = String.format(message, parameters).replace("\"", "'").replace("<r", "&lt;r")
                     .replace("\n", "<br/>");
-            String sLiveInfo = String.format("%s\n\"%s#%s#%s\" : \"%s\"", delimiter, turn, tile.getRow(),
-                    tile.getCol(), msg);
+            String sLiveInfo = String.format("%s\n\"%s#%s#%s#%s\" : \"%s\"", delimiter, liveInfo.length(), turn,
+                    tile.getRow(), tile.getCol(), msg);
             // liveInfo.write("\n".getBytes());
             liveInfo.write(sLiveInfo.getBytes());
             liveInfo.write("}".getBytes());

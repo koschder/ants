@@ -1,16 +1,18 @@
 package ants.missions;
 
-import ants.state.*;
-import api.entities.*;
+import ants.state.Ants;
+import api.entities.Tile;
 
 public class AttackHillsInFlockMission extends BaseMission {
 
     private Mission partialMission;
     private Tile hill;
+    private Tile startPoint;
 
-    public AttackHillsInFlockMission(Tile hill, Tile rallyPoint, int a, int attractionDistance) {
+    public AttackHillsInFlockMission(Tile hill, Tile startPoint, Tile rallyPoint, int a, int attractionDistance) {
         partialMission = new ConcentrateMission(rallyPoint, a, attractionDistance);
         this.hill = hill;
+        this.startPoint = startPoint;
     }
 
     @Override
@@ -44,6 +46,10 @@ public class AttackHillsInFlockMission extends BaseMission {
 
     public Tile getHill() {
         return hill;
+    }
+
+    public Tile getStartPoint() {
+        return startPoint;
     }
 
     @Override

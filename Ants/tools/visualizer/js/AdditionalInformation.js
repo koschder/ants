@@ -23,13 +23,17 @@ function ShowInfoPopup(title, text) {
 $.getJSON($liveInfoFile, function(data) {
     var i = 0;
   $.each(data, function(key, val) {
-    if(informations[key])
-    {
-        informations[key] += "<br/>"+val;
-    }else{
-        informations[key] = val;
-    }
-    i++;
+    
+	if(key.indexOf("#") > 0){
+	key = key.substr(key.indexOf("#")+1);
+		if(informations[key])
+		{
+			informations[key] = informations[key]+"<br/><br/>"+val;
+		}else{
+			informations[key] = val;
+		}
+		i++;
+	}
   });
 });
 
