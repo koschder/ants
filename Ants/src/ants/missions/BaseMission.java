@@ -1,12 +1,19 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import logging.*;
+import logging.Logger;
+import logging.LoggerFactory;
+import pathfinder.PathFinder.Strategy;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import api.entities.Aim;
+import api.entities.Tile;
 
 /***
  * Implements the interface Mission an handles the base tasks of a mission.
@@ -61,6 +68,28 @@ public abstract class BaseMission implements Mission {
         return antIsAlive;
     }
 
+    protected Map<Ant, List<Tile>> gatherAnts(Tile tile, int amount, int attractionDistance) {
+        Map<Ant, List<Tile>> antsNearBy = new HashMap<Ant, List<Tile>>();
+        for (Ant a : Ants.getPopulation().getMyUnemployedAnts()) {
+            if (a.getMission() != null) {
+                LOGGER.info("skip Ant %s, it has already a mission.", a);
+                continue;
+            }
+            if (ants.size() == amount)
+                break;
+
+            if (Ants.getWorld().manhattanDistance(a.getTile(), tile) > attractionDistance) {
+                LOGGER.info("Ant %s it to far away for point %s, cant gather for mission", a, tile);
+                continue; // to far away
+            }
+            List<Tile> p = Ants.getPathFinder().search(Strategy.AStar, a.getTile(), tile);
+            if (p == null)
+                continue;
+            antsNearBy.put(a, p);
+        }
+        return antsNearBy;
+    }
+
     /***
      * cancels the mission.
      */
@@ -80,6 +109,10 @@ public abstract class BaseMission implements Mission {
         return Ants.getOrders().issueOrder(ant, aim, getVisualizeInfos());
     }
 
+    protected boolean putMissionOrder(Ant ant) {
+        return Ants.getOrders().issueOrder(ant, null, getVisualizeInfos());
+    }
+
     /***
      * 
      * @return the name of the mission.
@@ -96,7 +129,9 @@ public abstract class BaseMission implements Mission {
     protected abstract boolean isSpecificMissionValid();
 
     protected boolean putMissionOrder(Ant a, Tile to) {
-
+        if (a.getTile().equals(to)) {
+            return putMissionOrder(a);
+        } // TODO fix for flock mission, discuss with luke
         List<Aim> aims = Ants.getWorld().getDirections(a.getTile(), to);
         if (aims.size() != 1)
             throw new RuntimeException(String.format("Ant cannot move from %s to %s", a.getTile(), to));
@@ -124,5 +159,24 @@ public abstract class BaseMission implements Mission {
 
     protected boolean isCheckAnts() {
         return true;
+    }
+
+    protected boolean isAntReleaseable(Ant a) {
+        return true;
+    }
+
+    protected void releaseAnts(int amount) {
+        if (amount <= 0)
+            return;
+        List<Ant> antsToRelease = new ArrayList<Ant>();
+        for (Ant a : ants) {
+            if (isAntReleaseable(a))
+                a.setMission(null);
+            antsToRelease.add(a);
+            if (antsToRelease.size() == amount)
+                return;
+        }
+        ants.removeAll(antsToRelease);
+
     }
 }

@@ -15,7 +15,7 @@ import static org.junit.Assert.assertEquals;
 
 public class ResourceAllocatorTest {
 
-    private ResourceAllocator resourceAllocator;
+    private BaseResourceAllocator resourceAllocator;
     private Map<Task.Type, Task> tasks = new HashMap<Task.Type, Task>();
     private StubInfluenceMap influence = new StubInfluenceMap();
 

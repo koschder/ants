@@ -1,13 +1,19 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import logging.*;
-import pathfinder.*;
+import logging.Logger;
+import logging.LoggerFactory;
+import pathfinder.PathFinder;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import api.entities.Tile;
 
 public class FlockMission extends BaseMission {
     private Logger LOGGER = LoggerFactory.getLogger(LogCategory.FLOCKING);

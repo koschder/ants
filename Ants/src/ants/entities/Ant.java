@@ -1,10 +1,16 @@
 package ants.entities;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 
-import ants.missions.*;
-import api.entities.*;
+import ants.missions.Mission;
+import api.entities.Tile;
+import api.entities.Unit;
 
 public class Ant implements Comparable<Ant>, Unit, Cloneable {
     public static final int MINE = 0;
@@ -16,6 +22,8 @@ public class Ant implements Comparable<Ant>, Unit, Cloneable {
     private Map<Ant, Integer> friends = new HashMap<Ant, Integer>();
     private Map<Ant, Integer> sortedEnemies = null;
     private Map<Ant, Integer> sortedFriends = null;
+    private List<Tile> path;
+    private int turnsWaited;
 
     public Ant(Tile tile, int owner) {
         this.tile = tile;
@@ -164,5 +172,25 @@ public class Ant implements Comparable<Ant>, Unit, Cloneable {
 
     public void setMission(Mission mission) {
         this.mission = mission;
+    }
+
+    public List<Tile> getPath() {
+        return path;
+    }
+
+    public void setPath(List<Tile> p) {
+        this.path = p;
+    }
+
+    public void resetTurnsWaited() {
+        this.turnsWaited = 0;
+    }
+
+    public void incrementTurnsWaited() {
+        this.turnsWaited++;
+    }
+
+    public int getTurnsWaited() {
+        return this.turnsWaited;
     }
 }

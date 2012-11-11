@@ -50,10 +50,18 @@ public enum Ilk {
 
     /**
      * 
-     * @return ture if there is a friendly ant.
+     * @return true if there is a friendly ant.
      */
     public boolean hasFriendlyAnt() {
         return this == MY_ANT;
+    }
+
+    /**
+     * 
+     * @return true if there is a friendly ant.
+     */
+    public boolean hasEnemyAnt() {
+        return this == ENEMY_ANT;
     }
 
     @Override

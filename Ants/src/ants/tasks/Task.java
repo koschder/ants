@@ -20,7 +20,8 @@ public interface Task {
         VALIDATE_ORDERS,
         CONCENTRATE_ANTS,
         FLOCK,
-        SWARMPATH;
+        SWARMPATH,
+        DEFEND_HILL;
     }
 
     /**

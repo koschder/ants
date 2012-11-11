@@ -1,15 +1,22 @@
 package ants.state;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import logging.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.missions.*;
-import ants.tasks.*;
-import ants.util.*;
-import api.entities.*;
-import api.pathfinder.*;
+import ants.entities.Ant;
+import ants.missions.Mission;
+import ants.tasks.BaseTask;
+import ants.util.LiveInfo;
+import api.entities.Aim;
+import api.entities.Move;
+import api.entities.Tile;
+import api.pathfinder.SearchTarget;
 
 /**
  * This class tracks all orders and missions for our ants. It ensures that no conflicting orders are given.
@@ -63,8 +70,10 @@ public class Orders {
             orders.put(newLoc, new Move(ant.getTile(), direction));
             ant.setNextTile(newLoc);
             Ants.getPopulation().addEmployedAnt(ant);
+            ant.resetTurnsWaited();
             return true;
         } else {
+            ant.incrementTurnsWaited();
             LOGGER_TASKS.debug("Move is not possible %s to %s", ant, newLoc);
         }
         return false;

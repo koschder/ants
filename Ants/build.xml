@@ -56,6 +56,13 @@
 			<param name="map.file" value="test/swarmTest.map" />
 		</antcall>
 	</target>
+		<target name="debugDefendHillBot" depends="jarDefendHillBot" description="">
+		<antcall target="debugTest">
+			<param name="bot.name" value="DefendHillBot" />
+			<param name="turn.limit" value="150" />
+			<param name="map.file" value="test/defendTest.map" />
+		</antcall>
+	</target>
 
 	<!-- Test & Tutorial -->
 	<target name="testBot">

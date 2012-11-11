@@ -1,12 +1,19 @@
 package ants.tasks;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import pathfinder.*;
-import ants.entities.*;
-import ants.missions.*;
-import ants.state.*;
-import api.entities.*;
+import pathfinder.PathFinder;
+import ants.entities.Ant;
+import ants.entities.Route;
+import ants.missions.AttackHillMission;
+import ants.missions.AttackHillsInFlockMission;
+import ants.missions.Mission;
+import ants.state.Ants;
+import api.entities.Tile;
 
 /**
  * Task that identifies enemy hills suitable for attacking and sends Ants to attack them.
@@ -40,7 +47,7 @@ public class AttackHillsTask extends BaseTask {
                     rallyPoint = tile;
                 }
             }
-            addMission(new AttackHillsInFlockMission(hillLoc, rallyPoint, 3, 25));
+            addMission(new AttackHillsInFlockMission(hillLoc, rallyPoint, 3, 10));
         }
     }
 

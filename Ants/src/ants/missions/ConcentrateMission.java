@@ -1,13 +1,19 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
-import logging.*;
-import pathfinder.PathFinder.Strategy;
+import logging.Logger;
+import logging.LoggerFactory;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import api.entities.Aim;
+import api.entities.Tile;
 
 public class ConcentrateMission extends BaseMission {
 
@@ -53,7 +59,7 @@ public class ConcentrateMission extends BaseMission {
 
         for (Ant a : ants) {
             // TODO define max manhattanDistance considering amount
-            int maxDistance = (amount / 4); // vierer nachbarschaft.
+            int maxDistance = (amount / 4) + 2; // vierer nachbarschaft.
             if (Ants.getWorld().manhattanDistance(a.getTile(), troopPoint) > maxDistance) {
                 LOGGER.info("Ant %s it to far away of TroopPoint %s. mission insn't compelete yet", a, troopPoint);
                 return false;
@@ -97,6 +103,27 @@ public class ConcentrateMission extends BaseMission {
     }
 
     private void moveAnt(Ant a) {
+
+        if (a.getPath() != null) {
+            List<Tile> t = a.getPath();
+            Tile move = t.get(0);
+            if (putMissionOrder(a, move)) {
+                t.remove(0);
+                if (t.size() == 0) {
+                    a.setPath(null);
+                } else {
+                    a.setPath(t);
+                }
+            } else {
+                if (a.getTurnsWaited() > 3) {
+                    LOGGER.debug("cancel path %s of ant %s", a, a.getPath());
+                    a.setPath(null);
+                }
+                putMissionOrder(a);
+            }
+            return;
+        }
+
         boolean bIssueOrderd = false;
         int maxDistance = (amount / 4); // vierer nachbarschaft.
         int manhattan = Ants.getWorld().manhattanDistance(a.getTile(), troopPoint);
@@ -151,26 +178,20 @@ public class ConcentrateMission extends BaseMission {
 
     private void gatherAnts() {
         LOGGER.info("TroopMission_gatherAnts TroopPoint %s", troopPoint);
-        for (Ant a : Ants.getPopulation().getMyUnemployedAnts()) {
-            if (a.getMission() != null)
-                continue;
-            if (ants.size() == amount)
-                break;
 
-            if (Ants.getWorld().manhattanDistance(a.getTile(), troopPoint) > attractionDistance) {
-                LOGGER.info("Ant %s it to far away for TroopPoint %s, cant join mission", a, troopPoint);
-                continue; // to far away
-            }
-            List<Tile> p = Ants.getPathFinder().search(Strategy.Simple, a.getTile(), troopPoint);
-            if (p == null)
-                continue;
-
-            // TODO store this path?
-            // A path is found we add the ant to our mission
-            LOGGER.info("TroopMission_NewAnt %s is joining for TroopPoint %s", a, troopPoint);
-            ants.add(a);
+        Map<Ant, List<Tile>> antsNearBy = gatherAnts(troopPoint, ants.size() - amount, attractionDistance);
+        // TODO what with the path?
+        for (Entry<Ant, List<Tile>> entry : antsNearBy.entrySet()) {
+            Ant a = entry.getKey();
+            List<Tile> p = entry.getValue();
+            if (p != null && p.size() > 0)
+                p.remove(0);
+            LOGGER.info("TroopMission_NewAnt %s is joining for ConcentratePoint %s path is %s", a, troopPoint, p);
+            a.setPath(p);
+            addAnt(a);
             moveAnt(a);
         }
+
     }
 
     public String toString() {
@@ -195,4 +216,8 @@ public class ConcentrateMission extends BaseMission {
         return troopPoint;
     }
 
+    @Override
+    protected boolean isCheckAnts() {
+        return false;
+    }
 }

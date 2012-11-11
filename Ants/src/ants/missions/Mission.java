@@ -1,8 +1,8 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.List;
 
-import ants.entities.*;
+import ants.entities.Ant;
 
 /***
  * defines which method must be implemented by a mission
@@ -20,4 +20,5 @@ public interface Mission {
     public void setup();
 
     public List<Ant> getAnts();
+
 }
