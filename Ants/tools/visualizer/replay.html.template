@@ -5,11 +5,12 @@
 	<title>Ant Canvas</title>
 	<script type="text/javascript" src="## PATH PLACEHOLDER ##js/visualizer.js"></script>
 	<script type="text/javascript">
+		var visualizer = null;
 		function init() {
             var options = new Options();
             options.data_dir = '## PATH PLACEHOLDER ##data/';
             options.embedded = true;
-			var visualizer = new Visualizer(document.body, options);
+			visualizer = new Visualizer(document.body, options);
 			visualizer.loadReplayData('## REPLAY PLACEHOLDER ##');
             $('body').append('<div id="container" style="position:absolute;display:inline"><div id="dialog">divDialog<br/>asdfasdf<br/>adfa</div></div>');
 		}
