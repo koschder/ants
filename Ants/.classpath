@@ -7,5 +7,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/Util"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/AITools-Api"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Strategy"/>
+	<classpathentry kind="lib" path="lib/cpsuite-1.2.5.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
