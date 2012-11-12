@@ -182,10 +182,11 @@ public class ConcentrateMission extends BaseMission {
         Map<Ant, List<Tile>> antsNearBy = gatherAnts(troopPoint, ants.size() - amount, attractionDistance);
         // TODO what with the path?
         for (Entry<Ant, List<Tile>> entry : antsNearBy.entrySet()) {
-            Ant a = entry.getKey();
             List<Tile> p = entry.getValue();
-            if (p != null && p.size() > 0)
-                p.remove(0);
+            if (p == null || p.size() <= 1)
+                continue;
+            p.remove(0);
+            Ant a = entry.getKey();
             LOGGER.info("TroopMission_NewAnt %s is joining for ConcentratePoint %s path is %s", a, troopPoint, p);
             a.setPath(p);
             addAnt(a);
