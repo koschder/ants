@@ -1,15 +1,21 @@
 package unittest.ants.tactics;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Ignore;
+import org.junit.Test;
 
-import tactics.minmax.*;
-import ants.entities.*;
-import ants.state.*;
-import ants.tactics.*;
-import api.entities.*;
+import tactics.minmax.AlphaBeta;
+import tactics.minmax.Game;
+import ants.entities.Ant;
+import ants.state.Ants;
+import ants.tactics.CombatSituation;
+import api.entities.Tile;
+import api.entities.Unit;
 
+@Ignore
 public class AlphaBetaTest {
     @Before
     public void setup() {

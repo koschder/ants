@@ -1,11 +1,13 @@
 package ants.state;
 
-import pathfinder.*;
-import pathfinder.entities.*;
+import pathfinder.ClusteringPathFinder;
+import pathfinder.PathFinder;
+import pathfinder.entities.Clustering;
 import pathfinder.entities.Clustering.ClusterType;
-import ants.entities.*;
-import api.entities.*;
-import api.strategy.*;
+import ants.entities.Ant;
+import ants.entities.Ilk;
+import api.entities.Tile;
+import api.strategy.InfluenceMap;
 
 /**
  * Container class for the game state. Provides access to game metadata (such as turnTime, startTime, ...) as well as
@@ -226,6 +228,10 @@ public enum Ants {
      */
     public static Orders getOrders() {
         return INSTANCE.orders;
+    }
+
+    public static void setOrders(Orders orders) {
+        INSTANCE.orders = orders;
     }
 
     public static PathFinder getPathFinder() {

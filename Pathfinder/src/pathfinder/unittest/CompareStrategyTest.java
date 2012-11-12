@@ -44,7 +44,7 @@ public class CompareStrategyTest {
     }
 
     private UnitTestMap initMap() {
-        String sFileName = "maps/cell_maze_p04_10.map";
+        String sFileName = "../Pathfinder/maps/cell_maze_p04_10.map";
         try {
             UnitTestMap map = new UnitTestMap(parseFile(sFileName));
             return map;
@@ -54,9 +54,8 @@ public class CompareStrategyTest {
         return null;
     }
 
-    private static List<String> parseFile(String filePath) throws Exception {
+    private List<String> parseFile(String filePath) throws Exception {
         List<String> rows = new ArrayList<String>();
-
         FileReader fr = new FileReader(filePath);
         BufferedReader br = new BufferedReader(fr);
 

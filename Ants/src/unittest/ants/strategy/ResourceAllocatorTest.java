@@ -1,17 +1,29 @@
 package unittest.ants.strategy;
 
-import java.util.*;
-
-import org.junit.*;
-
-import ants.entities.*;
-import ants.state.*;
-import ants.strategy.*;
-import ants.tasks.*;
-import ants.tasks.Task.Type;
-import api.entities.*;
-
 import static org.junit.Assert.assertEquals;
+
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
+import org.junit.Before;
+import org.junit.Test;
+
+import ants.entities.Ant;
+import ants.state.Ants;
+import ants.state.Orders;
+import ants.state.Population;
+import ants.state.World;
+import ants.strategy.BaseResourceAllocator;
+import ants.strategy.ResourceAllocator;
+import ants.tasks.AttackHillsTask;
+import ants.tasks.CombatTask;
+import ants.tasks.ExploreTask;
+import ants.tasks.GatherFoodTask;
+import ants.tasks.Task;
+import ants.tasks.Task.Type;
+import api.entities.Tile;
 
 public class ResourceAllocatorTest {
 
@@ -43,6 +55,7 @@ public class ResourceAllocatorTest {
 
     private void initResourceAllocator(int population) {
         Ants.setPopulation(getPopulation(population));
+        Ants.setOrders(new Orders());
         resourceAllocator = new ResourceAllocator(tasks, influence);
     }
 
