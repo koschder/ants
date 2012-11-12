@@ -6,7 +6,6 @@ import java.util.Set;
 import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
-import ants.entities.Ant;
 import ants.missions.Mission;
 import ants.state.Ants;
 
@@ -38,8 +37,9 @@ public class MissionTask extends BaseTask {
             Mission mission = it.next();
             LOGGER.debug("mission: %s", mission);
             if (mission.isComplete()) {
-                removeAnts(mission);
-                it.remove();
+                Ants.getOrders().removeMission(mission);
+                // removeAnts(mission);
+                // it.remove();
                 LOGGER.debug("Mission removed, its complete: %s", mission);
                 continue;
             }
@@ -48,16 +48,12 @@ public class MissionTask extends BaseTask {
                 LOGGER.debug("Mission performed: %s", mission);
             } else {
                 LOGGER.debug("Mission not vaild: %s. Mission is removed.", mission);
-                removeAnts(mission);
-                it.remove();
+                Ants.getOrders().removeMission(mission);
+                // removeAnts(mission);
+                // it.remove();
             }
         }
 
     }
 
-    private void removeAnts(Mission mission) {
-        for (Ant ant : mission.getAnts()) {
-            ant.setMission(null);
-        }
-    }
 }

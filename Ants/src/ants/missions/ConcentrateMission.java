@@ -54,10 +54,10 @@ public class ConcentrateMission extends BaseMission {
 
     @Override
     public boolean isComplete() {
-        if (ants.size() < amount)
+        if (getAnts().size() < amount)
             return false;
 
-        for (Ant a : ants) {
+        for (Ant a : getAnts()) {
             // TODO define max manhattanDistance considering amount
             int maxDistance = (amount / 4) + 2; // vierer nachbarschaft.
             if (Ants.getWorld().manhattanDistance(a.getTile(), troopPoint) > maxDistance) {
@@ -66,15 +66,15 @@ public class ConcentrateMission extends BaseMission {
             }
         }
 
-        LOGGER.info("TroopMission_completed TroopPoint %s Ants needed %S Ants: %s", troopPoint, amount, ants);
+        LOGGER.info("TroopMission_completed TroopPoint %s Ants needed %S Ants: %s", troopPoint, amount, getAnts());
         return true;
     }
 
     @Override
     public void execute() {
-        LOGGER.info("TroopMission_Executed TroopPoint %s Ants:  %s", troopPoint, ants.toString());
+        LOGGER.info("TroopMission_Executed TroopPoint %s Ants:  %s", troopPoint, getAnts().toString());
         calculateBalancePoint();
-        for (Ant a : ants) {
+        for (Ant a : getAnts()) {
             moveAnt(a);
         }
         gatherAnts();
@@ -83,20 +83,20 @@ public class ConcentrateMission extends BaseMission {
     private void calculateBalancePoint() {
         diffx = 0;
         diffy = 0;
-        for (Ant a : ants) {
+        for (Ant a : getAnts()) {
             // diffx += Math.abs(a.getTile().getCol() - troopPoint.getCol());
             diffx += a.getTile().getCol();
             // diffy += Math.abs(a.getTile().getRow() - troopPoint.getRow());
             diffy += a.getTile().getRow();
         }
 
-        int troopPointFactor = ants.size();
+        int troopPointFactor = getAnts().size();
 
         diffx += troopPoint.getCol() * troopPointFactor;
         diffy += troopPoint.getRow() * troopPointFactor;
 
-        diffx = diffx / (ants.size() + troopPointFactor);
-        diffy = diffy / (ants.size() + troopPointFactor);
+        diffx = diffx / (getAnts().size() + troopPointFactor);
+        diffy = diffy / (getAnts().size() + troopPointFactor);
 
         offsetPoint = new Tile((int) diffy, (int) diffx);
         LOGGER.info("TroopMission_calculateBalancePoint x: %s y: %s offsetPoint %s", diffx, diffy, offsetPoint);
@@ -179,7 +179,7 @@ public class ConcentrateMission extends BaseMission {
     private void gatherAnts() {
         LOGGER.info("TroopMission_gatherAnts TroopPoint %s", troopPoint);
 
-        Map<Ant, List<Tile>> antsNearBy = gatherAnts(troopPoint, ants.size() - amount, attractionDistance);
+        Map<Ant, List<Tile>> antsNearBy = gatherAnts(troopPoint, getAnts().size() - amount, attractionDistance);
         // TODO what with the path?
         for (Entry<Ant, List<Tile>> entry : antsNearBy.entrySet()) {
             List<Tile> p = entry.getValue();
@@ -196,7 +196,7 @@ public class ConcentrateMission extends BaseMission {
     }
 
     public String toString() {
-        return String.format("TroopMission Point: %s Ants %s", troopPoint, ants);
+        return String.format("TroopMission Point: %s Ants %s", troopPoint, getAnts());
     }
 
     @Override

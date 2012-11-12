@@ -53,16 +53,16 @@ public class DefendHillMission extends BaseMission {
         // if (ants.size() != 0 && enemyNearBy.size() > ants.size() * 4) { // big attack now chance to defend
         //
         // }
-        if (enemyNearBy.size() > ants.size()) { // need more ants to defend
-            gatherAnts(enemyNearBy.size() - ants.size() + 2); // to for reserve
-        } else if (enemyNearBy.size() > ants.size()) { // need more ants to defend
-            releaseAnts(ants.size() - (enemyNearBy.size() + 2)); // two for reserve
+        if (enemyNearBy.size() > getAnts().size()) { // need more ants to defend
+            gatherAnts(enemyNearBy.size() - getAnts().size() + 2); // to for reserve
+        } else if (enemyNearBy.size() > getAnts().size()) { // need more ants to defend
+            releaseAnts(getAnts().size() - (enemyNearBy.size() + 2)); // two for reserve
         }
 
         positioning(attackers);
 
         LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill,
-                "DefendHillMission attackers are: %s <br/> Defenders are: %s", attInfo, ants);
+                "DefendHillMission attackers are: %s <br/> Defenders are: %s", attInfo, getAnts());
     }
 
     private void positioning(Map<Aim, List<Tile>> attackers) {
@@ -72,7 +72,7 @@ public class DefendHillMission extends BaseMission {
             int antsWithOrderCount = antsWithOrder.size();
             for (Entry<Aim, List<Tile>> attackDirection : attackers.entrySet()) {
                 int antsInDirection = 0;
-                for (Ant a : ants) {
+                for (Ant a : getAnts()) {
                     if (antsWithOrder.contains(a))
                         continue;
                     if (putOrder(a, attackDirection.getKey())) {
@@ -169,8 +169,7 @@ public class DefendHillMission extends BaseMission {
         Map<Ant, List<Tile>> antsNearBy = gatherAnts(hill, amount, 10);
         LOGGER.debug("gatherAnts: New ants %s for misson: %s", antsNearBy.keySet(), this);
         for (Ant a : antsNearBy.keySet()) {
-            ants.add(a);
-            a.setMission(this);
+            addAnt(a);
         }
 
     }

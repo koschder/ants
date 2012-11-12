@@ -15,7 +15,7 @@ public class SwarmTask extends BaseTask {
             Tile hill = new Tile(38, 59);
             Tile target = new Tile(25, 33);
             List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.AStar, hill, target);
-            SwarmPathMission m = new SwarmPathMission(null, path, 15);
+            SwarmPathMission m = new SwarmPathMission(path, 15);
             addMission(m);
         }
     }

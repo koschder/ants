@@ -6,7 +6,6 @@ import java.util.List;
 import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
-import ants.entities.Ant;
 import ants.state.Ants;
 import api.entities.Tile;
 
@@ -17,7 +16,7 @@ public class SwarmPathMission extends BaseMission {
     ConcentrateMission cm;
     public List<Tile> path = new ArrayList<Tile>();
 
-    public SwarmPathMission(Ant ant, List<Tile> p, int antAmount) {
+    public SwarmPathMission(List<Tile> p, int antAmount) {
         path = p;
         cm = new ConcentrateMission(path.get(0), antAmount, 25);
         moveConcentratePoint();

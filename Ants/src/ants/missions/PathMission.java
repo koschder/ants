@@ -1,10 +1,11 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import api.entities.Tile;
 
 /***
  * this mission is implemented to follow a path defined while creating the class
@@ -16,8 +17,7 @@ public abstract class PathMission extends BaseMission {
 
     public List<Tile> path = new ArrayList<Tile>();
 
-    public PathMission(Ant ant, List<Tile> path) {
-        super(ant);
+    public PathMission(List<Tile> path) {
         setPath(path);
     }
 
@@ -29,7 +29,7 @@ public abstract class PathMission extends BaseMission {
     }
 
     protected Ant getAnt() {
-        return ants.size() > 0 ? ants.get(0) : null;
+        return getAnts().size() > 0 ? getAnts().get(0) : null;
     }
 
     /***

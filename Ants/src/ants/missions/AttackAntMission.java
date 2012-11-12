@@ -2,7 +2,6 @@ package ants.missions;
 
 import java.util.List;
 
-import ants.entities.Ant;
 import api.entities.Tile;
 
 /***
@@ -13,8 +12,8 @@ import api.entities.Tile;
  */
 public class AttackAntMission extends PathMission {
 
-    public AttackAntMission(Ant ant, List<Tile> path) {
-        super(ant, path);
+    public AttackAntMission(List<Tile> path) {
+        super(path);
     }
 
     /***

@@ -41,7 +41,7 @@ public class CombatTask extends BaseTask {
         for (Ant ant : friends) {
             List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.AStar, ant.getTile(), enemy.getTile());
             if (path != null)
-                addMission(new AttackAntMission(ant, path));
+                addMission(new AttackAntMission(path), ant);
         }
     }
 }

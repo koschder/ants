@@ -49,7 +49,7 @@ public class AttackHillsTask extends BaseTask {
                         rallyPoint = tile;
                     }
                 }
-                addMission(new AttackHillsInFlockMission(enemyHill,myHill, rallyPoint, 3, 10));
+                addMission(new AttackHillsInFlockMission(enemyHill, myHill, rallyPoint, 3, 10));
             }
         }
     }
@@ -85,7 +85,7 @@ public class AttackHillsTask extends BaseTask {
         for (Route route : hillRoutes) {
             List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.AStar, route.getStart(), route.getEnd());
             if (path != null && !employed.contains(route.getAnt())) {
-                addMission(new AttackHillMission(route.getAnt(), path));
+                addMission(new AttackHillMission(path), route.getAnt());
                 employed.add(route.getAnt());
             }
         }

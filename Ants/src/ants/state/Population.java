@@ -2,7 +2,6 @@ package ants.state;
 
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Set;
 
 import logging.Logger;
@@ -22,7 +21,7 @@ public class Population {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.SETUP);
     private Set<Ant> myAnts = new HashSet<Ant>();
     private Set<Ant> myUnemployedAnts = null;
-    private Set<Ant> employedAnts = new HashSet<Ant>();
+    // private Set<Ant> employedAnts = new HashSet<Ant>();
 
     private Set<Ant> enemyAnts = new HashSet<Ant>();
     private Set<Integer> players;
@@ -37,7 +36,7 @@ public class Population {
      */
     public void clearState() {
         myAnts.clear();
-        employedAnts.clear();
+        // employedAnts.clear();
         enemyAnts.clear();
         myUnemployedAnts = null;
     }
@@ -76,30 +75,31 @@ public class Population {
     public Collection<Ant> getMyUnemployedAnts() {
         if (myUnemployedAnts == null)
             myUnemployedAnts = new HashSet<Ant>(myAnts);
-        for (Iterator<Ant> it = employedAnts.iterator(); it.hasNext();) {
-            Ant ant = it.next();
-            if (!myUnemployedAnts.remove(ant)) {
-                LOGGER.error("Could not remove ant %s Tile: %s of unemployedAnts size: %s", ant, ant.getTile(),
-                        myUnemployedAnts.size());
-            } else {
-                LOGGER.debug("Ant %s Tile: %s marked as employed", ant, ant.getTile());
-            }
-            it.remove();
-        }
+        LOGGER.debug("myUnemployedAnts: %s", myUnemployedAnts);
+        final Set<Ant> employedAnts = Ants.getOrders().getEmployedAnts();
+        myUnemployedAnts.removeAll(employedAnts);
+
+        LOGGER.debug("employedAnts: %s", employedAnts);
+        // for (Iterator<Ant> it = employedAnts.iterator(); it.hasNext();) {
+        // Ant ant = it.next();
+        // if (!myUnemployedAnts.remove(ant)) {
+        // LOGGER.error("Could not remove ant %s Tile: %s of unemployedAnts size: %s", ant, ant.getTile(),
+        // myUnemployedAnts.size());
+        // } else {
+        // LOGGER.debug("Ant %s Tile: %s marked as employed", ant, ant.getTile());
+        // }
+        // it.remove();
+        // }
         return myUnemployedAnts;
     }
 
-    /**
-     * Marks the given Ant as employed.
-     * 
-     * @param ant
-     */
-    public void addEmployedAnt(Ant ant) {
-        employedAnts.add(ant);
-    }
-
-    public Set<Ant> getEmployedAnts() {
-        return employedAnts;
-    }
+    // /**
+    // * Marks the given Ant as employed.
+    // *
+    // * @param ant
+    // */
+    // public void addEmployedAnt(Ant ant) {
+    // employedAnts.add(ant);
+    // }
 
 }

@@ -23,7 +23,7 @@ public class AttackHillsInFlockMission extends BaseMission {
     @Override
     public void execute() {
         if (partialMission.isComplete() && partialMission instanceof ConcentrateMission) {
-            partialMission = new FlockMission(hill, partialMission.getAnts());
+            partialMission = new FlockMission(hill, Ants.getOrders().getAnts(partialMission));
         }
         partialMission.execute();
     }
@@ -54,7 +54,7 @@ public class AttackHillsInFlockMission extends BaseMission {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + ": Hill " + hill + ", Ants " + partialMission.getAnts();
+        return getClass().getSimpleName() + ": Hill " + hill + ", Ants " + Ants.getOrders().getAnts(partialMission);
     }
 
     @Override

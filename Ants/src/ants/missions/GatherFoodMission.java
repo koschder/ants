@@ -1,10 +1,9 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.List;
 
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.state.Ants;
+import api.entities.Tile;
 
 /***
  * Mission for gathering a food tile
@@ -16,8 +15,8 @@ public class GatherFoodMission extends PathMission {
 
     Tile food;
 
-    public GatherFoodMission(Ant ant, List<Tile> path) {
-        super(ant, path);
+    public GatherFoodMission(List<Tile> path) {
+        super(path);
         food = path.get(path.size() - 1);
     }
 

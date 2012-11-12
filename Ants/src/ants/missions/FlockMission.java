@@ -26,19 +26,17 @@ public class FlockMission extends BaseMission {
     }
 
     public FlockMission(Tile target, Ant... ants) {
-        super(ants);
         this.target = target;
     }
 
     public FlockMission(Tile target, Collection<Ant> ants) {
-        super(ants);
         this.target = target;
     }
 
     @Override
     public void execute() {
         sortAnts();
-        Ant leader = ants.get(0);
+        Ant leader = getAnts().get(0);
         List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.AStar, leader.getTile(), target);
         final Tile virtualTarget = path.get(1);
         // if (path.size() < 2) {
@@ -53,7 +51,7 @@ public class FlockMission extends BaseMission {
         }
         List<Tile> flockTargets = getSortedAndPrunedFlockTargets(leader, target);
 
-        for (Ant ant : ants) {
+        for (Ant ant : getAnts()) {
             if (ant.equals(leader))
                 continue;
             for (Iterator<Tile> tileIter = flockTargets.iterator(); tileIter.hasNext();) {
@@ -67,7 +65,7 @@ public class FlockMission extends BaseMission {
                 }
             }
             // if an ant can't make a sensible move this turn, just mark it as employed
-            Ants.getPopulation().addEmployedAnt(ant);
+            putMissionOrder(ant);
         }
 
     }
@@ -99,11 +97,11 @@ public class FlockMission extends BaseMission {
 
     private void sortAnts() {
         Map<Ant, Integer> antDistances = new HashMap<Ant, Integer>();
-        for (Ant ant : ants) {
+        for (Ant ant : getAnts()) {
             final int distance = Ants.getWorld().getSquaredDistance(ant.getTile(), target);
             antDistances.put(ant, distance);
         }
-        Collections.sort(ants, new Ant.DistanceComparator(antDistances));
+        Collections.sort(getAnts(), new Ant.DistanceComparator(antDistances));
     }
 
     @Override

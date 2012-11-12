@@ -1,15 +1,20 @@
 package ants.state;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
 import ants.entities.Ant;
+import ants.missions.BaseMission;
 import ants.missions.Mission;
 import ants.tasks.BaseTask;
 import ants.util.LiveInfo;
@@ -29,18 +34,68 @@ public class Orders {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.ORDERS);
     private static final Logger LOGGER_MISSIONS = LoggerFactory.getLogger(LogCategory.EXECUTE_MISSIONS);
     private static final Logger LOGGER_TASKS = LoggerFactory.getLogger(LogCategory.EXECUTE_TASKS);
-    private Set<Mission> missions = new HashSet<Mission>();
 
-    private Map<Tile, Move> orders = new HashMap<Tile, Move>();
+    // for each target tile, mark which ant is moving there
+    private Map<Tile, Move> targets = new HashMap<Tile, Move>();
+    // for each ant, mark which tile it will move to
+    private Map<Ant, Tile> orders = new HashMap<Ant, Tile>();
+    // for each ant, mark which mission it is on
+    private Map<Ant, Mission> missions = new HashMap<Ant, Mission>();
+
+    public List<Ant> getAnts(Mission mission) {
+        List<Ant> ants = new ArrayList<Ant>();
+        for (Entry<Ant, Mission> entry : missions.entrySet()) {
+            if (entry.getValue().equals(mission))
+                ants.add(entry.getKey());
+        }
+        return ants;
+    }
+
+    public void removeMission(Mission mission) {
+        Set<Ant> antsToRemove = new HashSet<Ant>();
+        for (Iterator<Entry<Ant, Mission>> it = missions.entrySet().iterator(); it.hasNext();) {
+            Entry<Ant, Mission> entry = it.next();
+            if (entry.getValue().equals(mission)) {
+                antsToRemove.add(entry.getKey());
+                LOGGER_MISSIONS.debug("removing mission %s for ant %s", entry.getValue(), entry.getKey());
+                // it.remove();
+            }
+        }
+        for (Ant ant : antsToRemove) {
+            missions.remove(ant);
+        }
+    }
+
+    public void releaseAnt(Ant ant) {
+        LOGGER_MISSIONS.debug("Releasing ant %s", ant);
+        missions.remove(ant);
+    }
 
     /**
      * Clears all turn-scoped state (i.e. the orders); the missions are tracked across turns.
      */
     public void clearState() {
+        targets.clear();
         orders.clear();
         // prevent stepping on own hill
         for (Tile myHill : Ants.getWorld().getMyHills()) {
-            orders.put(myHill, null);
+            targets.put(myHill, null);
+        }
+        for (Iterator<Entry<Ant, Mission>> it = missions.entrySet().iterator(); it.hasNext();) {
+            Entry<Ant, Mission> entry = it.next();
+            LOGGER_MISSIONS.debug("Ant %s is on Mission %s", entry.getKey(), entry.getValue().getClass()
+                    .getSimpleName());
+        }
+
+        Map<Ant, Mission> newMissions = new HashMap<Ant, Mission>();
+        for (Entry<Ant, Mission> entry : missions.entrySet()) {
+            newMissions.put(entry.getKey(), entry.getValue());
+        }
+        missions = newMissions;
+        for (Iterator<Entry<Ant, Mission>> it = missions.entrySet().iterator(); it.hasNext();) {
+            Entry<Ant, Mission> entry = it.next();
+            LOGGER_MISSIONS.debug("Ant %s is on Mission %s", entry.getKey(), entry.getValue().getClass()
+                    .getSimpleName());
         }
     }
 
@@ -67,9 +122,10 @@ public class Orders {
             LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s Order:%s<br/> ant: %s", issuer,
                     direction, ant.getTile());
             LOGGER_TASKS.debug("%1$s: Moving ant from %2$s to %3$s", issuer, ant.getTile(), newLoc);
-            orders.put(newLoc, new Move(ant.getTile(), direction));
+            targets.put(newLoc, new Move(ant.getTile(), direction));
+            orders.put(ant, newLoc);
             ant.setNextTile(newLoc);
-            Ants.getPopulation().addEmployedAnt(ant);
+            // Ants.getPopulation().addEmployedAnt(ant);
             ant.resetTurnsWaited();
             return true;
         } else {
@@ -82,7 +138,7 @@ public class Orders {
     private boolean isFreeForNextMove(Tile nextLocation) {
         String sLog = "isFreeForNextMove: ";
         // there is already an order heading to this field
-        boolean hasOrder = orders.containsKey(nextLocation);
+        boolean hasOrder = targets.containsKey(nextLocation);
         if (hasOrder)
             return false;
 
@@ -95,10 +151,10 @@ public class Orders {
         List<SearchTarget> neighbours = Ants.getWorld().getSuccessor(nextLocation, false);
         sLog += neighbours;
         for (SearchTarget neighbour : neighbours) {
-            if (orders.containsKey(neighbour.getTargetTile())) {
+            if (targets.containsKey(neighbour.getTargetTile())) {
                 sLog += "there is a order to neighbour " + neighbour;
                 // there is a move where a ant goes to a neighbour cell, maybe it's the ant of "nextlocation"
-                Move m = orders.get(neighbour);
+                Move m = targets.get(neighbour);
                 sLog += "move comes from " + m.getTile();
                 if (m.getTile().equals(nextLocation)) {
                     // yes it is the ant
@@ -120,22 +176,24 @@ public class Orders {
      * 
      * @param newMission
      */
-    public void addMission(Mission newMission) {
+    public void addMission(Mission newMission, Ant... ants) {
         final StackTraceElement[] stackTrace = Thread.currentThread().getStackTrace();
-        if (!stackTrace[2].getClassName().equals(BaseTask.class.getCanonicalName())) {
-            throw new IllegalStateException("addMission must only be called from BaseTask");
+        if (!(stackTrace[2].getClassName().equals(BaseTask.class.getCanonicalName()) || stackTrace[2].getClassName()
+                .equals(BaseMission.class.getCanonicalName()))) {
+            throw new IllegalStateException("addMission must only be called from BaseTask or BaseMission");
         }
-        if (missions.add(newMission)) {
-            newMission.execute();
-            LOGGER_MISSIONS.debug("New mission created: %s", newMission);
+        for (Ant ant : ants) {
+            missions.put(ant, newMission);
+            LOGGER_MISSIONS.debug("Ant %s sent on mission: %s", ant, newMission);
         }
+        newMission.execute();
     }
 
     /**
      * Prints the orders to the SystemOutputStream (sends them to the game engine).
      */
     public void issueOrders() {
-        for (Move move : orders.values()) {
+        for (Move move : targets.values()) {
             if (move != null && move.getDirection() != null) {
                 final String order = "o " + move.getTile().getRow() + " " + move.getTile().getCol() + " "
                         + move.getDirection().getSymbol();
@@ -152,10 +210,16 @@ public class Orders {
      */
 
     public Map<Tile, Move> getOrders() {
-        return orders;
+        return targets;
     }
 
     public Set<Mission> getMissions() {
-        return missions;
+        return Collections.unmodifiableSet(new HashSet<Mission>(missions.values()));
+    }
+
+    public Set<Ant> getEmployedAnts() {
+        Set<Ant> employedAnts = new HashSet<Ant>(orders.keySet());
+        employedAnts.addAll(missions.keySet());
+        return employedAnts;
     }
 }

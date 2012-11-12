@@ -1,7 +1,6 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,41 +22,29 @@ import api.entities.Tile;
  */
 public abstract class BaseMission implements Mission {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.EXECUTE_MISSIONS);
-    protected List<Ant> ants;
     private boolean abandon = false;
-
-    public BaseMission(Ant... ants) {
-        this.ants = new ArrayList<Ant>();
-        for (Ant ant : ants) {
-            addAnt(ant);
-        }
-    }
-
-    protected void addAnt(Ant ant) {
-        this.ants.add(ant);
-        ant.setMission(this);
-    }
-
-    public BaseMission(Collection<Ant> ants) {
-        this.ants = new ArrayList<Ant>();
-        for (Ant ant : ants) {
-            addAnt(ant);
-        }
-    }
 
     @Override
     public boolean isValid() {
         if (abandon)
             return false;
 
-        if (isCheckAnts() && ants.size() == 0)
+        if (isCheckAnts() && getAnts().size() == 0)
             return false;
 
-        for (Ant ant : this.ants) {
+        for (Ant ant : this.getAnts()) {
             if (!isAntAlive(ant))
                 return false;
         }
         return isSpecificMissionValid();
+    }
+
+    protected List<Ant> getAnts() {
+        return Collections.unmodifiableList(Ants.getOrders().getAnts(this));
+    }
+
+    protected void addAnt(Ant ant) {
+        Ants.getOrders().addMission(this, ant);
     }
 
     private boolean isAntAlive(Ant ant) {
@@ -71,11 +58,11 @@ public abstract class BaseMission implements Mission {
     protected Map<Ant, List<Tile>> gatherAnts(Tile tile, int amount, int attractionDistance) {
         Map<Ant, List<Tile>> antsNearBy = new HashMap<Ant, List<Tile>>();
         for (Ant a : Ants.getPopulation().getMyUnemployedAnts()) {
-            if (a.getMission() != null) {
-                LOGGER.info("skip Ant %s, it has already a mission.", a);
-                continue;
-            }
-            if (ants.size() == amount)
+            // if (a.getMission() != null) {
+            // LOGGER.info("skip Ant %s, it has already a mission.", a);
+            // continue;
+            // }
+            if (getAnts().size() == amount)
                 break;
 
             if (Ants.getWorld().manhattanDistance(a.getTile(), tile) > attractionDistance) {
@@ -142,19 +129,12 @@ public abstract class BaseMission implements Mission {
 
     @Override
     public void setup() {
-        List<Ant> deadlyList = new ArrayList<Ant>();
-        for (Ant ant : this.ants) {
+        for (Ant ant : this.getAnts()) {
             ant.setup();
             if (!isAntAlive(ant)) {
-                deadlyList.add(ant);
+                Ants.getOrders().releaseAnt(ant);
             }
         }
-        ants.removeAll(deadlyList);
-    }
-
-    @Override
-    public List<Ant> getAnts() {
-        return ants;
     }
 
     protected boolean isCheckAnts() {
@@ -168,15 +148,11 @@ public abstract class BaseMission implements Mission {
     protected void releaseAnts(int amount) {
         if (amount <= 0)
             return;
-        List<Ant> antsToRelease = new ArrayList<Ant>();
-        for (Ant a : ants) {
+        for (Ant a : getAnts()) {
             if (isAntReleaseable(a))
-                a.setMission(null);
-            antsToRelease.add(a);
-            if (antsToRelease.size() == amount)
-                return;
+                Ants.getOrders().releaseAnt(a);
         }
-        ants.removeAll(antsToRelease);
 
     }
+
 }

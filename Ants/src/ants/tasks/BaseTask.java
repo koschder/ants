@@ -3,6 +3,7 @@ package ants.tasks;
 import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
+import ants.entities.Ant;
 import ants.missions.Mission;
 import ants.state.Ants;
 
@@ -55,11 +56,11 @@ public abstract class BaseTask implements Task {
 
     }
 
-    protected void addMission(Mission mission) {
-        if (allocatedAnts >= maxAnts)
+    protected void addMission(Mission mission, Ant... ants) {
+        if (allocatedAnts >= maxAnts + ants.length)
             throw new InsufficientResourcesException();
 
-        Ants.getOrders().addMission(mission);
-        allocatedAnts++;
+        Ants.getOrders().addMission(mission, ants);
+        allocatedAnts += ants.length;
     }
 }

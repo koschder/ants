@@ -14,8 +14,8 @@ import api.entities.Tile;
  */
 public class ExploreMission extends PathMission {
 
-    public ExploreMission(Ant ant, List<Tile> path) {
-        super(ant, path);
+    public ExploreMission(List<Tile> path) {
+        super(path);
     }
 
     /***
@@ -23,7 +23,7 @@ public class ExploreMission extends PathMission {
      */
     @Override
     protected boolean isSpecificMissionValid() {
-        for (Ant ant : this.ants) {
+        for (Ant ant : this.getAnts()) {
             // TODO really abort the mission if only one ant found something more interesting?
             if (isSomethingInterestingNearby(ant)) {
                 return false;

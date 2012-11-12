@@ -79,7 +79,7 @@ public class ExploreTask extends BaseTask {
                 if (path == null)
                     continue;
 
-                addMission(new ExploreMission(route.getAnt(), path));
+                addMission(new ExploreMission(path), route.getAnt());
                 break;
             }
         }

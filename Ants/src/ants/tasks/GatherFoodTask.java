@@ -1,14 +1,21 @@
 package ants.tasks;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 
-import logging.*;
-import pathfinder.*;
+import logging.Logger;
+import logging.LoggerFactory;
+import pathfinder.PathFinder;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.missions.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.entities.Route;
+import ants.missions.GatherFoodMission;
+import ants.state.Ants;
+import api.entities.Tile;
 
 /**
  * Searches for food and sends our ants to gather it.
@@ -53,7 +60,7 @@ public class GatherFoodTask extends BaseTask {
                     path = Ants.getPathFinder().search(PathFinder.Strategy.AStar, route.getStart(), route.getEnd());
                 if (path == null)
                     continue;
-                addMission(new GatherFoodMission(route.getAnt(), path));
+                addMission(new GatherFoodMission(path), route.getAnt());
                 foodTargets.put(route.getEnd(), route.getStart());
             }
         }
