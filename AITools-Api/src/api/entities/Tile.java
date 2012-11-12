@@ -1,8 +1,12 @@
 package api.entities;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Map;
 
-import api.pathfinder.*;
+import api.pathfinder.SearchTarget;
 
 /**
  * Represents a tile of the game map.
@@ -105,7 +109,7 @@ public class Tile implements Comparable<Tile>, SearchTarget {
 
     @Override
     public List<Tile> getPath() {
-        return Arrays.asList(this);
+        return new ArrayList<Tile>(Arrays.asList(this));
     }
 
     @Override
