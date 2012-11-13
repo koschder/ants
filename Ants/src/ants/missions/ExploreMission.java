@@ -23,11 +23,17 @@ public class ExploreMission extends PathMission {
      */
     @Override
     protected boolean isSpecificMissionValid() {
+
+        // is the visible tile already explored?
+        if (Ants.getWorld().isVisible(path.get(path.size() - 1)))
+            return false;
+
         for (Ant ant : this.ants) {
             // TODO really abort the mission if only one ant found something more interesting?
             if (isSomethingInterestingNearby(ant)) {
                 return false;
             }
+
         }
         return true;
     }

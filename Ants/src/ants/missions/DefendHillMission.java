@@ -85,6 +85,12 @@ public class DefendHillMission extends BaseMission {
             }
             orderDone = antsWithOrderCount < antsWithOrder.size();
         }
+        for (Ant a : ants) {
+            if (antsWithOrder.contains(a))
+                continue;
+
+            putMissionOrder(a);
+        }
     }
 
     private boolean putOrder(Ant ant, Aim aim) {
@@ -96,10 +102,9 @@ public class DefendHillMission extends BaseMission {
                     return true;
                 }
             }
-
         }
 
-        // we want to defend to tiles away from our hill
+        // we want to defend two tiles away from our hill
         Tile t = Ants.getWorld().getTile(hill, aim);
         t = Ants.getWorld().getTile(t, aim);
 
@@ -108,17 +113,22 @@ public class DefendHillMission extends BaseMission {
 
         if ((aim == Aim.NORTH || aim == Aim.SOUTH) && ant.getTile().getRow() == t.getRow()) {
             // is on correct row, move to middle or stay
-            if (!putMissionOrder(ant, Ants.getWorld().getDirections(ant.getTile(), t).get(0)))
+            if (!putMissionOrder(ant, Ants.getWorld().getDirections(ant.getTile(), t).get(0))) {
                 return putMissionOrder(ant);
+            } else {
+                return true;
+            }
         }
         if ((aim == Aim.EAST || aim == Aim.WEST) && ant.getTile().getCol() == t.getCol()) {
             // is on correct column, move to middle stay
-            if (!putMissionOrder(ant, Ants.getWorld().getDirections(ant.getTile(), t).get(0)))
+            if (!putMissionOrder(ant, Ants.getWorld().getDirections(ant.getTile(), t).get(0))) {
                 return putMissionOrder(ant);
+            } else {
+                return true;
+            }
         }
 
         return putMissionOrder(ant, aim);
-
     }
 
     private Map<Aim, List<Tile>> attackersByDirection(List<Tile> tiles) {
@@ -170,7 +180,6 @@ public class DefendHillMission extends BaseMission {
         LOGGER.debug("gatherAnts: New ants %s for misson: %s", antsNearBy.keySet(), this);
         for (Ant a : antsNearBy.keySet()) {
             ants.add(a);
-            a.setMission(this);
         }
 
     }

@@ -57,7 +57,7 @@ public class MissionTask extends BaseTask {
 
     private void removeAnts(Mission mission) {
         for (Ant ant : mission.getAnts()) {
-            ant.setMission(null);
+            Ants.getPopulation().removeEmployedAnt(ant);
         }
     }
 }

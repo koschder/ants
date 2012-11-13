@@ -35,7 +35,6 @@ public abstract class BaseMission implements Mission {
 
     protected void addAnt(Ant ant) {
         this.ants.add(ant);
-        ant.setMission(this);
     }
 
     public BaseMission(Collection<Ant> ants) {
@@ -71,10 +70,10 @@ public abstract class BaseMission implements Mission {
     protected Map<Ant, List<Tile>> gatherAnts(Tile tile, int amount, int attractionDistance) {
         Map<Ant, List<Tile>> antsNearBy = new HashMap<Ant, List<Tile>>();
         for (Ant a : Ants.getPopulation().getMyUnemployedAnts()) {
-            if (a.getMission() != null) {
-                LOGGER.info("skip Ant %s, it has already a mission.", a);
-                continue;
-            }
+            // if (a.getMission() != null) {
+            // LOGGER.info("skip Ant %s, it has already a mission.", a);
+            // continue;
+            // }
             if (ants.size() == amount)
                 break;
 
@@ -145,6 +144,7 @@ public abstract class BaseMission implements Mission {
         List<Ant> deadlyList = new ArrayList<Ant>();
         for (Ant ant : this.ants) {
             ant.setup();
+            Ants.getPopulation().addEmployedAnt(ant);
             if (!isAntAlive(ant)) {
                 deadlyList.add(ant);
             }
@@ -171,12 +171,17 @@ public abstract class BaseMission implements Mission {
         List<Ant> antsToRelease = new ArrayList<Ant>();
         for (Ant a : ants) {
             if (isAntReleaseable(a))
-                a.setMission(null);
-            antsToRelease.add(a);
+                antsToRelease.add(a);
             if (antsToRelease.size() == amount)
                 return;
         }
-        ants.removeAll(antsToRelease);
+        removeAnts(antsToRelease);
+    }
 
+    public void removeAnts(List<Ant> antsToRelease) {
+        for (Ant a : antsToRelease) {
+            Ants.getPopulation().removeEmployedAnt(a);
+            ants.remove(a);
+        }
     }
 }

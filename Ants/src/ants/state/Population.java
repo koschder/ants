@@ -98,6 +98,11 @@ public class Population {
         employedAnts.add(ant);
     }
 
+    public void removeEmployedAnt(Ant a) {
+        employedAnts.remove(a);
+        myUnemployedAnts.add(a);
+    }
+
     public Set<Ant> getEmployedAnts() {
         return employedAnts;
     }
