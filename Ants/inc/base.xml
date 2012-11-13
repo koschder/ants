@@ -14,6 +14,23 @@
 			<arg line="-e" />
 		</exec>
 	</target>
+	<target name="mazeDebug">
+	        <exec executable="python" failonerror="true">
+	            <arg line="tools/playgame.py" />
+	            <arg line="&quot;java -jar -Xdebug -Xrunjdwp:transport=dt_socket,server=y,address=&quot;8000\&quot;,suspend=y ${bot.name}.jar&quot;" />
+	            <arg line="&quot;${bot.opponent}&quot;" />
+	            <arg line="--map_file tools/maps/maze/maze_p02_02.map" />
+	            <arg line="--log_dir logs" />
+	            <arg line="--turns 200" />
+	            <arg line="--turntime 99999999" />
+	            <arg line="--loadtime 99999999" />
+	            <arg line="--scenario" />
+	            <arg line="--food yes" />
+	            <arg line="--player_seed 7" />
+	            <arg line="--verbose" />
+	            <arg line="-e" />
+	        </exec>
+	    </target>
 	<target name="debugTest">
 		<exec executable="python" failonerror="true">
 			<arg line="tools/playgame.py" />

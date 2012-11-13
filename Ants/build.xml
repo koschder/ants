@@ -16,7 +16,7 @@
 		</antcall>
 	</target>
 	<target name="mazeAgainstEgreavette" depends="jarMyBot" description="">
-		<antcall target="mazeTest">
+		<antcall target="mazeDebug">
 			<param name="bot.name" value="MyBot" />
 			<param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
 		</antcall>

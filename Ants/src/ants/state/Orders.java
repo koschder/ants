@@ -52,18 +52,23 @@ public class Orders {
     }
 
     public void removeMission(Mission mission) {
-        Set<Ant> antsToRemove = new HashSet<Ant>();
-        for (Iterator<Entry<Ant, Mission>> it = missions.entrySet().iterator(); it.hasNext();) {
-            Entry<Ant, Mission> entry = it.next();
-            if (entry.getValue().equals(mission)) {
-                antsToRemove.add(entry.getKey());
-                LOGGER_MISSIONS.debug("removing mission %s for ant %s", entry.getValue(), entry.getKey());
-                // it.remove();
-            }
+        while (missions.values().remove(mission)) {
+            LOGGER_MISSIONS.debug("Removed mission %s", mission);
         }
-        for (Ant ant : antsToRemove) {
-            missions.remove(ant);
-        }
+        // Set<Ant> antsToRemove = new HashSet<Ant>();
+        // for (Iterator<Entry<Ant, Mission>> it = missions.entrySet().iterator(); it.hasNext();) {
+        // Entry<Ant, Mission> entry = it.next();
+        // if (entry.getValue().equals(mission)) {
+        // antsToRemove.add(entry.getKey());
+        // LOGGER_MISSIONS.debug("removing mission %s for ant %s", entry.getValue(), entry.getKey());
+        // // it.remove();
+        // }
+        // }
+        // for (Ant ant : antsToRemove) {
+        // if (missions.remove(ant) == null) {
+        // throw new RuntimeException("wtf?");
+        // }
+        // }
     }
 
     public void releaseAnt(Ant ant) {
