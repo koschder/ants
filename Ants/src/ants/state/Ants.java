@@ -279,12 +279,12 @@ public enum Ants {
     }
 
     public String getTurnSummaryString() {
-        return "------------ Turn %s ----------- Ants: %s --------- Missions: %s ----------------------------";
+        return "--------- Turn %s -------- Ants: %s ------- Missions: %s ----- Remaining ms: %s -----------";
     }
 
     public Object[] getTurnSummaryParams() {
         return new Object[] { Ants.getAnts().getTurn(), Ants.getPopulation().getMyAnts().size(),
-                Ants.getOrders().getMissions().size() };
+                Ants.getOrders().getMissions().size(), getTimeRemaining() };
     }
 
 }

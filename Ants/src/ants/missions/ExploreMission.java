@@ -40,8 +40,8 @@ public class ExploreMission extends PathMission {
 
     private boolean isSomethingInterestingNearby(Ant ant) {
         final boolean foodNearby = Ants.getWorld().isFoodNearby(ant.getTile());
-        final boolean enemyInRange = !ant.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), false).isEmpty();
-        return (foodNearby || enemyInRange);
+        List<Ant> enemy = ant.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), false);
+        final boolean enemyIsMayor = enemy.size() > getAnts().size();
+        return (foodNearby || enemyIsMayor);
     }
-
 }

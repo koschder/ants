@@ -3,9 +3,11 @@ package ants.missions;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 import java.util.TreeMap;
 
 import logging.Logger;
@@ -22,11 +24,14 @@ public class DefendHillMission extends BaseMission {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.DEFEND_HILL);
 
     private Tile hill = null;
-
-    private int nearBy = 6;
+    private Set<Tile> hillReachable = new HashSet<Tile>();
+    private int nearBy = 10;
 
     public DefendHillMission(Tile hill) {
         this.hill = hill;
+
+        hillReachable = Ants.getWorld().getAreaFlooded(hill, nearBy);
+        LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill, "DefendArea: %s", hillReachable);
     }
 
     @Override
@@ -186,13 +191,9 @@ public class DefendHillMission extends BaseMission {
 
     private List<Tile> getEnemyAntsNearby() {
         List<Tile> tile = new ArrayList<Tile>();
-        for (int x = -nearBy; x < nearBy; x++) {
-            for (int y = -nearBy; y < nearBy; y++) {
-                Tile around = Ants.getWorld().getTile(hill, new Tile(x, y));
-                if (Ants.getWorld().getIlk(around).hasEnemyAnt()) {
-                    tile.add(around);
-                    // LOGGER.debug("Tile %s has emeny ", around);
-                }
+        for (Tile around : hillReachable) {
+            if (Ants.getWorld().getIlk(around).hasEnemyAnt()) {
+                tile.add(around);
             }
         }
         return tile;

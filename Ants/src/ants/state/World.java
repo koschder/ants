@@ -1,13 +1,23 @@
 package ants.state;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
-import javax.management.*;
+import javax.management.RuntimeErrorException;
 
-import ants.entities.*;
-import api.entities.*;
-import api.map.*;
-import api.pathfinder.*;
+import ants.entities.Ant;
+import ants.entities.Ilk;
+import api.entities.Aim;
+import api.entities.Tile;
+import api.entities.Unit;
+import api.map.AbstractWraparoundMap;
+import api.map.UnitMap;
+import api.pathfinder.SearchTarget;
 
 /**
  * This class holds state about the game world.
@@ -361,4 +371,21 @@ public class World extends AbstractWraparoundMap implements UnitMap {
         }
     }
 
+    public Set<Tile> getAreaFlooded(Tile hill, int nearBy) {
+        Set<Tile> floodedTiles = new HashSet<Tile>();
+        getNeighbours(1, nearBy, floodedTiles, hill);
+        return floodedTiles;
+    }
+
+    private void getNeighbours(int i, int max, Set<Tile> floodedTiles, Tile expandTile) {
+        List<SearchTarget> successors = getSuccessor(expandTile, false);
+        for (SearchTarget t : successors) {
+            if (floodedTiles.contains(t))
+                continue;
+            floodedTiles.add(t.getTargetTile());
+            if (i < max) {
+                getNeighbours(i + 1, max, floodedTiles, t.getTargetTile());
+            }
+        }
+    }
 }
