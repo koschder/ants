@@ -1,10 +1,10 @@
 package ants.missions;
 
-import java.util.List;
+import java.util.*;
 
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 /***
  * Mission for exploring the world
@@ -22,20 +22,16 @@ public class ExploreMission extends PathMission {
      * mission isn't valid if there is food near the ant or there is an emeny near the ant.
      */
     @Override
-    protected boolean isSpecificMissionValid() {
-
-        // // is the visible tile already explored?
-        // if (Ants.getWorld().isVisible(path.get(path.size() - 1)))
-        // return false;
+    protected String isSpecificMissionValid() {
 
         for (Ant ant : this.ants) {
             // TODO really abort the mission if only one ant found something more interesting?
             if (isSomethingInterestingNearby(ant)) {
-                return false;
+                return "Found something more interesting";
             }
 
         }
-        return true;
+        return null;
     }
 
     private boolean isSomethingInterestingNearby(Ant ant) {

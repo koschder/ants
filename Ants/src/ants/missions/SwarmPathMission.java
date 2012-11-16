@@ -1,14 +1,12 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 public class SwarmPathMission extends BaseMission {
 
@@ -24,7 +22,7 @@ public class SwarmPathMission extends BaseMission {
     }
 
     @Override
-    protected boolean isSpecificMissionValid() {
+    protected String isSpecificMissionValid() {
         return cm.isSpecificMissionValid();
     }
 

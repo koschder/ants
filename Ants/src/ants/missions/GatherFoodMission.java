@@ -25,12 +25,12 @@ public class GatherFoodMission extends PathMission {
      * is valid as long the food is on the map
      */
     @Override
-    public boolean isSpecificMissionValid() {
+    public String isSpecificMissionValid() {
         // if food to gather isn't there the mission is not valid.
         if (!Ants.getWorld().getIlk(food).isFood())
-            return false;
+            return "The cake is a lie";
         // TODO other checks here
-        return true;
+        return null;
     }
 
     @Override

@@ -28,7 +28,7 @@ public class AttackHillsInFlockMission extends BaseMission {
     public void execute() {
         if (partialMission.isComplete() && partialMission instanceof ConcentrateMission) {
             partialMission = new FlockMission(hill, partialMission.getAnts());
-            LOGGER.info("AttackHillsInFlockMission: ConcentrateMission is completed FlockMission started");
+            LOGGER.info("ConcentrateMission completed, start with FlockMission % s", partialMission);
         }
         partialMission.execute();
     }
@@ -37,10 +37,10 @@ public class AttackHillsInFlockMission extends BaseMission {
      * mission is as long vaild, as long the enemy hill exists.
      */
     @Override
-    protected boolean isSpecificMissionValid() {
+    protected String isSpecificMissionValid() {
         if (!Ants.getWorld().getEnemyHills().contains(hill))
-            return false;
-        return true;
+            return "Enemy hill " + hill + " is no longer there";
+        return null;
     }
 
     @Override

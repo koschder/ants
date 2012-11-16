@@ -1,8 +1,8 @@
 package ants.missions;
 
-import java.util.List;
+import java.util.*;
 
-import ants.entities.Ant;
+import ants.entities.*;
 
 /***
  * defines which method must be implemented by a mission
@@ -13,7 +13,7 @@ import ants.entities.Ant;
 public interface Mission {
     public boolean isComplete();
 
-    public boolean isValid();
+    public String isValid();
 
     public void execute();
 

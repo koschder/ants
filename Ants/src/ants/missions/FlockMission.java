@@ -1,19 +1,13 @@
 package ants.missions;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
-import pathfinder.PathFinder;
+import logging.*;
+import pathfinder.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 public class FlockMission extends BaseMission {
     private Logger LOGGER = LoggerFactory.getLogger(LogCategory.FLOCKING);
@@ -107,8 +101,8 @@ public class FlockMission extends BaseMission {
     }
 
     @Override
-    protected boolean isSpecificMissionValid() {
-        return true;
+    protected String isSpecificMissionValid() {
+        return null;
     }
 
 }

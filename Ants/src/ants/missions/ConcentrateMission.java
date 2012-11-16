@@ -1,19 +1,13 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Aim;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 public class ConcentrateMission extends BaseMission {
 
@@ -199,8 +193,8 @@ public class ConcentrateMission extends BaseMission {
     }
 
     @Override
-    protected boolean isSpecificMissionValid() {
-        return true;
+    protected String isSpecificMissionValid() {
+        return null;
     }
 
     public void setTroopPoint(Tile tile) {
