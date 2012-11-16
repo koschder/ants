@@ -1,9 +1,9 @@
 package ants.missions;
 
-import java.util.List;
+import java.util.*;
 
-import ants.entities.Ant;
-import api.entities.Tile;
+import ants.entities.*;
+import api.entities.*;
 
 /***
  * This mission is created for attacking enemy ants.
@@ -21,9 +21,9 @@ public class AttackAntMission extends PathMission {
      * is always valid
      */
     @Override
-    protected boolean isSpecificMissionValid() {
+    protected String isSpecificMissionValid() {
         // TODO check if enemies is still there
-        return true;
+        return null;
     }
 
 }

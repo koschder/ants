@@ -1,19 +1,13 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import pathfinder.PathFinder.Strategy;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Aim;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 /***
  * Implements the interface Mission an handles the base tasks of a mission.
@@ -46,17 +40,20 @@ public abstract class BaseMission implements Mission {
     }
 
     @Override
-    public boolean isValid() {
+    public String isValid() {
         if (abandon)
-            return false;
+            return "Abandon mission";
 
         if (isCheckAnts() && ants.size() == 0)
-            return false;
+            return "No ants in mission";
 
+        int liveAntsCounter = 0;
         for (Ant ant : this.ants) {
-            if (!isAntAlive(ant))
-                return false;
+            if (isAntAlive(ant))
+                liveAntsCounter++;
         }
+        if (liveAntsCounter == 0)
+            return "No ant left alive";
         return isSpecificMissionValid();
     }
 
@@ -126,7 +123,7 @@ public abstract class BaseMission implements Mission {
      * 
      * @return true if mission is vaild
      */
-    protected abstract boolean isSpecificMissionValid();
+    protected abstract String isSpecificMissionValid();
 
     protected boolean putMissionOrder(Ant a, Tile to) {
         if (a.getTile().equals(to)) {

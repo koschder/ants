@@ -1,21 +1,15 @@
 package ants.bot;
 
-import influence.DefaultInfluenceMap;
+import influence.*;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import ants.state.World;
-import ants.tasks.Task;
-import ants.util.LiveInfo;
+import ants.entities.*;
+import ants.state.*;
+import ants.tasks.*;
+import ants.util.*;
 
 /**
  * Bot implementation. This was originally based on the sample bot from the starter package, but the implementation is
@@ -26,7 +20,6 @@ import ants.util.LiveInfo;
 public abstract class BaseBot extends Bot {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.TURN);
     private static final Logger LOGGER_PERFORMANCE = LoggerFactory.getLogger(LogCategory.PERFORMANCE);
-    private static final Logger LOGGER_TASKS = LoggerFactory.getLogger(LogCategory.EXECUTE_TASKS);
     private static final Logger LOGGER_STATISTICS = LoggerFactory.getLogger(LogCategory.STATISTICS);
     private static final Logger LOGGER_RESOURCES = LoggerFactory.getLogger(LogCategory.RESOURCE_ALLOCATION);
 

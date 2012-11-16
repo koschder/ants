@@ -1,10 +1,10 @@
 package ants.missions;
 
-import java.util.List;
+import java.util.*;
 
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 /***
  * This mission used for attacking the enemies hills
@@ -28,10 +28,10 @@ public class AttackHillMission extends PathMission {
      * mission is as long vaild, as long the enemy hill exists.
      */
     @Override
-    protected boolean isSpecificMissionValid() {
+    protected String isSpecificMissionValid() {
         if (!Ants.getWorld().getEnemyHills().contains(enemyHill))
-            return false;
-        return true;
+            return "Enemy hill " + enemyHill + " is no longer there";
+        return null;
     }
 
 }

@@ -15,9 +15,9 @@ public class OrdersTest {
         orders.addMission(new Mission() {
 
             @Override
-            public boolean isValid() {
+            public String isValid() {
                 // TODO Auto-generated method stub
-                return false;
+                return null;
             }
 
             @Override

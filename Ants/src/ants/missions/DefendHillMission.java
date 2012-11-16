@@ -1,23 +1,14 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import ants.util.LiveInfo;
-import api.entities.Aim;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import ants.util.*;
+import api.entities.*;
 
 public class DefendHillMission extends BaseMission {
 
@@ -197,10 +188,10 @@ public class DefendHillMission extends BaseMission {
     }
 
     @Override
-    protected boolean isSpecificMissionValid() {
+    protected String isSpecificMissionValid() {
         if (!Ants.getWorld().getMyHills().contains(hill))
-            return false;
-        return true;
+            return "Our hill " + hill + " is no longer there";
+        return null;
     }
 
     @Override
