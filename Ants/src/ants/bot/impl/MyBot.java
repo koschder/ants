@@ -46,13 +46,13 @@ public class MyBot extends BaseBot {
         LoggingConfig.configure(LogCategory.COMBAT, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.DEFEND, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.EXCEPTION, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.EXECUTE_TASKS, LogLevel.DEBUG);
-        LoggingConfig.configure(LogCategory.EXECUTE_MISSIONS, LogLevel.DEBUG);
+        LoggingConfig.configure(LogCategory.EXECUTE_TASKS, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.EXECUTE_MISSIONS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.EXPLORE, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.FOLLOW, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.FOOD, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.PATH_MISSION, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.ORDERS, LogLevel.DEBUG);
+        LoggingConfig.configure(LogCategory.ORDERS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.PERFORMANCE, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.SETUP, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.STATISTICS, LogLevel.INFO);

@@ -36,7 +36,7 @@ public class MissionTask extends BaseTask {
         LOGGER.debug("Current mission count: %s", missions.size());
         for (Iterator<Mission> it = missions.iterator(); it.hasNext();) {
             Mission mission = it.next();
-            LOGGER.debug("mission: %s", mission);
+            // LOGGER.debug("mission: %s", mission);
             if (mission.isComplete()) {
                 removeAnts(mission);
                 it.remove();

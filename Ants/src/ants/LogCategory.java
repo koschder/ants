@@ -21,7 +21,8 @@ public enum LogCategory implements logging.LogCategory {
     FLOCKING(false),
     SWARM(false),
     PATH_MISSION(false),
-    DEFEND_HILL(false);
+    DEFEND_HILL(false),
+    ATTACK_HILLS_FLOCKED(false);
     private boolean useCustomLogFile;
 
     private LogCategory(boolean useCustomLogFile) {
