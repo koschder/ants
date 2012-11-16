@@ -1,13 +1,19 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-import logging.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.PathFinder.Strategy;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import api.entities.Aim;
+import api.entities.Tile;
 
 /***
  * Implements the interface Mission an handles the base tasks of a mission.
@@ -52,7 +58,7 @@ public abstract class BaseMission implements Mission {
             if (isAntAlive(ant))
                 liveAntsCounter++;
         }
-        if (liveAntsCounter == 0)
+        if (liveAntsCounter == 0 && isCheckAnts())
             return "No ant left alive";
         return isSpecificMissionValid();
     }

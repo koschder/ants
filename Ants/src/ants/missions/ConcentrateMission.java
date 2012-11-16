@@ -1,13 +1,19 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
-import logging.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import api.entities.Aim;
+import api.entities.Tile;
 
 public class ConcentrateMission extends BaseMission {
 
@@ -55,7 +61,7 @@ public class ConcentrateMission extends BaseMission {
             // TODO define max manhattanDistance considering amount
             int maxDistance = (amount / 4) + 2; // vierer nachbarschaft.
             if (Ants.getWorld().manhattanDistance(a.getTile(), troopPoint) > maxDistance) {
-                LOGGER.info("Ant %s it to far away of TroopPoint %s. mission insn't compelete yet", a, troopPoint);
+                LOGGER.info("Ant %s it to far away of TroopPoint %s. mission isn't compelete yet", a, troopPoint);
                 return false;
             }
         }
