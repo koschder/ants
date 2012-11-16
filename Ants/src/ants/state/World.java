@@ -1,25 +1,14 @@
 package ants.state;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.PriorityQueue;
-import java.util.Set;
+import java.util.*;
 
-import javax.management.RuntimeErrorException;
+import javax.management.*;
 
-import pathfinder.entities.Node;
-import ants.entities.Ant;
-import ants.entities.Ilk;
-import api.entities.Aim;
-import api.entities.Tile;
-import api.entities.Unit;
-import api.map.AbstractWraparoundMap;
-import api.map.UnitMap;
-import api.pathfinder.SearchTarget;
+import pathfinder.entities.*;
+import ants.entities.*;
+import api.entities.*;
+import api.map.*;
+import api.pathfinder.*;
 
 /**
  * This class holds state about the game world.
@@ -48,6 +37,8 @@ public class World extends AbstractWraparoundMap implements UnitMap {
     private Set<Tile> myHills = new HashSet<Tile>();
 
     private Set<Tile> enemyHills = new HashSet<Tile>();
+
+    private Set<Tile> newEnemyHills = new HashSet<Tile>();
 
     private Set<Tile> foodTiles = new HashSet<Tile>();
 
@@ -97,19 +88,22 @@ public class World extends AbstractWraparoundMap implements UnitMap {
         clearIlk(enemyAnts);
         clearDeadAnts();
         myHills.clear();
-        clearVisibleEnemyHills();
+        newEnemyHills.clear();
         clearFood();
     }
 
     /**
      * This clears all visible enemy hills, but retains those that are out of view this turn.
      */
-    private void clearVisibleEnemyHills() {
+    public void updateEnemyHills() {
         for (Iterator<Tile> iter = enemyHills.iterator(); iter.hasNext();) {
             Tile hill = iter.next();
-            if (isVisible(hill))
+            if (newEnemyHills.remove(hill))
+                continue;
+            else if (isVisible(hill))
                 iter.remove();
         }
+        enemyHills.addAll(newEnemyHills);
     }
 
     private void clearIlk(Collection<Ant> ants) {
@@ -250,9 +244,9 @@ public class World extends AbstractWraparoundMap implements UnitMap {
      * @param tile
      *            location on the game map to be updated
      */
-    public void updateHills(int owner, Tile tile) {
+    public void addHill(int owner, Tile tile) {
         if (owner > 0)
-            enemyHills.add(tile);
+            newEnemyHills.add(tile);
         else
             myHills.add(tile);
     }
