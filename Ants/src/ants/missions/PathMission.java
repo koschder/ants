@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ants.entities.Ant;
-import ants.state.Ants;
 import api.entities.Tile;
 
 /***
@@ -41,16 +40,17 @@ public abstract class PathMission extends BaseMission {
         if (path == null)
             return "path is null";
         String pathString = "";
-        Tile previos = null;
-        String aims = "";
+        // Tile previos = null;
+        // String aims = "";
         for (Tile t : path) {
             pathString += t + ",";
-            if (previos != null) {
-                aims += Ants.getWorld().getDirections(previos, t).get(0).getSymbol();
-            }
-            previos = t;
         }
-        return pathString + "\n Aims: " + aims + " \n";
+        // if (previos != null) {
+        // aims += Ants.getWorld().getDirections(previos, t).get(0).getSymbol();
+        // }
+        // previos = t;
+        // }
+        return pathString; // + "\n Aims: " + aims + " \n";
     }
 
     @Override

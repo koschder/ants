@@ -54,7 +54,7 @@ public class AttackHillsInFlockMission extends BaseMission {
 
     @Override
     public String toString() {
-        return getClass().getSimpleName() + ": Hill " + hill + ", Ants " + partialMission.getAnts();
+        return getClass().getSimpleName() + ": Hill " + hill + ", PartialMission: " + partialMission;
     }
 
     @Override

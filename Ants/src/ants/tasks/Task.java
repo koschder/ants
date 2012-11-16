@@ -42,4 +42,6 @@ public interface Task {
     public void setMaxResources(Integer maxResources);
 
     public Integer getMaxResources();
+
+    public Integer getMaxAnts();
 }

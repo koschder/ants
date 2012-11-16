@@ -35,6 +35,7 @@ public abstract class BaseMission implements Mission {
 
     protected void addAnt(Ant ant) {
         this.ants.add(ant);
+        Ants.getPopulation().addEmployedAnt(ant);
     }
 
     public BaseMission(Collection<Ant> ants) {
@@ -173,7 +174,7 @@ public abstract class BaseMission implements Mission {
             if (isAntReleaseable(a))
                 antsToRelease.add(a);
             if (antsToRelease.size() == amount)
-                return;
+                break;
         }
         removeAnts(antsToRelease);
     }

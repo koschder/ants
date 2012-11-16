@@ -1,14 +1,21 @@
 package ants.tasks;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.TreeSet;
 
-import logging.*;
-import pathfinder.*;
+import logging.Logger;
+import logging.LoggerFactory;
+import pathfinder.PathFinder;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.missions.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.entities.Route;
+import ants.missions.GatherFoodMission;
+import ants.state.Ants;
+import api.entities.Tile;
 
 /**
  * Searches for food and sends our ants to gather it.
@@ -34,6 +41,10 @@ public class GatherFoodTask extends BaseTask {
         sortedAnts = new TreeSet<Ant>(Ants.getPopulation().getMyUnemployedAnts());
 
         for (Tile foodLoc : sortedFood) {
+            // fix if food spawns on hill
+            if (Ants.getWorld().getMyHills().contains(foodLoc))
+                continue;
+
             for (Ant ant : sortedAnts) {
                 final Tile antLoc = ant.getTile();
                 if (!Ants.getWorld().isFoodNearby(antLoc))

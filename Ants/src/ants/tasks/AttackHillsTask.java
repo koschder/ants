@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Set;
 
 import pathfinder.PathFinder;
+import pathfinder.PathFinder.Strategy;
 import ants.entities.Ant;
 import ants.entities.Route;
 import ants.missions.AttackHillMission;
@@ -24,32 +25,32 @@ import api.entities.Tile;
 public class AttackHillsTask extends BaseTask {
 
     private int cutoff = 100;
-    private boolean flock = false;
+    private int startFlockAttackTurn = 20;
+    private int startNonFlockAttackTurn = 10;
+    private boolean flock = true;
 
     @Override
     public void doPerform() {
         if (!flock) {
-            doPerformNonFlocking();
-            return;
+            if (Ants.getAnts().getTurn() >= startNonFlockAttackTurn)
+                doPerformNonFlockAttack();
+        } else {
+            if (Ants.getAnts().getTurn() >= startFlockAttackTurn)
+                doPerformFlockAttack();
         }
+    }
+
+    private void doPerformFlockAttack() {
         for (Tile enemyHill : Ants.getWorld().getEnemyHills()) {
             for (Tile myHill : Ants.getWorld().getMyHills()) {
                 if (isMissionActive(enemyHill, myHill))
                     continue;
-
-                List<Tile> hillZone = Ants.getWorld().getVisibleTiles(myHill);
-                int maxSafety = Integer.MIN_VALUE;
-                Tile rallyPoint = null;
-                for (Tile tile : hillZone) {
-                    if (!Ants.getWorld().isPassable(tile))
-                        continue;
-                    int safety = Ants.getInfluenceMap().getSafety(tile);
-                    if (safety > maxSafety) {
-                        maxSafety = safety;
-                        rallyPoint = tile;
-                    }
+                List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, myHill, enemyHill, 40);
+                if (path != null) {
+                    // concentrate Ants near my Hill
+                    Tile ralleyPoint = path.size() <= 10 ? path.get(path.size() / 2) : path.get(10);
+                    addMission(new AttackHillsInFlockMission(enemyHill, myHill, ralleyPoint, 3, 20));
                 }
-                addMission(new AttackHillsInFlockMission(enemyHill, myHill, rallyPoint, 3, 10));
             }
         }
     }
@@ -65,7 +66,7 @@ public class AttackHillsTask extends BaseTask {
         return false;
     }
 
-    private void doPerformNonFlocking() {
+    private void doPerformNonFlockAttack() {
         // attack hills
         List<Route> hillRoutes = new ArrayList<Route>();
         for (Tile hillLoc : Ants.getWorld().getEnemyHills()) {

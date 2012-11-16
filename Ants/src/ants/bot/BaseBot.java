@@ -28,6 +28,7 @@ public abstract class BaseBot extends Bot {
     private static final Logger LOGGER_PERFORMANCE = LoggerFactory.getLogger(LogCategory.PERFORMANCE);
     private static final Logger LOGGER_TASKS = LoggerFactory.getLogger(LogCategory.EXECUTE_TASKS);
     private static final Logger LOGGER_STATISTICS = LoggerFactory.getLogger(LogCategory.STATISTICS);
+    private static final Logger LOGGER_RESOURCES = LoggerFactory.getLogger(LogCategory.RESOURCE_ALLOCATION);
 
     protected Map<Task.Type, Task> tasks = new LinkedHashMap<Task.Type, Task>();
 
@@ -41,7 +42,7 @@ public abstract class BaseBot extends Bot {
     @Override
     public void doTurn() {
         LOGGER.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
-        LOGGER.info("enemy_hills visible: " + Ants.getWorld().getEnemyHills());
+        LOGGER.info("enemy_hills visible: %s", Ants.getWorld().getEnemyHills(), Ants.getWorld());
         calculateInfluence();
         initTasks();
         doStatistics();
@@ -51,7 +52,8 @@ public abstract class BaseBot extends Bot {
          */
         executeTask();
         final Collection<Ant> myUnemployedAnts = Ants.getPopulation().getMyUnemployedAnts();
-        LOGGER_TASKS.debug("Unemployed Ants (%s total): %s", myUnemployedAnts.size(), myUnemployedAnts);
+        LOGGER_RESOURCES.info("Unemployed Ants (%s of %s): %s", myUnemployedAnts.size(), Ants.getPopulation()
+                .getMyAnts().size(), myUnemployedAnts);
         Ants.getOrders().issueOrders();
         for (Ant unemployed : myUnemployedAnts) {
             LiveInfo.liveInfo(Ants.getAnts().getTurn(), unemployed.getTile(), "Unemployed ant: %s",
@@ -65,8 +67,9 @@ public abstract class BaseBot extends Bot {
             int unemployed = Ants.getPopulation().getMyUnemployedAnts().size();
             LOGGER_PERFORMANCE.info("task started:: %s at %s", task.getClass().getSimpleName(), start);
             task.perform();
-            LOGGER_TASKS.debug("Task %s found jobs for %s of %s unemployed ants", task.getClass().getSimpleName(),
-                    unemployed - Ants.getPopulation().getMyUnemployedAnts().size(), unemployed);
+            LOGGER_RESOURCES.info("Task %s found jobs for %s of %s unemployed ants. (max: %s)", task.getClass()
+                    .getSimpleName(), unemployed - Ants.getPopulation().getMyUnemployedAnts().size(), unemployed, task
+                    .getMaxAnts());
             LOGGER_PERFORMANCE.info("task ended  :: %s, took %s ms", task.getClass().getSimpleName(),
                     System.currentTimeMillis() - start);
         }

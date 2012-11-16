@@ -49,7 +49,7 @@ public class ConcentrateMission extends BaseMission {
         this.amount = a;
         this.attractionDistance = attractionDistance;
 
-        LOGGER.info("TroopMission_created TroopPoint %s Ants needed %S", troopPoint, amount);
+        LOGGER.info("ConcentrateMission_created TroopPoint %s Ants needed %S", troopPoint, amount);
     }
 
     @Override
@@ -66,13 +66,13 @@ public class ConcentrateMission extends BaseMission {
             }
         }
 
-        LOGGER.info("TroopMission_completed TroopPoint %s Ants needed %S Ants: %s", troopPoint, amount, ants);
+        LOGGER.info("ConcentrateMission_completed TroopPoint %s Ants needed %S Ants: %s", troopPoint, amount, ants);
         return true;
     }
 
     @Override
     public void execute() {
-        LOGGER.info("TroopMission_Executed TroopPoint %s Ants:  %s", troopPoint, ants.toString());
+        LOGGER.info("ConcentrateMission_Executed TroopPoint %s Ants:  %s", troopPoint, ants.toString());
         calculateBalancePoint();
         for (Ant a : ants) {
             moveAnt(a);
@@ -99,7 +99,7 @@ public class ConcentrateMission extends BaseMission {
         diffy = diffy / (ants.size() + troopPointFactor);
 
         offsetPoint = new Tile((int) diffy, (int) diffx);
-        LOGGER.info("TroopMission_calculateBalancePoint x: %s y: %s offsetPoint %s", diffx, diffy, offsetPoint);
+        LOGGER.info("ConcentrateMission_calculateBalancePoint x: %s y: %s offsetPoint %s", diffx, diffy, offsetPoint);
     }
 
     private void moveAnt(Ant a) {
@@ -140,7 +140,7 @@ public class ConcentrateMission extends BaseMission {
                 }
             }
             if (putMissionOrder(a, aim)) {
-                LOGGER.info("TroopMission_AntMoved %s moved to %s", a, aim);
+                LOGGER.info("ConcentrateMission_AntMoved %s moved to %s", a, aim);
                 bIssueOrderd = true;
             }
         }
@@ -150,7 +150,7 @@ public class ConcentrateMission extends BaseMission {
             Collections.shuffle(aims);
             for (Aim ai : aims) {
                 if (putMissionOrder(a, ai)) {
-                    LOGGER.info("TroopMission_AntMoved %s moved to %s", a, ai);
+                    LOGGER.info("ConcentrateMission_AntMoved %s moved to %s", a, ai);
                     bIssueOrderd = true;
                     break;
                 }
@@ -163,7 +163,7 @@ public class ConcentrateMission extends BaseMission {
             Collections.shuffle(list);
             for (Aim ai : list) {
                 if (putMissionOrder(a, ai)) {
-                    LOGGER.info("TroopMission_AntMoved %s moved to %s", a, ai);
+                    LOGGER.info("ConcentrateMission_AntMoved %s moved to %s", a, ai);
                     bIssueOrderd = true;
                     break;
                 }
@@ -172,12 +172,12 @@ public class ConcentrateMission extends BaseMission {
         if (!bIssueOrderd) {
             // if no issue could be ordered we do a null move, so that the ant doesn't apear at the
             // unemployeed list
-            putMissionOrder(a, (Aim) null);
+            putMissionOrder(a);
         }
     }
 
     private void gatherAnts() {
-        LOGGER.info("TroopMission_gatherAnts TroopPoint %s", troopPoint);
+        LOGGER.info("ConcentrateMission_gatherAnts TroopPoint %s", troopPoint);
 
         Map<Ant, List<Tile>> antsNearBy = gatherAnts(troopPoint, ants.size() - amount, attractionDistance);
         // TODO what with the path?
@@ -185,9 +185,8 @@ public class ConcentrateMission extends BaseMission {
             List<Tile> p = entry.getValue();
             if (p == null || p.size() <= 1)
                 continue;
-            p.remove(0);
             Ant a = entry.getKey();
-            LOGGER.info("TroopMission_NewAnt %s is joining for ConcentratePoint %s path is %s", a, troopPoint, p);
+            LOGGER.info("ConcentrateMission_NewAnt %s is joining for ConcentratePoint %s path is %s", a, troopPoint, p);
             a.setPath(p);
             addAnt(a);
             moveAnt(a);
@@ -196,7 +195,7 @@ public class ConcentrateMission extends BaseMission {
     }
 
     public String toString() {
-        return String.format("TroopMission Point: %s Ants %s", troopPoint, ants);
+        return String.format("ConcentrateMission Point: %s Ants %s", troopPoint, ants);
     }
 
     @Override

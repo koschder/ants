@@ -51,6 +51,11 @@ public abstract class BaseTask implements Task {
         return this.maxResources;
     }
 
+    @Override
+    public Integer getMaxAnts() {
+        return this.maxAnts;
+    }
+
     protected void doPerform() {
 
     }
