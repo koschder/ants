@@ -1,10 +1,10 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.List;
 
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import api.entities.Tile;
 
 /***
  * This mission used for attacking the enemies hills

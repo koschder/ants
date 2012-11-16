@@ -48,11 +48,12 @@ public class ExploreTask extends BaseTask {
         removeVisibleTiles(invisibleTiles);
         LOGGER.debug("Invisible tiles: %s, Unseen tiles: %s", invisibleTiles.size(), unseenTiles.size());
 
-        int totalTiles = Ants.getWorld().getCols() * Ants.getWorld().getRows();
-        if ((unseenTiles.size() / totalTiles) < 0.1)
-            explore(invisibleTiles);
-        else
-            explore(unseenTiles);
+        explore(unseenTiles);
+        explore(invisibleTiles);
+        //
+        // int totalTiles = Ants.getWorld().getCols() * Ants.getWorld().getRows();
+        // if ((unseenTiles.size() / totalTiles) < 0.5)
+        // else
     }
 
     private void explore(Set<Tile> tiles) {

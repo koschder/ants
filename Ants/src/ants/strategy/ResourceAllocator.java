@@ -2,6 +2,7 @@ package ants.strategy;
 
 import java.util.Map;
 
+import ants.strategy.rules.HalfTimeReachedRule;
 import ants.strategy.rules.PercentExploredRule;
 import ants.strategy.rules.PopulationSizeRule;
 import ants.strategy.rules.RelativeInfluenceRule;
@@ -21,5 +22,6 @@ public class ResourceAllocator extends BaseResourceAllocator {
         rules.add(new PopulationSizeRule());
         rules.add(new RelativeInfluenceRule(influence));
         rules.add(new PercentExploredRule());
+        rules.add(new HalfTimeReachedRule());
     }
 }

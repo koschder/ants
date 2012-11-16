@@ -78,7 +78,7 @@ public abstract class BaseMission implements Mission {
             // LOGGER.info("skip Ant %s, it has already a mission.", a);
             // continue;
             // }
-            if (ants.size() == amount)
+            if (ants.size() >= amount)
                 break;
 
             if (Ants.getWorld().manhattanDistance(a.getTile(), tile) > attractionDistance) {
@@ -187,5 +187,13 @@ public abstract class BaseMission implements Mission {
             Ants.getPopulation().removeEmployedAnt(a);
             ants.remove(a);
         }
+    }
+
+    protected boolean doAnyMove(Ant ant) {
+        for (Aim aim : Aim.values()) {
+            if (Ants.getOrders().issueOrder(ant, aim, getClass().getSimpleName()))
+                return true;
+        }
+        return false;
     }
 }

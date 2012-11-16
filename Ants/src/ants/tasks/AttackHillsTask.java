@@ -24,20 +24,16 @@ import api.entities.Tile;
  */
 public class AttackHillsTask extends BaseTask {
 
-    private int cutoff = 100;
-    private int startFlockAttackTurn = 20;
-    private int startNonFlockAttackTurn = 10;
-    private boolean flock = true;
+    private int cutoff = 100; // squared
+    private int startFlockAttackTurn = 220;
+    private int startNonFlockAttackTurn = 5;
 
     @Override
     public void doPerform() {
-        if (!flock) {
-            if (Ants.getAnts().getTurn() >= startNonFlockAttackTurn)
-                doPerformNonFlockAttack();
-        } else {
-            if (Ants.getAnts().getTurn() >= startFlockAttackTurn)
-                doPerformFlockAttack();
-        }
+        if (Ants.getAnts().getTurn() >= startNonFlockAttackTurn)
+            doPerformNonFlockAttack();
+        if (Ants.getAnts().getTurn() >= startFlockAttackTurn)
+            doPerformFlockAttack();
     }
 
     private void doPerformFlockAttack() {

@@ -1,10 +1,9 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.List;
 
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import api.entities.Tile;
 
 /***
  * Mission for exploring the world
@@ -26,18 +25,12 @@ public class ExploreMission extends PathMission {
 
         for (Ant ant : this.ants) {
             // TODO really abort the mission if only one ant found something more interesting?
-            if (isSomethingInterestingNearby(ant)) {
-                return "Found something more interesting";
+            String abortReason = abortMission(ant, true, true, true);
+            if (abortReason.length() > 0) {
+                return "Found something [" + abortReason + "] more interesting";
             }
 
         }
         return null;
-    }
-
-    private boolean isSomethingInterestingNearby(Ant ant) {
-        final boolean foodNearby = Ants.getWorld().isFoodNearby(ant.getTile());
-        List<Ant> enemy = ant.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), false);
-        final boolean enemyIsMayor = enemy.size() > getAnts().size();
-        return (foodNearby || enemyIsMayor);
     }
 }

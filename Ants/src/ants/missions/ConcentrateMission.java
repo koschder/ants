@@ -9,6 +9,7 @@ import java.util.Map.Entry;
 
 import logging.Logger;
 import logging.LoggerFactory;
+import pathfinder.PathFinder.Strategy;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.state.Ants;
@@ -115,9 +116,13 @@ public class ConcentrateMission extends BaseMission {
                     a.setPath(t);
                 }
             } else {
-                if (a.getTurnsWaited() > 3) {
-                    LOGGER.debug("cancel path %s of ant %s", a, a.getPath());
-                    a.setPath(null);
+                List<Aim> aims = Aim.getOrthogonalAims(Ants.getWorld().getDirections(a.getTile(), move).get(0));
+                for (Aim aim : aims) {
+                    if (putMissionOrder(a, aim)) {
+                        a.setPath(Ants.getPathFinder().search(Strategy.AStar,
+                                Ants.getWorld().getTile(a.getTile(), aim), troopPoint));
+                        return;
+                    }
                 }
                 putMissionOrder(a);
             }
@@ -179,7 +184,7 @@ public class ConcentrateMission extends BaseMission {
     private void gatherAnts() {
         LOGGER.info("ConcentrateMission_gatherAnts TroopPoint %s", troopPoint);
 
-        Map<Ant, List<Tile>> antsNearBy = gatherAnts(troopPoint, ants.size() - amount, attractionDistance);
+        Map<Ant, List<Tile>> antsNearBy = gatherAnts(troopPoint, amount - ants.size(), attractionDistance);
         // TODO what with the path?
         for (Entry<Ant, List<Tile>> entry : antsNearBy.entrySet()) {
             List<Tile> p = entry.getValue();

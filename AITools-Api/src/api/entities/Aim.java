@@ -1,11 +1,12 @@
 package api.entities;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a direction in which to move an ant.
- * The directions are NORTH,EAST,SOUTH and WEST
+ * Represents a direction in which to move an ant. The directions are NORTH,EAST,SOUTH and WEST
  */
 public enum Aim {
     /** North direction, or up. */
@@ -78,5 +79,15 @@ public enum Aim {
      */
     public static Aim fromSymbol(char symbol) {
         return symbolLookup.get(symbol);
+    }
+
+    public static List<Aim> getOrthogonalAims(Aim aim) {
+        switch (aim) {
+        case NORTH:
+        case SOUTH:
+            return Arrays.asList(WEST, EAST);
+        default:
+            return Arrays.asList(NORTH, SOUTH);
+        }
     }
 }

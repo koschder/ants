@@ -1,10 +1,10 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.List;
 
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import api.entities.Tile;
 
 /***
  * Mission for gathering a food tile
@@ -29,15 +29,21 @@ public class GatherFoodMission extends PathMission {
         // if food to gather isn't there the mission is not valid.
         if (!Ants.getWorld().getIlk(food).isFood())
             return "The cake is a lie";
-        // TODO other checks here
+
+        for (Ant ant : ants) {
+            String abortReason = abortMission(ant, false, true, true);
+            if (abortReason.length() > 0) {
+                return "Found something [" + abortReason + "] more interesting";
+            }
+        }
+
         return null;
     }
 
     @Override
     public String toString() {
-        String direction = "TODO"; // ((path.size() > 0) ? ant.getTile().directionTo(path.get(0)).toString() : "-");
-        return "GatherFoodMission: [ant=" + getAnt() + ", target food=" + food + ", Next direction:=" + direction
-                + ", Path:=" + getPathString() + ", IsMissionComplete()=" + isComplete() + "]";
+        return "GatherFoodMission: [ant=" + getAnt() + ", target food=" + food + ", Path:=" + getPathString()
+                + ", IsMissionComplete()=" + isComplete() + "]";
     }
 
     @Override

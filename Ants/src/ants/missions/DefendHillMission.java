@@ -1,14 +1,23 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
-import logging.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.state.*;
-import ants.util.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import ants.util.LiveInfo;
+import api.entities.Aim;
+import api.entities.Tile;
 
 public class DefendHillMission extends BaseMission {
 
@@ -17,6 +26,8 @@ public class DefendHillMission extends BaseMission {
     private Tile hill = null;
     private Set<Tile> hillReachable = new HashSet<Tile>();
     private int nearBy = 8;
+    private int guardHillTurn = 10;
+    private int antsMoreThanEnemy = 2;
 
     public DefendHillMission(Tile hill) {
         this.hill = hill;
@@ -46,10 +57,13 @@ public class DefendHillMission extends BaseMission {
         for (Entry<Aim, List<Tile>> a : attackers.entrySet())
             attInfo += "<br/> " + a;
 
-        if (enemyNearBy.size() > ants.size()) { // need more ants to defend
-            gatherAnts(enemyNearBy.size() - ants.size() + 2); // to for reserve
+        boolean startDefend = (ants.size() == 0 && Ants.getAnts().getTurn() > guardHillTurn);
+        if (enemyNearBy.size() > ants.size() || startDefend) {
+            // need ants to defend
+            int amount = startDefend ? 1 : (enemyNearBy.size() - ants.size() + antsMoreThanEnemy);
+            gatherAnts(amount);
         } else if (enemyNearBy.size() > ants.size()) { // need more ants to defend
-            releaseAnts(ants.size() - (enemyNearBy.size() + 2)); // two for reserve
+            releaseAnts(ants.size() - (enemyNearBy.size() + antsMoreThanEnemy)); // two for reserve
         }
 
         positioning(attackers);
@@ -81,13 +95,18 @@ public class DefendHillMission extends BaseMission {
         for (Ant a : ants) {
             if (antsWithOrder.contains(a))
                 continue;
-
-            putMissionOrder(a);
+            if (a.getTile().equals(hill)) {
+                if (!doAnyMove(a)) {
+                    putMissionOrder(a);
+                }
+            } else {
+                putMissionOrder(a);
+            }
         }
+
     }
 
     private boolean putOrder(Ant ant, Aim aim) {
-
         // ant is to far away from hill call it back
         if (Ants.getWorld().manhattanDistance(ant.getTile(), hill) > 4) {
             for (Aim ai : Ants.getWorld().getDirections(ant.getTile(), hill)) {
