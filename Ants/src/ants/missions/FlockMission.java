@@ -1,22 +1,32 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
-import logging.*;
-import pathfinder.*;
+import logging.Logger;
+import logging.LoggerFactory;
+import pathfinder.PathFinder;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import api.entities.Tile;
 
 public class FlockMission extends BaseMission {
     private Logger LOGGER = LoggerFactory.getLogger(LogCategory.FLOCKING);
     private Tile target;
-    private boolean complete;
+    private Ant leader;
 
     @Override
     public boolean isComplete() {
-        return complete;
+        for (Ant a : ants) {
+            if (a.getTile().equals(target))
+                return true;
+        }
+        return false;
     }
 
     public FlockMission(Tile target, Ant... ants) {
@@ -32,14 +42,12 @@ public class FlockMission extends BaseMission {
     @Override
     public void execute() {
         sortAnts();
-        Ant leader = ants.get(0);
+        leader = ants.get(0);
         List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.AStar, leader.getTile(), target);
         final Tile virtualTarget = path.get(1);
         // if (path.size() < 2) {
         if (virtualTarget.equals(target)) {
             LOGGER.debug("Reached target %s, flockMission is complete", target);
-            complete = true;
-            return;
         }
         if (!putMissionOrder(leader, virtualTarget)) {
             abandonMission(); // no path to target
@@ -55,9 +63,11 @@ public class FlockMission extends BaseMission {
                 if (next.equals(ant.getTile()))
                     continue;
                 List<Tile> virtualPath = Ants.getPathFinder().search(PathFinder.Strategy.Simple, ant.getTile(), next);
-                if (virtualPath != null && putMissionOrder(ant, virtualPath.get(0))) {
-                    tileIter.remove();
-                    break;
+                if (virtualPath != null && virtualPath.size() > 1) {
+                    virtualPath.remove(0);
+                    if (putMissionOrder(ant, virtualPath.get(0))) {
+                        break;
+                    }
                 }
             }
             // if an ant can't make a sensible move this turn, just mark it as employed
@@ -105,4 +115,8 @@ public class FlockMission extends BaseMission {
         return null;
     }
 
+    @Override
+    protected String getVisualizeInfos() {
+        return super.getVisualizeInfos() + " leader is: " + leader;
+    }
 }
