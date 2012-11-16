@@ -220,4 +220,10 @@ public class ConcentrateMission extends BaseMission {
     protected boolean isCheckAnts() {
         return false;
     }
+
+    @Override
+    protected String getVisualizeInfos() {
+        // TODO Auto-generated method stub
+        return super.getVisualizeInfos() + " TroopPoint " + troopPoint;
+    }
 }
