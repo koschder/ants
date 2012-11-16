@@ -1,10 +1,11 @@
 var informations = new Array();
 
 function displayAdditionalInformation(vis){
+	//$('#dialog').hide();
     //alert('dAL: clicked at col: '+vis.antsMap.mouseCol+' row:'+vis.antsMap.mouseRow+' turn:'+vis.antsMap.turn);
     var pos = (parseInt(vis.antsMap.turn)+1)+'#'+vis.antsMap.mouseRow+'#'+vis.antsMap.mouseCol;
     //var title = (parseInt(vis.antsMap.turn)+1)+'#'+vis.antsMap.mouseRow+'#'+vis.antsMap.mouseCol;
-    if(informations[pos] != null){
+    if(informations[pos] != null && informations[pos] != ''){
 		
 		var val = informations[pos];
 	
@@ -39,7 +40,8 @@ function ShowInfoPopup(title, text) {
     
     var div = $('#dialog').html(text).dialog({
         title: title,
-        modal: false
+        modal: false,
+		position: "left"
     })
 };
 

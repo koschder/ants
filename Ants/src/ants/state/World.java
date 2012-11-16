@@ -6,10 +6,12 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 import javax.management.RuntimeErrorException;
 
+import pathfinder.entities.Node;
 import ants.entities.Ant;
 import ants.entities.Ilk;
 import api.entities.Aim;
@@ -373,19 +375,30 @@ public class World extends AbstractWraparoundMap implements UnitMap {
 
     public Set<Tile> getAreaFlooded(Tile hill, int nearBy) {
         Set<Tile> floodedTiles = new HashSet<Tile>();
-        getNeighbours(1, nearBy, floodedTiles, hill);
-        return floodedTiles;
-    }
 
-    private void getNeighbours(int i, int max, Set<Tile> floodedTiles, Tile expandTile) {
-        List<SearchTarget> successors = getSuccessor(expandTile, false);
-        for (SearchTarget t : successors) {
-            if (floodedTiles.contains(t))
-                continue;
-            floodedTiles.add(t.getTargetTile());
-            if (i < max) {
-                getNeighbours(i + 1, max, floodedTiles, t.getTargetTile());
+        PriorityQueue<Node> frontier = new PriorityQueue<Node>();
+        frontier.add(new Node(hill, null, 0, 0));
+        while (!frontier.isEmpty()) {
+
+            Node node = frontier.poll();
+            floodedTiles.add(node.getState().getTargetTile());
+
+            List<SearchTarget> tiles = getSuccessor(node.getState().getTargetTile(), false);
+            int cost = node.getActualCost() + 1;
+            for (SearchTarget child : tiles) {
+
+                Node n = new Node(child.getTargetTile(), null, cost, cost);
+                if (frontier.contains(n) || floodedTiles.contains(child.getTargetTile())) {
+                    continue;
+                }
+                if (cost == nearBy) {
+                    floodedTiles.add(child.getTargetTile());
+                } else if (cost < nearBy) {
+                    frontier.add(n);
+                }
             }
         }
+
+        return floodedTiles;
     }
 }

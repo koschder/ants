@@ -18,10 +18,11 @@ public class DefendHillTask extends BaseTask {
             int hillCount = 0;
             for (Tile h : Ants.getWorld().getMyHills()) {
                 // with the statment
-                // turn < minTurnToDefendMyHill + hillCount
-                // we prevent, that alle defend hill missions are instanced in the same turn.
+                // if (hasMissonForHill(h) || turn < minTurnToDefendMyHill + hillCount)
+                // we prevent, that all defend hill missions are instanced in the same turn.
                 // in the constructor of DefendHillMission there is a flood algorithm, witch is a bit expensive.
-                if (hasMissonForHill(h) || turn < minTurnToDefendMyHill + hillCount)
+                // if (hasMissonForHill(h) || turn < minTurnToDefendMyHill + hillCount)
+                if (hasMissonForHill(h))
                     continue;
                 addMission(new DefendHillMission(h));
                 hillCount++;

@@ -1,14 +1,21 @@
 package ants.bot;
 
-import influence.*;
+import influence.DefaultInfluenceMap;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-import logging.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.state.*;
-import ants.tasks.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import ants.state.World;
+import ants.tasks.Task;
+import ants.util.LiveInfo;
 
 /**
  * Bot implementation. This was originally based on the sample bot from the starter package, but the implementation is
@@ -34,6 +41,7 @@ public abstract class BaseBot extends Bot {
     @Override
     public void doTurn() {
         LOGGER.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
+        LOGGER.info("enemy_hills visible: " + Ants.getWorld().getEnemyHills());
         calculateInfluence();
         initTasks();
         doStatistics();
@@ -45,6 +53,10 @@ public abstract class BaseBot extends Bot {
         final Collection<Ant> myUnemployedAnts = Ants.getPopulation().getMyUnemployedAnts();
         LOGGER_TASKS.debug("Unemployed Ants (%s total): %s", myUnemployedAnts.size(), myUnemployedAnts);
         Ants.getOrders().issueOrders();
+        for (Ant unemployed : myUnemployedAnts) {
+            LiveInfo.liveInfo(Ants.getAnts().getTurn(), unemployed.getTile(), "Unemployed ant: %s",
+                    unemployed.getTile());
+        }
     }
 
     private void executeTask() {

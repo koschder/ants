@@ -9,8 +9,8 @@ public class AttackHillsInFlockMission extends BaseMission {
     private Tile hill;
     private Tile startPoint;
 
-    public AttackHillsInFlockMission(Tile hill, Tile startPoint, Tile rallyPoint, int a, int attractionDistance) {
-        partialMission = new ConcentrateMission(rallyPoint, a, attractionDistance);
+    public AttackHillsInFlockMission(Tile hill, Tile startPoint, Tile rallyPoint, int antAmount, int attractionDistance) {
+        partialMission = new ConcentrateMission(rallyPoint, antAmount, attractionDistance);
         this.hill = hill;
         this.startPoint = startPoint;
     }

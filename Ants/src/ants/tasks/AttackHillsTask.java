@@ -24,7 +24,7 @@ import api.entities.Tile;
 public class AttackHillsTask extends BaseTask {
 
     private int cutoff = 100;
-    private boolean flock = true;
+    private boolean flock = false;
 
     @Override
     public void doPerform() {
@@ -37,7 +37,7 @@ public class AttackHillsTask extends BaseTask {
                 if (isMissionActive(enemyHill, myHill))
                     continue;
 
-                List<Tile> hillZone = Ants.getWorld().getVisibleTiles(enemyHill);
+                List<Tile> hillZone = Ants.getWorld().getVisibleTiles(myHill);
                 int maxSafety = Integer.MIN_VALUE;
                 Tile rallyPoint = null;
                 for (Tile tile : hillZone) {
@@ -49,7 +49,7 @@ public class AttackHillsTask extends BaseTask {
                         rallyPoint = tile;
                     }
                 }
-                addMission(new AttackHillsInFlockMission(enemyHill,myHill, rallyPoint, 3, 10));
+                addMission(new AttackHillsInFlockMission(enemyHill, myHill, rallyPoint, 3, 10));
             }
         }
     }

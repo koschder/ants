@@ -25,7 +25,7 @@ public class DefendHillMission extends BaseMission {
 
     private Tile hill = null;
     private Set<Tile> hillReachable = new HashSet<Tile>();
-    private int nearBy = 10;
+    private int nearBy = 8;
 
     public DefendHillMission(Tile hill) {
         this.hill = hill;
@@ -48,16 +48,13 @@ public class DefendHillMission extends BaseMission {
         if (enemyNearBy.size() == 0) {
             attInfo = "no attackers near by -+ " + nearBy + " tiles";
             LOGGER.debug(attInfo);
-            return;
+            // return;
         }
         Map<Aim, List<Tile>> attackers = attackersByDirection(enemyNearBy);
 
         for (Entry<Aim, List<Tile>> a : attackers.entrySet())
             attInfo += "<br/> " + a;
 
-        // if (ants.size() != 0 && enemyNearBy.size() > ants.size() * 4) { // big attack now chance to defend
-        //
-        // }
         if (enemyNearBy.size() > ants.size()) { // need more ants to defend
             gatherAnts(enemyNearBy.size() - ants.size() + 2); // to for reserve
         } else if (enemyNearBy.size() > ants.size()) { // need more ants to defend
