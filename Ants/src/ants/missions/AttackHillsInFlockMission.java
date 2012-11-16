@@ -1,10 +1,9 @@
 package ants.missions;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.state.Ants;
-import api.entities.Tile;
+import ants.state.*;
+import api.entities.*;
 
 public class AttackHillsInFlockMission extends BaseMission {
 
@@ -34,13 +33,13 @@ public class AttackHillsInFlockMission extends BaseMission {
     }
 
     /***
-     * mission is as long vaild, as long the enemy hill exists.
+     * mission is as long valid, as long the enemy hill exists.
      */
     @Override
     protected String isSpecificMissionValid() {
         if (!Ants.getWorld().getEnemyHills().contains(hill))
             return "Enemy hill " + hill + " is no longer there";
-        return null;
+        return partialMission.isValid();
     }
 
     @Override

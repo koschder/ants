@@ -1,8 +1,8 @@
 package ants.bot;
 
-import ants.entities.Ilk;
-import ants.state.Ants;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 /**
  * Provides basic game state handling.
@@ -64,7 +64,7 @@ public abstract class Bot extends AbstractSystemInputParser {
      */
     @Override
     public void addHill(int row, int col, int owner) {
-        Ants.getWorld().updateHills(owner, new Tile(row, col));
+        Ants.getWorld().addHill(owner, new Tile(row, col));
     }
 
     /**
@@ -74,5 +74,6 @@ public abstract class Bot extends AbstractSystemInputParser {
     public void afterUpdate() {
         Ants.getAnts().setVision();
         Ants.getAnts().calculateDistances();
+        Ants.getWorld().updateEnemyHills();
     }
 }
