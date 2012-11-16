@@ -179,7 +179,7 @@ public class ConcentrateMission extends BaseMission {
     private void gatherAnts() {
         LOGGER.info("ConcentrateMission_gatherAnts TroopPoint %s", troopPoint);
 
-        Map<Ant, List<Tile>> antsNearBy = gatherAnts(troopPoint, amount - ants.size(), attractionDistance);
+        Map<Ant, List<Tile>> antsNearBy = gatherAnts(troopPoint, ants.size() - amount, attractionDistance);
         // TODO what with the path?
         for (Entry<Ant, List<Tile>> entry : antsNearBy.entrySet()) {
             List<Tile> p = entry.getValue();
