@@ -1,5 +1,7 @@
 package ants.tasks;
 
+import java.util.List;
+
 import ants.entities.Ant;
 import ants.state.Ants;
 import api.entities.Aim;
@@ -19,8 +21,9 @@ public class ClearHillTask extends BaseTask {
         for (Ant ant : Ants.getPopulation().getMyUnemployedAnts()) {
             for (Tile hill : Ants.getWorld().getMyHills()) {
                 if (Ants.getWorld().manhattanDistance(ant.getTile(), hill) < 2) {
+                    List<Aim> aimsToHill = Ants.getWorld().getDirections(ant.getTile(), hill);
                     for (Aim aim : Aim.values()) {
-                        if (Ants.getWorld().getTile(ant.getTile(), aim).equals(hill))
+                        if (aimsToHill.contains(aim))
                             continue; // dont go back to the hill
                         if (Ants.getOrders().issueOrder(ant, aim, getClass().getSimpleName()))
                             break;
@@ -31,5 +34,4 @@ public class ClearHillTask extends BaseTask {
         }
 
     }
-
 }

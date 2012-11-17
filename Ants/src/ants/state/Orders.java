@@ -62,7 +62,8 @@ public class Orders {
         Tile newLoc = ant.getTile();
         if (direction != null)
             newLoc = Ants.getWorld().getTile(ant.getTile(), direction);
-
+        if (isSurroundedByWater(newLoc))
+            return false; // it's a trap!
         if (isFreeForNextMove(newLoc) || direction == null) {
             LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s Order:%s<br/> ant: %s", issuer,
                     direction, ant.getTile());
@@ -77,6 +78,15 @@ public class Orders {
             LOGGER_TASKS.debug("Move is not possible %s to %s", ant, newLoc);
         }
         return false;
+    }
+
+    private boolean isSurroundedByWater(Tile tile) {
+        int unpassableNeighbourTiles = 0;
+        for (Aim aim : Aim.values()) {
+            if (!Ants.getWorld().isPassable(Ants.getWorld().getTile(tile, aim)))
+                unpassableNeighbourTiles++;
+        }
+        return unpassableNeighbourTiles >= 3;
     }
 
     private boolean isFreeForNextMove(Tile nextLocation) {
