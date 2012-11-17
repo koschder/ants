@@ -1,9 +1,7 @@
 package ants.strategy.rules;
 
-import java.util.Map;
 
 import ants.state.Ants;
-import ants.tasks.Task;
 import ants.tasks.Task.Type;
 
 public class PopulationSizeRule extends BaseResourceAllocationRule {
@@ -12,9 +10,9 @@ public class PopulationSizeRule extends BaseResourceAllocationRule {
     /**
      * if our population is small we force the gather food task
      */
-    public void allocateResources(Map<Type, Task> tasks) {
+    public void allocateResources() {
         if (Ants.getPopulation().getMyAnts().size() < 10) {
-            incrementResources(tasks, Type.GATHER_FOOD, 51, Type.ATTACK_HILLS, Type.COMBAT, Type.DEFEND_HILL);
+            incrementResources(Type.GATHER_FOOD, 51, Type.ATTACK_HILLS, Type.COMBAT, Type.DEFEND_HILL);
         }
     }
 }

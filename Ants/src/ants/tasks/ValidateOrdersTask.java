@@ -1,5 +1,6 @@
 package ants.tasks;
 
+
 public class ValidateOrdersTask extends BaseTask {
 
     @Override
@@ -8,4 +9,8 @@ public class ValidateOrdersTask extends BaseTask {
 
     }
 
+    @Override
+    public Type getType() {
+        return Type.VALIDATE_ORDERS;
+    }
 }

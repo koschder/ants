@@ -20,4 +20,8 @@ public class SwarmTask extends BaseTask {
         }
     }
 
+    @Override
+    public Type getType() {
+        return Type.SWARMPATH;
+    }
 }

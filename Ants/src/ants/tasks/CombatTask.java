@@ -44,4 +44,9 @@ public class CombatTask extends BaseTask {
                 addMission(new AttackAntMission(ant, path));
         }
     }
+
+    @Override
+    public Type getType() {
+        return Type.COMBAT;
+    }
 }

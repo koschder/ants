@@ -1,8 +1,6 @@
 package ants.strategy.rules;
 
-import java.util.Map;
 
-import ants.tasks.Task;
 import ants.tasks.Task.Type;
 import api.strategy.InfluenceMap;
 
@@ -17,11 +15,11 @@ public class RelativeInfluenceRule extends BaseResourceAllocationRule {
     /***
      * if our in influence is the highest we force our aggressivity
      */
-    public void allocateResources(Map<Type, Task> tasks) {
+    public void allocateResources() {
         if (influence.getTotalInfluence(0) > influence.getTotalOpponentInfluence()) {
-            incrementResources(tasks, Type.EXPLORE, 5, Type.GATHER_FOOD);
-            incrementResources(tasks, Type.ATTACK_HILLS, 2, Type.GATHER_FOOD);
-            incrementResources(tasks, Type.COMBAT, 2, Type.GATHER_FOOD);
+            incrementResources(Type.EXPLORE, 5, Type.GATHER_FOOD);
+            incrementResources(Type.ATTACK_HILLS, 2, Type.GATHER_FOOD);
+            incrementResources(Type.COMBAT, 2, Type.GATHER_FOOD);
         }
     }
 

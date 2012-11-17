@@ -46,17 +46,17 @@ public class ResourceAllocatorTest {
         influence.setTotalOpponentInfluence(1000);
         influence.setTotalInfluence(0, 2000);
 
-        final Integer foodResources = tasks.get(Type.GATHER_FOOD).getMaxResources();
+        final Integer foodResources = Ants.getPopulation().getMaxResources(Type.GATHER_FOOD);
         // method under test
         resourceAllocator.allocateResources();
 
-        assertEquals(Integer.valueOf(foodResources - 13), tasks.get(Type.GATHER_FOOD).getMaxResources());
+        assertEquals(Integer.valueOf(foodResources - 12), Ants.getPopulation().getMaxResources(Type.GATHER_FOOD));
     }
 
     private void initResourceAllocator(int population) {
         Ants.setPopulation(getPopulation(population));
         Ants.setOrders(new Orders());
-        resourceAllocator = new ResourceAllocator(tasks, influence);
+        resourceAllocator = new ResourceAllocator(influence);
     }
 
     private Population getPopulation(final int myAnts) {

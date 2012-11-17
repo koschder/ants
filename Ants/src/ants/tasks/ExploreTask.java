@@ -95,4 +95,8 @@ public class ExploreTask extends BaseTask {
         }
     }
 
+    @Override
+    public Type getType() {
+        return Type.EXPLORE;
+    }
 }

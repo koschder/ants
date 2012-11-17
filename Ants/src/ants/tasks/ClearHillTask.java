@@ -34,4 +34,9 @@ public class ClearHillTask extends BaseTask {
         }
 
     }
+
+    @Override
+    public Type getType() {
+        return Type.CLEAR_HILL;
+    }
 }

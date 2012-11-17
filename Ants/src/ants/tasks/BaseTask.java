@@ -21,8 +21,6 @@ public abstract class BaseTask implements Task {
 
     }
 
-    private int maxResources = Integer.MAX_VALUE;
-    private int maxAnts = Integer.MAX_VALUE;
     private int allocatedAnts = 0;
 
     @Override
@@ -36,32 +34,15 @@ public abstract class BaseTask implements Task {
             doPerform();
         } catch (InsufficientResourcesException e) {
             LOGGER.info("Task %s reached its resource limit: %s percent (alloc: %s, max: %s) ", getClass()
-                    .getSimpleName(), this.maxResources, this.allocatedAnts, this.maxAnts);
+                    .getSimpleName(), Ants.getPopulation().getMaxResources(getType()), this.allocatedAnts, Ants
+                    .getPopulation().getMaxAnts(getType()));
         }
     }
 
-    @Override
-    public void setMaxResources(Integer maxResources) {
-        this.maxResources = maxResources;
-        this.maxAnts = (int) Math.ceil(Ants.getPopulation().getMyAnts().size() * (this.maxResources / 100.0));
-    }
-
-    @Override
-    public Integer getMaxResources() {
-        return this.maxResources;
-    }
-
-    @Override
-    public Integer getMaxAnts() {
-        return this.maxAnts;
-    }
-
-    protected void doPerform() {
-
-    }
+    protected abstract void doPerform();
 
     protected void addMission(Mission mission) {
-        if (allocatedAnts >= maxAnts)
+        if (allocatedAnts >= Ants.getPopulation().getMaxAnts(getType()))
             throw new InsufficientResourcesException();
 
         Ants.getOrders().addMission(mission);

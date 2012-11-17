@@ -77,7 +77,7 @@ public class MyBot extends BaseBot {
             tasks.put(Type.CLEAR_HILL, new ClearHillTask());
             tasks.put(Type.CLUSTERING, new ClusteringTask());
         }
-        new ResourceAllocator(tasks, Ants.getInfluenceMap()).allocateResources();
+        new ResourceAllocator(Ants.getInfluenceMap()).allocateResources();
         for (Task task : tasks.values()) {
             task.setup();
         }

@@ -1,8 +1,8 @@
 package ants.tasks;
 
-import ants.missions.*;
-import ants.state.*;
-import api.entities.*;
+import ants.missions.ConcentrateMission;
+import ants.state.Ants;
+import api.entities.Tile;
 
 public class ConcentrateTask extends BaseTask {
 
@@ -14,5 +14,10 @@ public class ConcentrateTask extends BaseTask {
             Tile tp = new Tile(hill.getRow(), hill.getCol());
             addMission(new ConcentrateMission(tp, 8, 25));
         }
+    }
+
+    @Override
+    public Type getType() {
+        return Type.CONCENTRATE_ANTS;
     }
 }

@@ -70,7 +70,8 @@ public abstract class BaseBot extends Bot {
             task.perform();
 
             final int newlyEmployed = unemployed - Ants.getPopulation().getMyUnemployedAnts().size();
-            final String maxAnts = task.getMaxAnts() < Integer.MAX_VALUE ? task.getMaxAnts().toString() : "unlimited";
+            final Integer maxAntsInt = Ants.getPopulation().getMaxAnts(task.getType());
+            final String maxAnts = maxAntsInt < Integer.MAX_VALUE ? maxAntsInt.toString() : "unlimited";
             if (newlyEmployed < 0) {
                 LOGGER_RESOURCES.info("Task %s released %s employed ants. (max: %s)", task.getClass().getSimpleName(),
                         -newlyEmployed, maxAnts);

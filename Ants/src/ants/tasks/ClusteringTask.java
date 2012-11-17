@@ -15,4 +15,8 @@ public class ClusteringTask extends BaseTask {
         Ants.getPathFinder().update();
     }
 
+    @Override
+    public Type getType() {
+        return Type.CLUSTERING;
+    }
 }

@@ -35,13 +35,5 @@ public interface Task {
      */
     public void setup();
 
-    /**
-     * @param maxResources
-     *            How many ants is the task allowed to assign missions to?
-     */
-    public void setMaxResources(Integer maxResources);
-
-    public Integer getMaxResources();
-
-    public Integer getMaxAnts();
+    public Type getType();
 }

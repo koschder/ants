@@ -1,14 +1,17 @@
 package ants.state;
 
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Set;
 
 import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
 import ants.entities.Ant;
+import ants.tasks.Task.Type;
 import api.entities.Tile;
 
 /**
@@ -27,6 +30,9 @@ public class Population {
     private Set<Ant> enemyAnts = new HashSet<Ant>();
     private Set<Integer> players;
 
+    private Map<Type, Integer> maxResourcesPerTask = new HashMap<Type, Integer>();
+    private Map<Type, Integer> usedResourcesPerTask = new HashMap<Type, Integer>();
+
     public Population() {
         players = new HashSet<Integer>();
         players.add(0); // that's us
@@ -40,6 +46,19 @@ public class Population {
         employedAnts.clear();
         enemyAnts.clear();
         myUnemployedAnts = null;
+        usedResourcesPerTask.clear();
+    }
+
+    public void setMaxResources(Type taskType, Integer maxResources) {
+        this.maxResourcesPerTask.put(taskType, maxResources);
+    }
+
+    public Integer getMaxResources(Type taskType) {
+        return this.maxResourcesPerTask.get(taskType);
+    }
+
+    public Integer getMaxAnts(Type taskType) {
+        return (int) Math.ceil(getMyAnts().size() * (getMaxResources(taskType) / 100.0));
     }
 
     /**

@@ -1,8 +1,8 @@
 package ants.tasks;
 
-import ants.missions.*;
-import ants.state.*;
-import api.entities.*;
+import ants.missions.FlockMission;
+import ants.state.Ants;
+import api.entities.Tile;
 
 public class FlockTask extends BaseTask {
     @Override
@@ -13,4 +13,9 @@ public class FlockTask extends BaseTask {
             addMission(new FlockMission(target, Ants.getPopulation().getMyUnemployedAnts()));
         }
     };
+
+    @Override
+    public Type getType() {
+        return Type.FLOCK;
+    }
 }

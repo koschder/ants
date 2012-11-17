@@ -88,4 +88,9 @@ public class AttackHillsTask extends BaseTask {
         }
     }
 
+    @Override
+    public Type getType() {
+        return Type.ATTACK_HILLS;
+    }
+
 }

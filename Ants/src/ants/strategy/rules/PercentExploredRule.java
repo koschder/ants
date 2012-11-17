@@ -1,9 +1,7 @@
 package ants.strategy.rules;
 
-import java.util.Map;
 
 import ants.state.Ants;
-import ants.tasks.Task;
 import ants.tasks.Task.Type;
 
 public class PercentExploredRule extends BaseResourceAllocationRule {
@@ -12,13 +10,13 @@ public class PercentExploredRule extends BaseResourceAllocationRule {
     /***
      * if not much is visible we force the explore task
      */
-    public void allocateResources(Map<Type, Task> tasks) {
+    public void allocateResources() {
         final int visibleTilesPercent = Ants.getWorld().getVisibleTilesPercent();
         if (visibleTilesPercent < 80) {
             int increment = Math.round((100 - visibleTilesPercent) / 4);
             Type[] tasksToDecrement = new Type[] { Type.ATTACK_HILLS, Type.GATHER_FOOD, Type.COMBAT, Type.DEFEND_HILL };
             increment -= increment % tasksToDecrement.length;
-            incrementResources(tasks, Type.EXPLORE, increment, tasksToDecrement);
+            incrementResources(Type.EXPLORE, increment, tasksToDecrement);
         }
     }
 

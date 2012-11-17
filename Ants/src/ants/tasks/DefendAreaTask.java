@@ -1,5 +1,6 @@
 package ants.tasks;
 
+
 /**
  * This task identifies vulnerable or valuable areas and orders ants to patrol, defending them.
  * 
@@ -12,6 +13,11 @@ public class DefendAreaTask extends BaseTask {
     public void doPerform() {
         // TODO not implemented yet
 
+    }
+
+    @Override
+    public Type getType() {
+        return Type.DEFEND_AREA;
     }
 
 }

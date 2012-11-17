@@ -10,16 +10,10 @@ public class DefendHillTask extends BaseTask {
     @Override
     public void doPerform() {
 
-        int minTurnToDefendMyHill = 10;
-        int minMyHillToDefend = 999;
-        int turn = Ants.getAnts().getTurn();
-        int myHills = Ants.getWorld().getMyHills().size();
-        if (turn > minTurnToDefendMyHill && myHills < minMyHillToDefend) {
-            for (Tile h : Ants.getWorld().getMyHills()) {
-                if (hasMissonForHill(h))
-                    continue;
-                addMission(new DefendHillMission(h));
-            }
+        for (Tile h : Ants.getWorld().getMyHills()) {
+            if (hasMissonForHill(h))
+                continue;
+            addMission(new DefendHillMission(h));
         }
 
     }
@@ -32,5 +26,10 @@ public class DefendHillTask extends BaseTask {
 
         }
         return false;
+    }
+
+    @Override
+    public Type getType() {
+        return Type.DEFEND_HILL;
     }
 }

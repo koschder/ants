@@ -70,4 +70,9 @@ public class GatherFoodTask extends BaseTask {
         }
 
     }
+
+    @Override
+    public Type getType() {
+        return Type.GATHER_FOOD;
+    }
 }
