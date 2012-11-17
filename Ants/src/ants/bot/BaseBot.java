@@ -1,15 +1,21 @@
 package ants.bot;
 
-import influence.*;
+import influence.DefaultInfluenceMap;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
-import logging.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.state.*;
-import ants.tasks.*;
-import ants.util.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import ants.state.World;
+import ants.tasks.Task;
+import ants.util.LiveInfo;
 
 /**
  * Bot implementation. This was originally based on the sample bot from the starter package, but the implementation is
@@ -59,10 +65,19 @@ public abstract class BaseBot extends Bot {
             long start = System.currentTimeMillis();
             int unemployed = Ants.getPopulation().getMyUnemployedAnts().size();
             LOGGER_PERFORMANCE.info("task started:: %s at %s", task.getClass().getSimpleName(), start);
+
+            // execute the task
             task.perform();
-            LOGGER_RESOURCES.info("Task %s found jobs for %s of %s unemployed ants. (max: %s)", task.getClass()
-                    .getSimpleName(), unemployed - Ants.getPopulation().getMyUnemployedAnts().size(), unemployed, task
-                    .getMaxAnts());
+
+            final int newlyEmployed = unemployed - Ants.getPopulation().getMyUnemployedAnts().size();
+            final String maxAnts = task.getMaxAnts() < Integer.MAX_VALUE ? task.getMaxAnts().toString() : "unlimited";
+            if (newlyEmployed < 0) {
+                LOGGER_RESOURCES.info("Task %s released %s employed ants. (max: %s)", task.getClass().getSimpleName(),
+                        -newlyEmployed, maxAnts);
+            } else {
+                LOGGER_RESOURCES.info("Task %s found jobs for %s of %s unemployed ants. (max: %s)", task.getClass()
+                        .getSimpleName(), newlyEmployed, unemployed, maxAnts);
+            }
             LOGGER_PERFORMANCE.info("task ended  :: %s, took %s ms", task.getClass().getSimpleName(),
                     System.currentTimeMillis() - start);
         }

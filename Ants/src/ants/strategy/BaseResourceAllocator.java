@@ -24,7 +24,10 @@ public abstract class BaseResourceAllocator {
         }
         LOGGER.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
         for (Entry<Task.Type, Task> entry : tasks.entrySet()) {
-            LOGGER.info("Allocated %s percent of ants to task %s", entry.getValue().getMaxResources(), entry.getKey());
+            final Integer maxResources = entry.getValue().getMaxResources();
+            if (maxResources < Integer.MAX_VALUE) {
+                LOGGER.info("Allocated %s percent of ants to task %s", maxResources, entry.getKey());
+            }
         }
 
     }

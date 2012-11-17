@@ -79,12 +79,12 @@ public class Population {
         for (Iterator<Ant> it = employedAnts.iterator(); it.hasNext();) {
             Ant ant = it.next();
             myUnemployedAnts.remove(ant);
-            // if (!myUnemployedAnts.remove(ant)) {
-            // LOGGER.error("Could not remove ant %s Tile: %s of unemployedAnts : %s employedAnts %s, myAnts %s", ant,
-            // ant.getTile(), myUnemployedAnts, employedAnts, myAnts);
-            // } else {
-            // LOGGER.debug("Ant %s Tile: %s marked as employed", ant, ant.getTile());
-            // }
+            if (!myUnemployedAnts.remove(ant)) {
+                LOGGER.debug("Could not remove ant %s Tile: %s of unemployedAnts : %s employedAnts %s, myAnts %s", ant,
+                        ant.getTile(), myUnemployedAnts, employedAnts, myAnts);
+            } else {
+                LOGGER.debug("Ant %s Tile: %s marked as employed", ant, ant.getTile());
+            }
             it.remove();
         }
         return myUnemployedAnts;
