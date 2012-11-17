@@ -14,7 +14,7 @@ public class PopulationSizeRule extends BaseResourceAllocationRule {
      */
     public void allocateResources(Map<Type, Task> tasks) {
         if (Ants.getPopulation().getMyAnts().size() < 10) {
-            incrementResources(tasks, Type.GATHER_FOOD, 50, Type.ATTACK_HILLS, Type.COMBAT);
+            incrementResources(tasks, Type.GATHER_FOOD, 51, Type.ATTACK_HILLS, Type.COMBAT, Type.DEFEND_HILL);
         }
     }
 }

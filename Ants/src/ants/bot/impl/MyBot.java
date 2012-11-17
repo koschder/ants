@@ -72,8 +72,8 @@ public class MyBot extends BaseBot {
             tasks.put(Type.GATHER_FOOD, new GatherFoodTask());
             tasks.put(Type.ATTACK_HILLS, new AttackHillsTask());
             tasks.put(Type.COMBAT, new CombatTask());
-            tasks.put(Type.EXPLORE, new ExploreTask());
             tasks.put(Type.DEFEND_HILL, new DefendHillTask());
+            tasks.put(Type.EXPLORE, new ExploreTask());
             tasks.put(Type.CLEAR_HILL, new ClearHillTask());
             tasks.put(Type.CLUSTERING, new ClusteringTask());
         }

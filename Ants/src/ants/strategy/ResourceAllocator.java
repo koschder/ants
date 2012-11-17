@@ -15,9 +15,10 @@ public class ResourceAllocator extends BaseResourceAllocator {
         this.tasks = tasks;
         // init the allocation with evenly distributed default values
         this.tasks.get(Type.GATHER_FOOD).setMaxResources(25);
-        this.tasks.get(Type.ATTACK_HILLS).setMaxResources(25);
-        this.tasks.get(Type.COMBAT).setMaxResources(25);
+        this.tasks.get(Type.ATTACK_HILLS).setMaxResources(20);
+        this.tasks.get(Type.COMBAT).setMaxResources(20);
         this.tasks.get(Type.EXPLORE).setMaxResources(25);
+        this.tasks.get(Type.DEFEND_HILL).setMaxResources(10);
 
         rules.add(new PopulationSizeRule());
         rules.add(new RelativeInfluenceRule(influence));
