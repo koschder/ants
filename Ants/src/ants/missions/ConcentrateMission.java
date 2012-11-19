@@ -13,6 +13,7 @@ import pathfinder.PathFinder.Strategy;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.state.Ants;
+import ants.tasks.Task.Type;
 import api.entities.Aim;
 import api.entities.Tile;
 
@@ -230,5 +231,10 @@ public class ConcentrateMission extends BaseMission {
     protected String getVisualizeInfos() {
         // TODO Auto-generated method stub
         return super.getVisualizeInfos() + " TroopPoint " + troopPoint;
+    }
+
+    @Override
+    public Type getTaskType() {
+        return Type.CONCENTRATE_ANTS;
     }
 }

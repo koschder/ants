@@ -1,9 +1,11 @@
 package ants.missions;
 
-import logging.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import ants.LogCategory;
-import ants.state.*;
-import api.entities.*;
+import ants.state.Ants;
+import ants.tasks.Task.Type;
+import api.entities.Tile;
 
 public class AttackHillsInFlockMission extends BaseMission {
 
@@ -64,6 +66,11 @@ public class AttackHillsInFlockMission extends BaseMission {
     @Override
     protected boolean isCheckAnts() {
         return false;
+    }
+
+    @Override
+    public Type getTaskType() {
+        return Type.ATTACK_HILLS;
     }
 
 }

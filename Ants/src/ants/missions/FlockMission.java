@@ -13,6 +13,7 @@ import pathfinder.PathFinder;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.state.Ants;
+import ants.tasks.Task.Type;
 import api.entities.Tile;
 
 public class FlockMission extends BaseMission {
@@ -118,5 +119,10 @@ public class FlockMission extends BaseMission {
     @Override
     protected String getVisualizeInfos() {
         return super.getVisualizeInfos() + " leader is: " + leader;
+    }
+
+    @Override
+    public Type getTaskType() {
+        return Type.FLOCK;
     }
 }

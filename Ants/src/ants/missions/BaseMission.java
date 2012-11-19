@@ -74,10 +74,10 @@ public abstract class BaseMission implements Mission {
     protected Map<Ant, List<Tile>> gatherAnts(Tile tile, int amount, int attractionDistance) {
         Map<Ant, List<Tile>> antsNearBy = new HashMap<Ant, List<Tile>>();
         for (Ant a : Ants.getPopulation().getMyUnemployedAnts()) {
-            // if (a.getMission() != null) {
-            // LOGGER.info("skip Ant %s, it has already a mission.", a);
-            // continue;
-            // }
+            // if no additional ant is available, don't try to gather any more
+            if (!Ants.getPopulation().isNumberOfAntsAvailable(getTaskType(), 1))
+                break;
+
             if (ants.size() >= amount)
                 break;
 

@@ -3,6 +3,7 @@ package ants.missions;
 import java.util.List;
 
 import ants.entities.Ant;
+import ants.tasks.Task.Type;
 import api.entities.Tile;
 
 /***
@@ -32,5 +33,10 @@ public class ExploreMission extends PathMission {
 
         }
         return null;
+    }
+
+    @Override
+    public Type getTaskType() {
+        return Type.EXPLORE;
     }
 }

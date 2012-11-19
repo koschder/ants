@@ -1,12 +1,13 @@
 package unittest.ants.state;
 
-import java.util.*;
+import java.util.List;
 
-import org.junit.*;
+import org.junit.Test;
 
-import ants.entities.*;
-import ants.missions.*;
-import ants.state.*;
+import ants.entities.Ant;
+import ants.missions.Mission;
+import ants.state.Orders;
+import ants.tasks.Task.Type;
 
 public class OrdersTest {
     @Test(expected = IllegalStateException.class)
@@ -40,6 +41,12 @@ public class OrdersTest {
 
             @Override
             public List<Ant> getAnts() {
+                // TODO Auto-generated method stub
+                return null;
+            }
+
+            @Override
+            public Type getTaskType() {
                 // TODO Auto-generated method stub
                 return null;
             }

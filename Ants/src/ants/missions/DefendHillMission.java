@@ -15,6 +15,7 @@ import logging.LoggerFactory;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.state.Ants;
+import ants.tasks.Task.Type;
 import ants.util.LiveInfo;
 import api.entities.Aim;
 import api.entities.Tile;
@@ -220,6 +221,11 @@ public class DefendHillMission extends BaseMission {
 
     public Tile getHill() {
         return this.hill;
+    }
+
+    @Override
+    public Type getTaskType() {
+        return Type.DEFEND_HILL;
     }
 
 }

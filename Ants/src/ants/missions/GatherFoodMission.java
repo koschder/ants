@@ -4,6 +4,7 @@ import java.util.List;
 
 import ants.entities.Ant;
 import ants.state.Ants;
+import ants.tasks.Task.Type;
 import api.entities.Tile;
 
 /***
@@ -49,5 +50,10 @@ public class GatherFoodMission extends PathMission {
     @Override
     protected String getVisualizeInfos() {
         return super.getVisualizeInfos() + "<br/>Food: " + food;
+    }
+
+    @Override
+    public Type getTaskType() {
+        return Type.GATHER_FOOD;
     }
 }

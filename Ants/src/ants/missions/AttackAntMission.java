@@ -1,9 +1,10 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.List;
 
-import ants.entities.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.tasks.Task.Type;
+import api.entities.Tile;
 
 /***
  * This mission is created for attacking enemy ants.
@@ -26,4 +27,8 @@ public class AttackAntMission extends PathMission {
         return null;
     }
 
+    @Override
+    public Type getTaskType() {
+        return Type.COMBAT;
+    }
 }

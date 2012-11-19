@@ -46,7 +46,9 @@ public class Population {
         employedAnts.clear();
         enemyAnts.clear();
         myUnemployedAnts = null;
-        usedResourcesPerTask.clear();
+        // reset used resources to 0
+        for (Type taskType : Type.values())
+            usedResourcesPerTask.put(taskType, 0);
     }
 
     public void setMaxResources(Type taskType, Integer maxResources) {
@@ -55,6 +57,22 @@ public class Population {
 
     public Integer getMaxResources(Type taskType) {
         return this.maxResourcesPerTask.get(taskType);
+    }
+
+    public void incrementUsedResources(Type taskType, int numberOfAnts) {
+        final Integer usedResources = usedResourcesPerTask.get(taskType);
+        final Integer availableResources = getMaxAnts(taskType);
+
+        if ((availableResources - usedResources) < 0)
+            throw new InsufficientResourcesException("Task " + taskType + "s tried to mark too many ants as used");
+
+        usedResourcesPerTask.put(taskType, usedResources + numberOfAnts);
+    }
+
+    public boolean isNumberOfAntsAvailable(Type taskType, int numberOfAnts) {
+        final Integer usedResources = usedResourcesPerTask.get(taskType);
+        final Integer availableResources = getMaxAnts(taskType);
+        return numberOfAnts <= (availableResources - usedResources);
     }
 
     public Integer getMaxAnts(Type taskType) {

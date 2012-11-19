@@ -4,6 +4,7 @@ import java.util.List;
 
 import ants.entities.Ant;
 import ants.state.Ants;
+import ants.tasks.Task.Type;
 import api.entities.Tile;
 
 /***
@@ -34,4 +35,8 @@ public class AttackHillMission extends PathMission {
         return null;
     }
 
+    @Override
+    public Type getTaskType() {
+        return Type.ATTACK_HILLS;
+    }
 }

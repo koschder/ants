@@ -1,12 +1,15 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import logging.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import ants.tasks.Task.Type;
+import api.entities.Tile;
 
 public class SwarmPathMission extends BaseMission {
 
@@ -69,6 +72,11 @@ public class SwarmPathMission extends BaseMission {
 
     protected boolean isCheckAnts() {
         return false;
+    }
+
+    @Override
+    public Type getTaskType() {
+        return Type.SWARMPATH;
     }
 
 }
