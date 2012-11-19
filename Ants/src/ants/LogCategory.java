@@ -13,7 +13,7 @@ public enum LogCategory implements logging.LogCategory {
     FOOD(false),
     ORDERS(false),
     CONCENTRATE(false),
-    PERFORMANCE(false),
+    PERFORMANCE(true),
     SETUP(false),
     STATISTICS(false),
     TURN(false),

@@ -122,7 +122,7 @@ public abstract class BaseBot extends Bot {
 
     @Override
     protected void doFinishTurn() {
-        LOGGER.info("Finished in %1$s ms with %2$s ms remaining.", System.currentTimeMillis()
+        LOGGER_PERFORMANCE.info("Finished in %1$s ms with %2$s ms remaining.", System.currentTimeMillis()
                 - Ants.getAnts().getTurnStartTime(), Ants.getAnts().getTimeRemaining());
 
     }
