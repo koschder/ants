@@ -1,11 +1,10 @@
 package ants.tasks;
 
-import java.util.List;
+import java.util.*;
 
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Aim;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 /**
  * Task that ensures that no ant blocks our hills. This should be executed last, since it just issues a random order for
@@ -22,11 +21,21 @@ public class ClearHillTask extends BaseTask {
             for (Tile hill : Ants.getWorld().getMyHills()) {
                 if (Ants.getWorld().manhattanDistance(ant.getTile(), hill) < 2) {
                     List<Aim> aimsToHill = Ants.getWorld().getDirections(ant.getTile(), hill);
+                    boolean success = false;
                     for (Aim aim : Aim.values()) {
                         if (aimsToHill.contains(aim))
-                            continue; // dont go back to the hill
-                        if (Ants.getOrders().issueOrder(ant, aim, getClass().getSimpleName()))
+                            continue; // prefer not go back to the hill
+                        if (Ants.getOrders().issueOrder(ant, aim, getClass().getSimpleName())) {
+                            success = true;
                             break;
+                        }
+                    }
+                    // some situations require first moving toward the hill
+                    if (!success) {
+                        for (Aim aim : aimsToHill) {
+                            if (Ants.getOrders().issueOrder(ant, aim, getClass().getSimpleName()))
+                                break;
+                        }
                     }
                     break;
                 }

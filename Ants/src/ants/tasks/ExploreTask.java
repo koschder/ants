@@ -1,21 +1,14 @@
 package ants.tasks;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
-import pathfinder.PathFinder;
+import logging.*;
+import pathfinder.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.entities.Route;
-import ants.missions.ExploreMission;
-import ants.state.Ants;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.missions.*;
+import ants.state.*;
+import api.entities.*;
 
 /**
  * This task sends ants into unexplored areas of the map to discover new frontiers - to boldly go where no ant has gone
@@ -48,42 +41,66 @@ public class ExploreTask extends BaseTask {
         removeVisibleTiles(invisibleTiles);
         LOGGER.debug("Invisible tiles: %s, Unseen tiles: %s", invisibleTiles.size(), unseenTiles.size());
 
-        explore(unseenTiles);
-        explore(invisibleTiles);
-        //
-        // int totalTiles = Ants.getWorld().getCols() * Ants.getWorld().getRows();
-        // if ((unseenTiles.size() / totalTiles) < 0.5)
-        // else
+        explore(unseenTiles, false);
+        explore(invisibleTiles, true);
     }
 
-    private void explore(Set<Tile> tiles) {
+    private void explore(Set<Tile> tiles, boolean lastRun) {
         for (Ant ant : Ants.getPopulation().getMyUnemployedAnts()) {
-            final Tile antLoc = ant.getTile();
             List<Route> unseenRoutes = new ArrayList<Route>();
-            int minDistance = Integer.MAX_VALUE;
-            for (Tile unseenLoc : tiles) {
-                int distance = Ants.getWorld().getSquaredDistance(antLoc, unseenLoc);
-                if (distance > MAXDISTANCE)
-                    continue;
-                if (distance < minDistance)
-                    minDistance = distance;
-                Route route = new Route(antLoc, unseenLoc, distance, ant);
-                unseenRoutes.add(route);
-            }
-            Collections.sort(unseenRoutes);
+            int minDistance = createRoutes(tiles, ant, unseenRoutes);
+            boolean success = createExploreMission(unseenRoutes, minDistance);
 
-            for (Route route : unseenRoutes) {
-                if (route.getDistance() > minDistance * 2)
-                    break;
-                List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.Simple, route.getStart(),
-                        route.getEnd());
-                if (path == null)
-                    continue;
-
-                addMission(new ExploreMission(route.getAnt(), path));
-                break;
+            if (lastRun && !success) {
+                List<Route> routes = createRoutesToVisibleTiles(ant);
+                success = createExploreMission(routes, MAXDISTANCE);
             }
+            if (lastRun && !success)
+                LOGGER.debug("Could not create explore mission for ant %s", ant);
         }
+    }
+
+    private List<Route> createRoutesToVisibleTiles(Ant ant) {
+        List<Route> routes = new ArrayList<Route>();
+        for (Tile tile : Ants.getWorld().getVisibleTiles(ant)) {
+            int distance = Ants.getWorld().getSquaredDistance(ant.getTile(), tile);
+            Route route = new Route(ant.getTile(), tile, distance, ant);
+            routes.add(route);
+        }
+        Collections.sort(routes);
+        Collections.reverse(routes);
+        return routes;
+    }
+
+    private boolean createExploreMission(List<Route> routes, int minDistance) {
+        for (Route route : routes) {
+            if (route.getDistance() > minDistance * 2)
+                break;
+            List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.Simple, route.getStart(), route.getEnd());
+            LOGGER.trace("Explore route: %s, path = %s", route, path);
+            if (path == null)
+                continue;
+
+            addMission(new ExploreMission(route.getAnt(), path));
+            return true;
+
+        }
+        return false;
+    }
+
+    private int createRoutes(Set<Tile> tiles, Ant ant, List<Route> unseenRoutes) {
+        int minDistance = Integer.MAX_VALUE;
+        for (Tile unseenLoc : tiles) {
+            int distance = Ants.getWorld().getSquaredDistance(ant.getTile(), unseenLoc);
+            if (distance > MAXDISTANCE)
+                continue;
+            if (distance < minDistance)
+                minDistance = distance;
+            Route route = new Route(ant.getTile(), unseenLoc, distance, ant);
+            unseenRoutes.add(route);
+        }
+        Collections.sort(unseenRoutes);
+        return minDistance;
     }
 
     private void removeVisibleTiles(Set<Tile> tiles) {

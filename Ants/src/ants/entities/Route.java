@@ -1,7 +1,7 @@
 package ants.entities;
 
-import ants.state.Ants;
-import api.entities.Tile;
+import ants.state.*;
+import api.entities.*;
 
 /**
  * Represents a route from one tile to another. stores the selected ant for the route. the distance of the route is
@@ -58,4 +58,10 @@ public class Route implements Comparable<Route> {
         }
         return result;
     }
+
+    @Override
+    public String toString() {
+        return "Route [ant=" + ant + ", start=" + start + ", end=" + end + ", distance=" + distance + "]";
+    }
+
 }
