@@ -1,24 +1,15 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
-import java.util.TreeMap;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
+import ants.entities.*;
+import ants.state.*;
 import ants.tasks.Task.Type;
-import ants.util.LiveInfo;
-import api.entities.Aim;
-import api.entities.Tile;
+import ants.util.*;
+import api.entities.*;
 
 public class DefendHillMission extends BaseMission {
 
@@ -27,7 +18,7 @@ public class DefendHillMission extends BaseMission {
     private Tile hill = null;
     private Set<Tile> hillReachable = new HashSet<Tile>();
     private int nearBy = 8;
-    private int guardHillTurn = 10;
+    private int guardHillTurn = 30;
     private int antsMoreThanEnemy = 2;
 
     public DefendHillMission(Tile hill) {
