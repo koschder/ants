@@ -20,7 +20,7 @@ public class AlphaBeta extends AbstractAlgorithm {
     }
 
     private long eval(Game g, long alpha, long beta, int maxDepth) {
-        System.out.println(String.format("eval(alpha %s, beta %s, depth %s)", alpha, beta, maxDepth));
+        // System.out.println(String.format("eval(alpha %s, beta %s, depth %s)", alpha, beta, maxDepth));
         if (maxDepth == 0) {
             int hVal = g.evalHeuristicValue();
             // System.out.println("Heuristic Value: " + hVal);

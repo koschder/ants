@@ -414,4 +414,8 @@ public class World extends AbstractWraparoundMap implements UnitMap {
 
         return floodedTiles;
     }
+
+    public boolean isInAttackZone(Tile myTile, Tile enemyTile) {
+        return getSquaredDistance(myTile, enemyTile) <= getAttackRadius2();
+    }
 }

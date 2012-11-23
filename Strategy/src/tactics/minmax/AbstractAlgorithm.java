@@ -20,6 +20,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
         for (Iterator<Game> successors = g.expand(); successors.hasNext();) {
             Game game = successors.next();
             eval = eval(game, maxDepth);
+
             if (eval > bestValue) {
                 bestValue = eval;
                 bestState = game;

@@ -10,6 +10,7 @@ import java.util.Set;
 
 import tactics.minmax.Game;
 import ants.state.Ants;
+import ants.state.World;
 import api.entities.Move;
 import api.entities.Tile;
 import api.entities.Unit;
@@ -92,8 +93,34 @@ public class CombatSituation implements Game {
 
     @Override
     public int evalHeuristicValue() {
-        // TODO Auto-generated method stub
-        return 0;
+        Map<Tile, Set<Tile>> enemies = new HashMap<Tile, Set<Tile>>();
+        final World world = Ants.getWorld();
+        for (Tile myTile : myAnts.keySet()) {
+            enemies.put(myTile, new HashSet<Tile>());
+            for (Tile enemyTile : enemyAnts.keySet()) {
+                enemies.put(enemyTile, new HashSet<Tile>());
+                if (world.isInAttackZone(myTile, enemyTile)) {
+                    enemies.get(myTile).add(enemyTile);
+                    enemies.get(enemyTile).add(myTile);
+                }
+
+            }
+        }
+        int myDead = 0;
+        int enemyDead = 0;
+        for (Tile myTile : myAnts.keySet()) {
+            for (Tile enemy : enemies.get(myTile)) {
+                if (enemies.get(myTile).size() >= enemies.get(enemy).size())
+                    myDead++;
+            }
+        }
+        for (Tile enemy : enemyAnts.keySet()) {
+            for (Tile myTile : enemies.get(enemy)) {
+                if (enemies.get(enemy).size() >= enemies.get(myTile).size())
+                    enemyDead++;
+            }
+        }
+        return myDead - enemyDead;
     }
 
     public Map<Tile, CombatUnit> getMovingUnits() {
