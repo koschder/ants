@@ -139,6 +139,7 @@ public class Orders {
         if (newMission.isValid() != null) {
             LOGGER_MISSIONS.debug("Mission %s is not valid because %s, not adding it.", newMission,
                     newMission.isValid());
+            removeAnts(newMission);
             return;
         }
         Set<Mission> tempMissions = new HashSet<Mission>();

@@ -18,7 +18,11 @@ public class GatherFoodMission extends PathMission {
     Tile food;
 
     public GatherFoodMission(Ant ant, List<Tile> path) {
+
         super(ant, path);
+        if (path.size() > 1)
+            // remove the tile where the food, we don't have to move there.
+            this.path = path.subList(0, path.size() - 1);
         food = path.get(path.size() - 1);
     }
 
