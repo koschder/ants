@@ -27,6 +27,6 @@ public class Move {
 
     @Override
     public String toString() {
-        return tile.toString() + " -->" + direction.name();
+        return tile.toString() + " -->" + direction;
     }
 }

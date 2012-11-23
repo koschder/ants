@@ -44,8 +44,8 @@ public abstract class AbstractAlgorithm implements Algorithm {
         long lastIteration = 0;
         int iterations = 0;
         while (shouldSearchDeeper(timeLimit, start, lastIteration)) {
-            // System.out.println("Starting new iteration with maxDepth = "
-            // + maxDepth + ": last one took " + lastIteration + " ms.");
+            System.out.println("Starting new iteration with maxDepth = " + maxDepth + ": last one took "
+                    + lastIteration + " ms.");
             final long iterationStart = System.currentTimeMillis();
             for (Iterator<Game> successors = g.expand(); successors.hasNext();) {
                 Game game = successors.next();
@@ -73,9 +73,12 @@ public abstract class AbstractAlgorithm implements Algorithm {
 
     private boolean shouldSearchDeeper(int timeLimit, final long start, long lastIteration) {
         final long elapsedTime = System.currentTimeMillis() - start;
-        System.out.println(String.format("timeLimit: %s, start: %s, elapsedTime: %s, lastIteration: %s", timeLimit,
-                start, elapsedTime, lastIteration));
-        return timeLimit > (elapsedTime + 12 * lastIteration);
+        final long estimatedTime = (elapsedTime + 8 * lastIteration);
+        System.out
+                .println(String
+                        .format("timeLimit: %s, start: %s, elapsedTime: %s, lastIteration: %s estimated time for next deeper interation: %s",
+                                timeLimit, start, elapsedTime, lastIteration, estimatedTime));
+        return timeLimit > estimatedTime;
     }
 
     /**
