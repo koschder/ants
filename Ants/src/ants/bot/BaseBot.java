@@ -40,7 +40,14 @@ public abstract class BaseBot extends Bot {
 
     @Override
     public void doTurn() {
+        for (LogCategory logCat : LogCategory.values()) {
+            if (logCat.useCustomLogFile()) {
+                Logger customFileLogger = LoggerFactory.getLogger(logCat);
+                customFileLogger.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
+            }
+        }
         LOGGER.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
+        
         LOGGER.info("enemy_hills visible: %s", Ants.getWorld().getEnemyHills(), Ants.getWorld());
         calculateInfluence();
         initTasks();

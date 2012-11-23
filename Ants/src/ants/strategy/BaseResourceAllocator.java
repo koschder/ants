@@ -19,7 +19,6 @@ public abstract class BaseResourceAllocator {
         for (ResourceAllocationRule rule : rules) {
             rule.allocateResources();
         }
-        LOGGER.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
         for (Type type : Type.values()) {
             final Integer maxResources = Ants.getPopulation().getMaxResources(type);
             if (maxResources < Integer.MAX_VALUE) {
