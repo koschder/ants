@@ -74,6 +74,6 @@ public abstract class Bot extends AbstractSystemInputParser {
     public void afterUpdate() {
         Ants.getAnts().setVision();
         Ants.getAnts().calculateDistances();
-        Ants.getWorld().updateEnemyHills();
+        Ants.getWorld().updateHills();
     }
 }

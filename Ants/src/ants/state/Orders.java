@@ -33,7 +33,7 @@ public class Orders {
         orders.clear();
         // prevent stepping on own hill
         for (Tile myHill : Ants.getWorld().getMyHills()) {
-            orders.put(myHill, null);
+            orders.put(myHill, new Move(myHill, null));
         }
     }
 
