@@ -77,13 +77,13 @@ public class SimplePathFinder implements PathFinder {
         // nothing to do
     }
 
-    public boolean validatePath(List<Tile> tile) {
+    public boolean validatePath(List<Tile> path) {
         boolean ret = true;
-        if (tile.isEmpty())
+        if (path.isEmpty())
             ret = false;
-        for (int i = 0; i < tile.size() - 2; i++) {
-            final Tile current = tile.get(i);
-            final Tile next = tile.get(i + 1);
+        for (int i = 0; i < path.size() - 2; i++) {
+            final Tile current = path.get(i);
+            final Tile next = path.get(i + 1);
             if (!map.isPassable(next)) {
                 System.out.println(String.format("Tile is not passable: %s ", next));
                 ret = false;
@@ -95,7 +95,7 @@ public class SimplePathFinder implements PathFinder {
             }
         }
         if (!ret)
-            throw new IllegalStateException("Invalid path: " + tile.toString());
+            throw new IllegalStateException("Invalid path: " + path.toString());
         return ret;
     }
 

@@ -63,6 +63,8 @@ public class ExploreTask extends BaseTask {
     private List<Route> createRoutesToVisibleTiles(Ant ant) {
         List<Route> routes = new ArrayList<Route>();
         for (Tile tile : Ants.getWorld().getVisibleTiles(ant)) {
+            if (Ants.getWorld().getMyHills().contains(tile))
+                continue;
             int distance = Ants.getWorld().getSquaredDistance(ant.getTile(), tile);
             Route route = new Route(ant.getTile(), tile, distance, ant);
             routes.add(route);

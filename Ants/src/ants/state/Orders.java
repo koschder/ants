@@ -1,22 +1,15 @@
 package ants.state;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.missions.Mission;
-import ants.tasks.BaseTask;
-import ants.util.LiveInfo;
-import api.entities.Aim;
-import api.entities.Move;
-import api.entities.Tile;
-import api.pathfinder.SearchTarget;
+import ants.entities.*;
+import ants.missions.*;
+import ants.tasks.*;
+import ants.util.*;
+import api.entities.*;
+import api.pathfinder.*;
 
 /**
  * This class tracks all orders and missions for our ants. It ensures that no conflicting orders are given.
@@ -135,9 +128,51 @@ public class Orders {
         if (!stackTrace[2].getClassName().equals(BaseTask.class.getCanonicalName())) {
             throw new IllegalStateException("addMission must only be called from BaseTask");
         }
-        if (missions.add(newMission)) {
-            newMission.execute();
-            LOGGER_MISSIONS.debug("New mission created: %s", newMission);
+        if (newMission.isValid() != null) {
+            LOGGER_MISSIONS.debug("Mission %s is not valid because %s, not adding it.", newMission,
+                    newMission.isValid());
+            return;
+        }
+        Set<Mission> tempMissions = new HashSet<Mission>();
+        tempMissions.add(newMission);
+        executeMissions(tempMissions);
+        if (!newMission.isAbandoned() && missions.add(newMission)) {
+            LOGGER_MISSIONS.debug("New mission created: %s, Ants: %s", newMission.getClass().getSimpleName(),
+                    newMission.getAnts());
+        }
+    }
+
+    public void executeMissions(Set<Mission> missions) {
+        for (Iterator<Mission> it = missions.iterator(); it.hasNext();) {
+            Mission mission = it.next();
+            // LOGGER.debug("mission: %s", mission);
+            if (mission.isComplete()) {
+                removeAnts(mission);
+                it.remove();
+                LOGGER_MISSIONS.debug("Mission removed, its complete: %s", mission);
+                continue;
+            }
+            String valid = mission.isValid();
+            if (valid == null) {
+                mission.execute();
+                if (mission.isAbandoned()) {
+                    valid = "mission abadoned.";
+                } else {
+                    LOGGER_MISSIONS.debug("Mission performed: %s, Ants: %s", mission.getClass().getSimpleName(),
+                            mission.getAnts());
+                }
+            }
+            if (valid != null) {
+                LOGGER_MISSIONS.debug("Mission %s not valid because: %s. Mission is removed.", mission, valid);
+                removeAnts(mission);
+                it.remove();
+            }
+        }
+    }
+
+    private void removeAnts(Mission mission) {
+        for (Ant ant : mission.getAnts()) {
+            Ants.getPopulation().removeEmployedAnt(ant);
         }
     }
 

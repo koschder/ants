@@ -1,19 +1,13 @@
 package ants.missions;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import pathfinder.PathFinder.Strategy;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
-import api.entities.Aim;
-import api.entities.Tile;
+import ants.entities.*;
+import ants.state.*;
+import api.entities.*;
 
 /***
  * Implements the interface Mission an handles the base tasks of a mission.
@@ -99,10 +93,10 @@ public abstract class BaseMission implements Mission {
     }
 
     /***
-     * cancels the mission. (Attention: no move can be done in the turn the mission was abandoned).
+     * cancels the mission. (Attention: Must not have made a move this turn yet).
      */
     protected void abandonMission() {
-        LOGGER.debug("Abandoning mission of type %s", getClass().getSimpleName());
+        LOGGER.debug("Abandoning mission of type %s for ants %s", getClass().getSimpleName(), getAnts());
         abandon = true;
     }
 

@@ -8,7 +8,7 @@
 			<arg line="--log_dir logs" />
 			<arg line="--turns 200" />
 			<arg line="--scenario" />
-			<arg line="--food yes" />
+			<arg line="--food symmetric" />
 			<arg line="--player_seed 7" />
 			<arg line="--verbose" />
 			<arg line="-e" />
@@ -25,7 +25,7 @@
 			<arg line="--turntime 99999999" />
 			<arg line="--loadtime 99999999" />
 			<arg line="--scenario" />
-			<arg line="--food yes" />
+			<arg line="--food symmetric" />
 			<arg line="--player_seed 7" />
 			<arg line="--verbose" />
 			<arg line="-e" />

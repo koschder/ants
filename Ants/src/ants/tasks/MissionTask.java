@@ -1,14 +1,11 @@
 package ants.tasks;
 
-import java.util.Iterator;
-import java.util.Set;
+import java.util.*;
 
-import logging.Logger;
-import logging.LoggerFactory;
+import logging.*;
 import ants.LogCategory;
-import ants.entities.Ant;
-import ants.missions.Mission;
-import ants.state.Ants;
+import ants.missions.*;
+import ants.state.*;
 
 /**
  * This task is responsible for allowing those ants that are currently following a {@link Mission} to execute the next
@@ -34,37 +31,8 @@ public class MissionTask extends BaseTask {
 
         Set<Mission> missions = Ants.getOrders().getMissions();
         LOGGER.debug("Current mission count: %s", missions.size());
-        for (Iterator<Mission> it = missions.iterator(); it.hasNext();) {
-            Mission mission = it.next();
-            // LOGGER.debug("mission: %s", mission);
-            if (mission.isComplete()) {
-                removeAnts(mission);
-                it.remove();
-                LOGGER.debug("Mission removed, its complete: %s", mission);
-                continue;
-            }
-            String valid = mission.isValid();
-            if (valid == null) {
-                mission.execute();
-                if (mission.isAbandoned()) {
-                    valid = "mission abadoned.";
-                } else {
-                    LOGGER.debug("Mission performed: %s", mission);
-                }
-            }
-            if (valid != null) {
-                LOGGER.debug("Mission %s not valid because: %s. Mission is removed.", mission, valid);
-                removeAnts(mission);
-                it.remove();
-            }
-        }
+        Ants.getOrders().executeMissions(missions);
 
-    }
-
-    private void removeAnts(Mission mission) {
-        for (Ant ant : mission.getAnts()) {
-            Ants.getPopulation().removeEmployedAnt(ant);
-        }
     }
 
     @Override
