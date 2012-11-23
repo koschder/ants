@@ -43,11 +43,16 @@ public class MissionTask extends BaseTask {
                 LOGGER.debug("Mission removed, its complete: %s", mission);
                 continue;
             }
-            final String valid = mission.isValid();
+            String valid = mission.isValid();
             if (valid == null) {
                 mission.execute();
-                LOGGER.debug("Mission performed: %s", mission);
-            } else {
+                if (mission.isAbandoned()) {
+                    valid = "mission abadoned.";
+                } else {
+                    LOGGER.debug("Mission performed: %s", mission);
+                }
+            }
+            if (valid != null) {
                 LOGGER.debug("Mission %s not valid because: %s. Mission is removed.", mission, valid);
                 removeAnts(mission);
                 it.remove();

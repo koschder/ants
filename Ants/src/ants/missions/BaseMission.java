@@ -26,6 +26,11 @@ public abstract class BaseMission implements Mission {
     protected List<Ant> ants;
     private boolean abandon = false;
 
+    @Override
+    public boolean isAbandoned() {
+        return abandon;
+    }
+
     public BaseMission(Ant... ants) {
         this.ants = new ArrayList<Ant>();
         for (Ant ant : ants) {
@@ -94,7 +99,7 @@ public abstract class BaseMission implements Mission {
     }
 
     /***
-     * cancels the mission.
+     * cancels the mission. (Attention: no move can be done in the turn the mission was abandoned).
      */
     protected void abandonMission() {
         LOGGER.debug("Abandoning mission of type %s", getClass().getSimpleName());

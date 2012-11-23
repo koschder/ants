@@ -18,6 +18,13 @@ public interface Mission {
 
     public void execute();
 
+    /**
+     * Mission was abandoned, no move was done this step.
+     * 
+     * @return
+     */
+    public boolean isAbandoned();
+
     public void setup();
 
     public List<Ant> getAnts();

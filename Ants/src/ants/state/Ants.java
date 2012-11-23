@@ -1,9 +1,8 @@
 package ants.state;
 
-import pathfinder.ClusteringPathFinder;
 import pathfinder.PathFinder;
+import pathfinder.SimplePathFinder;
 import pathfinder.entities.Clustering;
-import pathfinder.entities.Clustering.ClusterType;
 import ants.entities.Ant;
 import ants.entities.Ilk;
 import api.entities.Tile;
@@ -70,7 +69,7 @@ public enum Ants {
         this.world = new World(rows, cols, viewRadius2, attackRadius2, spawnRadius2);
         this.population = new Population();
         this.orders = new Orders();
-        this.pathFinder = new ClusteringPathFinder(world, 10, ClusterType.Centered);
+        this.pathFinder = new SimplePathFinder(world, influence);
     }
 
     /**

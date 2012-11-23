@@ -50,6 +50,12 @@ public class OrdersTest {
                 // TODO Auto-generated method stub
                 return null;
             }
+
+            @Override
+            public boolean isAbandoned() {
+                // TODO Auto-generated method stub
+                return false;
+            }
         });
     }
 }
