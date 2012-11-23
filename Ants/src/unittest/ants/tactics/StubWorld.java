@@ -8,4 +8,9 @@ public class StubWorld extends World {
         this.rows = rows;
         this.cols = cols;
     }
+
+    @Override
+    public int getAttackRadius2() {
+        return 2;
+    }
 }

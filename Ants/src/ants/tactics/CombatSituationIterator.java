@@ -137,7 +137,7 @@ public class CombatSituationIterator implements Iterator<Game> {
     public CombatSituation next() {
 
         final CombatSituation next = getNext();
-        System.out.println(Arrays.toString(moveIndex));
+        // System.out.println(Arrays.toString(moveIndex));
         return next;
     }
 

@@ -25,14 +25,19 @@ public class AlphaBetaTest {
         List<Unit> enemyAnts = new ArrayList<Unit>();
         List<Unit> myAnts = new ArrayList<Unit>();
 
-        // enemyAnts.add(new Ant(new Tile(15, 15), 1));
-        // enemyAnts.add(new Ant(new Tile(16, 15), 1));
-        enemyAnts.add(new Ant(new Tile(16, 16), 1));
-        // myAnts.add(new Ant(new Tile(17, 17), 0));
+        // enemyAnts.add(new Ant(new Tile(14, 13), 1));
+        // enemyAnts.add(new Ant(new Tile(14, 14), 1));
+        enemyAnts.add(new Ant(new Tile(15, 14), 1));
+        enemyAnts.add(new Ant(new Tile(15, 15), 1));
+        myAnts.add(new Ant(new Tile(17, 17), 0));
         // myAnts.add(new Ant(new Tile(18, 17), 0));
-        myAnts.add(new Ant(new Tile(18, 18), 0));
+        // myAnts.add(new Ant(new Tile(18, 18), 0));
+        // myAnts.add(new Ant(new Tile(18, 19), 0));
 
-        Game g = new AlphaBeta().bestMoveTimeLimited(new CombatSituation(enemyAnts, myAnts), 500);
+        long start = System.currentTimeMillis();
+        Game g = new AlphaBeta().bestMove(new CombatSituation(enemyAnts, myAnts), 1);
+        // Game g = new AlphaBeta().bestMove(new CombatSituation(myAnts, enemyAnts), 1);
+        System.out.println("AlphaBeta took " + (System.currentTimeMillis() - start) + "ms");
         System.out.println(g.getMoves());
     }
 }
