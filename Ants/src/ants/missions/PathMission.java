@@ -92,7 +92,7 @@ public abstract class PathMission extends BaseMission {
      * @return
      */
     protected String abortMission(Ant ant, boolean checkFood, boolean checkEnemyAnts, boolean checkEnemyHill) {
-        final boolean foodNearby = Ants.getWorld().isFoodNearby(ant.getTile()) && checkFood;
+        final boolean foodNearby = isFoodNearby(ant) && checkFood;
         List<Ant> enemy = ant.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), false);
         final boolean enemyIsMayor = enemy.size() > getAnts().size() && checkEnemyAnts;
         boolean enemyHillNearby = checkEnemyHill;
@@ -112,5 +112,27 @@ public abstract class PathMission extends BaseMission {
         }
 
         return (foodNearby ? "food," : "") + (enemyIsMayor ? "enemy," : "") + (enemyHillNearby ? "enemyHill," : "");
+    }
+
+    /**
+     * food is nearby but not on the path
+     * 
+     * @param ant
+     * @return
+     */
+    private boolean isFoodNearby(Ant ant) {
+        List<Tile> tile = Ants.getWorld().isFoodNearby(ant.getTile());
+        int nextSteps = Math.min(3, path.size() - 1);
+        if (tile.isEmpty())
+            return false; // no food nearby
+        for (Tile t : tile) {
+            for (int i = 0; i < nextSteps; i++) {
+                if (Ants.getWorld().manhattanDistance(t, path.get(i)) <= 1) {
+                    // ant is moving towards food, we don't have to break this mission.
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 }

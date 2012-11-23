@@ -25,11 +25,9 @@ public abstract class BaseResourceAllocator {
                 LOGGER.info("Allocated %s percent of ants to task %s", maxResources, type.name());
             }
         }
-
     }
 
     public void setRules(List<ResourceAllocationRule> rules) {
         this.rules = rules;
     }
-
 }

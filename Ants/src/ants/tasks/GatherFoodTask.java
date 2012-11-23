@@ -47,8 +47,8 @@ public class GatherFoodTask extends BaseTask {
 
             for (Ant ant : sortedAnts) {
                 final Tile antLoc = ant.getTile();
-                if (!Ants.getWorld().isFoodNearby(antLoc))
-                    continue;
+                // if (!Ants.getWorld().isFoodNearby(antLoc))
+                // continue;
                 int distance = Ants.getWorld().getSquaredDistance(antLoc, foodLoc);
                 Route route = new Route(antLoc, foodLoc, distance, ant);
                 foodRoutes.add(route);
