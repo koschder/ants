@@ -1,15 +1,16 @@
 package unittest.ants.state;
 
-import java.util.*;
+import java.util.Arrays;
+import java.util.List;
 
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.World;
+import api.entities.Tile;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class WorldTest {
     private World world;

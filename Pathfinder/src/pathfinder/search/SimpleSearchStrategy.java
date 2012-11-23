@@ -1,12 +1,15 @@
 package pathfinder.search;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import logging.*;
-import pathfinder.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.LogCategory;
-import api.entities.*;
-import api.pathfinder.*;
+import pathfinder.PathFinder;
+import api.entities.Aim;
+import api.entities.Tile;
+import api.pathfinder.SearchTarget;
 
 public class SimpleSearchStrategy extends SearchStrategy {
 

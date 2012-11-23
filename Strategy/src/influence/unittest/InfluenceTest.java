@@ -1,6 +1,5 @@
 package influence.unittest;
 
-import static org.junit.Assert.assertEquals;
 import influence.DefaultInfluenceMap;
 
 import org.junit.Test;
@@ -9,6 +8,8 @@ import api.entities.Tile;
 import api.strategy.InfluenceMap;
 import api.test.MapOutput;
 import api.test.PixelDecorator;
+
+import static org.junit.Assert.*;
 
 public class InfluenceTest {
 

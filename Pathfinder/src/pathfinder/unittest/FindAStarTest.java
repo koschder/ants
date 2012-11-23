@@ -1,17 +1,17 @@
 package pathfinder.unittest;
 
-import java.util.*;
+import java.util.List;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import pathfinder.*;
-import api.entities.*;
-import api.test.*;
+import pathfinder.PathFinder;
+import pathfinder.SimplePathFinder;
+import api.entities.Tile;
+import api.test.MapOutput;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class FindAStarTest {
 

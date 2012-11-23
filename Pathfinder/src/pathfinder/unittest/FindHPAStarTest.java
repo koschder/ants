@@ -1,17 +1,19 @@
 package pathfinder.unittest;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import junit.framework.Assert;
 
 import org.junit.Test;
 
-import pathfinder.*;
+import pathfinder.ClusteringPathFinder;
+import pathfinder.PathFinder;
 import pathfinder.entities.Clustering.ClusterType;
-import api.entities.*;
-import api.test.*;
+import api.entities.Tile;
+import api.test.MapOutput;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 public class FindHPAStarTest {
 

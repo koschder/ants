@@ -1,6 +1,7 @@
 package ants.tactics;
 
-import api.entities.*;
+import api.entities.Tile;
+import api.entities.Unit;
 
 public class CombatUnit implements Unit {
 

@@ -1,6 +1,6 @@
 package ants.strategy.rules;
 
-import ants.state.*;
+import ants.state.Ants;
 import ants.tasks.Task.Type;
 
 public class PopulationSizeRule extends BaseResourceAllocationRule {

@@ -1,14 +1,21 @@
 package ants.tasks;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 
-import logging.*;
-import pathfinder.*;
+import logging.Logger;
+import logging.LoggerFactory;
+import pathfinder.PathFinder;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.missions.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.entities.Route;
+import ants.missions.ExploreMission;
+import ants.state.Ants;
+import api.entities.Tile;
 
 /**
  * This task sends ants into unexplored areas of the map to discover new frontiers - to boldly go where no ant has gone

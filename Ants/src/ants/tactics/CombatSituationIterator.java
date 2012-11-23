@@ -1,9 +1,13 @@
 package ants.tactics;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
 
-import tactics.minmax.*;
-import api.entities.*;
+import tactics.minmax.Game;
+import api.entities.Aim;
+import api.entities.Move;
 
 public class CombatSituationIterator implements Iterator<Game> {
     // private Board board;

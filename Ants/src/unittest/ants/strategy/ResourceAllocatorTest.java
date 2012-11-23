@@ -1,7 +1,5 @@
 package unittest.ants.strategy;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -24,6 +22,8 @@ import ants.tasks.GatherFoodTask;
 import ants.tasks.Task;
 import ants.tasks.Task.Type;
 import api.entities.Tile;
+
+import static org.junit.Assert.*;
 
 public class ResourceAllocatorTest {
 

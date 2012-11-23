@@ -1,8 +1,8 @@
 package ants.bot;
 
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ilk;
+import ants.state.Ants;
+import api.entities.Tile;
 
 /**
  * Provides basic game state handling.

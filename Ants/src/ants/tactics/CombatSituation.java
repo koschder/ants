@@ -1,11 +1,18 @@
 package ants.tactics;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
-import tactics.minmax.*;
-import ants.state.*;
-import api.entities.*;
+import tactics.minmax.Game;
+import ants.state.Ants;
+import api.entities.Move;
+import api.entities.Tile;
+import api.entities.Unit;
 
 public class CombatSituation implements Game {
     private Map<Tile, CombatUnit> enemyAnts;

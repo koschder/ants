@@ -1,6 +1,6 @@
 package tactics.minmax;
 
-import java.util.*;
+import java.util.Iterator;
 
 /**
  * Implementation of Min-Max Algorithm with Alpha-Beta pruning.

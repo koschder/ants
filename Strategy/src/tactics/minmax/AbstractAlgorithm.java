@@ -1,6 +1,6 @@
 package tactics.minmax;
 
-import java.util.*;
+import java.util.Iterator;
 
 /**
  * Abstract base class for an {@link Algorithm} implementation.

@@ -1,15 +1,24 @@
 package ants.missions;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
+import java.util.TreeMap;
 
-import logging.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import ants.LogCategory;
-import ants.entities.*;
-import ants.state.*;
+import ants.entities.Ant;
+import ants.state.Ants;
 import ants.tasks.Task.Type;
-import ants.util.*;
-import api.entities.*;
+import ants.util.LiveInfo;
+import api.entities.Aim;
+import api.entities.Tile;
 
 public class DefendHillMission extends BaseMission {
 

@@ -1,13 +1,18 @@
 package pathfinder.entities;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import logging.*;
-import pathfinder.*;
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.LogCategory;
-import api.entities.*;
-import api.map.*;
-import api.pathfinder.*;
+import pathfinder.PathFinder;
+import pathfinder.SimplePathFinder;
+import api.entities.Aim;
+import api.entities.Tile;
+import api.map.AbstractWraparoundMap;
+import api.map.WorldType;
+import api.pathfinder.SearchTarget;
 
 public class Clustering extends AbstractWraparoundMap {
 

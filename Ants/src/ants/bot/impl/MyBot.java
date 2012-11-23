@@ -1,13 +1,22 @@
 package ants.bot.impl;
 
-import java.io.*;
+import java.io.IOException;
 
-import logging.*;
+import logging.LogLevel;
+import logging.LoggingConfig;
 import ants.LogCategory;
-import ants.bot.*;
-import ants.state.*;
-import ants.strategy.*;
-import ants.tasks.*;
+import ants.bot.BaseBot;
+import ants.state.Ants;
+import ants.strategy.ResourceAllocator;
+import ants.tasks.AttackHillsTask;
+import ants.tasks.ClearHillTask;
+import ants.tasks.ClusteringTask;
+import ants.tasks.CombatTask;
+import ants.tasks.DefendHillTask;
+import ants.tasks.ExploreTask;
+import ants.tasks.GatherFoodTask;
+import ants.tasks.MissionTask;
+import ants.tasks.Task;
 import ants.tasks.Task.Type;
 
 /**

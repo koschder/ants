@@ -1,14 +1,25 @@
 package ants.state;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Set;
 
-import javax.management.*;
+import javax.management.RuntimeErrorException;
 
-import pathfinder.entities.*;
-import ants.entities.*;
-import api.entities.*;
-import api.map.*;
-import api.pathfinder.*;
+import pathfinder.entities.Node;
+import ants.entities.Ant;
+import ants.entities.Ilk;
+import api.entities.Aim;
+import api.entities.Tile;
+import api.entities.Unit;
+import api.map.AbstractWraparoundMap;
+import api.map.UnitMap;
+import api.pathfinder.SearchTarget;
 
 /**
  * This class holds state about the game world.

@@ -1,10 +1,11 @@
 package ants.tasks;
 
-import java.util.*;
+import java.util.List;
 
-import ants.entities.*;
-import ants.state.*;
-import api.entities.*;
+import ants.entities.Ant;
+import ants.state.Ants;
+import api.entities.Aim;
+import api.entities.Tile;
 
 /**
  * Task that ensures that no ant blocks our hills. This should be executed last, since it just issues a random order for

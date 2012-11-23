@@ -1,6 +1,6 @@
 package unittest.ants.tactics;
 
-import ants.state.*;
+import ants.state.World;
 
 public class StubWorld extends World {
 

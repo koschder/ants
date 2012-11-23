@@ -1,11 +1,16 @@
 package ants.bot.impl;
 
-import java.io.*;
+import java.io.IOException;
 
-import logging.*;
+import logging.LogLevel;
+import logging.LoggingConfig;
 import ants.LogCategory;
-import ants.bot.*;
-import ants.tasks.*;
+import ants.bot.BaseBot;
+import ants.tasks.ClearHillTask;
+import ants.tasks.FlockTask;
+import ants.tasks.GatherFoodTask;
+import ants.tasks.MissionTask;
+import ants.tasks.Task;
 import ants.tasks.Task.Type;
 
 public class FlockBot extends BaseBot {
