@@ -197,12 +197,13 @@ public class World extends AbstractWraparoundMap implements UnitMap {
      * @param tile
      * @return
      */
-    public boolean isFoodNearby(Tile tile) {
+    public List<Tile> isFoodNearby(Tile tile) {
+        List<Tile> food = new ArrayList<Tile>();
         for (Tile foodTile : foodTiles) {
             if (getSquaredDistance(foodTile, tile) < viewRadius2)
-                return true;
+                food.add(foodTile);
         }
-        return false;
+        return food;
     }
 
     /**
