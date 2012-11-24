@@ -20,10 +20,11 @@ public class GatherFoodMission extends PathMission {
     public GatherFoodMission(Ant ant, List<Tile> path) {
 
         super(ant, path);
-        if (path.size() > 1)
-            // remove the tile where the food, we don't have to move there.
-            this.path = path.subList(0, path.size() - 1);
         food = path.get(path.size() - 1);
+        // remove the tile where the food, we don't have to move there.
+        // if (path.size() > 1)
+        // ant.setPath(path.subList(0, path.size() - 1));
+
     }
 
     /***
@@ -36,7 +37,7 @@ public class GatherFoodMission extends PathMission {
             return "The cake is a lie";
 
         for (Ant ant : ants) {
-            String abortReason = abortMission(ant, false, true, true);
+            String abortReason = checkEnviroment(ant, false, false, false);
             if (abortReason.length() > 0) {
                 return "Found something [" + abortReason + "] more interesting";
             }

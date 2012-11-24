@@ -1,7 +1,7 @@
 package ants;
 
 public enum LogCategory implements logging.LogCategory {
-    ATTACK_HILLS(false),
+    ATTACK_HILLS(true),
     CLEAR_HILL(false),
     COMBAT(false),
     DEFEND(false),

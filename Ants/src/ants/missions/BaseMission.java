@@ -55,7 +55,7 @@ public abstract class BaseMission implements Mission {
         if (abandon)
             return "Abandon mission";
 
-        if (isCheckAnts() && ants.size() == 0)
+        if (checkAnts() && ants.size() == 0)
             return "No ants in mission";
 
         int liveAntsCounter = 0;
@@ -63,7 +63,7 @@ public abstract class BaseMission implements Mission {
             if (isAntAlive(ant))
                 liveAntsCounter++;
         }
-        if (liveAntsCounter == 0 && isCheckAnts())
+        if (liveAntsCounter == 0 && checkAnts())
             return "No ant left alive";
         return isSpecificMissionValid();
     }
@@ -74,6 +74,68 @@ public abstract class BaseMission implements Mission {
             LOGGER.debug("isMissionValid(): no ant at %s", ant.getTile());
         }
         return antIsAlive;
+    }
+
+    /***
+     * Abort mission if something disturbs the mission
+     * 
+     * @param ant
+     *            to check
+     * @param food
+     *            is food nearby
+     * @param enemyAnts
+     *            is nearby
+     * @param enemyHill
+     *            is nearby
+     * @return
+     */
+    protected String checkEnviroment(Ant ant, boolean checkFood, boolean checkEnemyAnts, boolean checkEnemyHill) {
+        final boolean foodNearby = isFoodNearby(ant) && checkFood;
+        List<Ant> enemy = ant.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), false);
+        final boolean enemyIsMayor = enemy.size() > getAnts().size() && checkEnemyAnts;
+        boolean enemyHillNearby = checkEnemyHill;
+        if (enemyHillNearby) {
+            enemyHillNearby = false;
+            int maxDistanceOfEnemyHill = 10;
+            for (Tile enemyHill : Ants.getWorld().getEnemyHills()) {
+                if (Ants.getWorld().manhattanDistance(ant.getTile(), enemyHill) < maxDistanceOfEnemyHill) {
+                    List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, ant.getTile(), enemyHill,
+                            maxDistanceOfEnemyHill);
+                    if (path != null) {
+                        enemyHillNearby = true;
+                        break;
+                    }
+                }
+            }
+        }
+
+        return (foodNearby ? "food," : "") + (enemyIsMayor ? "enemy," : "") + (enemyHillNearby ? "enemyHill," : "");
+    }
+
+    /**
+     * food is nearby but not on the path
+     * 
+     * @param ant
+     * @return
+     */
+    private boolean isFoodNearby(Ant ant) {
+        List<Tile> foods = Ants.getWorld().isFoodNearby(ant.getTile());
+        if (foods.isEmpty())
+            return false; // no food nearby
+        else if (!ant.hasPath())
+            return true; // food nearby and ant has no path
+
+        int nextSteps = Math.min(3, ant.getPath().size() - 1);
+
+        for (Tile t : foods) {
+            for (int i = 0; i < nextSteps; i++) {
+                if (Ants.getWorld().manhattanDistance(t, ant.getPath().get(i)) <= 1) {
+                    // ant is moving towards food, we don't have to break this mission.
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     protected Map<Ant, List<Tile>> gatherAnts(Tile tile, int amount, int attractionDistance) {
@@ -166,7 +228,7 @@ public abstract class BaseMission implements Mission {
         return ants;
     }
 
-    protected boolean isCheckAnts() {
+    protected boolean checkAnts() {
         return true;
     }
 
@@ -189,6 +251,7 @@ public abstract class BaseMission implements Mission {
 
     public void removeAnts(List<Ant> antsToRelease) {
         for (Ant a : antsToRelease) {
+            a.setPath(null);
             Ants.getPopulation().removeEmployedAnt(a);
             ants.remove(a);
         }

@@ -156,6 +156,8 @@ public class Ant implements Comparable<Ant>, Unit, Cloneable {
 
     @Override
     public String toString() {
+        // String paths = path != null ? " , path= " + path : "";
+        // return tile.toString() + paths;
         return tile.toString() + ", Player=" + player;
     }
 
@@ -165,19 +167,14 @@ public class Ant implements Comparable<Ant>, Unit, Cloneable {
         return super.clone();
     }
 
-    // public Mission getMission() {
-    // return mission;
-    // }
-    //
-    // public void setMission(Mission mission) {
-    // this.mission = mission;
-    // }
-
     public List<Tile> getPath() {
         return path;
     }
 
     public void setPath(List<Tile> p) {
+        if (p != null && p.size() > 0 && p.get(0).equals(getTile())) {
+            p.remove(0);
+        }
         this.path = p;
     }
 
@@ -191,5 +188,9 @@ public class Ant implements Comparable<Ant>, Unit, Cloneable {
 
     public int getTurnsWaited() {
         return this.turnsWaited;
+    }
+
+    public boolean hasPath() {
+        return path != null && path.size() > 0;
     }
 }

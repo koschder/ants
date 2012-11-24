@@ -1,15 +1,8 @@
 package ants.tasks;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
-import pathfinder.PathFinder;
 import pathfinder.PathFinder.Strategy;
-import ants.entities.Ant;
-import ants.entities.Route;
 import ants.missions.AttackHillMission;
 import ants.missions.AttackHillsInFlockMission;
 import ants.missions.Mission;
@@ -24,7 +17,6 @@ import api.entities.Tile;
  */
 public class AttackHillsTask extends BaseTask {
 
-    private int cutoff = 100; // squared
     private int startFlockAttackTurn = 220;
     private int startNonFlockAttackTurn = 5;
 
@@ -63,27 +55,21 @@ public class AttackHillsTask extends BaseTask {
     }
 
     private void doPerformNonFlockAttack() {
-        // attack hills
-        List<Route> hillRoutes = new ArrayList<Route>();
+
+        // set up one hill mission each enemy hill
         for (Tile hillLoc : Ants.getWorld().getEnemyHills()) {
-            for (Ant ant : Ants.getPopulation().getMyUnemployedAnts()) {
-                final Tile tile = ant.getTile();
-                if (!Ants.getOrders().getOrders().containsValue(tile)) {
-                    int distance = Ants.getWorld().getSquaredDistance(tile, hillLoc);
-                    if (distance > cutoff)
-                        continue;
-                    Route route = new Route(tile, hillLoc, distance, ant);
-                    hillRoutes.add(route);
+            boolean created = false;
+            for (Mission m : Ants.getOrders().getMissions()) {
+                if (m instanceof AttackHillMission) {
+                    AttackHillMission am = (AttackHillMission) m;
+                    if (am.getHill().equals(hillLoc)) {
+                        created = true;
+                        break;
+                    }
                 }
             }
-        }
-        Collections.sort(hillRoutes);
-        Set<Ant> employed = new HashSet<Ant>();
-        for (Route route : hillRoutes) {
-            List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.AStar, route.getStart(), route.getEnd());
-            if (path != null && !employed.contains(route.getAnt())) {
-                addMission(new AttackHillMission(route.getAnt(), path));
-                employed.add(route.getAnt());
+            if (!created) {
+                addMission(new AttackHillMission(hillLoc));
             }
         }
     }

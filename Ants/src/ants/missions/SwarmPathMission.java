@@ -70,7 +70,7 @@ public class SwarmPathMission extends BaseMission {
         super.setup();
     }
 
-    protected boolean isCheckAnts() {
+    protected boolean checkAnts() {
         return false;
     }
 

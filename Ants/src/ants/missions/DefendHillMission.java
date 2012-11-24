@@ -215,7 +215,7 @@ public class DefendHillMission extends BaseMission {
     }
 
     @Override
-    protected boolean isCheckAnts() {
+    protected boolean checkAnts() {
         return false;
     }
 

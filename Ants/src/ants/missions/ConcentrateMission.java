@@ -223,7 +223,7 @@ public class ConcentrateMission extends BaseMission {
     }
 
     @Override
-    protected boolean isCheckAnts() {
+    protected boolean checkAnts() {
         return false;
     }
 

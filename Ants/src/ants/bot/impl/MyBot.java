@@ -41,7 +41,7 @@ public class MyBot extends BaseBot {
     }
 
     private static void initLogging() {
-        LoggingConfig.configure(LogCategory.ATTACK_HILLS, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.ATTACK_HILLS, LogLevel.DEBUG);
         LoggingConfig.configure(LogCategory.CLEAR_HILL, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.COMBAT, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.DEFEND, LogLevel.INFO);
