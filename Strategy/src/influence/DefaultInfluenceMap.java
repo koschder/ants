@@ -14,6 +14,7 @@ public class DefaultInfluenceMap implements InfluenceMap {
     private static final int MAX_INFLUENCE = 100;
     private final Map<Integer, int[][]> influence;
     private final int viewRadius2, attackRadius2;
+    private double decay = 0.25;
 
     @Override
     public int getSafety(Tile tile) {
@@ -89,7 +90,7 @@ public class DefaultInfluenceMap implements InfluenceMap {
         for (Integer player : map.getPlayers()) {
             if (!influence.containsKey(player))
                 influence.put(player, new int[map.getRows()][map.getCols()]);
-            updateInfluence(map, player, 0.5);
+            updateInfluence(map, player, decay);
         }
     }
 
