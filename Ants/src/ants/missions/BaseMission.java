@@ -90,26 +90,30 @@ public abstract class BaseMission implements Mission {
      * @return
      */
     protected String checkEnviroment(Ant ant, boolean checkFood, boolean checkEnemyAnts, boolean checkEnemyHill) {
-        final boolean foodNearby = isFoodNearby(ant) && checkFood;
-        List<Ant> enemy = ant.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), false);
-        final boolean enemyIsMayor = enemy.size() > getAnts().size() && checkEnemyAnts;
-        boolean enemyHillNearby = checkEnemyHill;
-        if (enemyHillNearby) {
-            enemyHillNearby = false;
-            int maxDistanceOfEnemyHill = 10;
-            for (Tile enemyHill : Ants.getWorld().getEnemyHills()) {
-                if (Ants.getWorld().manhattanDistance(ant.getTile(), enemyHill) < maxDistanceOfEnemyHill) {
-                    List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, ant.getTile(), enemyHill,
-                            maxDistanceOfEnemyHill);
-                    if (path != null) {
-                        enemyHillNearby = true;
-                        break;
-                    }
+        final boolean foodNearby = checkFood && isFoodNearby(ant);
+        final boolean enemyIsMayor = checkEnemyAnts && isEnemyMajor(ant);
+        boolean enemyHillNearby = checkEnemyHill && enemyHillNearby(ant);
+
+        return (foodNearby ? "food," : "") + (enemyIsMayor ? "enemy," : "") + (enemyHillNearby ? "enemyHill," : "");
+    }
+
+    private boolean enemyHillNearby(Ant ant) {
+        int maxDistanceOfEnemyHill = 10;
+        for (Tile enemyHill : Ants.getWorld().getEnemyHills()) {
+            if (Ants.getWorld().manhattanDistance(ant.getTile(), enemyHill) < maxDistanceOfEnemyHill) {
+                List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, ant.getTile(), enemyHill,
+                        maxDistanceOfEnemyHill);
+                if (path != null) {
+                    return true;
                 }
             }
         }
+        return false;
+    }
 
-        return (foodNearby ? "food," : "") + (enemyIsMayor ? "enemy," : "") + (enemyHillNearby ? "enemyHill," : "");
+    private boolean isEnemyMajor(Ant ant) {
+        List<Ant> enemy = ant.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), false);
+        return enemy.size() > getAnts().size();
     }
 
     /**

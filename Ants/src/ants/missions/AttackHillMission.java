@@ -91,8 +91,11 @@ public class AttackHillMission extends BaseMission {
     private void moveAnts() {
         List<Ant> antsToRelease = new ArrayList<Ant>();
         for (Ant a : ants) {
-            if (checkEnviroment(a, false, false, false) != null) {
+            LOGGER.info("Move ant %s with path %s enemyhill %s", a, a.getPath(), enemyHill);
+            String abortReason = checkEnviroment(a, false, false, false);
+            if (abortReason.length() > 0) {
                 // if food is nearby we get the food first.
+                LOGGER.info("remove ant %s something interesting [%s] nearby", a, abortReason);
                 antsToRelease.add(a);
             } else {
                 if (!move(a)) {
@@ -100,13 +103,14 @@ public class AttackHillMission extends BaseMission {
                 }
             }
         }
+        LOGGER.info("Release ants %s of AttackHillMission %s", antsToRelease, enemyHill);
         removeAnts(antsToRelease);
     }
 
     private boolean move(Ant ant) {
 
         if (!recalculatePath(ant)) {
-            // no valid path for ant can be recalculatePath
+            LOGGER.info("Ant has a invalid path, and cannot be recalculated", ant);
             return false;
         }
 

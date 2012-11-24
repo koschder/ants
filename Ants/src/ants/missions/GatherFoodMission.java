@@ -37,7 +37,7 @@ public class GatherFoodMission extends PathMission {
             return "The cake is a lie";
 
         for (Ant ant : ants) {
-            String abortReason = checkEnviroment(ant, false, false, false);
+            String abortReason = checkEnviroment(ant, false, false, true);
             if (abortReason.length() > 0) {
                 return "Found something [" + abortReason + "] more interesting";
             }
