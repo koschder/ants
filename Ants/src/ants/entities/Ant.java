@@ -193,4 +193,16 @@ public class Ant implements Comparable<Ant>, Unit, Cloneable {
     public boolean hasPath() {
         return path != null && path.size() > 0;
     }
+
+    public Tile getPathEnd() {
+        if (hasPath())
+            return path.get(path.size() - 1);
+        return null;
+    }
+
+    public String visualizeInfo() {
+        if (hasPath())
+            return tile + " path: " + getPath();
+        return tile.toString();
+    }
 }

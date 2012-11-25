@@ -131,8 +131,9 @@ public class AttackHillMission extends BaseMission {
 
         if (currentSafety > staySaftey) {
             // current position is safety enough
-            LOGGER.info("AttackHillMission:current position is safety enough (%s), do not move ant %s towards %s",
-                    currentSafety, ant, enemyHill);
+            LOGGER.info(
+                    "AttackHillMission:current position is safety enough (%s) safteyNextTile (%s), do not move ant %s towards %s. Turns waited %s",
+                    currentSafety, safetyNextTile, ant, enemyHill, ant.getTurnsWaited());
             putMissionOrder(ant);
         } else {
             // rückzuuuuuuuuuuuuuuuuuuug !!

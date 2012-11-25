@@ -10,7 +10,7 @@ public enum LogCategory implements logging.LogCategory {
     EXECUTE_MISSIONS(false),
     EXPLORE(false),
     FOLLOW(false),
-    FOOD(false),
+    FOOD(true),
     ORDERS(false),
     CONCENTRATE(false),
     PERFORMANCE(true),
