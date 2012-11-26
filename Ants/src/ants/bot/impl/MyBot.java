@@ -58,7 +58,7 @@ public class MyBot extends BaseBot {
         LoggingConfig.configure(LogCategory.STATISTICS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.TURN, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.FLOCKING, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.RESOURCE_ALLOCATION, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.RESOURCE_ALLOCATION, LogLevel.DEBUG);
         LoggingConfig.configure(LogCategory.CONCENTRATE, LogLevel.DEBUG);
         LoggingConfig.configure(pathfinder.LogCategory.PATHFINDING, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.CLUSTERING, LogLevel.INFO);
