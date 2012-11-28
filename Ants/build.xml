@@ -49,6 +49,13 @@
 			<param name="map.file" value="test/swarmTest.map" />
 		</antcall>
 	</target>
+	<target name="debugAttackHills" depends="jarAttackHills" description="">
+		<antcall target="debugTest">
+			<param name="bot.name" value="AttackHillsBot" />
+			<param name="turn.limit" value="150" />
+			<param name="map.file" value="test/attackTest.map" />
+		</antcall>
+	</target>
 	<target name="debugFlockBot" depends="jarFlockBot" description="">
 		<antcall target="debugTest">
 			<param name="bot.name" value="FlockBot" />

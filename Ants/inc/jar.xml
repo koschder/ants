@@ -32,6 +32,11 @@
 			<param name="bot.name" value="DefendHillBot" />
 		</antcall>
 	</target>
+	<target name="jarAttackHills">
+			<antcall target="jar">
+				<param name="bot.name" value="AttackHillsBot" />
+			</antcall>
+		</target>
 	<target name="jarSwarmBot">
 		<antcall target="jar">
 			<param name="bot.name" value="SwarmBot" />

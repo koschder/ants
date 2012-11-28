@@ -63,7 +63,7 @@ public abstract class PathMission extends BaseMission {
 
     @Override
     protected String getVisualizeInfos() {
-        return super.getVisualizeInfos() + "<br/>Path: " + getPathString();
+        return super.getVisualizeInfos() + "<br/>";
     }
 
 }
