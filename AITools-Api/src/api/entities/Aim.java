@@ -90,4 +90,18 @@ public enum Aim {
             return Arrays.asList(NORTH, SOUTH);
         }
     }
+
+    public static Aim getOpposite(Aim aim) {
+        switch (aim) {
+        case NORTH:
+            return SOUTH;
+        case SOUTH:
+            return NORTH;
+        case EAST:
+            return WEST;
+        case WEST:
+            return EAST;
+        }
+        return null;
+    }
 }
