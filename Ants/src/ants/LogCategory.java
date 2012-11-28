@@ -6,7 +6,7 @@ public enum LogCategory implements logging.LogCategory {
     COMBAT(false),
     DEFEND(false),
     EXCEPTION(false),
-    EXECUTE_TASKS(false),
+    EXECUTE_TASKS(false), 
     EXECUTE_MISSIONS(false),
     EXPLORE(false),
     FOLLOW(false),
