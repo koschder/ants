@@ -68,12 +68,12 @@ public class MissionTask extends BaseTask {
             if (types.contains(taskType1) && types.contains(taskType2))
                 return types.indexOf(taskType1) - types.indexOf(taskType2);
             // special case handling for types that are not in the list
-            else if (!types.contains(taskType1))
-                return 1;
+            else if (!types.contains(taskType1) && !types.contains(taskType2))
+                return 0;
             else if (!types.contains(taskType2))
                 return -1;
             else
-                return 0;
+                return 1;
         }
 
     }
