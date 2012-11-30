@@ -138,8 +138,12 @@ public abstract class BaseMission implements Mission {
                     return false;
                 }
             }
+            if (Ants.getOrders().isFoodTargeted(t))
+                continue;
+            else
+                return true;
         }
-        return true;
+        return false;
     }
 
     protected Map<Ant, List<Tile>> gatherAnts(Tile tile, int amount, int attractionDistance) {
