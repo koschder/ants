@@ -2,9 +2,7 @@ package ants.missions;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.TreeSet;
 
 import logging.Logger;
@@ -26,7 +24,6 @@ import api.entities.Tile;
 public class GatherFoodMission extends BaseMission {
 
     // Tile food;
-    Map<Tile, Ant> antsOnFood;
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.FOOD);
 
     public GatherFoodMission() {
@@ -59,16 +56,16 @@ public class GatherFoodMission extends BaseMission {
 
     @Override
     public void execute() {
-        antsOnFood = new HashMap<Tile, Ant>();
+        Ants.getOrders().getAntsOnFood().clear();
         LOGGER.debug("execute GatherFoodMission: ants on food are");
         for (Ant a : ants) {
 
             LOGGER.debug("Ant: %s food: %s", a, a.getPathEnd());
-            antsOnFood.put(a.getPathEnd(), a);
+            Ants.getOrders().getAntsOnFood().put(a.getPathEnd(), a);
 
         }
-        // LOGGER.debug("size of entrySet is: %s", antsOnFood.size());
-        // for (Entry<Tile, Ant> entry : antsOnFood.entrySet()) {
+        // LOGGER.debug("size of entrySet is: %s", Ants.getOrders().getAntsOnFood().size());
+        // for (Entry<Tile, Ant> entry : Ants.getOrders().getAntsOnFood().entrySet()) {
         // LOGGER.debug("-Ant: %s food: %s", entry.getValue(), entry.getKey());
         // }
 
@@ -76,8 +73,8 @@ public class GatherFoodMission extends BaseMission {
         gatherAnts();
         moveAnts();
 
-        if (antsOnFood.size() != ants.size())
-            throw new IllegalArgumentException("antsOnFoods is not vaild");
+        if (Ants.getOrders().getAntsOnFood().size() != ants.size())
+            throw new IllegalArgumentException("Ants.getOrders().getAntsOnFood()s is not vaild");
 
     }
 
@@ -100,7 +97,7 @@ public class GatherFoodMission extends BaseMission {
     public void removeAnts(List<Ant> antsToRelease, boolean removeOfKeySet) {
         for (Ant a : antsToRelease) {
             if (removeOfKeySet)
-                antsOnFood.remove(a.getPathEnd());
+                Ants.getOrders().getAntsOnFood().remove(a.getPathEnd());
             a.setPath(null);
         }
         super.removeAnts(antsToRelease);
@@ -134,8 +131,8 @@ public class GatherFoodMission extends BaseMission {
         // Map<Tile, Tile> foodTargets;
         List<Ant> releasedAnts = new ArrayList<Ant>();
         // find close food
-        LOGGER.debug("unemployed ants %s ants on food: %s", Ants.getPopulation().getMyUnemployedAnts().size(),
-                antsOnFood.size());
+        LOGGER.debug("unemployed ants %s ants on food: %s", Ants.getPopulation().getMyUnemployedAnts().size(), Ants
+                .getOrders().getAntsOnFood().size());
         List<Route> foodRoutes = new ArrayList<Route>();
         TreeSet<Tile> sortedFood = new TreeSet<Tile>(Ants.getWorld().getFoodTiles());
         TreeSet<Ant> sortedAnts = new TreeSet<Ant>(Ants.getPopulation().getMyUnemployedAnts());
@@ -145,7 +142,8 @@ public class GatherFoodMission extends BaseMission {
             if (Ants.getWorld().getMyHills().contains(foodLoc))
                 continue;
             // do not consider food, where are already existing routes smaller than 5
-            if (antsOnFood.get(foodLoc) != null && antsOnFood.get(foodLoc).getPath().size() < 5)
+            if (Ants.getOrders().getAntsOnFood().get(foodLoc) != null
+                    && Ants.getOrders().getAntsOnFood().get(foodLoc).getPath().size() < 5)
                 continue;
 
             for (Ant ant : sortedAnts) {
@@ -166,21 +164,21 @@ public class GatherFoodMission extends BaseMission {
             if (path == null)
                 continue;
 
-            if (antsOnFood.containsKey(route.getEnd())) {
+            if (Ants.getOrders().getAntsOnFood().containsKey(route.getEnd())) {
                 // we have already a mission to this food tile, check if this one is smaller.
-                if (path.size() > antsOnFood.get(route.getEnd()).getPath().size())
+                if (path.size() > Ants.getOrders().getAntsOnFood().get(route.getEnd()).getPath().size())
                     continue;
-                Ant a = antsOnFood.remove(route.getEnd());
+                Ant a = Ants.getOrders().getAntsOnFood().remove(route.getEnd());
                 LOGGER.debug("better food route for food %s releaseAnt %s", a.getPathEnd(), a);
                 releasedAnts.add(a);
             }
-            if (antsOnFood.containsValue(route.getAnt())) {
+            if (Ants.getOrders().getAntsOnFood().containsValue(route.getAnt())) {
                 // we have already a route for this ant, check if this one is smaller.
                 Ant a = ants.get(ants.indexOf(route.getAnt()));
                 if (path.size() > a.getPath().size())
                     continue;
                 LOGGER.debug("better food route for ant %s path is %s smaller", a, a.getPath().size() - path.size());
-                antsOnFood.remove(a.getPathEnd());
+                Ants.getOrders().getAntsOnFood().remove(a.getPathEnd());
                 // (release ant not needed, we keep the ant in the mission (only the food target changes)
             }
 
@@ -190,10 +188,10 @@ public class GatherFoodMission extends BaseMission {
                 ants.add(a);
             if (releasedAnts.contains(a))
                 releasedAnts.remove(a);
-            antsOnFood.put(route.getEnd(), a);
+            Ants.getOrders().getAntsOnFood().put(route.getEnd(), a);
 
-            LOGGER.debug("new food route for ants %s food %s path size: %s AntsOnFood %s", a, route.getEnd(),
-                    path.size(), antsOnFood.size());
+            LOGGER.debug("new food route for ants %s food %s path size: %s Ants.getOrders().getAntsOnFood() %s", a,
+                    route.getEnd(), path.size(), Ants.getOrders().getAntsOnFood().size());
             // foodTargets.put(route.getEnd(), route.getStart());
         }
         LOGGER.debug("releasedAnts ants (better routes found) %s", releasedAnts);

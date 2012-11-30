@@ -32,7 +32,7 @@ public class Orders {
     private static final Logger LOGGER_MISSIONS = LoggerFactory.getLogger(LogCategory.EXECUTE_MISSIONS);
     private static final Logger LOGGER_TASKS = LoggerFactory.getLogger(LogCategory.EXECUTE_TASKS);
     private Set<Mission> missions = new HashSet<Mission>();
-
+    private Map<Tile, Ant> antsOnFood = new HashMap<Tile, Ant>();
     private Map<Tile, Move> orders = new HashMap<Tile, Move>();
 
     /**
@@ -212,5 +212,13 @@ public class Orders {
 
     public Set<Mission> getMissions() {
         return missions;
+    }
+
+    public Map<Tile, Ant> getAntsOnFood() {
+        return antsOnFood;
+    }
+
+    public boolean isFoodTargeted(Tile food) {
+        return antsOnFood.containsKey(food);
     }
 }
