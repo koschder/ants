@@ -48,4 +48,10 @@ public class StubInfluenceMap implements InfluenceMap {
         return 0;
     }
 
+    @Override
+    public int getInfluence(Integer player, Tile tile) {
+        // TODO Auto-generated method stub
+        return 0;
+    }
+
 }

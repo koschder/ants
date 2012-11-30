@@ -129,7 +129,7 @@ public class AttackHillMission extends BaseMission {
             missionState = State.AttackEnemyHill;
             return;
         }
-        List<Ant> enemy = a.getEnemiesInRadius(15, false);
+        List<Ant> enemy = a.getEnemiesInRadius(Ants.getWorld().getAttackRadius2() + 4, false);
         List<Ant> friend = getMyAttackersInRadius(a, 5);
         LOGGER.info("AttackHillMission: determineState for hill %s friends %s enemy near Ant %s", enemy.size(),
                 friend.size(), a);

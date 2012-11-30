@@ -1,8 +1,5 @@
 package ants.tasks;
 
-import logging.Logger;
-import logging.LoggerFactory;
-import ants.LogCategory;
 import ants.missions.GatherFoodMission;
 import ants.state.Ants;
 
@@ -13,8 +10,6 @@ import ants.state.Ants;
  * 
  */
 public class GatherFoodTask extends BaseTask {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.FOOD);
 
     @Override
     public void doPerform() {

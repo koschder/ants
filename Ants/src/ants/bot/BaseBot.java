@@ -16,6 +16,7 @@ import ants.state.Ants;
 import ants.state.World;
 import ants.tasks.Task;
 import ants.util.LiveInfo;
+import api.entities.Tile;
 
 /**
  * Bot implementation. This was originally based on the sample bot from the starter package, but the implementation is
@@ -47,7 +48,7 @@ public abstract class BaseBot extends Bot {
             }
         }
         LOGGER.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
-        
+
         LOGGER.info("enemy_hills visible: %s", Ants.getWorld().getEnemyHills(), Ants.getWorld());
         calculateInfluence();
         initTasks();
@@ -99,7 +100,30 @@ public abstract class BaseBot extends Bot {
         } else {
             Ants.getInfluenceMap().update(world);
         }
+        // printDebugInfluenceMap();
         LOGGER_PERFORMANCE.info("Calculating Influence took %s ms", System.currentTimeMillis() - start);
+    }
+
+    @SuppressWarnings("unused")
+    private void printDebugInfluenceMap() {
+        DefaultInfluenceMap dim = (DefaultInfluenceMap) Ants.getInfluenceMap();
+        dim.printDebugMap(Ants.getAnts().getTurn(), Ants.getWorld(), getMyAntsTiles(), getEnemyAntsTiles());
+    }
+
+    private List<Tile> getMyAntsTiles() {
+        List<Tile> tiles = new ArrayList<Tile>();
+        for (Ant ant : Ants.getPopulation().getMyAnts()) {
+            tiles.add(ant.getTile());
+        }
+        return tiles;
+    }
+
+    private List<Tile> getEnemyAntsTiles() {
+        List<Tile> tiles = new ArrayList<Tile>();
+        for (Ant ant : Ants.getPopulation().getEnemyAnts()) {
+            tiles.add(ant.getTile());
+        }
+        return tiles;
     }
 
     /**

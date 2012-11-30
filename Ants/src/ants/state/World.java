@@ -365,9 +365,13 @@ public class World extends AbstractWraparoundMap implements UnitMap {
     @Override
     public Collection<Unit> getUnits(int player) {
         Set<Unit> playersAnts = new HashSet<Unit>();
-        for (Unit unit : Ants.getPopulation().getEnemyAnts()) {
-            if (unit.getPlayer() == player)
-                playersAnts.add(unit);
+        if (player == 0) {
+            playersAnts.addAll(Ants.getPopulation().getMyAnts());
+        } else {
+            for (Unit unit : Ants.getPopulation().getEnemyAnts()) {
+                if (unit.getPlayer() == player)
+                    playersAnts.add(unit);
+            }
         }
         return playersAnts;
     }

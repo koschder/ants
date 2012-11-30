@@ -14,4 +14,6 @@ public interface InfluenceMap {
     public abstract void update(UnitMap map);
 
     public int getPathCosts(SearchTarget dest);
+
+    public int getInfluence(Integer player, Tile tile);
 }
