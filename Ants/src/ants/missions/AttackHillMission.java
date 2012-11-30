@@ -31,8 +31,8 @@ public class AttackHillMission extends BaseMission {
      * the enemy hill.
      */
     Tile enemyHill;
-    int attackSaftey = -20;
-    int staySaftey = -40;
+    int attackSaftey = 30;
+    int staySaftey = -50;
     int gatherAntsRadius = 20;
     State missionState = State.AttackEnemyHill;
 
