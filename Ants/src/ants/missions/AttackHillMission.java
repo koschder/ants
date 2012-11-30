@@ -204,6 +204,12 @@ public class AttackHillMission extends BaseMission {
 
     private boolean move(Ant ant) {
 
+        if (missionState == State.ControlEnemyHill && Ants.getWorld().manhattanDistance(ant.getTile(), enemyHill) == 1) {
+            LOGGER.info("Ant %s is controlling ControlEnemyHill, keep position.", ant);
+            putMissionOrder(ant);
+            return true;
+        }
+
         if (!recalculatePath(ant)) {
             LOGGER.info("Ant has a invalid path, and cannot be recalculated", ant);
             return false;

@@ -190,7 +190,7 @@ public class DefendHillMission extends BaseMission {
 
     private void gatherAnts(int amount) {
         Map<Ant, List<Tile>> antsNearBy = gatherAnts(hill, amount, 10);
-        LOGGER.debug("gatherAnts: New ants %s for misson: %s", antsNearBy.keySet(), this);
+        LOGGER.debug("gatherAnts: New ants %s for misson: %s (needed: %s)", antsNearBy.keySet(), this, amount);
         for (Ant a : antsNearBy.keySet()) {
             ants.add(a);
         }
@@ -226,6 +226,11 @@ public class DefendHillMission extends BaseMission {
     @Override
     public Type getTaskType() {
         return Type.DEFEND_HILL;
+    }
+
+    @Override
+    public String toString() {
+        return "DefendMission " + getHill();
     }
 
 }

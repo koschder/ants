@@ -149,7 +149,7 @@ public abstract class BaseMission implements Mission {
             if (!Ants.getPopulation().isNumberOfAntsAvailable(getTaskType(), 1))
                 break;
 
-            if (ants.size() >= amount)
+            if (antsNearBy.size() >= amount)
                 break;
 
             if (Ants.getWorld().manhattanDistance(a.getTile(), tile) > attractionDistance) {
