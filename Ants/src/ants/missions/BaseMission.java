@@ -138,7 +138,7 @@ public abstract class BaseMission implements Mission {
                     return false;
                 }
             }
-            if (Ants.getOrders().isFoodTargeted(t))
+            if (Ants.getOrders().isFoodTargeted(t) || !Ants.getWorld().isEasilyReachable(ant.getTile(), t))
                 continue;
             else
                 return true;

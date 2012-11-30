@@ -138,8 +138,8 @@ public class Orders {
             throw new IllegalStateException("addMission must only be called from BaseTask");
         }
         if (newMission.isValid() != null) {
-            LOGGER_MISSIONS.debug("Mission %s is not valid because %s, not adding it.", newMission,
-                    newMission.isValid());
+            LOGGER_MISSIONS.debug("Mission %s (Ants: %s) is not valid because %s, not adding it.", newMission
+                    .getClass().getSimpleName(), newMission.getAnts(), newMission.isValid());
             removeAnts(newMission);
             return;
         }
