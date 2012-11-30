@@ -1,5 +1,6 @@
 package ants.state;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -142,16 +143,14 @@ public class Orders {
             removeAnts(newMission);
             return;
         }
-        Set<Mission> tempMissions = new HashSet<Mission>();
-        tempMissions.add(newMission);
-        executeMissions(tempMissions);
+        executeMissions(Arrays.asList(newMission));
         if (!newMission.isAbandoned() && missions.add(newMission)) {
             LOGGER_MISSIONS.debug("New mission created: %s, Ants: %s", newMission.getClass().getSimpleName(),
                     newMission.getAnts());
         }
     }
 
-    public void executeMissions(Set<Mission> missions) {
+    public void executeMissions(List<Mission> missions) {
         for (Iterator<Mission> it = missions.iterator(); it.hasNext();) {
             Mission mission = it.next();
             // LOGGER.debug("mission: %s", mission);

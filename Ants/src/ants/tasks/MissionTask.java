@@ -1,10 +1,11 @@
 package ants.tasks;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Set;
-import java.util.TreeSet;
 
 import logging.Logger;
 import logging.LoggerFactory;
@@ -34,7 +35,7 @@ public class MissionTask extends BaseTask {
     @Override
     public void doPerform() {
         // declare explicit sortOrder for gathering mission types
-        Set<Mission> missions = sort(Ants.getOrders().getMissions(), Type.DEFEND_HILL, Type.GATHER_FOOD,
+        List<Mission> missions = sort(Ants.getOrders().getMissions(), Type.DEFEND_HILL, Type.GATHER_FOOD,
                 Type.ATTACK_HILLS);
         LOGGER.debug("Current mission count: %s", missions.size());
         LOGGER.debug("Missions: %s", missions);
@@ -47,9 +48,9 @@ public class MissionTask extends BaseTask {
         return Type.MISSION;
     }
 
-    private TreeSet<Mission> sort(Set<Mission> missions, Type... typesInOrder) {
-        TreeSet<Mission> sortedMissions = new TreeSet<Mission>(new MissionComparator(typesInOrder));
-        sortedMissions.addAll(missions);
+    private List<Mission> sort(Set<Mission> missions, Type... typesInOrder) {
+        ArrayList<Mission> sortedMissions = new ArrayList<Mission>(missions);
+        Collections.sort(sortedMissions, new MissionComparator(typesInOrder));
         return sortedMissions;
     }
 

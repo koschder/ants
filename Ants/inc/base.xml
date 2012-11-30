@@ -11,6 +11,7 @@
 			<arg line="--food symmetric" />
 			<arg line="--player_seed 7" />
 			<arg line="--verbose" />
+			<arg line="--nolaunch" />
 			<arg line="-e" />
 		</exec>
 	</target>
