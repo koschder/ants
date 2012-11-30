@@ -157,7 +157,8 @@ public class Orders {
             // LOGGER.debug("mission: %s", mission);
             if (mission.isComplete()) {
                 removeAnts(mission);
-                it.remove();
+                getMissions().remove(mission);
+                // it.remove();
                 LOGGER_MISSIONS.debug("Mission removed, its complete: %s", mission);
                 continue;
             }
@@ -174,7 +175,8 @@ public class Orders {
             if (valid != null) {
                 LOGGER_MISSIONS.debug("Mission %s not valid because: %s. Mission is removed.", mission, valid);
                 removeAnts(mission);
-                it.remove();
+                getMissions().remove(mission);
+                // it.remove();
             }
         }
     }

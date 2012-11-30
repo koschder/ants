@@ -219,9 +219,11 @@ public class AttackHillMission extends BaseMission {
         int safetyNextTile = (Ants.getInfluenceMap().getSafety(nextStep));
         boolean safeToMoveForward = safetyNextTile > attackSaftey || missionState != State.AttackEnemyHill;
         if (safeToMoveForward) {
-            LOGGER.info("AttackHillMission: ant %s forward move to EnemyHill is %s (safety: %s)", ant, enemyHill,
-                    safetyNextTile);
+            LOGGER.info("AttackHillMission: ant %s trying forward move to EnemyHill is %s (safety: %s)", ant,
+                    enemyHill, safetyNextTile);
             if (putAttackOrder(ant, nextStep)) {
+                LOGGER.info("AttackHillMission: ant %s performing forward move to EnemyHill is %s (safety: %s)", ant,
+                        enemyHill, safetyNextTile);
                 ant.getPath().remove(0);
             } else {
                 if (blockedByAntInMission(ant))
@@ -246,13 +248,13 @@ public class AttackHillMission extends BaseMission {
                     currentSafety, safetyNextTile, ant, enemyHill, ant.getTurnsWaited());
             putMissionOrder(ant);
         } else {
-            // rückzuuuuuuuuuuuuuuuuuuug !!
+            // rï¿½ckzuuuuuuuuuuuuuuuuuuug !!
             List<SearchTarget> list = Ants.getWorld().getSuccessor(ant.getTile(), true);
 
             boolean orderIssued = false;
             // go to the saftiest tile
             do {
-                // LOGGER.info("rückzuuuuuuuuuuuuuuuuuuug list size" + list.size());
+                // LOGGER.info("rï¿½ckzuuuuuuuuuuuuuuuuuuug list size" + list.size());
                 if (list.size() > 0) {
                     int bestSafety = -99999;
                     SearchTarget safteyTile = null;

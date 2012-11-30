@@ -1,6 +1,10 @@
 package ants.tasks;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
+import java.util.TreeSet;
 
 import logging.Logger;
 import logging.LoggerFactory;
@@ -29,9 +33,11 @@ public class MissionTask extends BaseTask {
 
     @Override
     public void doPerform() {
-
-        Set<Mission> missions = Ants.getOrders().getMissions();
+        // declare explicit sortOrder for gathering mission types
+        Set<Mission> missions = sort(Ants.getOrders().getMissions(), Type.DEFEND_HILL, Type.GATHER_FOOD,
+                Type.ATTACK_HILLS);
         LOGGER.debug("Current mission count: %s", missions.size());
+        LOGGER.debug("Missions: %s", missions);
         Ants.getOrders().executeMissions(missions);
 
     }
@@ -39,5 +45,35 @@ public class MissionTask extends BaseTask {
     @Override
     public Type getType() {
         return Type.MISSION;
+    }
+
+    private TreeSet<Mission> sort(Set<Mission> missions, Type... typesInOrder) {
+        TreeSet<Mission> sortedMissions = new TreeSet<Mission>(new MissionComparator(typesInOrder));
+        sortedMissions.addAll(missions);
+        return sortedMissions;
+    }
+
+    private class MissionComparator implements Comparator<Mission> {
+        private List<Type> types;
+
+        public MissionComparator(Type... typesInOrder) {
+            types = Arrays.asList(typesInOrder);
+        }
+
+        @Override
+        public int compare(Mission o1, Mission o2) {
+            final Type taskType1 = o1.getTaskType();
+            final Type taskType2 = o2.getTaskType();
+            if (types.contains(taskType1) && types.contains(taskType2))
+                return types.indexOf(taskType1) - types.indexOf(taskType2);
+            // special case handling for types that are not in the list
+            else if (!types.contains(taskType1))
+                return 1;
+            else if (!types.contains(taskType2))
+                return -1;
+            else
+                return 0;
+        }
+
     }
 }
