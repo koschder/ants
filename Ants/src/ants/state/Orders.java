@@ -138,8 +138,8 @@ public class Orders {
             throw new IllegalStateException("addMission must only be called from BaseTask");
         }
         if (newMission.isValid() != null) {
-            LOGGER_MISSIONS.debug("Mission %s is not valid because %s, not adding it.", newMission,
-                    newMission.isValid());
+            LOGGER_MISSIONS.debug("Mission %s (Ants: %s) is not valid because %s, not adding it.", newMission
+                    .getClass().getSimpleName(), newMission.getAnts(), newMission.isValid());
             removeAnts(newMission);
             return;
         }
@@ -158,7 +158,8 @@ public class Orders {
                 removeAnts(mission);
                 getMissions().remove(mission);
                 // it.remove();
-                LOGGER_MISSIONS.debug("Mission removed, its complete: %s", mission);
+                LOGGER_MISSIONS.debug("Mission removed, its complete: %s (Ants: %s)", mission.getClass()
+                        .getSimpleName(), mission.getAnts());
                 continue;
             }
             String valid = mission.isValid();
@@ -172,7 +173,8 @@ public class Orders {
                 }
             }
             if (valid != null) {
-                LOGGER_MISSIONS.debug("Mission %s not valid because: %s. Mission is removed.", mission, valid);
+                LOGGER_MISSIONS.debug("Mission %s (Ants: %s) not valid because: %s. Mission is removed.", mission
+                        .getClass().getSimpleName(), mission.getAnts(), valid);
                 removeAnts(mission);
                 getMissions().remove(mission);
                 // it.remove();

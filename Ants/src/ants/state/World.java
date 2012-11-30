@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.management.RuntimeErrorException;
 
+import pathfinder.PathFinder.Strategy;
 import pathfinder.entities.Node;
 import ants.entities.Ant;
 import ants.entities.Ilk;
@@ -421,5 +422,9 @@ public class World extends AbstractWraparoundMap implements UnitMap {
 
     public boolean isInAttackZone(Tile myTile, Tile enemyTile) {
         return getSquaredDistance(myTile, enemyTile) <= getAttackRadius2();
+    }
+
+    public boolean isEasilyReachable(Tile from, Tile to) {
+        return Ants.getPathFinder().search(Strategy.Simple, from, to) != null;
     }
 }

@@ -18,9 +18,9 @@ public class ResourceAllocator extends BaseResourceAllocator {
         // init the allocation with evenly distributed default values
         Ants.getPopulation().setMaxResources(Type.GATHER_FOOD, 25);
         Ants.getPopulation().setMaxResources(Type.ATTACK_HILLS, 20);
-        Ants.getPopulation().setMaxResources(Type.COMBAT, 20);
+        Ants.getPopulation().setMaxResources(Type.COMBAT, 10);
         Ants.getPopulation().setMaxResources(Type.EXPLORE, 25);
-        Ants.getPopulation().setMaxResources(Type.DEFEND_HILL, 10);
+        Ants.getPopulation().setMaxResources(Type.DEFEND_HILL, 20);
 
         rules.add(new PopulationSizeRule());
         rules.add(new RelativeInfluenceRule(influence));
