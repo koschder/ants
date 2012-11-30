@@ -190,7 +190,7 @@ public class DefendHillMission extends BaseMission {
 
     private void gatherAnts(int amount) {
         Map<Ant, List<Tile>> antsNearBy = gatherAnts(hill, amount, 10);
-        LOGGER.debug("gatherAnts: New ants %s for misson: %s (needed: %s)", antsNearBy.keySet(), this, amount);
+        LOGGER.debug("gatherAnts: New ants %s for mission: %s (needed: %s)", antsNearBy.keySet(), this, amount);
         for (Ant a : antsNearBy.keySet()) {
             ants.add(a);
         }

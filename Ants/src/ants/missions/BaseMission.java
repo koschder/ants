@@ -147,13 +147,15 @@ public abstract class BaseMission implements Mission {
     }
 
     protected Map<Ant, List<Tile>> gatherAnts(Tile tile, int amount, int attractionDistance) {
-        Map<Ant, List<Tile>> antsNearBy = new HashMap<Ant, List<Tile>>();
+        Map<Ant, List<Tile>> newAnts = new HashMap<Ant, List<Tile>>();
         for (Ant a : Ants.getPopulation().getMyUnemployedAnts()) {
             // if no additional ant is available, don't try to gather any more
-            if (!Ants.getPopulation().isNumberOfAntsAvailable(getTaskType(), 1))
+            if (!Ants.getPopulation().isNumberOfAntsAvailable(getTaskType(), 1)) {
+                LOGGER.info("no ant ressources avaiable for point %s", tile);
                 break;
+            }
 
-            if (antsNearBy.size() >= amount)
+            if (newAnts.size() >= amount)
                 break;
 
             if (Ants.getWorld().manhattanDistance(a.getTile(), tile) > attractionDistance) {
@@ -163,9 +165,9 @@ public abstract class BaseMission implements Mission {
             List<Tile> p = Ants.getPathFinder().search(Strategy.AStar, a.getTile(), tile);
             if (p == null)
                 continue;
-            antsNearBy.put(a, p);
+            newAnts.put(a, p);
         }
-        return antsNearBy;
+        return newAnts;
     }
 
     /***
