@@ -18,7 +18,7 @@ public class MapOutput {
     private TileMap map;
 
     private int clusterSize = -1;
-
+    private String relativeBasePath = "./../../res/";
     private String comment = "";
 
     private List<MapObject> objects = new ArrayList<MapObject>();
@@ -28,7 +28,10 @@ public class MapOutput {
             throw new IllegalArgumentException("map must be defined");
 
         StringBuilder sb = new StringBuilder();
-        sb.append("<html>\n<head>\n<link rel=\"stylesheet\" href=\"./../../res/css/cssUnitTest.css\" />\n</head>\n<body>\n<table>\n");
+        if (fileName.contains("/"))
+            relativeBasePath = "./../../../res/";
+        sb.append("<html>\n<head>\n<link rel=\"stylesheet\" href=\"" + relativeBasePath
+                + "css/cssUnitTest.css\" />\n</head>\n<body>\n<table>\n");
         sb.append("<h1>" + fileName + "</h1>");
         for (int i = 0; i < map.getRows(); i++) {
 
@@ -66,11 +69,16 @@ public class MapOutput {
             logdir.mkdirs();
             Writer output = null;
             String text = sb.toString();
+            if (fileName.contains("/")) {
+                File dir = new File(logdir, fileName.split("/")[0]);
+                dir.mkdirs();
+                // fileName = fileName.split("/")[1];
+            }
             File file = new File(logdir, fileName + ".html");
             output = new BufferedWriter(new FileWriter(file));
             output.write(text);
             output.close();
-            System.out.println("Log file saved: " + file);
+            // System.out.println("Log file saved: " + file);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -86,7 +94,7 @@ public class MapOutput {
         for (MapObject o : objects) {
             if (o.getTiles().contains(t)) {
                 int color = objects.indexOf(o);
-                String dotPath = "./../../res/dot" + color + ".jpg";
+                String dotPath = relativeBasePath + "dot" + color + ".jpg";
                 sb.append(String.format("<img src=\"%s\" class=\"poi\">", dotPath));
             }
 
@@ -99,7 +107,7 @@ public class MapOutput {
         sb.append("<h2>Object History</h2>");
         for (MapObject o : objects) {
             int color = objects.indexOf(o);
-            String dotPath = "./../../res/dot" + color + ".jpg";
+            String dotPath = relativeBasePath + "dot" + color + ".jpg";
             sb.append(String.format("<br/><img src=\"%s\" class=\"poi\"> %s", dotPath, o.getDesc()));
         }
         return sb.toString();

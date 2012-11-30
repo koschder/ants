@@ -1,6 +1,7 @@
 package influence;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -9,6 +10,8 @@ import api.entities.Unit;
 import api.map.UnitMap;
 import api.pathfinder.SearchTarget;
 import api.strategy.InfluenceMap;
+import api.test.MapOutput;
+import api.test.PixelDecorator;
 
 public class DefaultInfluenceMap implements InfluenceMap {
     private static final int MAX_INFLUENCE = 100;
@@ -123,4 +126,32 @@ public class DefaultInfluenceMap implements InfluenceMap {
         }
         return costs;
     }
+
+    @Override
+    public int getInfluence(Integer player, Tile tile) {
+        final int[][] playerInfluence = influence.get(player);
+        if (playerInfluence == null)
+            return 0;
+        return playerInfluence[tile.getRow()][tile.getCol()];
+    }
+
+    public void printDebugMap(int turn, UnitMap world, List<Tile> myUnits, List<Tile> enemyUnits) {
+        MapOutput output = new MapOutput();
+        output.setMap(world);
+        output.addObject(myUnits, "myAnts");
+        output.addObject(enemyUnits, "enemyAnts");
+
+        output.saveHtmlMap("influence/" + turn, new PixelDecorator() {
+            @Override
+            public String getLabel(Tile tile) {
+                StringBuilder label = new StringBuilder();
+                for (int player : influence.keySet()) {
+                    label.append(getInfluence(player, tile));
+                    label.append("/");
+                }
+                return label.toString();
+            }
+        });
+    }
+
 }

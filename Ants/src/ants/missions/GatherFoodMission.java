@@ -157,13 +157,12 @@ public class GatherFoodMission extends BaseMission {
         }
         Collections.sort(foodRoutes);
         for (Route route : foodRoutes) {
-            boolean add = false;
 
             // ant already used.
             // if (!foodTargets.containsKey(route.getEnd()) && !foodTargets.containsValue(route.getStart())) {
             List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.Simple, route.getStart(), route.getEnd());
             if (path == null)
-                path = Ants.getPathFinder().search(PathFinder.Strategy.AStar, route.getStart(), route.getEnd());
+                path = Ants.getPathFinder().search(PathFinder.Strategy.AStar, route.getStart(), route.getEnd(), 20);
             if (path == null)
                 continue;
 
