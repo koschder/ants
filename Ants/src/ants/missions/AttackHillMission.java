@@ -204,18 +204,29 @@ public class AttackHillMission extends BaseMission {
 
     private boolean move(Ant ant) {
 
-        if (missionState == State.ControlEnemyHill && Ants.getWorld().manhattanDistance(ant.getTile(), enemyHill) == 1) {
-            LOGGER.info("Ant %s is controlling ControlEnemyHill, keep position.", ant);
-            putMissionOrder(ant);
-            return true;
+        if (missionState == State.ControlEnemyHill) {
+            if (Ants.getWorld().manhattanDistance(ant.getTile(), enemyHill) == 2
+                    && Ants.getWorld().getDirections(ant.getTile(), enemyHill).size() == 2) {
+                LOGGER.info("Ant %s is controlling ControlEnemyHill, keep position.", ant);
+                putMissionOrder(ant);
+                return true;
+            } else if (Ants.getWorld().manhattanDistance(ant.getTile(), enemyHill) == 1) {
+                if (moveToSide(ant))
+                    return true;
+            }
         }
 
         if (!recalculatePath(ant)) {
             LOGGER.info("Ant has a invalid path, and cannot be recalculated", ant);
             return false;
         }
+        if (!hasAntsOnAttackLine(ant) && hasAntBehind(ant)) {
+            // TODO adjust path?
+            if (moveToSide(ant)) {
+                return true;
+            }
 
-        if (!hasAntsOnAttackLine(ant) && hasFollowingAnts(ant)) {
+        } else if (!hasAntsOnAttackLine(ant) && hasFollowingAnts(ant)) {
             LOGGER.info("Ant %s is wating on other ants witch are following behind.", ant);
             putMissionOrder(ant);
             return true;
@@ -251,43 +262,63 @@ public class AttackHillMission extends BaseMission {
             // current position is safety enough
             LOGGER.info(
                     "AttackHillMission:current position is safety enough (%s) safteyNextTile (%s), keep ant %s on position. Turns waited %s",
-                    currentSafety, safetyNextTile, ant, enemyHill, ant.getTurnsWaited());
+                    currentSafety, safetyNextTile, ant, ant.getTurnsWaited());
             putMissionOrder(ant);
         } else {
-            // r�ckzuuuuuuuuuuuuuuuuuuug !!
-            List<SearchTarget> list = Ants.getWorld().getSuccessor(ant.getTile(), true);
-
-            boolean orderIssued = false;
-            // go to the saftiest tile
-            do {
-                // LOGGER.info("r�ckzuuuuuuuuuuuuuuuuuuug list size" + list.size());
-                if (list.size() > 0) {
-                    int bestSafety = -99999;
-                    SearchTarget safteyTile = null;
-                    for (SearchTarget t : list) {
-                        int safety = (Ants.getInfluenceMap().getSafety(ant.getTile()));
-                        // LOGGER.info("compare safety %s vs %s", safety, bestSafety);
-                        if (safety > bestSafety) {
-                            safteyTile = t.getTargetTile();
-                            bestSafety = safety;
-                        }
-                    }
-                    list.remove(safteyTile);
-                    if (putAttackOrder(ant, safteyTile.getTargetTile())) {
-                        ant.getPath().add(0, ant.getTile());
-                        orderIssued = true;
-                        LOGGER.info(
-                                "AttackHillMission:dangerous here! move ant %s backwards to %s. (Safety is: %s) enemyHill %s",
-                                ant, safteyTile.getTargetTile(), bestSafety, enemyHill);
-                    }
-                } else {
-                    putMissionOrder(ant);
-                    orderIssued = true;
-                }
-
-            } while (!orderIssued);
+            moveToSafetiestTile(ant);
         }
         return true;
+    }
+
+    private void moveToSafetiestTile(Ant ant) {
+        List<SearchTarget> list = Ants.getWorld().getSuccessor(ant.getTile(), true);
+
+        boolean orderIssued = false;
+        // go to the saftiest tile
+        do {
+            if (list.size() > 0) {
+                int bestSafety = -99999;
+                SearchTarget safteyTile = null;
+                for (SearchTarget t : list) {
+                    int safety = (Ants.getInfluenceMap().getSafety(ant.getTile()));
+                    // LOGGER.info("compare safety %s vs %s", safety, bestSafety);
+                    if (safety > bestSafety) {
+                        safteyTile = t.getTargetTile();
+                        bestSafety = safety;
+                    }
+                }
+                list.remove(safteyTile);
+                if (putAttackOrder(ant, safteyTile.getTargetTile())) {
+                    ant.getPath().add(0, ant.getTile());
+                    orderIssued = true;
+                    LOGGER.info(
+                            "AttackHillMission:dangerous here! move ant %s backwards to %s. (Safety is: %s) enemyHill %s",
+                            ant, safteyTile.getTargetTile(), bestSafety, enemyHill);
+                }
+            } else {
+                putMissionOrder(ant);
+                orderIssued = true;
+            }
+
+        } while (!orderIssued);
+    }
+
+    private boolean moveToSide(Ant ant) {
+        List<Aim> aims = Aim.getOrthogonalAims((Ants.getWorld().getDirections(ant.getTile(), enemyHill).get(0)));
+        for (Aim a : aims) {
+            if (putMissionOrder(ant, a)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private boolean hasAntBehind(Ant ant) {
+        Tile tile = ant.getPath().get(0);
+        Aim currentAim = Ants.getWorld().getDirections(ant.getTile(), tile).get(0);
+        Aim behind = Aim.getOpposite(currentAim);
+
+        return ants.contains(Ants.getWorld().getTile(ant.getTile(), behind));
     }
 
     private boolean putAttackOrder(Ant ant, Tile nextStep) {

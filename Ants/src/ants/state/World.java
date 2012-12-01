@@ -312,7 +312,8 @@ public class World extends AbstractWraparoundMap implements UnitMap {
     }
 
     private boolean isPassable(Tile tile, boolean nextMove) {
-        return !getMyHills().contains(tile) && isPassable(tile) && !isOccupiedForNextMove(tile, nextMove);
+        return !getMyHills().contains(tile) && !getEnemyHills().contains(tile) && isPassable(tile)
+                && !isOccupiedForNextMove(tile, nextMove);
     }
 
     @Override

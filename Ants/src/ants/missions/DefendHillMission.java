@@ -26,14 +26,14 @@ public class DefendHillMission extends BaseMission {
 
     private Tile hill = null;
     private Set<Tile> hillReachable = new HashSet<Tile>();
-    private int nearBy = 8;
+    private int controlArea = Math.max((int) Math.sqrt(Ants.getWorld().getViewRadius2() + 2), 8);
     private int guardHillTurn = 30;
     private int antsMoreThanEnemy = 2;
 
     public DefendHillMission(Tile hill) {
         this.hill = hill;
 
-        hillReachable = Ants.getWorld().getAreaFlooded(hill, nearBy);
+        hillReachable = Ants.getWorld().getAreaFlooded(hill, controlArea);
         LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill, "DefendArea: %s", hillReachable);
     }
 
@@ -49,7 +49,7 @@ public class DefendHillMission extends BaseMission {
         String attInfo = "";
 
         if (enemyNearBy.size() == 0) {
-            attInfo = "no attackers near by -+ " + nearBy + " tiles";
+            attInfo = "no attackers near by -+ " + controlArea + " tiles";
             LOGGER.debug(attInfo);
             // return;
         }
@@ -58,14 +58,17 @@ public class DefendHillMission extends BaseMission {
         for (Entry<Aim, List<Tile>> a : attackers.entrySet())
             attInfo += "<br/> " + a;
 
-        boolean startDefend = (ants.size() == 0 && Ants.getAnts().getTurn() > guardHillTurn);
-        if (enemyNearBy.size() > ants.size() || startDefend) {
-            // need ants to defend
-            int amount = startDefend ? 1 : (enemyNearBy.size() - ants.size() + antsMoreThanEnemy);
-            gatherAnts(amount);
-        } else if (enemyNearBy.size() > ants.size()) { // need more ants to defend
-            releaseAnts(ants.size() - (enemyNearBy.size() + antsMoreThanEnemy)); // two for reserve
+        int gatherAntsAmount = 0;
+        if (attackers.size() == 0 && Ants.getAnts().getTurn() > guardHillTurn) {
+            // if there are no attackers but late in game (guardHillTurn) we gahter 1 ant for protection
+            gatherAntsAmount = 1 - ants.size();
+        } else if (attackers.size() > 0) {
+            gatherAntsAmount = enemyNearBy.size() - ants.size() + antsMoreThanEnemy;
         }
+        if (gatherAntsAmount > 0)
+            gatherAnts(gatherAntsAmount);
+        else
+            releaseAnts(Math.abs(gatherAntsAmount));
 
         positioning(attackers);
 
@@ -189,7 +192,7 @@ public class DefendHillMission extends BaseMission {
     }
 
     private void gatherAnts(int amount) {
-        Map<Ant, List<Tile>> antsNearBy = gatherAnts(hill, amount, 10);
+        Map<Ant, List<Tile>> antsNearBy = gatherAnts(hill, amount, controlArea);
         LOGGER.debug("gatherAnts: New ants %s for mission: %s (needed: %s)", antsNearBy.keySet(), this, amount);
         for (Ant a : antsNearBy.keySet()) {
             ants.add(a);
