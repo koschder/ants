@@ -106,6 +106,15 @@ public class Population {
         return enemyAnts;
     }
 
+    public Ant getMyAntAt(Tile tile, boolean unemployedOnly) {
+        Collection<Ant> ants = unemployedOnly ? getMyUnemployedAnts() : myAnts;
+        for (Ant ant : ants) {
+            if (ant.getTile().equals(tile))
+                return ant;
+        }
+        return null;
+    }
+
     /**
      * 
      * @return all our ants that have no orders yet.
@@ -115,7 +124,6 @@ public class Population {
             myUnemployedAnts = new HashSet<Ant>(myAnts);
         for (Iterator<Ant> it = employedAnts.iterator(); it.hasNext();) {
             Ant ant = it.next();
-            myUnemployedAnts.remove(ant);
             if (!myUnemployedAnts.remove(ant)) {
                 LOGGER.debug("Could not remove ant %s Tile: %s of unemployedAnts : %s employedAnts %s, myAnts %s", ant,
                         ant.getTile(), myUnemployedAnts, employedAnts, myAnts);

@@ -14,6 +14,7 @@ public class UnitTestMap extends AbstractWraparoundMap {
 
     int water = 0;
     int land = 1;
+    int friendlyUnit = 2;
 
     public UnitTestMap(int x, String sMap) {
         map = new int[sMap.length() / x][x];
@@ -21,7 +22,22 @@ public class UnitTestMap extends AbstractWraparoundMap {
         for (int i = 0; i < sMap.length(); i++) {
             int row = i / x;
             int col = i % x;
-            map[row][col] = sMap.charAt(i) == 'w' || sMap.charAt(i) == '%' ? water : land;
+            initCell(row, col, sMap.charAt(i));
+        }
+    }
+
+    private void initCell(int row, int col, char type) {
+        switch (type) {
+        case 'w':
+        case '%':
+            map[row][col] = water;
+            break;
+        case 'x':
+            map[row][col] = friendlyUnit;
+            break;
+        default:
+            map[row][col] = land;
+            break;
         }
     }
 
@@ -32,8 +48,7 @@ public class UnitTestMap extends AbstractWraparoundMap {
 
         for (int i = 0; i < sMapRows.size(); i++) {
             for (int j = 0; j < mapCols; j++) {
-                char charIt = sMapRows.get(i).charAt(j);
-                map[i][j] = charIt == 'w' || charIt == '%' ? water : land;
+                initCell(i, j, sMapRows.get(i).charAt(j));
             }
         }
     }
@@ -54,14 +69,18 @@ public class UnitTestMap extends AbstractWraparoundMap {
     }
 
     public boolean isPassable(Tile tile) {
-        return map[tile.getTargetTile().getRow()][tile.getTargetTile().getCol()] == land;
+        return map[tile.getRow()][tile.getCol()] != water;
+    }
+
+    public boolean isFriendlyUnit(Tile tile) {
+        return map[tile.getRow()][tile.getCol()] == friendlyUnit;
     }
 
     public boolean isVisible(Tile tile) {
         return true;
     }
 
-    public List<SearchTarget> getSuccessor(SearchTarget target, boolean isNextMove) {
+    public List<SearchTarget> getSuccessors(SearchTarget target, boolean isNextMove) {
         Tile state = target.getTargetTile();
         List<SearchTarget> list = new ArrayList<SearchTarget>();
         if (isPassable(getTile(state, Aim.NORTH)))

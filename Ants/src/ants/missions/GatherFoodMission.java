@@ -11,6 +11,7 @@ import pathfinder.PathFinder;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Route;
+import ants.search.BreadthFirstSearch;
 import ants.state.Ants;
 import ants.tasks.Task.Type;
 import api.entities.Tile;
@@ -135,23 +136,25 @@ public class GatherFoodMission extends BaseMission {
                 .getOrders().getAntsOnFood().size());
         List<Route> foodRoutes = new ArrayList<Route>();
         TreeSet<Tile> sortedFood = new TreeSet<Tile>(Ants.getWorld().getFoodTiles());
-        TreeSet<Ant> sortedAnts = new TreeSet<Ant>(Ants.getPopulation().getMyUnemployedAnts());
-
-        for (Tile foodLoc : sortedFood) {
+        for (Tile foodTile : sortedFood) {
             // fix if food spawns on hill
-            if (Ants.getWorld().getMyHills().contains(foodLoc))
+            if (Ants.getWorld().getMyHills().contains(foodTile))
                 continue;
             // do not consider food, where are already existing routes smaller than 5
-            if (Ants.getOrders().getAntsOnFood().get(foodLoc) != null
-                    && Ants.getOrders().getAntsOnFood().get(foodLoc).getPath().size() < 5)
+            if (Ants.getOrders().getAntsOnFood().get(foodTile) != null
+                    && Ants.getOrders().getAntsOnFood().get(foodTile).getPath().size() < 5)
                 continue;
 
-            for (Ant ant : sortedAnts) {
-                final Tile antLoc = ant.getTile();
-                int distance = Ants.getWorld().getSquaredDistance(antLoc, foodLoc);
-                Route route = new Route(antLoc, foodLoc, distance, ant);
-                foodRoutes.add(route);
+            Ant nearestUnemployed = new BreadthFirstSearch().findMyClosestUnemployedAnt(foodTile, 500);
+            if (nearestUnemployed == null) {
+                LOGGER.debug("Could not find ant for food at %s", foodTile);
+                continue;
             }
+            LOGGER.debug("Found ant %s to gather food at  %s", nearestUnemployed, foodTile);
+            final Tile antLoc = nearestUnemployed.getTile();
+            int distance = Ants.getWorld().getSquaredDistance(antLoc, foodTile);
+            Route route = new Route(antLoc, foodTile, distance, nearestUnemployed);
+            foodRoutes.add(route);
         }
         Collections.sort(foodRoutes);
         for (Route route : foodRoutes) {

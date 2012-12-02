@@ -104,7 +104,7 @@ public class Orders {
         // the field is occupied at the moment, but the ant is moving away with the next move.
         // if (Ants.getPopulation().getEmployedAnts().contains(nextLocation)) {
         sLog += "check if ant will go away neighbrs are: ";
-        List<SearchTarget> neighbours = Ants.getWorld().getSuccessor(nextLocation, false);
+        List<SearchTarget> neighbours = Ants.getWorld().getSuccessors(nextLocation, false);
         sLog += neighbours;
         for (SearchTarget neighbour : neighbours) {
             if (orders.containsKey(neighbour.getTargetTile())) {

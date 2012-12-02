@@ -297,22 +297,30 @@ public class World extends AbstractWraparoundMap implements UnitMap {
                 setIlk(new Tile(r, c), Ilk.WATER);
     }
 
-    public List<SearchTarget> getSuccessor(SearchTarget target, boolean isNextMove) {
+    public List<SearchTarget> getSuccessors(SearchTarget target, boolean isNextMove) {
+        return getSuccessorsInternal(target, isNextMove, false);
+    }
+
+    public List<SearchTarget> getSuccessors(SearchTarget target, boolean isNextMove, boolean includeOwnHills) {
+        return getSuccessorsInternal(target, isNextMove, includeOwnHills);
+    }
+
+    private List<SearchTarget> getSuccessorsInternal(SearchTarget target, boolean isNextMove, boolean includeOwnHills) {
         Tile state = target.getTargetTile();
         List<SearchTarget> list = new ArrayList<SearchTarget>();
-        if (isPassable(getTile(state, Aim.NORTH), isNextMove))
+        if (isPassable(getTile(state, Aim.NORTH), isNextMove, includeOwnHills))
             list.add(getTile(state, Aim.NORTH));
-        if (isPassable(getTile(state, Aim.SOUTH), isNextMove))
+        if (isPassable(getTile(state, Aim.SOUTH), isNextMove, includeOwnHills))
             list.add(getTile(state, Aim.SOUTH));
-        if (isPassable(getTile(state, Aim.WEST), isNextMove))
+        if (isPassable(getTile(state, Aim.WEST), isNextMove, includeOwnHills))
             list.add(getTile(state, Aim.WEST));
-        if (isPassable(getTile(state, Aim.EAST), isNextMove))
+        if (isPassable(getTile(state, Aim.EAST), isNextMove, includeOwnHills))
             list.add(getTile(state, Aim.EAST));
         return list;
     }
 
-    private boolean isPassable(Tile tile, boolean nextMove) {
-        return !getMyHills().contains(tile) && !getEnemyHills().contains(tile) && isPassable(tile)
+    private boolean isPassable(Tile tile, boolean nextMove, boolean includeOwnHills) {
+        return (includeOwnHills || !getMyHills().contains(tile)) && !getEnemyHills().contains(tile) && isPassable(tile)
                 && !isOccupiedForNextMove(tile, nextMove);
     }
 
@@ -402,7 +410,7 @@ public class World extends AbstractWraparoundMap implements UnitMap {
             Node node = frontier.poll();
             floodedTiles.add(node.getState().getTargetTile());
 
-            List<SearchTarget> tiles = getSuccessor(node.getState().getTargetTile(), false);
+            List<SearchTarget> tiles = getSuccessors(node.getState().getTargetTile(), false);
             int cost = node.getActualCost() + 1;
             for (SearchTarget child : tiles) {
 
@@ -428,4 +436,5 @@ public class World extends AbstractWraparoundMap implements UnitMap {
     public boolean isEasilyReachable(Tile from, Tile to) {
         return Ants.getPathFinder().search(Strategy.Simple, from, to) != null;
     }
+
 }

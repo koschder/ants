@@ -102,7 +102,7 @@ public class UnitTestInfluenceMap extends AbstractWraparoundMap implements UnitM
         return true;
     }
 
-    public List<SearchTarget> getSuccessor(SearchTarget target, boolean isNextMove) {
+    public List<SearchTarget> getSuccessors(SearchTarget target, boolean isNextMove) {
         Tile state = target.getTargetTile();
         List<SearchTarget> list = new ArrayList<SearchTarget>();
         if (isPassable(getTile(state, Aim.NORTH)))

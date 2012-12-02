@@ -349,7 +349,7 @@ public class Clustering extends AbstractWraparoundMap {
     }
 
     @Override
-    public List<SearchTarget> getSuccessor(SearchTarget currentEdge, boolean isNextMove) {
+    public List<SearchTarget> getSuccessors(SearchTarget currentEdge, boolean isNextMove) {
         if (!(currentEdge instanceof DirectedEdge)) {
             throw new IllegalArgumentException("SearchTarget must be of the type DirectedEdge");
         }
