@@ -9,6 +9,14 @@ import api.pathfinder.SearchableMap;
 
 public abstract class AbstractWraparoundMap implements SearchableMap {
 
+    protected int rows;
+    protected int cols;
+
+    public AbstractWraparoundMap(int rows, int cols) {
+        this.rows = rows;
+        this.cols = cols;
+    }
+
     @Override
     public WorldType getWorldType() {
         return WorldType.Globe;
@@ -139,6 +147,25 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
             r = getRows() - r;
 
         return Math.sqrt(r * r + c * c);
+    }
+
+    /**
+     * Calculates distance between two locations on the game map.
+     * 
+     * @param t1
+     *            one location on the game map
+     * @param t2
+     *            another location on the game map
+     * 
+     * @return distance between <code>t1</code> and <code>t2</code>
+     */
+    @Override
+    public int getSquaredDistance(Tile t1, Tile t2) {
+        int rowDelta = Math.abs(t1.getRow() - t2.getRow());
+        int colDelta = Math.abs(t1.getCol() - t2.getCol());
+        rowDelta = Math.min(rowDelta, rows - rowDelta);
+        colDelta = Math.min(colDelta, cols - colDelta);
+        return rowDelta * rowDelta + colDelta * colDelta;
     }
 
 }

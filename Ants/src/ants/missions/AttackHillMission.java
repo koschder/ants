@@ -271,7 +271,7 @@ public class AttackHillMission extends BaseMission {
     }
 
     private void moveToSafetiestTile(Ant ant) {
-        List<SearchTarget> list = Ants.getWorld().getSuccessors(ant.getTile(), true);
+        List<SearchTarget> list = Ants.getWorld().getSuccessorsForPathfinding(ant.getTile(), true);
 
         boolean orderIssued = false;
         // go to the saftiest tile

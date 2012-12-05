@@ -1,14 +1,11 @@
-package unittest.ants.search;
-
-import java.util.List;
+package search.unittest;
 
 import org.junit.Test;
 
 import pathfinder.unittest.UnitTestMap;
-import ants.search.BreadthFirstSearch;
-import ants.search.BreadthFirstSearch.GoalTest;
+import search.BreadthFirstSearch;
+import search.BreadthFirstSearch.GoalTest;
 import api.entities.Tile;
-import api.pathfinder.SearchTarget;
 
 import static org.junit.Assert.*;
 
@@ -28,12 +25,7 @@ public class BreadthFirstSearchTest {
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         final UnitTestMap map = new UnitTestMap(37, sMap);
-        BreadthFirstSearch bfs = new BreadthFirstSearch() {
-            @Override
-            protected List<SearchTarget> getSuccessors(Tile next) {
-                return map.getSuccessors(next, false);
-            }
-        };
+        BreadthFirstSearch bfs = new BreadthFirstSearch(map);
         Tile closestTile = bfs.findSingleClosestTile(new Tile(6, 15), 100, new GoalTest() {
 
             @Override

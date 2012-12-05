@@ -42,7 +42,6 @@ public class MyBot extends BaseBot {
 
     private static void initLogging() {
         LoggingConfig.configure(LogCategory.ATTACK_HILLS, LogLevel.DEBUG);
-        LoggingConfig.configure(LogCategory.BFS, LogLevel.DEBUG);
         LoggingConfig.configure(LogCategory.CLEAR_HILL, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.COMBAT, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.DEFEND, LogLevel.DEBUG);
@@ -63,6 +62,7 @@ public class MyBot extends BaseBot {
         LoggingConfig.configure(LogCategory.RESOURCE_ALLOCATION, LogLevel.DEBUG);
         LoggingConfig.configure(LogCategory.CONCENTRATE, LogLevel.DEBUG);
         LoggingConfig.configure(pathfinder.LogCategory.PATHFINDING, LogLevel.INFO);
+        LoggingConfig.configure(pathfinder.LogCategory.BFS, LogLevel.DEBUG);
         LoggingConfig.configure(pathfinder.LogCategory.CLUSTERING, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.CLUSTERED_ASTAR, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.HPASTAR, LogLevel.INFO);

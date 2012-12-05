@@ -100,7 +100,7 @@ public abstract class BaseBot extends Bot {
         } else {
             Ants.getInfluenceMap().update(world);
         }
-        // printDebugInfluenceMap();
+        printDebugInfluenceMap();
         LOGGER_PERFORMANCE.info("Calculating Influence took %s ms", System.currentTimeMillis() - start);
     }
 

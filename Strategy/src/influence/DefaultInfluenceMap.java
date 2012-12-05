@@ -5,10 +5,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import search.BreadthFirstSearch;
 import api.entities.Tile;
 import api.entities.Unit;
 import api.map.UnitMap;
 import api.pathfinder.SearchTarget;
+import api.pathfinder.SearchableUnitMap;
 import api.strategy.InfluenceMap;
 import api.test.MapOutput;
 import api.test.PixelDecorator;
@@ -54,7 +56,7 @@ public class DefaultInfluenceMap implements InfluenceMap {
         return totalInfluence;
     }
 
-    public DefaultInfluenceMap(UnitMap map, int viewRadius2, int attackRadius2) {
+    public DefaultInfluenceMap(SearchableUnitMap map, int viewRadius2, int attackRadius2) {
         this.viewRadius2 = viewRadius2;
         this.attackRadius2 = attackRadius2;
         influence = new HashMap<Integer, int[][]>();
@@ -65,31 +67,40 @@ public class DefaultInfluenceMap implements InfluenceMap {
         }
     }
 
-    private void updateInfluence(UnitMap map, Integer player, double decay) {
+    private void updateInfluence(SearchableUnitMap map, Integer player, double decay) {
         decayInfluence(player, decay);
+        BreadthFirstSearch bfs = new BreadthFirstSearch(map);
         for (Unit unit : map.getUnits(player)) {
             final Tile tile = unit.getTile();
             updateTileInfluence(tile, player, MAX_INFLUENCE, decay);
-            int mx = (int) Math.sqrt(this.viewRadius2);
-            for (int row = -mx; row <= mx; ++row) {
-                for (int col = -mx; col <= mx; ++col) {
-                    int d = row * row + col * col;
-                    if (d <= this.viewRadius2) {
-                        Tile tRadius = map.getTile(tile, new Tile(row, col));
-                        if (tRadius.equals(tile) || !map.isPassable(tRadius))
-                            continue;
-                        if (d <= this.attackRadius2)
-                            updateTileInfluence(tRadius, player, 50, decay);
-                        else
-                            updateTileInfluence(tRadius, player, 10, decay);
-                    }
-                }
+            List<Tile> tilesInAttackRadius = bfs.floodFill(tile, attackRadius2);
+            List<Tile> tilesInViewRadius = bfs.floodFill(tile, viewRadius2);
+            for (Tile t : tilesInViewRadius) {
+                if (tilesInAttackRadius.contains(t))
+                    updateTileInfluence(t, player, 50, decay);
+                else
+                    updateTileInfluence(t, player, 10, decay);
             }
+            // int mx = (int) Math.sqrt(this.viewRadius2);
+            // for (int row = -mx; row <= mx; ++row) {
+            // for (int col = -mx; col <= mx; ++col) {
+            // int d = row * row + col * col;
+            // if (d <= this.viewRadius2) {
+            // Tile tRadius = map.getTile(tile, new Tile(row, col));
+            // if (tRadius.equals(tile) || !map.isPassable(tRadius))
+            // continue;
+            // if (d <= this.attackRadius2)
+            // updateTileInfluence(tRadius, player, 50, decay);
+            // else
+            // updateTileInfluence(tRadius, player, 10, decay);
+            // }
+            // }
+            // }
         }
     }
 
     @Override
-    public void update(UnitMap map) {
+    public void update(SearchableUnitMap map) {
         for (Integer player : map.getPlayers()) {
             if (!influence.containsKey(player))
                 influence.put(player, new int[map.getRows()][map.getCols()]);

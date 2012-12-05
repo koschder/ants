@@ -1,6 +1,7 @@
 package pathfinder;
 
 public enum LogCategory implements logging.LogCategory {
+    BFS(true),
     CLUSTERING(false),
     PATHFINDING(false),
     CLUSTERED_ASTAR(false),

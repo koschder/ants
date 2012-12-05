@@ -11,10 +11,10 @@ import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
 import api.map.AbstractWraparoundMap;
-import api.map.UnitMap;
 import api.pathfinder.SearchTarget;
+import api.pathfinder.SearchableUnitMap;
 
-public class UnitTestInfluenceMap extends AbstractWraparoundMap implements UnitMap {
+public class UnitTestInfluenceMap extends AbstractWraparoundMap implements SearchableUnitMap {
 
     int[][] map;
     Map<Integer, List<Unit>> players = new HashMap<Integer, List<Unit>>();
@@ -22,7 +22,7 @@ public class UnitTestInfluenceMap extends AbstractWraparoundMap implements UnitM
     int land = 1;
 
     public UnitTestInfluenceMap(int x, String sMap) {
-
+        super(x, x);
         List<String> sMapRows = new ArrayList<String>();
 
         while (sMap.length() >= x) {
@@ -33,6 +33,7 @@ public class UnitTestInfluenceMap extends AbstractWraparoundMap implements UnitM
     }
 
     public UnitTestInfluenceMap(List<String> sMapRows) {
+        super(sMapRows.size(), sMapRows.size());
         init(sMapRows);
     }
 
@@ -80,6 +81,7 @@ public class UnitTestInfluenceMap extends AbstractWraparoundMap implements UnitM
     }
 
     public UnitTestInfluenceMap(int x, int y) {
+        super(x, y);
         map = new int[x][y];
         for (int i = 0; i < x; i++)
             for (int j = 0; j < y; j++)
@@ -102,7 +104,7 @@ public class UnitTestInfluenceMap extends AbstractWraparoundMap implements UnitM
         return true;
     }
 
-    public List<SearchTarget> getSuccessors(SearchTarget target, boolean isNextMove) {
+    public List<SearchTarget> getSuccessorsForPathfinding(SearchTarget target, boolean isNextMove) {
         Tile state = target.getTargetTile();
         List<SearchTarget> list = new ArrayList<SearchTarget>();
         if (isPassable(getTile(state, Aim.NORTH)))
@@ -115,6 +117,11 @@ public class UnitTestInfluenceMap extends AbstractWraparoundMap implements UnitM
             list.add(getTile(state, Aim.EAST));
 
         return list;
+    }
+
+    @Override
+    public List<SearchTarget> getSuccessorsForSearch(SearchTarget currentEdge, boolean isNextMove) {
+        return getSuccessorsForPathfinding(currentEdge, isNextMove);
     }
 
     @Override

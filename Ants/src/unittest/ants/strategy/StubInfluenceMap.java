@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import api.entities.Tile;
-import api.map.UnitMap;
 import api.pathfinder.SearchTarget;
+import api.pathfinder.SearchableUnitMap;
 import api.strategy.InfluenceMap;
 
 public class StubInfluenceMap implements InfluenceMap {
@@ -29,7 +29,7 @@ public class StubInfluenceMap implements InfluenceMap {
     }
 
     @Override
-    public void update(UnitMap map) {
+    public void update(SearchableUnitMap map) {
         // TODO Auto-generated method stub
 
     }

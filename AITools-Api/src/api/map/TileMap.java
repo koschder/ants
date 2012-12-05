@@ -43,4 +43,6 @@ public interface TileMap {
      */
     public int manhattanDistance(Tile tStart, Tile tEnd);
 
+    public abstract int getSquaredDistance(Tile t1, Tile t2);
+
 }

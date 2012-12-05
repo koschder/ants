@@ -40,6 +40,7 @@ public class Clustering extends AbstractWraparoundMap {
      * @param mapWidth
      */
     public Clustering(SimplePathFinder s, int clusterSize, int mapHeight, int mapWidth) {
+        super(mapHeight, mapWidth);
         this.pathFinder = s;
         this.clusterType = ClusterType.Corner;
         init(clusterSize, mapHeight, mapWidth);
@@ -349,7 +350,7 @@ public class Clustering extends AbstractWraparoundMap {
     }
 
     @Override
-    public List<SearchTarget> getSuccessors(SearchTarget currentEdge, boolean isNextMove) {
+    public List<SearchTarget> getSuccessorsForPathfinding(SearchTarget currentEdge, boolean isNextMove) {
         if (!(currentEdge instanceof DirectedEdge)) {
             throw new IllegalArgumentException("SearchTarget must be of the type DirectedEdge");
         }
@@ -357,6 +358,11 @@ public class Clustering extends AbstractWraparoundMap {
         DirectedEdge e = (DirectedEdge) currentEdge;
 
         return e.getCluster().getEdgeWithNeighbourCluster(e);
+    }
+
+    @Override
+    public List<SearchTarget> getSuccessorsForSearch(SearchTarget currentEdge, boolean isNextMove) {
+        return getSuccessorsForPathfinding(currentEdge, isNextMove);
     }
 
     @Override

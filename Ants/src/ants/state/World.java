@@ -19,8 +19,8 @@ import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
 import api.map.AbstractWraparoundMap;
-import api.map.UnitMap;
 import api.pathfinder.SearchTarget;
+import api.pathfinder.SearchableUnitMap;
 
 /**
  * This class holds state about the game world.
@@ -28,11 +28,7 @@ import api.pathfinder.SearchTarget;
  * @author kases1,kustl1
  * 
  */
-public class World extends AbstractWraparoundMap implements UnitMap {
-
-    protected int rows;
-
-    protected int cols;
+public class World extends AbstractWraparoundMap implements SearchableUnitMap {
 
     private int viewRadius2;
 
@@ -60,11 +56,11 @@ public class World extends AbstractWraparoundMap implements UnitMap {
      * default constructor for testing only
      */
     public World() {
+        super(-1, -1);
     }
 
     public World(int rows, int cols, int viewRadius2, int attackRadius2, int spawnRadius2) {
-        this.rows = rows;
-        this.cols = cols;
+        super(rows, cols);
         this.viewRadius2 = viewRadius2;
         this.attackRadius2 = attackRadius2;
         this.spawnRadius2 = spawnRadius2;
@@ -239,24 +235,6 @@ public class World extends AbstractWraparoundMap implements UnitMap {
     }
 
     /**
-     * Calculates distance between two locations on the game map.
-     * 
-     * @param t1
-     *            one location on the game map
-     * @param t2
-     *            another location on the game map
-     * 
-     * @return distance between <code>t1</code> and <code>t2</code>
-     */
-    public int getSquaredDistance(Tile t1, Tile t2) {
-        int rowDelta = Math.abs(t1.getRow() - t2.getRow());
-        int colDelta = Math.abs(t1.getCol() - t2.getCol());
-        rowDelta = Math.min(rowDelta, rows - rowDelta);
-        colDelta = Math.min(colDelta, cols - colDelta);
-        return rowDelta * rowDelta + colDelta * colDelta;
-    }
-
-    /**
      * Updates game state information about hills locations.
      * 
      * @param owner
@@ -297,12 +275,14 @@ public class World extends AbstractWraparoundMap implements UnitMap {
                 setIlk(new Tile(r, c), Ilk.WATER);
     }
 
-    public List<SearchTarget> getSuccessors(SearchTarget target, boolean isNextMove) {
+    @Override
+    public List<SearchTarget> getSuccessorsForPathfinding(SearchTarget target, boolean isNextMove) {
         return getSuccessorsInternal(target, isNextMove, false);
     }
 
-    public List<SearchTarget> getSuccessors(SearchTarget target, boolean isNextMove, boolean includeOwnHills) {
-        return getSuccessorsInternal(target, isNextMove, includeOwnHills);
+    @Override
+    public List<SearchTarget> getSuccessorsForSearch(SearchTarget target, boolean isNextMove) {
+        return getSuccessorsInternal(target, isNextMove, true);
     }
 
     private List<SearchTarget> getSuccessorsInternal(SearchTarget target, boolean isNextMove, boolean includeOwnHills) {
@@ -410,7 +390,7 @@ public class World extends AbstractWraparoundMap implements UnitMap {
             Node node = frontier.poll();
             floodedTiles.add(node.getState().getTargetTile());
 
-            List<SearchTarget> tiles = getSuccessors(node.getState().getTargetTile(), false);
+            List<SearchTarget> tiles = getSuccessorsForPathfinding(node.getState().getTargetTile(), false);
             int cost = node.getActualCost() + 1;
             for (SearchTarget child : tiles) {
 

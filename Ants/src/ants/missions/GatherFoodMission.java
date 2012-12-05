@@ -11,7 +11,7 @@ import pathfinder.PathFinder;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Route;
-import ants.search.BreadthFirstSearch;
+import ants.search.AntsBreadthFirstSearch;
 import ants.state.Ants;
 import ants.tasks.Task.Type;
 import api.entities.Tile;
@@ -145,7 +145,7 @@ public class GatherFoodMission extends BaseMission {
                     && Ants.getOrders().getAntsOnFood().get(foodTile).getPath().size() < 5)
                 continue;
 
-            Ant nearestUnemployed = new BreadthFirstSearch().findMyClosestUnemployedAnt(foodTile, 500);
+            Ant nearestUnemployed = new AntsBreadthFirstSearch(Ants.getWorld()).findMyClosestUnemployedAnt(foodTile, 500);
             if (nearestUnemployed == null) {
                 LOGGER.debug("Could not find ant for food at %s", foodTile);
                 continue;

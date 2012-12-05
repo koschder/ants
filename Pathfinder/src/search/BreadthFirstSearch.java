@@ -1,4 +1,4 @@
-package ants.search;
+package search;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -6,48 +6,37 @@ import java.util.List;
 
 import logging.Logger;
 import logging.LoggerFactory;
-import ants.LogCategory;
-import ants.entities.Ant;
-import ants.state.Ants;
 import api.entities.Tile;
 import api.pathfinder.SearchTarget;
+import api.pathfinder.SearchableMap;
 
 public class BreadthFirstSearch {
+    private static final Logger LOGGER = LoggerFactory.getLogger(pathfinder.LogCategory.BFS);
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.BFS);
+    private SearchableMap map;
 
-    public Ant findMyClosestUnemployedAnt(Tile tile, int maxNodes) {
-        Tile found = findSingleClosestTile(tile, maxNodes, new GoalTest() {
-            @Override
-            public boolean isGoal(Tile tile) {
-                final boolean hasFriendlyAnt = Ants.getWorld().getIlk(tile).hasFriendlyAnt();
-                if (hasFriendlyAnt) {
-                    if (Ants.getPopulation().getMyAntAt(tile, true) != null)
-                        return true;
-                    else {
-                        LOGGER.debug("%s has friendly ant, but is not unemployed", tile);
-                    }
-                }
-                return false;
-            }
-        });
-        if (found != null)
-            return Ants.getPopulation().getMyAntAt(found, true);
-        return null;
+    public BreadthFirstSearch(SearchableMap map) {
+        this.map = map;
+    }
+
+    public List<Tile> floodFill(Tile center, int maxDistance2) {
+        return findClosestTiles(center, Integer.MAX_VALUE, Integer.MAX_VALUE, maxDistance2, new AlwaysTrueGoalTest());
     }
 
     public Tile findSingleClosestTile(Tile origin, int maxNodes, GoalTest goalTest) {
-        List<Tile> found = findClosestTiles(origin, 1, maxNodes, goalTest);
+        List<Tile> found = findClosestTiles(origin, 1, maxNodes, Integer.MAX_VALUE, goalTest);
         return found.isEmpty() ? null : found.get(0);
     }
 
-    public List<Tile> findClosestTiles(Tile origin, int numberOfHits, int maxNodes, GoalTest goalTest) {
+    public List<Tile> findClosestTiles(Tile origin, int numberOfHits, int maxNodes, int maxDistance2, GoalTest goalTest) {
         LinkedList<Tile> frontier = new LinkedList<Tile>();
         frontier.add(origin);
         List<Tile> explored = new ArrayList<Tile>();
         List<Tile> found = new ArrayList<Tile>();
         while (!frontier.isEmpty() && explored.size() < maxNodes && found.size() < numberOfHits) {
             Tile next = frontier.poll();
+            if (maxDistance2 < Integer.MAX_VALUE && maxDistance2 < map.getSquaredDistance(origin, next))
+                break;
             explored.add(next);
             List<SearchTarget> tiles = getSuccessors(next);
             for (SearchTarget child : tiles) {
@@ -66,12 +55,18 @@ public class BreadthFirstSearch {
         return found;
     }
 
-    protected List<SearchTarget> getSuccessors(Tile next) {
-        return Ants.getWorld().getSuccessors(next, false, true);
+    private List<SearchTarget> getSuccessors(Tile next) {
+        return map.getSuccessorsForSearch(next, false);
     }
 
     public static interface GoalTest {
         boolean isGoal(Tile tile);
     }
 
+    public static class AlwaysTrueGoalTest implements GoalTest {
+        @Override
+        public boolean isGoal(Tile tile) {
+            return true;
+        }
+    }
 }

@@ -17,6 +17,7 @@ public class UnitTestMap extends AbstractWraparoundMap {
     int friendlyUnit = 2;
 
     public UnitTestMap(int x, String sMap) {
+        super(x, x);
         map = new int[sMap.length() / x][x];
 
         for (int i = 0; i < sMap.length(); i++) {
@@ -42,6 +43,7 @@ public class UnitTestMap extends AbstractWraparoundMap {
     }
 
     public UnitTestMap(List<String> sMapRows) {
+        super(sMapRows.size(), sMapRows.size());
         int mapCols = sMapRows.get(0).length();
 
         map = new int[sMapRows.size()][mapCols];
@@ -54,6 +56,7 @@ public class UnitTestMap extends AbstractWraparoundMap {
     }
 
     public UnitTestMap(int x, int y) {
+        super(x, y);
         map = new int[x][y];
         for (int i = 0; i < x; i++)
             for (int j = 0; j < y; j++)
@@ -80,7 +83,7 @@ public class UnitTestMap extends AbstractWraparoundMap {
         return true;
     }
 
-    public List<SearchTarget> getSuccessors(SearchTarget target, boolean isNextMove) {
+    public List<SearchTarget> getSuccessorsForPathfinding(SearchTarget target, boolean isNextMove) {
         Tile state = target.getTargetTile();
         List<SearchTarget> list = new ArrayList<SearchTarget>();
         if (isPassable(getTile(state, Aim.NORTH)))
@@ -93,6 +96,11 @@ public class UnitTestMap extends AbstractWraparoundMap {
             list.add(getTile(state, Aim.EAST));
 
         return list;
+    }
+
+    @Override
+    public List<SearchTarget> getSuccessorsForSearch(SearchTarget currentEdge, boolean isNextMove) {
+        return getSuccessorsForPathfinding(currentEdge, isNextMove);
     }
 
 }
