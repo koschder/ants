@@ -300,7 +300,7 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
     }
 
     private boolean isPassable(Tile tile, boolean nextMove, boolean includeOwnHills) {
-        return (includeOwnHills || !getMyHills().contains(tile)) && !getEnemyHills().contains(tile) && isPassable(tile)
+        return (includeOwnHills || !getMyHills().contains(tile)) && isPassable(tile)
                 && !isOccupiedForNextMove(tile, nextMove);
     }
 
@@ -309,9 +309,9 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
         return Ants.getWorld().getIlk(tile.getTargetTile()).isPassable();
     }
 
-    private boolean isOccupiedForNextMove(Tile t, boolean bParentNode) {
-        if (!bParentNode) // we are on the 2nd level of the search tree
-            return Ants.getOrders().getOrders().containsValue(t);
+    private boolean isOccupiedForNextMove(Tile t, boolean nextMove) {
+        if (nextMove) // we are on the 2nd level of the search tree
+            return Ants.getOrders().getOrders().containsValue(t) || getEnemyHills().contains(t);
         return false;
     }
 
