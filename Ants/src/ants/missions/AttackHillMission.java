@@ -135,6 +135,7 @@ public class AttackHillMission extends BaseMission {
                 friend.size(), a);
         if (enemy.size() == 0 && friend.size() > 0) {
             missionState = State.ControlEnemyHill;
+            Ants.getOrders().issueOrder(new Ant(enemyHill, 0), null, "DefendHillMission");
             return;
         }
         if (enemy.size() < friend.size() + 2) {
