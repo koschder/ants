@@ -26,7 +26,7 @@ public class DefendHillMission extends BaseMission {
 
     private Tile hill = null;
     private Set<Tile> hillReachable = new HashSet<Tile>();
-    private int controlArea = Math.max((int) Math.sqrt(Ants.getWorld().getViewRadius2() + 2), 8);
+    private int controlArea = Math.max((int) Math.sqrt(Ants.getWorld().getViewRadius2() + 4), 8);
     private int guardHillTurn = 30;
     private int antsMoreThanEnemy = 2;
 
@@ -78,6 +78,7 @@ public class DefendHillMission extends BaseMission {
 
     private void positioning(Map<Aim, List<Tile>> attackers) {
         List<Ant> antsWithOrder = new ArrayList<Ant>();
+
         boolean orderDone = true;
         while (orderDone) {
             int antsWithOrderCount = antsWithOrder.size();
@@ -86,11 +87,11 @@ public class DefendHillMission extends BaseMission {
                 for (Ant a : ants) {
                     if (antsWithOrder.contains(a))
                         continue;
-                    if (putOrder(a, attackDirection.getKey())) {
+                    if (putDefendOrder(a, attackDirection.getKey())) {
                         antsInDirection++;
                         antsWithOrder.add(a);
                     }
-                    if (antsInDirection == attackDirection.getValue().size())
+                    if (antsInDirection - 1 == attackDirection.getValue().size())
                         break;
                 }
             }
@@ -110,7 +111,7 @@ public class DefendHillMission extends BaseMission {
 
     }
 
-    private boolean putOrder(Ant ant, Aim aim) {
+    private boolean putDefendOrder(Ant ant, Aim aim) {
         // ant is to far away from hill call it back
         if (Ants.getWorld().manhattanDistance(ant.getTile(), hill) > 4) {
             for (Aim ai : Ants.getWorld().getDirections(ant.getTile(), hill)) {

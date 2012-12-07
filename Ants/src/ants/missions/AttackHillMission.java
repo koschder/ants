@@ -48,13 +48,35 @@ public class AttackHillMission extends BaseMission {
     }
 
     /***
-     * mission is as long vaild, as long the enemy hill exists.
+     * mission is as long valid, as long the enemy hill exists.
      */
     @Override
     protected String isSpecificMissionValid() {
         if (!Ants.getWorld().getEnemyHills().contains(enemyHill))
             return "Enemy hill " + enemyHill + " is no longer there";
         return null;
+    }
+
+    private boolean otherEnemyHillNear(Tile hill, Ant a) {
+        for (Mission m : Ants.getOrders().getMissions()) {
+            if (!(m instanceof AttackHillMission))
+                continue;
+            AttackHillMission ahm = (AttackHillMission) m;
+
+            if (ahm.isControlled() || ahm.equals(this))
+                continue;
+
+            if (Ants.getWorld().manhattanDistance(enemyHill, a.getTile()) < 8) {
+                if (Ants.getPathFinder().search(Strategy.AStar, a.getTile(), enemyHill, 10) != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean isControlled() {
+        return missionState == State.ControlEnemyHill;
     }
 
     @Override
@@ -88,19 +110,25 @@ public class AttackHillMission extends BaseMission {
     }
 
     private void releaseAnts() {
-        if (missionState != State.ControlEnemyHill)
-            return;
+        List<Ant> antsToRelease = new ArrayList<Ant>();
 
-        List<Ant> controlAnts = getAntsAroundHill();
-        if (controlAnts.size() >= 2) {
-            controlAnts = controlAnts.subList(0, 2);
+        if (missionState == State.ControlEnemyHill) {
 
-            List<Ant> antsToRelease = new ArrayList<Ant>();
+            List<Ant> controlAnts = getAntsAroundHill();
+            if (controlAnts.size() >= 2) {
+                controlAnts = controlAnts.subList(0, 2);
+
+                for (Ant a : ants) {
+                    if (!controlAnts.contains(a))
+                        antsToRelease.add(a);
+                }
+                removeAnts(antsToRelease);
+            }
+        } else {
             for (Ant a : ants) {
-                if (!controlAnts.contains(a))
+                if (otherEnemyHillNear(enemyHill, a))
                     antsToRelease.add(a);
             }
-            removeAnts(antsToRelease);
         }
     }
 
