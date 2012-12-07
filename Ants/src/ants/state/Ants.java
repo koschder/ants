@@ -3,7 +3,6 @@ package ants.state;
 import pathfinder.PathFinder;
 import pathfinder.SimplePathFinder;
 import pathfinder.entities.Clustering;
-import ants.entities.Ant;
 import ants.entities.Ilk;
 import api.entities.Tile;
 import api.strategy.InfluenceMap;
@@ -119,44 +118,6 @@ public enum Ants {
      */
     public void update(Ilk ilk, Tile tile) {
         update(ilk, tile, Integer.MIN_VALUE);
-    }
-
-    /**
-     * Pre-calculates the distances between the ants (both friendly and enemy ants)
-     */
-    public void calculateDistances() {
-        for (Ant enemy : getPopulation().getEnemyAnts()) {
-            for (Ant myAnt : getPopulation().getMyAnts()) {
-                addEnemyPair(enemy, myAnt);
-            }
-            for (Ant other : getPopulation().getEnemyAnts()) {
-                if (other.equals(enemy))
-                    continue;
-                if (other.getPlayer() == enemy.getPlayer())
-                    addFriendPair(enemy, other);
-                else
-                    addEnemyPair(enemy, other);
-            }
-        }
-        for (Ant ant : getPopulation().getMyAnts()) {
-            for (Ant friend : getPopulation().getMyAnts()) {
-                if (friend.equals(ant))
-                    continue;
-                addFriendPair(ant, friend);
-            }
-        }
-    }
-
-    private void addEnemyPair(Ant anta, Ant antb) {
-        final int distance = getWorld().getSquaredDistance(antb.getTile(), anta.getTile());
-        anta.addEnemy(antb, distance);
-        antb.addEnemy(anta, distance);
-    }
-
-    private void addFriendPair(Ant anta, Ant antb) {
-        final int distance = getWorld().getSquaredDistance(antb.getTile(), anta.getTile());
-        anta.addFriend(antb, distance);
-        antb.addFriend(anta, distance);
     }
 
     /**

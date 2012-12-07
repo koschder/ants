@@ -91,7 +91,7 @@ public abstract class BaseMission implements Mission {
      */
     protected String checkEnviroment(Ant ant, boolean checkFood, boolean checkEnemyAnts, boolean checkEnemyHill) {
         final boolean foodNearby = checkFood && isFoodNearby(ant);
-        final boolean enemyIsMayor = checkEnemyAnts && isEnemyMajor(ant);
+        final boolean enemyIsMayor = false;// checkEnemyAnts && isEnemyMajor(ant);
         boolean enemyHillNearby = checkEnemyHill && enemyHillNearby(ant);
 
         return (foodNearby ? "food," : "") + (enemyIsMayor ? "enemy," : "") + (enemyHillNearby ? "enemyHill," : "");
@@ -111,10 +111,10 @@ public abstract class BaseMission implements Mission {
         return false;
     }
 
-    private boolean isEnemyMajor(Ant ant) {
-        List<Ant> enemy = ant.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), false);
-        return enemy.size() > getAnts().size();
-    }
+    // private boolean isEnemyMajor(Ant ant) {
+    // List<Ant> enemy = ant.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), false);
+    // return enemy.size() > getAnts().size();
+    // }
 
     /**
      * food is nearby but not on the path

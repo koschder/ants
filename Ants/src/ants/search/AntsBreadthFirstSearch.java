@@ -1,5 +1,7 @@
 package ants.search;
 
+import java.util.List;
+
 import search.BreadthFirstSearch;
 import ants.entities.Ant;
 import ants.state.Ants;
@@ -10,6 +12,24 @@ public class AntsBreadthFirstSearch extends BreadthFirstSearch {
 
     public AntsBreadthFirstSearch(SearchableMap map) {
         super(map);
+    }
+
+    public List<Tile> findEnemiesInRadius(Tile origin, int maxDistance2) {
+        return findClosestTiles(origin, Integer.MAX_VALUE, Integer.MAX_VALUE, maxDistance2, new GoalTest() {
+            @Override
+            public boolean isGoal(Tile tile) {
+                return Ants.getWorld().getIlk(tile).hasEnemyAnt();
+            }
+        });
+    }
+
+    public List<Tile> findFriendsInRadius(Tile origin, int maxDistance2) {
+        return findClosestTiles(origin, Integer.MAX_VALUE, Integer.MAX_VALUE, maxDistance2, new GoalTest() {
+            @Override
+            public boolean isGoal(Tile tile) {
+                return Ants.getWorld().getIlk(tile).hasFriendlyAnt();
+            }
+        });
     }
 
     public Ant findMyClosestUnemployedAnt(Tile tile, int maxNodes) {

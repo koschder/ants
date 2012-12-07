@@ -10,6 +10,7 @@ import logging.LoggerFactory;
 import pathfinder.PathFinder.Strategy;
 import ants.LogCategory;
 import ants.entities.Ant;
+import ants.search.AntsBreadthFirstSearch;
 import ants.state.Ants;
 import ants.tasks.Task.Type;
 import ants.util.LiveInfo;
@@ -129,31 +130,17 @@ public class AttackHillMission extends BaseMission {
             missionState = State.AttackEnemyHill;
             return;
         }
-        List<Ant> enemy = a.getEnemiesInRadius(Ants.getWorld().getAttackRadius2() + 4, false);
-        List<Ant> friend = getMyAttackersInRadius(a, 5);
-        LOGGER.info("AttackHillMission: determineState for hill %s friends %s enemy near Ant %s", enemy.size(),
-                friend.size(), a);
-        if (enemy.size() == 0 && friend.size() > 0) {
+        AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
+        List<Tile> enemy = bfs.findEnemiesInRadius(enemyHill, Ants.getWorld().getAttackRadius2());
+        List<Tile> friend = bfs.findFriendsInRadius(enemyHill, Ants.getWorld().getAttackRadius2());
+        LOGGER.info("AttackHillMission: determineState for hill %s friends %s enemy near Ant %s", friend.size(),
+                enemy.size(), a);
+        if (enemy.size() < 2 && friend.size() > 1) {
             missionState = State.ControlEnemyHill;
             Ants.getOrders().issueOrder(new Ant(enemyHill, 0), null, "DefendHillMission");
             return;
         }
-        if (enemy.size() < friend.size() + 2) {
-            missionState = State.DestoryHill;
-            return;
-        }
-    }
-
-    private List<Ant> getMyAttackersInRadius(Ant ant, int radius) {
-        List<Ant> near = new ArrayList<Ant>();
-        for (Ant a : ants) {
-            if (a.equals(ant))
-                continue;
-            if (Ants.getWorld().beelineTo(ant.getTile(), a.getTile()) < radius)
-                near.add(a);
-
-        }
-        return near;
+        missionState = State.AttackEnemyHill;
     }
 
     private Ant getNearestAnt() {
