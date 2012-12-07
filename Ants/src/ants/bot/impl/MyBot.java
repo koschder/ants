@@ -62,10 +62,11 @@ public class MyBot extends BaseBot {
         LoggingConfig.configure(LogCategory.RESOURCE_ALLOCATION, LogLevel.DEBUG);
         LoggingConfig.configure(LogCategory.CONCENTRATE, LogLevel.DEBUG);
         LoggingConfig.configure(pathfinder.LogCategory.PATHFINDING, LogLevel.INFO);
-        LoggingConfig.configure(pathfinder.LogCategory.BFS, LogLevel.DEBUG);
+        LoggingConfig.configure(pathfinder.LogCategory.BFS, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.CLUSTERING, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.CLUSTERED_ASTAR, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.HPASTAR, LogLevel.INFO);
+        LoggingConfig.configure(influence.LogCategory.INFLUENCE, LogLevel.INFO);
     }
 
     protected void initTasks() {

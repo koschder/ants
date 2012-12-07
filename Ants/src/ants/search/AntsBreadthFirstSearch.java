@@ -1,7 +1,5 @@
 package ants.search;
 
-import logging.Logger;
-import logging.LoggerFactory;
 import search.BreadthFirstSearch;
 import ants.entities.Ant;
 import ants.state.Ants;
@@ -9,8 +7,6 @@ import api.entities.Tile;
 import api.pathfinder.SearchableMap;
 
 public class AntsBreadthFirstSearch extends BreadthFirstSearch {
-
-    private static final Logger LOGGER = LoggerFactory.getLogger(pathfinder.LogCategory.BFS);
 
     public AntsBreadthFirstSearch(SearchableMap map) {
         super(map);

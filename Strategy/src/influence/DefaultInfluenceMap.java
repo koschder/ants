@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import logging.Logger;
+import logging.LoggerFactory;
 import search.BreadthFirstSearch;
 import api.entities.Tile;
 import api.entities.Unit;
@@ -16,6 +18,7 @@ import api.test.MapOutput;
 import api.test.PixelDecorator;
 
 public class DefaultInfluenceMap implements InfluenceMap {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.INFLUENCE);
     private static final int MAX_INFLUENCE = 100;
     private final Map<Integer, int[][]> influence;
     private final int viewRadius2, attackRadius2;
@@ -75,6 +78,9 @@ public class DefaultInfluenceMap implements InfluenceMap {
             updateTileInfluence(tile, player, MAX_INFLUENCE, decay);
             List<Tile> tilesInAttackRadius = bfs.floodFill(tile, attackRadius2);
             List<Tile> tilesInViewRadius = bfs.floodFill(tile, viewRadius2);
+            LOGGER.debug("ViewRadius2=%s, AttackRadius2=%s", viewRadius2, attackRadius2);
+            LOGGER.debug("Calculating influence for unit %s; attackRadius: %s, viewRadius: %s", unit,
+                    tilesInAttackRadius, tilesInViewRadius);
             for (Tile t : tilesInViewRadius) {
                 if (tilesInAttackRadius.contains(t))
                     updateTileInfluence(t, player, 50, decay);
