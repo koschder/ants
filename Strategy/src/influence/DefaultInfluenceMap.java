@@ -78,7 +78,6 @@ public class DefaultInfluenceMap implements InfluenceMap {
             updateTileInfluence(tile, player, MAX_INFLUENCE, decay);
             List<Tile> tilesInAttackRadius = bfs.floodFill(tile, attackRadius2);
             List<Tile> tilesInViewRadius = bfs.floodFill(tile, viewRadius2);
-            LOGGER.debug("ViewRadius2=%s, AttackRadius2=%s", viewRadius2, attackRadius2);
             LOGGER.debug("Calculating influence for unit %s; attackRadius: %s, viewRadius: %s", unit,
                     tilesInAttackRadius, tilesInViewRadius);
             for (Tile t : tilesInViewRadius) {
@@ -87,21 +86,6 @@ public class DefaultInfluenceMap implements InfluenceMap {
                 else
                     updateTileInfluence(t, player, 10, decay);
             }
-            // int mx = (int) Math.sqrt(this.viewRadius2);
-            // for (int row = -mx; row <= mx; ++row) {
-            // for (int col = -mx; col <= mx; ++col) {
-            // int d = row * row + col * col;
-            // if (d <= this.viewRadius2) {
-            // Tile tRadius = map.getTile(tile, new Tile(row, col));
-            // if (tRadius.equals(tile) || !map.isPassable(tRadius))
-            // continue;
-            // if (d <= this.attackRadius2)
-            // updateTileInfluence(tRadius, player, 50, decay);
-            // else
-            // updateTileInfluence(tRadius, player, 10, decay);
-            // }
-            // }
-            // }
         }
     }
 

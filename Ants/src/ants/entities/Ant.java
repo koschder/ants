@@ -1,12 +1,8 @@
 package ants.entities;
 
-import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
-import java.util.TreeMap;
 
 import api.entities.Tile;
 import api.entities.Unit;
@@ -17,10 +13,6 @@ public class Ant implements Comparable<Ant>, Unit, Cloneable {
     private Tile nextTile;
     // private Mission mission;
     private int player;
-    private Map<Ant, Integer> enemies = new HashMap<Ant, Integer>();
-    private Map<Ant, Integer> friends = new HashMap<Ant, Integer>();
-    private Map<Ant, Integer> sortedEnemies = null;
-    private Map<Ant, Integer> sortedFriends = null;
     private List<Tile> path;
     private int turnsWaited;
 
@@ -37,61 +29,6 @@ public class Ant implements Comparable<Ant>, Unit, Cloneable {
     @Override
     public int getPlayer() {
         return player;
-    }
-
-    public void addEnemy(Ant enemy, int distance) {
-        enemies.put(enemy, distance);
-    }
-
-    public void addFriend(Ant friend, int distance) {
-        friends.put(friend, distance);
-    }
-
-    private Map<Ant, Integer> getSortedEnemies() {
-        if (sortedEnemies == null)
-            sortedEnemies = new TreeMap<Ant, Integer>(new DistanceComparator(enemies));
-        return sortedEnemies;
-    }
-
-    private Map<Ant, Integer> getSortedFriends() {
-        if (sortedFriends == null)
-            sortedFriends = new TreeMap<Ant, Integer>(new DistanceComparator(friends));
-        return sortedFriends;
-    }
-
-    /**
-     * Returns all friendly ants in a radius of my ant.
-     * 
-     * @param radius
-     * @return
-     */
-    public List<Ant> getFriendsInRadius(int radius) {
-        final List<Ant> friends = new ArrayList<Ant>();
-        for (Entry<Ant, Integer> entry : getSortedFriends().entrySet()) {
-            if (entry.getValue() > radius)
-                break;
-            friends.add(entry.getKey());
-        }
-        return friends;
-    }
-
-    /**
-     * returns all emenies in a radius
-     * 
-     * @param radius
-     * @param onlyMyAnts
-     *            to decide if alle emenies are returned, or only the current bot ones.
-     * @return
-     */
-    public List<Ant> getEnemiesInRadius(int radius, boolean onlyMyAnts) {
-        final List<Ant> enemies = new ArrayList<Ant>();
-        for (Entry<Ant, Integer> entry : getSortedEnemies().entrySet()) {
-            if (entry.getValue() > radius)
-                break;
-            if (!onlyMyAnts || entry.getKey().isMine())
-                enemies.add(entry.getKey());
-        }
-        return enemies;
     }
 
     @Override

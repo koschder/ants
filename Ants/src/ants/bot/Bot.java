@@ -73,7 +73,6 @@ public abstract class Bot extends AbstractSystemInputParser {
     @Override
     public void afterUpdate() {
         Ants.getAnts().setVision();
-        Ants.getAnts().calculateDistances();
         Ants.getWorld().updateHills();
     }
 }
