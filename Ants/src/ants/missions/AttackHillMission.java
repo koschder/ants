@@ -123,7 +123,6 @@ public class AttackHillMission extends BaseMission {
                     if (!controlAnts.contains(a))
                         antsToRelease.add(a);
                 }
-                removeAnts(antsToRelease);
             }
         } else {
             for (Ant a : ants) {
@@ -131,6 +130,7 @@ public class AttackHillMission extends BaseMission {
                     antsToRelease.add(a);
             }
         }
+        removeAnts(antsToRelease);
     }
 
     private List<Ant> getAntsAroundHill() {
