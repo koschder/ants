@@ -239,7 +239,7 @@ public class AttackHillMission extends BaseMission {
         if (safeToMoveForward) {
             LOGGER.info("AttackHillMission: ant %s trying forward move to EnemyHill is %s (safety: %s)", ant,
                     enemyHill, safetyNextTile);
-            if (putAttackOrder(ant, nextStep)) {
+            if (putMissionOrder(ant, nextStep)) {
                 LOGGER.info("AttackHillMission: ant %s performing forward move to EnemyHill is %s (safety: %s)", ant,
                         enemyHill, safetyNextTile);
                 ant.getPath().remove(0);
@@ -289,7 +289,7 @@ public class AttackHillMission extends BaseMission {
                     }
                 }
                 list.remove(safteyTile);
-                if (putAttackOrder(ant, safteyTile.getTargetTile())) {
+                if (putMissionOrder(ant, safteyTile.getTargetTile())) {
                     ant.getPath().add(0, ant.getTile());
                     orderIssued = true;
                     LOGGER.info(
@@ -320,14 +320,6 @@ public class AttackHillMission extends BaseMission {
         Aim behind = Aim.getOpposite(currentAim);
 
         return ants.contains(Ants.getWorld().getTile(ant.getTile(), behind));
-    }
-
-    private boolean putAttackOrder(Ant ant, Tile nextStep) {
-        // if we want to control the enemy we dont step on it.
-        if (missionState == State.ControlEnemyHill && nextStep.equals(enemyHill))
-            return false;
-
-        return putMissionOrder(ant, nextStep);
     }
 
     private boolean hasAntsOnAttackLine(Ant ant) {
@@ -406,7 +398,11 @@ public class AttackHillMission extends BaseMission {
     private boolean recalculatePath(Ant ant) {
         int tileToCheck = Math.min(5, ant.getPath().size() - 1);
         // check if path doesn't lead throw water
-        if (ant.getPath().size() == 0 || !Ants.getWorld().isPassable(ant.getPath().get(tileToCheck))) {
+        boolean pathThroughWater = ant.hasPath() ? !Ants.getWorld().isPassable(ant.getPath().get(tileToCheck)) : false;
+        boolean nextPathStepValid = ant.hasPath() ? (Ants.getWorld().manhattanDistance(ant.getTile(),
+                ant.getPath().get(0)) == 1) : false;
+
+        if (!nextPathStepValid || pathThroughWater) {
             List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, ant.getTile(), enemyHill, 30);
             if (path == null || path.size() == 0) {
                 return false;
