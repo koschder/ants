@@ -159,8 +159,8 @@ public class AttackHillMission extends BaseMission {
             return;
         }
         AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
-        List<Tile> enemy = bfs.findEnemiesInRadius(enemyHill, Ants.getWorld().getAttackRadius2());
-        List<Tile> friend = bfs.findFriendsInRadius(enemyHill, Ants.getWorld().getAttackRadius2());
+        List<Tile> enemy = bfs.findEnemiesInRadius(enemyHill, Ants.getWorld().getAttackRadius2() * 2);
+        List<Tile> friend = bfs.findFriendsInRadius(enemyHill, Ants.getWorld().getAttackRadius2() * 2);
         LOGGER.info("AttackHillMission: determineState for hill %s friends %s enemy near Ant %s", friend.size(),
                 enemy.size(), a);
         if (enemy.size() < 2 && friend.size() > 1) {
