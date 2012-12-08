@@ -153,34 +153,23 @@ public class AttackHillMission extends BaseMission {
             return;
         }
 
-        Ant a = getNearestAnt();
-        if (a == null || a.getPath().size() > 5) {
+        AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
+        List<Tile> friends = bfs.findFriendsInRadius(enemyHill, Ants.getWorld().getAttackRadius2() * 2);
+
+        // if no one is close to control the hill, continue with the attack
+        if (friends.isEmpty()) {
             missionState = State.AttackEnemyHill;
             return;
         }
-        AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
-        List<Tile> enemy = bfs.findEnemiesInRadius(enemyHill, Ants.getWorld().getAttackRadius2() * 2);
-        List<Tile> friend = bfs.findFriendsInRadius(enemyHill, Ants.getWorld().getAttackRadius2() * 2);
-        LOGGER.info("AttackHillMission: determineState for hill %s friends %s enemy near Ant %s", friend.size(),
-                enemy.size(), a);
-        if (enemy.size() < 2 && friend.size() > 1) {
+        List<Tile> enemies = bfs.findEnemiesInRadius(enemyHill, Ants.getWorld().getAttackRadius2() * 2);
+        LOGGER.info("AttackHillMission: determineState for hill %s: friends=%s enemies=%s", enemyHill, friends.size(),
+                enemies.size());
+        if (enemies.size() < 2 && friends.size() > 1) {
             missionState = State.ControlEnemyHill;
             Ants.getOrders().issueOrder(new Ant(enemyHill, 0), null, "DefendHillMission");
             return;
         }
         missionState = State.AttackEnemyHill;
-    }
-
-    private Ant getNearestAnt() {
-        int min = 999;
-        Ant ant = null;
-        for (Ant a : ants) {
-            if (a.hasPath() && a.getPath().size() < min) {
-                ant = a;
-                min = a.getPath().size();
-            }
-        }
-        return ant;
     }
 
     private void gatherAnts() {
