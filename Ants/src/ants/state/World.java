@@ -311,7 +311,7 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
 
     private boolean isOccupiedForNextMove(Tile t, boolean nextMove) {
         if (nextMove) // we are on the 2nd level of the search tree
-            return Ants.getOrders().getOrders().containsValue(t) || getIlk(t).isFood();
+            return Ants.getOrders().getOrders().containsValue(t);
         return false;
     }
 
