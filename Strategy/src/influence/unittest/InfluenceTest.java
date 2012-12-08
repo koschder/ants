@@ -99,9 +99,9 @@ public class InfluenceTest {
 
         InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
 
-        assertEquals(2820, iMap.getTotalInfluence(0));
-        assertEquals(2670, iMap.getTotalInfluence(1));
-        assertEquals(1300, iMap.getTotalInfluence(2));
+        assertEquals(2520, iMap.getTotalInfluence(0));
+        assertEquals(2370, iMap.getTotalInfluence(1));
+        assertEquals(1120, iMap.getTotalInfluence(2));
 
     }
 }
