@@ -35,20 +35,29 @@ public class BreadthFirstSearch {
         frontier.add(origin);
         List<Tile> explored = new ArrayList<Tile>();
         List<Tile> found = new ArrayList<Tile>();
-        while (!frontier.isEmpty() && explored.size() < maxNodes && found.size() < numberOfHits) {
+        while (!frontier.isEmpty() && explored.size() < maxNodes) {
             Tile next = frontier.poll();
-            if (maxDistance2 < Integer.MAX_VALUE && maxDistance2 < map.getSquaredDistance(origin, next)) {
-                LOGGER.debug("MaxDistance (%s) exceeded.", maxDistance2);
-                break;
-            }
             explored.add(next);
             List<SearchTarget> tiles = getSuccessors(next);
             for (SearchTarget child : tiles) {
                 final Tile childTile = child.getTargetTile();
+                // don't consider a tile twice
                 if (frontier.contains(childTile) || explored.contains(childTile)) {
                     continue;
                 }
+                // check abort conditions
+                if (maxDistance2 < Integer.MAX_VALUE && map.getSquaredDistance(origin, childTile) > maxDistance2) {
+                    LOGGER.debug("MaxDistance (%s) exceeded.", maxDistance2);
+                    return found;
+                }
+                if (found.size() >= numberOfHits) {
+                    LOGGER.debug("Found enough Tiles: %s", numberOfHits);
+                    return found;
+                }
+
+                // add child to frontier
                 frontier.add(childTile);
+                // add child to found if it is a goal
                 if (goalTest.isGoal(childTile))
                     found.add(childTile);
             }
