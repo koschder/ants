@@ -66,14 +66,6 @@ public class Orders {
             newLoc = Ants.getWorld().getTile(ant.getTile(), direction);
         if (isSurroundedByWater(newLoc))
             return false; // it's a trap!
-        if (Ants.getWorld().getIlk(newLoc).isFood()) {
-            // cant' move on a food tile, so issue dummy order here
-            orders.put(ant.getTile(), new Move(ant.getTile(), null));
-            ant.setNextTile(ant.getTile());
-            Ants.getPopulation().addEmployedAnt(ant);
-            ant.resetTurnsWaited();
-            return true;
-        }
         if (isFreeForNextMove(newLoc) || direction == null) {
             LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s Order:%s<br/> ant: %s", issuer,
                     direction, ant.visualizeInfo());
