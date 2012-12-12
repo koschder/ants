@@ -76,6 +76,17 @@ public abstract class BaseMission implements Mission {
         return antIsAlive;
     }
 
+    protected boolean moveToNextTileOnPath(Ant a) {
+        if (a == null || !a.hasPath())
+            return false;
+        Tile nextStep = a.getPath().remove(0);
+
+        if (putMissionOrder(a, nextStep)) {
+            return true;
+        }
+        return false;
+    }
+
     /***
      * Abort mission if something disturbs the mission
      * 
@@ -265,6 +276,15 @@ public abstract class BaseMission implements Mission {
             Ants.getPopulation().removeEmployedAnt(a);
             ants.remove(a);
         }
+    }
+
+    protected boolean doMoveInDirection(Ant ant, Tile target) {
+        List<Aim> aims = Ants.getWorld().getDirections(ant.getTile(), target);
+        for (Aim a : aims) {
+            if (putMissionOrder(ant, a))
+                return true;
+        }
+        return false;
     }
 
     protected boolean doAnyMove(Ant ant) {

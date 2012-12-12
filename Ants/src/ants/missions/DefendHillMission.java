@@ -12,8 +12,11 @@ import java.util.TreeMap;
 
 import logging.Logger;
 import logging.LoggerFactory;
+import pathfinder.PathFinder.Strategy;
+import search.BreadthFirstSearch.GoalTest;
 import ants.LogCategory;
 import ants.entities.Ant;
+import ants.search.AntsBreadthFirstSearch;
 import ants.state.Ants;
 import ants.tasks.Task.Type;
 import ants.util.LiveInfo;
@@ -46,37 +49,94 @@ public class DefendHillMission extends BaseMission {
     public void execute() {
 
         List<Tile> enemyNearBy = getEnemyAntsNearby();
-        String attInfo = "";
 
-        if (enemyNearBy.size() == 0) {
-            attInfo = "no attackers near by -+ " + controlArea + " tiles";
-            LOGGER.debug(attInfo);
-            // return;
+        boolean hasAttackers = enemyNearBy.size() > 0;
+        gatherOrReleaseAnts(enemyNearBy);
+        if (hasAttackers) {
+            resetAnts();
+            defending(enemyNearBy);
+        } else {
+            keepAntDoingStuff();
         }
-        Map<Aim, List<Tile>> attackers = attackersByDirection(enemyNearBy);
 
-        for (Entry<Aim, List<Tile>> a : attackers.entrySet())
-            attInfo += "<br/> " + a;
+    }
 
+    private void resetAnts() {
+        for (Ant a : ants) {
+            if (a.hasPath()) {
+                Ants.getOrders().getAntsOnFood().remove(a);
+                a.setPath(null);
+            }
+        }
+
+    }
+
+    private void keepAntDoingStuff() {
+
+        AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
+        Tile food = bfs.findSingleClosestTile(hill, hillReachable.size(), new GoalTest() {
+            @Override
+            public boolean isGoal(Tile tile) {
+                return Ants.getWorld().getIlk(tile).isFood() && !Ants.getOrders().isFoodTargeted(tile);
+            }
+        });
+
+        for (Ant a : getAnts()) {
+            if (moveToNextTileOnPath(a))
+                continue;
+            if (food == null) {
+                defaultDefendHillMove(a);
+                continue;
+            }
+
+            List<Tile> t = Ants.getPathFinder().search(Strategy.AStar, a.getTile(), food);
+            if (t != null) {
+                Ants.getOrders().getAntsOnFood().put(food, a);
+                a.setPath(t.subList(0, t.size() - 1));
+                moveToNextTileOnPath(a);
+            } else {
+                defaultDefendHillMove(a);
+            }
+        }
+
+        LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill, "DefendHillMission no attackers near by -+ " + controlArea
+                + " tiles");
+
+    }
+
+    private void defaultDefendHillMove(Ant a) {
+        if (a.getTile().equals(hill)) {
+            if (!doAnyMove(a)) {
+                putMissionOrder(a);
+            }
+        }
+        if (Ants.getWorld().manhattanDistance(hill, a.getTile()) > 4)
+            if (!doMoveInDirection(a, hill))
+                putMissionOrder(a);
+    }
+
+    private void gatherOrReleaseAnts(List<Tile> attackers) {
         int gatherAntsAmount = 0;
         if (attackers.size() == 0 && Ants.getAnts().getTurn() > guardHillTurn) {
             // if there are no attackers but late in game (guardHillTurn) we gahter 1 ant for protection
             gatherAntsAmount = 1 - ants.size();
         } else if (attackers.size() > 0) {
-            gatherAntsAmount = enemyNearBy.size() - ants.size() + antsMoreThanEnemy;
+            gatherAntsAmount = attackers.size() - ants.size() + antsMoreThanEnemy;
         }
         if (gatherAntsAmount > 0)
             gatherAnts(gatherAntsAmount);
         else
             releaseAnts(Math.abs(gatherAntsAmount));
+    }
 
-        positioning(attackers);
+    private void defending(List<Tile> enemyNearBy) {
+        String attInfo = "";
+        Map<Aim, List<Tile>> attackers = attackersByDirection(enemyNearBy);
+        for (Entry<Aim, List<Tile>> a : attackers.entrySet())
+            attInfo += "<br/> " + a;
 
         LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill,
                 "DefendHillMission attackers are: %s <br/> Defenders are: %s", attInfo, ants);
-    }
-
-    private void positioning(Map<Aim, List<Tile>> attackers) {
         List<Ant> antsWithOrder = new ArrayList<Ant>();
 
         boolean orderDone = true;
@@ -100,13 +160,7 @@ public class DefendHillMission extends BaseMission {
         for (Ant a : ants) {
             if (antsWithOrder.contains(a))
                 continue;
-            if (a.getTile().equals(hill)) {
-                if (!doAnyMove(a)) {
-                    putMissionOrder(a);
-                }
-            } else {
-                putMissionOrder(a);
-            }
+            defaultDefendHillMove(a);
         }
 
     }

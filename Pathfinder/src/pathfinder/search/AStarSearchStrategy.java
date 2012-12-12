@@ -34,9 +34,6 @@ public class AStarSearchStrategy extends SearchStrategy {
     public List<Tile> searchPath(SearchTarget from, SearchTarget to) {
         this.to = to;
         List<Tile> list = calculateBestPath(from, to);
-        // if (list != null && list.size() > 1) {
-        // list.remove(0); // first path-tile is position of ant (not the next step)
-        // }
         return list;
     }
 
@@ -79,7 +76,8 @@ public class AStarSearchStrategy extends SearchStrategy {
 
     public List<Node> expand(Node node) {
         List<Node> children = new ArrayList<Node>();
-        List<SearchTarget> list = pathFinder.getMap().getSuccessorsForPathfinding(node.getState(), node.getParent() == null);
+        List<SearchTarget> list = pathFinder.getMap().getSuccessorsForPathfinding(node.getState(),
+                node.getParent() == null);
         for (SearchTarget a : list) {
             addChild(node, children, a);
         }

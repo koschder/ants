@@ -41,7 +41,7 @@ public abstract class PathMission extends BaseMission {
 
     @Override
     public void execute() {
-        if (!moveToNextTile())
+        if (!moveToNextTileOnPath(getAnt()))
             abandonMission();
     }
 
@@ -50,16 +50,6 @@ public abstract class PathMission extends BaseMission {
      * 
      * @return true if order is put successful.
      */
-    protected boolean moveToNextTile() {
-        Ant a = getAnt();
-        if (a == null || !a.hasPath())
-            return false;
-        Tile nextStep = a.getPath().remove(0);
-        if (putMissionOrder(a, nextStep)) {
-            return true;
-        }
-        return false;
-    }
 
     @Override
     protected String getVisualizeInfos() {

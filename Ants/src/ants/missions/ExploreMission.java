@@ -3,7 +3,9 @@ package ants.missions;
 import java.util.List;
 
 import ants.entities.Ant;
+import ants.state.Ants;
 import ants.tasks.Task.Type;
+import ants.util.LiveInfo;
 import api.entities.Tile;
 
 /***
@@ -16,6 +18,26 @@ public class ExploreMission extends PathMission {
 
     public ExploreMission(Ant ant, List<Tile> path) {
         super(ant, path);
+    }
+
+    @Override
+    public void execute() {
+
+        if (getAnt().hasPath()) {
+            Tile t = getAnt().getPath().get(0);
+            int safety = Ants.getInfluenceMap().getSafety(t);
+            if (safety < -20) {
+                if (getAnt().getTurnsWaited() > 3) // too long waited.
+                    abandonMission();
+                else
+                    LiveInfo.liveInfo(Ants.getAnts().getTurn(), getAnt().getTile(),
+                            "ExploreMission stay. (safety is: %s, turnsWaited: %s)", safety, getAnt().getTurnsWaited());
+                return;
+            }
+        }
+
+        if (!moveToNextTileOnPath(getAnt()))
+            abandonMission();
     }
 
     /***
