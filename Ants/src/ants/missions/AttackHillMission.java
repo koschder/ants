@@ -40,7 +40,7 @@ public class AttackHillMission extends BaseMission {
     enum State {
         AttackEnemyHill,
         ControlEnemyHill,
-        DestoryHill
+        DestroyHill
     };
 
     public AttackHillMission(Tile hill) {
@@ -149,7 +149,7 @@ public class AttackHillMission extends BaseMission {
 
         // if game is ending destroy all controlled hills
         if (Ants.getAnts().getTurns() - Ants.getAnts().getTurn() < 5) {
-            missionState = State.AttackEnemyHill;
+            missionState = State.DestroyHill;
             return;
         }
 
@@ -162,11 +162,16 @@ public class AttackHillMission extends BaseMission {
             return;
         }
         List<Tile> enemies = bfs.findEnemiesInRadius(enemyHill, Ants.getWorld().getAttackRadius2() * 2);
+
+        LiveInfo.liveInfo(Ants.getAnts().getTurn(), enemyHill, "AttackHillMission enemies are: %s", enemies);
         LOGGER.info("AttackHillMission: determineState for hill %s: friends=%s enemies=%s", enemyHill, friends.size(),
                 enemies.size());
         if (enemies.size() < 2 && friends.size() > 1) {
             missionState = State.ControlEnemyHill;
-            Ants.getOrders().issueOrder(new Ant(enemyHill, 0), null, "DefendHillMission");
+            Ants.getOrders().issueOrder(new Ant(enemyHill, 0), null, "AttackHillMission");
+            return;
+        } else if (enemies.size() >= friends.size()) {
+            missionState = State.DestroyHill;
             return;
         }
         missionState = State.AttackEnemyHill;
@@ -208,7 +213,13 @@ public class AttackHillMission extends BaseMission {
     }
 
     private boolean move(Ant ant) {
-
+        if (missionState == State.DestroyHill) {
+            if (!recalculatePath(ant)) {
+                LOGGER.info("Ant has a invalid path, and cannot be recalculated", ant);
+                return false;
+            }
+            return moveToNextTileOnPath(ant);
+        }
         if (missionState == State.ControlEnemyHill) {
             if (Ants.getWorld().manhattanDistance(ant.getTile(), enemyHill) == 2
                     && Ants.getWorld().getDirections(ant.getTile(), enemyHill).size() == 2) {
