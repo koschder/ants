@@ -272,6 +272,7 @@ public abstract class BaseMission implements Mission {
     }
 
     public void removeAnts(List<Ant> antsToRelease) {
+        LOGGER.debug("Mission %s is releasing ants %s", getClass().getSimpleName(), antsToRelease);
         for (Ant a : antsToRelease) {
             a.setPath(null);
             Ants.getPopulation().removeEmployedAnt(a);
