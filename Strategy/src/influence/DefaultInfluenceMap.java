@@ -77,12 +77,15 @@ public class DefaultInfluenceMap implements InfluenceMap {
             final Tile tile = unit.getTile();
             updateTileInfluence(tile, player, MAX_INFLUENCE, decay);
             List<Tile> tilesInAttackRadius = bfs.floodFill(tile, attackRadius2);
+            List<Tile> tilesInExpandedAttackRadius = bfs.floodFill(tile, attackRadius2 * 2);
             List<Tile> tilesInViewRadius = bfs.floodFill(tile, viewRadius2);
             LOGGER.debug("Calculating influence for unit %s; attackRadius: %s, viewRadius: %s", unit,
                     tilesInAttackRadius, tilesInViewRadius);
             for (Tile t : tilesInViewRadius) {
                 if (tilesInAttackRadius.contains(t))
                     updateTileInfluence(t, player, 50, decay);
+                else if (tilesInExpandedAttackRadius.contains(t))
+                    updateTileInfluence(t, player, 30, decay);
                 else
                     updateTileInfluence(t, player, 10, decay);
             }
