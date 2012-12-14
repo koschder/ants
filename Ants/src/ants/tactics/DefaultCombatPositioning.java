@@ -1,9 +1,11 @@
 package ants.tactics;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
 import api.pathfinder.SearchableUnitMap;
@@ -28,12 +30,32 @@ public class DefaultCombatPositioning implements CombatPositioning {
     }
 
     private void calculatePositions() {
-        final boolean isEnemySuperior = enemyUnits.size() > myUnits.size();
-        if (isEnemySuperior && myUnits.size() <= 1) {
+        final boolean enemyIsSuperior = enemyUnits.size() > myUnits.size();
+        final boolean weAreSuperior = enemyUnits.size() < myUnits.size();
+        if (enemyIsSuperior) {
             for (Unit myUnit : myUnits) {
                 nextMoves.put(myUnit, map.getSafestNeighbour(myUnit.getTile(), influenceMap));
             }
+        } else if (weAreSuperior) {
+            Tile clusterCenter = map.getClusterCenter(getTiles(myUnits));
+            for (Unit myUnit : myUnits) {
+                for (Aim aim : map.getDirections(myUnit.getTile(), clusterCenter)) {
+                    Tile nextTile = map.getTile(myUnit.getTile(), aim);
+                    if (!nextMoves.containsValue(nextTile)) {
+                        nextMoves.put(myUnit, nextTile);
+                        break;
+                    }
+                }
+            }
         }
+    }
+
+    private List<Tile> getTiles(List<Unit> units) {
+        List<Tile> tiles = new ArrayList<Tile>();
+        for (Unit unit : units) {
+            tiles.add(unit.getTile());
+        }
+        return tiles;
     }
 
     @Override

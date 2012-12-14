@@ -13,6 +13,7 @@ import api.map.AbstractWraparoundMap;
 import api.pathfinder.SearchTarget;
 import api.pathfinder.SearchableUnitMap;
 import api.strategy.InfluenceMap;
+import api.test.TestUnit;
 
 public class InfluenceTestMap extends AbstractWraparoundMap implements SearchableUnitMap {
 
@@ -55,24 +56,7 @@ public class InfluenceTestMap extends AbstractWraparoundMap implements Searchabl
                     if (!players.containsKey(p))
                         players.put(p, new ArrayList<Unit>());
 
-                    players.get(p).add(new Unit() {
-
-                        @Override
-                        public boolean isMine() {
-                            return p == 0;
-                        }
-
-                        @Override
-                        public Tile getTile() {
-
-                            return new Tile(row, col);
-                        }
-
-                        @Override
-                        public int getPlayer() {
-                            return p;
-                        }
-                    });
+                    players.get(p).add(new TestUnit(p, new Tile(row, col)));
 
                 }
 

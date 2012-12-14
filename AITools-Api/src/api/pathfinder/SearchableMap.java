@@ -48,4 +48,6 @@ public interface SearchableMap extends TileMap {
 
     public Tile getSafestNeighbour(Tile tile, InfluenceMap influenceMap);
 
+    public Tile getClusterCenter(List<Tile> cluster);
+
 }

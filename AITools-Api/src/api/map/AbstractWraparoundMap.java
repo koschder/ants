@@ -168,6 +168,7 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return rowDelta * rowDelta + colDelta * colDelta;
     }
 
+    @Override
     public Tile getClusterCenter(List<Tile> cluster) {
 
         int row = getAvgRowDistanceFromOrigin(cluster);
