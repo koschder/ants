@@ -1,7 +1,7 @@
 package unittest.ants.strategy;
 
 import influence.DefaultInfluenceMap;
-import influence.unittest.UnitTestInfluenceMap;
+import influence.unittest.InfluenceTestMap;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public class InfluenceMapAstar {
         System.out.println("aStarInfluenceTest");
         String sMap = getDefaultTestMap();
 
-        UnitTestInfluenceMap map = new UnitTestInfluenceMap(37, sMap);
+        InfluenceTestMap map = new InfluenceTestMap(37, sMap);
 
         final Tile start = new Tile(2, 2);
         final Tile end = new Tile(2, 35);

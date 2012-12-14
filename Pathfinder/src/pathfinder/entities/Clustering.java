@@ -13,6 +13,7 @@ import api.entities.Tile;
 import api.map.AbstractWraparoundMap;
 import api.map.WorldType;
 import api.pathfinder.SearchTarget;
+import api.strategy.InfluenceMap;
 
 public class Clustering extends AbstractWraparoundMap {
 
@@ -384,6 +385,11 @@ public class Clustering extends AbstractWraparoundMap {
                             e.path == null ? "Null" : e.path.size(), e.path == null ? "Null" : e.path));
                 }
             }
+    }
+
+    @Override
+    public Tile getSafestNeighbour(Tile tile, InfluenceMap influenceMap) {
+        throw new UnsupportedOperationException("not supported");
     }
 
 }

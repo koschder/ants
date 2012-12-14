@@ -16,7 +16,6 @@ import ants.tasks.Task.Type;
 import ants.util.LiveInfo;
 import api.entities.Aim;
 import api.entities.Tile;
-import api.pathfinder.SearchTarget;
 
 /***
  * This mission used for attacking the enemies hills
@@ -283,42 +282,22 @@ public class AttackHillMission extends BaseMission {
                     currentSafety, safetyNextTile, ant, ant.getTurnsWaited());
             putMissionOrder(ant);
         } else {
-            moveToSafetiestTile(ant);
+            moveToSafestTile(ant);
         }
         return true;
     }
 
-    private void moveToSafetiestTile(Ant ant) {
-        List<SearchTarget> list = Ants.getWorld().getSuccessorsForPathfinding(ant.getTile(), true);
-
-        boolean orderIssued = false;
-        // go to the saftiest tile
-        do {
-            if (list.size() > 0) {
-                int bestSafety = -99999;
-                SearchTarget safteyTile = null;
-                for (SearchTarget t : list) {
-                    int safety = (Ants.getInfluenceMap().getSafety(ant.getTile()));
-                    // LOGGER.info("compare safety %s vs %s", safety, bestSafety);
-                    if (safety > bestSafety) {
-                        safteyTile = t.getTargetTile();
-                        bestSafety = safety;
-                    }
-                }
-                list.remove(safteyTile);
-                if (putMissionOrder(ant, safteyTile.getTargetTile())) {
-                    ant.getPath().add(0, ant.getTile());
-                    orderIssued = true;
-                    LOGGER.info(
-                            "AttackHillMission:dangerous here! move ant %s backwards to %s. (Safety is: %s) enemyHill %s",
-                            ant, safteyTile.getTargetTile(), bestSafety, enemyHill);
-                }
-            } else {
-                putMissionOrder(ant);
-                orderIssued = true;
+    private void moveToSafestTile(Ant ant) {
+        Tile safestTile = Ants.getWorld().getSafestNeighbour(ant.getTile(), Ants.getInfluenceMap());
+        if (safestTile != null) {
+            if (putMissionOrder(ant, safestTile)) {
+                ant.getPath().add(0, ant.getTile());
+                LOGGER.info("AttackHillMission:dangerous here! move ant %s backwards to %s. enemyHill %s", ant,
+                        safestTile, enemyHill);
             }
-
-        } while (!orderIssued);
+        } else {
+            putMissionOrder(ant);
+        }
     }
 
     private boolean moveToSide(Ant ant, Aim aim) {

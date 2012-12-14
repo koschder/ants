@@ -21,6 +21,7 @@ import api.entities.Unit;
 import api.map.AbstractWraparoundMap;
 import api.pathfinder.SearchTarget;
 import api.pathfinder.SearchableUnitMap;
+import api.strategy.InfluenceMap;
 
 /**
  * This class holds state about the game world.
@@ -353,8 +354,8 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
     }
 
     @Override
-    public Collection<Unit> getUnits(int player) {
-        Set<Unit> playersAnts = new HashSet<Unit>();
+    public List<Unit> getUnits(int player) {
+        List<Unit> playersAnts = new ArrayList<Unit>();
         if (player == 0) {
             playersAnts.addAll(Ants.getPopulation().getMyAnts());
         } else {
@@ -415,6 +416,22 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
 
     public boolean isEasilyReachable(Tile from, Tile to) {
         return Ants.getPathFinder().search(Strategy.Simple, from, to) != null;
+    }
+
+    @Override
+    public Tile getSafestNeighbour(Tile tile, InfluenceMap influenceMap) {
+        Tile safestTile = null;
+        int bestSafety = Integer.MIN_VALUE;
+        for (Tile neighbour : get4Neighbours(tile)) {
+            if (Ants.getOrders().isMovePossible(neighbour)) {
+                final int safety = influenceMap.getSafety(neighbour);
+                if (safety > bestSafety) {
+                    safestTile = neighbour;
+                    bestSafety = safety;
+                }
+            }
+        }
+        return safestTile;
     }
 
 }

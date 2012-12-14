@@ -7,6 +7,7 @@ import api.entities.Aim;
 import api.entities.Tile;
 import api.map.AbstractWraparoundMap;
 import api.pathfinder.SearchTarget;
+import api.strategy.InfluenceMap;
 
 public class UnitTestMap extends AbstractWraparoundMap {
 
@@ -101,6 +102,11 @@ public class UnitTestMap extends AbstractWraparoundMap {
     @Override
     public List<SearchTarget> getSuccessorsForSearch(SearchTarget currentEdge, boolean isNextMove) {
         return getSuccessorsForPathfinding(currentEdge, isNextMove);
+    }
+
+    @Override
+    public Tile getSafestNeighbour(Tile tile, InfluenceMap influenceMap) {
+        throw new UnsupportedOperationException("not supported");
     }
 
 }

@@ -19,7 +19,7 @@ public class InfluenceTest {
         System.out.println("safetyInfluenceTest");
         String sMap = getDefaultTestMap();
 
-        UnitTestInfluenceMap map = new UnitTestInfluenceMap(37, sMap);
+        InfluenceTestMap map = new InfluenceTestMap(37, sMap);
 
         final InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
 
@@ -52,7 +52,7 @@ public class InfluenceTest {
         System.out.println("safetyInfluenceTest");
         String sMap = getDefaultTestMap();
 
-        UnitTestInfluenceMap initialMap = new UnitTestInfluenceMap(37, sMap);
+        InfluenceTestMap initialMap = new InfluenceTestMap(37, sMap);
 
         sMap = "";
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
@@ -66,7 +66,7 @@ public class InfluenceTest {
         sMap += "wooooooooooooooooowooooooowooooooooow";
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
-        UnitTestInfluenceMap updateMap = new UnitTestInfluenceMap(37, sMap);
+        InfluenceTestMap updateMap = new InfluenceTestMap(37, sMap);
 
         final DefaultInfluenceMap iMap = new DefaultInfluenceMap(initialMap, 8, 4);
         iMap.update(updateMap);
@@ -95,7 +95,7 @@ public class InfluenceTest {
         System.out.println("safetyInfluenceTest");
         String sMap = getDefaultTestMap();
 
-        UnitTestInfluenceMap map = new UnitTestInfluenceMap(37, sMap);
+        InfluenceTestMap map = new InfluenceTestMap(37, sMap);
 
         InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
 

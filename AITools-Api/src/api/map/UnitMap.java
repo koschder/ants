@@ -1,12 +1,12 @@
 package api.map;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Set;
 
 import api.entities.Unit;
 
 public interface UnitMap extends TileMap {
-    public Collection<Unit> getUnits(int player);
+    public List<Unit> getUnits(int player);
 
     public Set<Integer> getPlayers();
 }

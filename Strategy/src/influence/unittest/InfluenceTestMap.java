@@ -1,7 +1,6 @@
 package influence.unittest;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,15 +12,16 @@ import api.entities.Unit;
 import api.map.AbstractWraparoundMap;
 import api.pathfinder.SearchTarget;
 import api.pathfinder.SearchableUnitMap;
+import api.strategy.InfluenceMap;
 
-public class UnitTestInfluenceMap extends AbstractWraparoundMap implements SearchableUnitMap {
+public class InfluenceTestMap extends AbstractWraparoundMap implements SearchableUnitMap {
 
     int[][] map;
     Map<Integer, List<Unit>> players = new HashMap<Integer, List<Unit>>();
     int water = 0;
     int land = 1;
 
-    public UnitTestInfluenceMap(int x, String sMap) {
+    public InfluenceTestMap(int x, String sMap) {
         super(x, x);
         List<String> sMapRows = new ArrayList<String>();
 
@@ -32,7 +32,7 @@ public class UnitTestInfluenceMap extends AbstractWraparoundMap implements Searc
         init(sMapRows);
     }
 
-    public UnitTestInfluenceMap(List<String> sMapRows) {
+    public InfluenceTestMap(List<String> sMapRows) {
         super(sMapRows.size(), sMapRows.size());
         init(sMapRows);
     }
@@ -80,7 +80,7 @@ public class UnitTestInfluenceMap extends AbstractWraparoundMap implements Searc
         }
     }
 
-    public UnitTestInfluenceMap(int x, int y) {
+    public InfluenceTestMap(int x, int y) {
         super(x, y);
         map = new int[x][y];
         for (int i = 0; i < x; i++)
@@ -125,12 +125,26 @@ public class UnitTestInfluenceMap extends AbstractWraparoundMap implements Searc
     }
 
     @Override
-    public Collection<Unit> getUnits(int player) {
+    public List<Unit> getUnits(int player) {
         return players.get(player);
     }
 
     @Override
     public Set<Integer> getPlayers() {
         return players.keySet();
+    }
+
+    @Override
+    public Tile getSafestNeighbour(Tile tile, InfluenceMap influenceMap) {
+        Tile safestTile = null;
+        int bestSafety = Integer.MIN_VALUE;
+        for (Tile neighbour : get4Neighbours(tile)) {
+            final int safety = influenceMap.getSafety(neighbour);
+            if (safety > bestSafety) {
+                safestTile = neighbour;
+                bestSafety = safety;
+            }
+        }
+        return safestTile;
     }
 }

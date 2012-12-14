@@ -5,6 +5,7 @@ import java.util.List;
 import api.entities.Aim;
 import api.entities.Tile;
 import api.map.TileMap;
+import api.strategy.InfluenceMap;
 
 public interface SearchableMap extends TileMap {
 
@@ -43,6 +44,8 @@ public interface SearchableMap extends TileMap {
      */
     public Tile getTile(Tile tile, Aim direction);
 
-    public abstract List<SearchTarget> getSuccessorsForSearch(SearchTarget target, boolean isNextMove);
+    public List<SearchTarget> getSuccessorsForSearch(SearchTarget target, boolean isNextMove);
+
+    public Tile getSafestNeighbour(Tile tile, InfluenceMap influenceMap);
 
 }
