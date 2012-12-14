@@ -58,7 +58,7 @@ public class AttackHillMission extends BaseMission {
         return null;
     }
 
-    private boolean otherEnemyHillNear(Tile hill, Ant a) {
+    private boolean otherEnemyHillNear(Ant a) {
         for (Mission m : Ants.getOrders().getMissions()) {
             if (!(m instanceof AttackHillMission))
                 continue;
@@ -67,8 +67,8 @@ public class AttackHillMission extends BaseMission {
             if (ahm.isControlled() || ahm.equals(this))
                 continue;
 
-            if (Ants.getWorld().manhattanDistance(enemyHill, a.getTile()) < 8) {
-                if (Ants.getPathFinder().search(Strategy.AStar, a.getTile(), enemyHill, 10) != null) {
+            if (Ants.getWorld().manhattanDistance(ahm.getHill(), a.getTile()) < 8) {
+                if (Ants.getPathFinder().search(Strategy.AStar, a.getTile(), ahm.getHill(), 10) != null) {
                     return true;
                 }
             }
@@ -126,7 +126,7 @@ public class AttackHillMission extends BaseMission {
             }
         } else {
             for (Ant a : ants) {
-                if (otherEnemyHillNear(enemyHill, a))
+                if (otherEnemyHillNear(a))
                     antsToRelease.add(a);
             }
         }
