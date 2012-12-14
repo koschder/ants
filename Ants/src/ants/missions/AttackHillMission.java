@@ -252,6 +252,7 @@ public class AttackHillMission extends BaseMission {
         int safetyNextTile = (Ants.getInfluenceMap().getSafety(nextStep));
         boolean safeToMoveForward = safetyNextTile > attackSaftey || missionState != State.AttackEnemyHill;
         if (safeToMoveForward) {
+            LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "next tile safety %s", safetyNextTile);
             LOGGER.info("AttackHillMission: ant %s trying forward move to EnemyHill is %s (safety: %s)", ant,
                     enemyHill, safetyNextTile);
             if (putMissionOrder(ant, nextStep)) {
@@ -273,7 +274,8 @@ public class AttackHillMission extends BaseMission {
                     safetyNextTile);
         }
         int currentSafety = (Ants.getInfluenceMap().getSafety(ant.getTile()));
-
+        LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "current safety %s next tile safety %s",
+                currentSafety, safetyNextTile);
         if (currentSafety > staySaftey) {
             // current position is safety enough
             LOGGER.info(
