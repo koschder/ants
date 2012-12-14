@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
+import ants.state.Ants;
+import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
 
@@ -143,5 +145,12 @@ public class Ant implements Comparable<Ant>, Unit, Cloneable {
         if (hasPath())
             return tile + " path: " + getPath();
         return tile.toString();
+    }
+
+    public Aim currentDirection() {
+        if (!hasPath())
+            return null;
+        Tile tile = getPath().get(0);
+        return Ants.getWorld().getDirections(getTile(), tile).get(0);
     }
 }

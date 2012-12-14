@@ -111,7 +111,7 @@ public class DefendHillMission extends BaseMission {
                 putMissionOrder(a);
             }
         }
-        if (Ants.getWorld().manhattanDistance(hill, a.getTile()) > 4)
+        if (Ants.getWorld().manhattanDistance(hill, a.getTile()) > 2)
             if (!doMoveInDirection(a, hill))
                 putMissionOrder(a);
     }

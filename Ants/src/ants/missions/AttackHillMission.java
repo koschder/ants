@@ -32,8 +32,8 @@ public class AttackHillMission extends BaseMission {
      * the enemy hill.
      */
     Tile enemyHill;
-    int attackSaftey = 30;
-    int staySaftey = -50;
+    int attackSaftey = 35;
+    int staySaftey = 70;
     int gatherAntsRadius = 20;
     State missionState = State.AttackEnemyHill;
 
@@ -221,13 +221,13 @@ public class AttackHillMission extends BaseMission {
             return moveToNextTileOnPath(ant);
         }
         if (missionState == State.ControlEnemyHill) {
-            if (Ants.getWorld().manhattanDistance(ant.getTile(), enemyHill) == 2
-                    && Ants.getWorld().getDirections(ant.getTile(), enemyHill).size() == 2) {
+            List<Aim> directions = Ants.getWorld().getDirections(ant.getTile(), enemyHill);
+            if (Ants.getWorld().manhattanDistance(ant.getTile(), enemyHill) == 2 && directions.size() == 2) {
                 LOGGER.info("Ant %s is controlling ControlEnemyHill, keep position.", ant);
                 putMissionOrder(ant);
                 return true;
             } else if (Ants.getWorld().manhattanDistance(ant.getTile(), enemyHill) == 1) {
-                if (moveToSide(ant))
+                if (moveToSide(ant, directions.get(0)))
                     return true;
             }
         }
@@ -237,8 +237,7 @@ public class AttackHillMission extends BaseMission {
             return false;
         }
         if (!hasAntsOnAttackLine(ant) && hasAntBehind(ant)) {
-            // TODO adjust path?
-            if (moveToSide(ant)) {
+            if (moveToSide(ant, ant.currentDirection())) {
                 return true;
             }
 
@@ -321,8 +320,8 @@ public class AttackHillMission extends BaseMission {
         } while (!orderIssued);
     }
 
-    private boolean moveToSide(Ant ant) {
-        List<Aim> aims = Aim.getOrthogonalAims((Ants.getWorld().getDirections(ant.getTile(), enemyHill).get(0)));
+    private boolean moveToSide(Ant ant, Aim aim) {
+        List<Aim> aims = Aim.getOrthogonalAims(aim);
         for (Aim a : aims) {
             if (putMissionOrder(ant, a)) {
                 return true;
@@ -340,12 +339,9 @@ public class AttackHillMission extends BaseMission {
     }
 
     private boolean hasAntsOnAttackLine(Ant ant) {
-        Tile tile = ant.getPath().get(0);
-        Aim currentAim = Ants.getWorld().getDirections(ant.getTile(), tile).get(0);
-
-        for (Aim a : Aim.getOrthogonalAims(currentAim)) {
-            if (ants.contains(Ants.getWorld().getTile(tile, a))) {
-                LOGGER.info("there is an ant on the attackline");
+        for (Aim a : Aim.getOrthogonalAims(ant.currentDirection())) {
+            if (ants.contains(Ants.getWorld().getTile(ant.getTile(), a))) {
+                LOGGER.info("there is an ant on the attackline of %s", ant);
                 return true;
             }
         }
