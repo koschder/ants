@@ -67,11 +67,6 @@ public class DefaultCombatPositioning implements CombatPositioning {
         }
     }
 
-    public Tile getOneTileCloserToEnemy(Tile clusterCenter, Tile enemyClusterCenter) {
-        // TODO improve
-        return map.getTile(clusterCenter, map.getDirections(clusterCenter, enemyClusterCenter).get(0));
-    }
-
     public void moveToward(Tile targetTile, Tile myTile) {
         for (Aim aim : map.getDirections(myTile, targetTile)) {
             Tile nextTile = map.getTile(myTile, aim);
