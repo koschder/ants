@@ -20,7 +20,11 @@ public class BreadthFirstSearch {
     }
 
     public List<Tile> floodFill(Tile center, int maxDistance2) {
-        return findClosestTiles(center, Integer.MAX_VALUE, Integer.MAX_VALUE, maxDistance2, new AlwaysTrueGoalTest());
+        return floodFill(center, maxDistance2, new AlwaysTrueGoalTest());
+    }
+
+    public List<Tile> floodFill(Tile center, int maxDistance2, GoalTest goalTest) {
+        return findClosestTiles(center, Integer.MAX_VALUE, Integer.MAX_VALUE, maxDistance2, goalTest);
     }
 
     public Tile findSingleClosestTile(Tile origin, int maxNodes, GoalTest goalTest) {
