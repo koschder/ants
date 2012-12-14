@@ -168,4 +168,38 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return rowDelta * rowDelta + colDelta * colDelta;
     }
 
+    public Tile getClusterCenter(List<Tile> cluster) {
+
+        int row = getAvgRowDistanceFromOrigin(cluster);
+        int col = getAvgColDistanceFromOrigin(cluster);
+
+        return getTile(new Tile(0, 0), new Tile(row, col));
+    }
+
+    private int getAvgColDistanceFromOrigin(List<Tile> cluster) {
+        int sum = 0;
+        int count;
+        for (count = 0; count < cluster.size(); count++) {
+            sum += getColDistanceFromOrigin(cluster.get(count));
+        }
+        return sum / count;
+    }
+
+    private int getAvgRowDistanceFromOrigin(List<Tile> cluster) {
+        int sum = 0;
+        int count;
+        for (count = 0; count < cluster.size(); count++) {
+            sum += getRowDistanceFromOrigin(cluster.get(count));
+        }
+        return sum / count;
+    }
+
+    private int getRowDistanceFromOrigin(Tile tile) {
+        return tile.getRow() > (rows / 2) ? tile.getRow() - rows : tile.getRow();
+    }
+
+    private int getColDistanceFromOrigin(Tile tile) {
+        return tile.getCol() > (cols / 2) ? tile.getCol() - cols : tile.getCol();
+    }
+
 }
