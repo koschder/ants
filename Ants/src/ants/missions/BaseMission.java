@@ -84,6 +84,7 @@ public abstract class BaseMission implements Mission {
         if (putMissionOrder(a, nextStep)) {
             return true;
         }
+        a.getPath().add(0, nextStep);
         return false;
     }
 

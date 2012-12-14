@@ -94,6 +94,7 @@ public class DefendHillMission extends BaseMission {
                 Ants.getOrders().getAntsOnFood().put(food, a);
                 a.setPath(t.subList(0, t.size() - 1));
                 moveToNextTileOnPath(a);
+                food = null;
             } else {
                 defaultDefendHillMove(a);
             }
