@@ -1,4 +1,4 @@
-package ants.tactics;
+package tactics.combat;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -9,8 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import search.BreadthFirstSearch;
 import search.BreadthFirstSearch.GoalTest;
-import ants.search.AntsBreadthFirstSearch;
 import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
@@ -18,12 +18,20 @@ import api.pathfinder.SearchableUnitMap;
 import api.strategy.InfluenceMap;
 
 public class DefaultCombatPositioning implements CombatPositioning {
-    private SearchableUnitMap map;
-    private InfluenceMap influenceMap;
-    private List<Tile> myUnits;
-    private List<Tile> enemyUnits;
-    private Tile target;
-    private Map<Tile, Tile> nextMoves = new HashMap<Tile, Tile>();
+    protected SearchableUnitMap map;
+    protected InfluenceMap influenceMap;
+    protected List<Tile> myUnits;
+    protected List<Tile> enemyUnits;
+    protected Tile target;
+    protected Map<Tile, Tile> nextMoves = new HashMap<Tile, Tile>();
+
+    protected enum Mode {
+        DEFAULT,
+        DEFEND,
+        ATTACK,
+        CONTROL, //
+        FLEE;
+    }
 
     public DefaultCombatPositioning(SearchableUnitMap map, InfluenceMap influenceMap, List<Unit> myUnits,
             List<Unit> enemyUnits, Tile ultimateTarget) {
@@ -36,13 +44,44 @@ public class DefaultCombatPositioning implements CombatPositioning {
     }
 
     private void calculatePositions() {
-        final boolean enemyIsSuperior = enemyUnits.size() > myUnits.size();
-        final boolean weAreSuperior = enemyUnits.size() < myUnits.size();
-        if (enemyIsSuperior) {
+        Mode mode = determineMode();
+        switch (mode) {
+        case FLEE:
             flee();
-        } else if (weAreSuperior) {
+            break;
+        case DEFEND:
+            defendTarget();
+            break;
+        case ATTACK:
+            attackTarget();
+        case CONTROL:
+            controlTarget();
+        case DEFAULT:
+        default:
             attackEnemy();
+            break;
         }
+    }
+
+    private void attackTarget() {
+        // TODO Auto-generated method stub
+
+    }
+
+    private void defendTarget() {
+        // TODO Auto-generated method stub
+
+    }
+
+    private void controlTarget() {
+
+    }
+
+    protected Mode determineMode() {
+        final boolean enemyIsSuperior = enemyUnits.size() > myUnits.size();
+        if (enemyIsSuperior)
+            return Mode.FLEE;
+        return Mode.DEFAULT;
     }
 
     private void attackEnemy() {
@@ -96,7 +135,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
         final int dist = map.getSquaredDistance(clusterCenter, enemyClusterCenter) - stepForward;
         final int minDist = dist - 2;
         final int maxDist = dist + 2;
-        AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(map);
+        BreadthFirstSearch bfs = new BreadthFirstSearch(map);
         final List<Tile> formationTiles = bfs.floodFill(clusterCenter, dist, new GoalTest() {
 
             @Override

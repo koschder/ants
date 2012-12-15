@@ -1,4 +1,4 @@
-package unittest.ants.tactics;
+package unittest.tactics.combat;
 
 import influence.DefaultInfluenceMap;
 import influence.unittest.InfluenceTestMap;
@@ -7,8 +7,9 @@ import java.util.List;
 
 import org.junit.Test;
 
-import ants.tactics.CombatPositioning;
-import ants.tactics.DefaultCombatPositioning;
+import tactics.combat.CombatPositioning;
+import tactics.combat.DefaultCombatPositioning;
+
 import api.entities.Tile;
 import api.entities.Unit;
 import api.strategy.InfluenceMap;

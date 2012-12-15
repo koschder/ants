@@ -1,4 +1,4 @@
-package ants.tactics;
+package tactics.combat;
 
 import api.entities.Tile;
 import api.entities.Unit;
