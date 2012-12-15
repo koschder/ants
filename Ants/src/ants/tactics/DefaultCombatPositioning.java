@@ -20,8 +20,8 @@ import api.strategy.InfluenceMap;
 public class DefaultCombatPositioning implements CombatPositioning {
     private SearchableUnitMap map;
     private InfluenceMap influenceMap;
-    private List<Unit> myUnits;
-    private List<Unit> enemyUnits;
+    private List<Tile> myUnits;
+    private List<Tile> enemyUnits;
     private Tile target;
     private Map<Tile, Tile> nextMoves = new HashMap<Tile, Tile>();
 
@@ -29,8 +29,8 @@ public class DefaultCombatPositioning implements CombatPositioning {
             List<Unit> enemyUnits, Tile ultimateTarget) {
         this.map = map;
         this.influenceMap = influenceMap;
-        this.myUnits = myUnits;
-        this.enemyUnits = enemyUnits;
+        this.myUnits = getTiles(myUnits);
+        this.enemyUnits = getTiles(enemyUnits);
         this.target = ultimateTarget;
         calculatePositions();
     }
@@ -39,35 +39,41 @@ public class DefaultCombatPositioning implements CombatPositioning {
         final boolean enemyIsSuperior = enemyUnits.size() > myUnits.size();
         final boolean weAreSuperior = enemyUnits.size() < myUnits.size();
         if (enemyIsSuperior) {
-            for (Unit myUnit : myUnits) {
-                nextMoves.put(myUnit.getTile(), map.getSafestNeighbour(myUnit.getTile(), influenceMap));
-            }
+            flee();
         } else if (weAreSuperior) {
-            final List<Tile> myTiles = getTiles(myUnits);
-            Tile clusterCenter = map.getClusterCenter(myTiles);
-            Tile enemyClusterCenter = map.getClusterCenter(getTiles(enemyUnits));
-            List<Tile> formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, 0);
-            if (getContainedFraction(formationTiles, myTiles) > 0.5) {
-                // move forward
-                formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, 2);
-            }
-            // perform positioning
-            Set<Tile> targetedTiles = new HashSet<Tile>();
-            sortByDistance(clusterCenter, myTiles);
-            sortByDistance(clusterCenter, formationTiles);
-            for (Tile uTile : myTiles) {
-                for (Tile fTile : formationTiles) {
-                    if (targetedTiles.contains(fTile))
-                        continue;
-                    moveToward(fTile, uTile);
-                    break;
-                }
-            }
-
+            attackEnemy();
         }
     }
 
-    public void moveToward(Tile targetTile, Tile myTile) {
+    private void attackEnemy() {
+        Tile clusterCenter = map.getClusterCenter(myUnits);
+        Tile enemyClusterCenter = map.getClusterCenter(enemyUnits);
+        List<Tile> formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, 0);
+        if (getContainedFraction(formationTiles, myUnits) > 0.5) {
+            // move forward
+            formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, 2);
+        }
+        // perform positioning
+        Set<Tile> targetedTiles = new HashSet<Tile>();
+        sortByDistance(clusterCenter, myUnits);
+        sortByDistance(clusterCenter, formationTiles);
+        for (Tile uTile : myUnits) {
+            for (Tile fTile : formationTiles) {
+                if (targetedTiles.contains(fTile))
+                    continue;
+                moveToward(fTile, uTile);
+                break;
+            }
+        }
+    }
+
+    private void flee() {
+        for (Tile myUnit : myUnits) {
+            nextMoves.put(myUnit, map.getSafestNeighbour(myUnit, influenceMap));
+        }
+    }
+
+    private void moveToward(Tile targetTile, Tile myTile) {
         for (Aim aim : map.getDirections(myTile, targetTile)) {
             Tile nextTile = map.getTile(myTile, aim);
             if (!nextMoves.containsValue(nextTile)) {
