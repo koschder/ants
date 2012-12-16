@@ -90,7 +90,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
         List<Tile> formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, 0);
         if (getContainedFraction(formationTiles, myUnits) > 0.5) {
             // move forward
-            formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, 2);
+            formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, 4);
         }
         // perform positioning
         Set<Tile> targetedTiles = new HashSet<Tile>();
@@ -100,7 +100,8 @@ public class DefaultCombatPositioning implements CombatPositioning {
             for (Tile fTile : formationTiles) {
                 if (targetedTiles.contains(fTile))
                     continue;
-                moveToward(fTile, uTile);
+                Tile actualTile = moveToward(fTile, uTile, clusterCenter, formationTiles);
+                targetedTiles.add(actualTile);
                 break;
             }
         }
@@ -112,14 +113,26 @@ public class DefaultCombatPositioning implements CombatPositioning {
         }
     }
 
-    private void moveToward(Tile targetTile, Tile myTile) {
-        for (Aim aim : map.getDirections(myTile, targetTile)) {
+    private Tile moveToward(Tile targetTile, Tile myTile, Tile clusterCenter, List<Tile> formationTiles) {
+        final List<Aim> directions = map.getDirections(myTile, targetTile);
+        int shortestDistance = Integer.MAX_VALUE;
+        Tile bestTile = null;
+        for (Aim aim : directions) {
             Tile nextTile = map.getTile(myTile, aim);
-            if (!nextMoves.containsValue(nextTile)) {
-                nextMoves.put(myTile, nextTile);
+            if (nextMoves.containsValue(nextTile))
+                continue;
+            if (formationTiles.contains(nextTile)) {
+                bestTile = nextTile;
                 break;
             }
+            int dist = map.manhattanDistance(nextTile, clusterCenter);
+            if (dist < shortestDistance) {
+                shortestDistance = dist;
+                bestTile = nextTile;
+            }
         }
+        nextMoves.put(myTile, bestTile);
+        return bestTile == null ? myTile : bestTile;
     }
 
     private void sortByDistance(final Tile center, List<Tile> tiles) {
@@ -133,10 +146,10 @@ public class DefaultCombatPositioning implements CombatPositioning {
 
     private List<Tile> getFormationTiles(final Tile clusterCenter, final Tile enemyClusterCenter, int stepForward) {
         final int dist = map.getSquaredDistance(clusterCenter, enemyClusterCenter) - stepForward;
-        final int minDist = dist - 2;
-        final int maxDist = dist + 2;
+        final int minDist = dist - 5;
+        final int maxDist = dist + 5;
         BreadthFirstSearch bfs = new BreadthFirstSearch(map);
-        final List<Tile> formationTiles = bfs.floodFill(clusterCenter, dist, new GoalTest() {
+        final List<Tile> formationTiles = bfs.floodFill(clusterCenter, maxDist, new GoalTest() {
 
             @Override
             public boolean isGoal(Tile tile) {
@@ -155,7 +168,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
             if (containing.contains(candidate))
                 contained++;
         }
-        return contained / candidates.size();
+        return ((float) contained) / ((float) candidates.size());
     }
 
     private List<Tile> getTiles(List<Unit> units) {

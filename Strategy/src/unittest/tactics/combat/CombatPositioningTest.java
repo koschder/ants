@@ -9,7 +9,6 @@ import org.junit.Test;
 
 import tactics.combat.CombatPositioning;
 import tactics.combat.DefaultCombatPositioning;
-
 import api.entities.Tile;
 import api.entities.Unit;
 import api.strategy.InfluenceMap;
@@ -99,7 +98,7 @@ public class CombatPositioningTest {
     }
 
     @Test
-    public void testPositioning_2vs1_preClustered() {
+    public void testPositioning_2vs1_advance() {
         String sMap = "";
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
         sMap += "woooooooooowwwwwwwwwwooooooooooooooow";
@@ -124,5 +123,63 @@ public class CombatPositioningTest {
         CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myAnts, enemyAnts, null);
         assertEquals(new Tile(3, 3), pos.getNextTile(ant1));
         assertEquals(new Tile(3, 5), pos.getNextTile(ant2));
+    }
+
+    @Test
+    public void testPositioning_2vs1_split() {
+        String sMap = "";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+        sMap += "woooooooooowwwwwwwwwwooooooooooooooow";
+        sMap += "woo0oo1ooo0wwwwwwwwwwooooooooooooooow";
+        sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
+        sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
+        sMap += "wooooooowwwwwwwwwwwwwooooowooooooooow";
+        sMap += "woooooooooooowoooooooooooowooooooooow";
+        sMap += "woooooooooooowoooowooooooowooooooooow";
+        sMap += "wooooooooooooooooowooooooowooooooooow";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+
+        InfluenceTestMap map = new InfluenceTestMap(37, sMap);
+
+        final InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
+        List<Unit> enemyAnts = map.getUnits(1);
+        List<Unit> myAnts = map.getUnits(0);
+
+        final Unit ant1 = new TestUnit(0, new Tile(2, 3));
+        final Unit ant2 = new TestUnit(0, new Tile(2, 10));
+
+        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myAnts, enemyAnts, null);
+        assertEquals(new Tile(2, 4), pos.getNextTile(ant1));
+        assertEquals(new Tile(2, 9), pos.getNextTile(ant2));
+    }
+
+    @Test
+    public void testPositioning_3vs2() {
+        String sMap = "";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+        sMap += "woooooooooowwwwwwwwwwooooooooooooooow";
+        sMap += "wooooo1ooo0wwwwwwwwwwooooooooooooooow";
+        sMap += "wooooo1ooo0wwwwwwwwwwooooowooooooooow";
+        sMap += "wooooooooo0wwwwwwwwwwooooowooooooooow";
+        sMap += "wooooooowwwwwwwwwwwwwooooowooooooooow";
+        sMap += "woooooooooooowoooooooooooowooooooooow";
+        sMap += "woooooooooooowoooowooooooowooooooooow";
+        sMap += "wooooooooooooooooowooooooowooooooooow";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+
+        InfluenceTestMap map = new InfluenceTestMap(37, sMap);
+
+        final InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
+        List<Unit> enemyAnts = map.getUnits(1);
+        List<Unit> myAnts = map.getUnits(0);
+
+        final Unit ant1 = new TestUnit(0, new Tile(2, 10));
+        final Unit ant2 = new TestUnit(0, new Tile(3, 10));
+        final Unit ant3 = new TestUnit(0, new Tile(4, 10));
+
+        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myAnts, enemyAnts, null);
+        assertEquals(new Tile(2, 9), pos.getNextTile(ant1));
+        assertEquals(new Tile(2, 10), pos.getNextTile(ant2));
+        assertEquals(new Tile(4, 9), pos.getNextTile(ant3));
     }
 }
