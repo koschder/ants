@@ -9,11 +9,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.PathFinder;
 import pathfinder.PathFinder.Strategy;
 import pathfinder.SimplePathFinder;
 import search.BreadthFirstSearch;
 import search.BreadthFirstSearch.GoalTest;
+import strategy.LogCategory;
 import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
@@ -21,6 +24,7 @@ import api.pathfinder.SearchableUnitMap;
 import api.strategy.InfluenceMap;
 
 public class DefaultCombatPositioning implements CombatPositioning {
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.COMBAT_POSITIONING);
     protected SearchableUnitMap map;
     protected InfluenceMap influenceMap;
     protected List<Tile> myUnits;
@@ -38,10 +42,15 @@ public class DefaultCombatPositioning implements CombatPositioning {
 
     public DefaultCombatPositioning(SearchableUnitMap map, InfluenceMap influenceMap, List<Unit> myUnits,
             List<Unit> enemyUnits, Tile ultimateTarget) {
+        this(ultimateTarget, map, influenceMap, myUnits, getTiles(enemyUnits));
+    }
+
+    public DefaultCombatPositioning(Tile ultimateTarget, SearchableUnitMap map, InfluenceMap influenceMap,
+            List<Unit> myUnits, List<Tile> enemyUnits) {
         this.map = map;
         this.influenceMap = influenceMap;
         this.myUnits = getTiles(myUnits);
-        this.enemyUnits = getTiles(enemyUnits);
+        this.enemyUnits = enemyUnits;
         this.target = ultimateTarget;
         calculatePositions();
     }
@@ -66,6 +75,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
             attackEnemy();
             break;
         }
+        LOGGER.debug("Next moves: %s", nextMoves);
     }
 
     private void attackTarget() {
@@ -204,7 +214,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
         return ((float) contained) / ((float) candidates.size());
     }
 
-    private List<Tile> getTiles(List<Unit> units) {
+    private static List<Tile> getTiles(List<Unit> units) {
         List<Tile> tiles = new ArrayList<Tile>();
         for (Unit unit : units) {
             tiles.add(unit.getTile());

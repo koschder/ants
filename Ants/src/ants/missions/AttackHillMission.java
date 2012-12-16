@@ -8,6 +8,8 @@ import java.util.Map.Entry;
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.PathFinder.Strategy;
+import tactics.combat.AttackingCombatPositioning;
+import tactics.combat.CombatPositioning;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.search.AntsBreadthFirstSearch;
@@ -16,6 +18,7 @@ import ants.tasks.Task.Type;
 import ants.util.LiveInfo;
 import api.entities.Aim;
 import api.entities.Tile;
+import api.entities.Unit;
 
 /***
  * This mission used for attacking the enemies hills
@@ -195,7 +198,28 @@ public class AttackHillMission extends BaseMission {
 
     private void moveAnts() {
         List<Ant> antsToRelease = new ArrayList<Ant>();
+        AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
+        List<Tile> closeAnts = bfs.findFriendsInRadius(enemyHill, Ants.getWorld().getViewRadius2() * 2);
+        List<Tile> enemies = bfs.findEnemiesInRadius(enemyHill, Ants.getWorld().getViewRadius2() * 2);
+        List<Unit> combatAnts = new ArrayList<Unit>();
+        List<Ant> nonCombatAnts = new ArrayList<Ant>();
+        LOGGER.debug("closeAnts: %s", closeAnts);
+        LOGGER.debug("enemies: %s", enemies);
         for (Ant a : ants) {
+            if (false)// (closeAnts.contains(a.getTile()))
+                combatAnts.add(a);
+            else
+                nonCombatAnts.add(a);
+        }
+        LOGGER.debug("CombatAnts: %s, NonCombatAnts: %s", combatAnts, nonCombatAnts);
+        if (combatAnts.size() > 0) {
+            CombatPositioning pos = new AttackingCombatPositioning(enemyHill, Ants.getWorld(), Ants.getInfluenceMap(),
+                    combatAnts, enemies);
+            for (Unit ant : combatAnts) {
+                putMissionOrder((Ant) ant, pos.getNextTile(ant));
+            }
+        }
+        for (Ant a : nonCombatAnts) {
             LOGGER.info("Move ant %s with path %s enemyhill %s", a, a.getPath(), enemyHill);
             String abortReason = checkEnviroment(a, false, false, false);
             if (abortReason.length() > 0) {

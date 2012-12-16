@@ -41,12 +41,7 @@ public abstract class BaseBot extends Bot {
 
     @Override
     public void doTurn() {
-        for (LogCategory logCat : LogCategory.values()) {
-            if (logCat.useCustomLogFile()) {
-                Logger customFileLogger = LoggerFactory.getLogger(logCat);
-                customFileLogger.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
-            }
-        }
+        addTurnSummaryToLogfiles();
         LOGGER.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
 
         LOGGER.info("enemy_hills visible: %s", Ants.getWorld().getEnemyHills(), Ants.getWorld());
@@ -65,6 +60,28 @@ public abstract class BaseBot extends Bot {
         for (Ant unemployed : myUnemployedAnts) {
             LiveInfo.liveInfo(Ants.getAnts().getTurn(), unemployed.getTile(), "Unemployed ant: %s",
                     unemployed.getTile());
+        }
+    }
+
+    private void addTurnSummaryToLogfiles() {
+        for (LogCategory logCat : LogCategory.values()) {
+            addTurnSummary(logCat);
+        }
+        for (strategy.LogCategory logCat : strategy.LogCategory.values()) {
+            addTurnSummary(logCat);
+        }
+        for (influence.LogCategory logCat : influence.LogCategory.values()) {
+            addTurnSummary(logCat);
+        }
+        for (pathfinder.LogCategory logCat : pathfinder.LogCategory.values()) {
+            addTurnSummary(logCat);
+        }
+    }
+
+    private void addTurnSummary(logging.LogCategory logCat) {
+        if (logCat.useCustomLogFile()) {
+            Logger customFileLogger = LoggerFactory.getLogger(logCat);
+            customFileLogger.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
         }
     }
 

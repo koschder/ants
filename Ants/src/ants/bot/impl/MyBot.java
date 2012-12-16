@@ -67,6 +67,7 @@ public class MyBot extends BaseBot {
         LoggingConfig.configure(pathfinder.LogCategory.CLUSTERED_ASTAR, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.HPASTAR, LogLevel.INFO);
         LoggingConfig.configure(influence.LogCategory.INFLUENCE, LogLevel.INFO);
+        LoggingConfig.configure(strategy.LogCategory.COMBAT_POSITIONING, LogLevel.DEBUG);
     }
 
     protected void initTasks() {

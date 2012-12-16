@@ -11,6 +11,11 @@ import api.strategy.InfluenceMap;
 
 public class AttackingCombatPositioning extends DefaultCombatPositioning {
 
+    public AttackingCombatPositioning(Tile ultimateTarget, SearchableUnitMap map, InfluenceMap influenceMap,
+            List<Unit> myUnits, List<Tile> enemyUnits) {
+        super(ultimateTarget, map, influenceMap, myUnits, enemyUnits);
+    }
+
     public AttackingCombatPositioning(SearchableUnitMap map, InfluenceMap influenceMap, List<Unit> myUnits,
             List<Unit> enemyUnits, Tile ultimateTarget) {
         super(map, influenceMap, myUnits, enemyUnits, ultimateTarget);
