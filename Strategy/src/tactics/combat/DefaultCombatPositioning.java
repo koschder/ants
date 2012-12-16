@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import pathfinder.PathFinder;
+import pathfinder.PathFinder.Strategy;
+import pathfinder.SimplePathFinder;
 import search.BreadthFirstSearch;
 import search.BreadthFirstSearch.GoalTest;
 import api.entities.Aim;
@@ -54,8 +57,10 @@ public class DefaultCombatPositioning implements CombatPositioning {
             break;
         case ATTACK:
             attackTarget();
+            break;
         case CONTROL:
             controlTarget();
+            break;
         case DEFAULT:
         default:
             attackEnemy();
@@ -64,8 +69,29 @@ public class DefaultCombatPositioning implements CombatPositioning {
     }
 
     private void attackTarget() {
-        // TODO Auto-generated method stub
+        final Tile clusterCenter = map.getClusterCenter(myUnits);
+        BreadthFirstSearch bfs = new BreadthFirstSearch(map);
+        final int distanceToTarget = map.getSquaredDistance(clusterCenter, target);
+        List<Tile> enemiesInTheWay = bfs.floodFill(target, distanceToTarget, new GoalTest() {
 
+            @Override
+            public boolean isGoal(Tile tile) {
+                return enemyUnits.contains(tile) && map.getSquaredDistance(clusterCenter, tile) < distanceToTarget;
+            }
+        });
+        if (enemiesInTheWay.isEmpty()) {
+            for (Tile uTile : myUnits) {
+                PathFinder pf = new SimplePathFinder(map, influenceMap);
+                List<Tile> path = pf.search(Strategy.AStar, uTile, target);
+                if (path != null && path.size() > 1 && !nextMoves.containsValue(path.get(1))) {
+                    nextMoves.put(uTile, path.get(1));
+                } else
+                    nextMoves.put(uTile, uTile);
+            }
+        } else {
+            final Tile enemyClusterCenter = map.getClusterCenter(enemiesInTheWay);
+            attackEnemy(clusterCenter, enemyClusterCenter);
+        }
     }
 
     private void defendTarget() {
@@ -87,6 +113,10 @@ public class DefaultCombatPositioning implements CombatPositioning {
     private void attackEnemy() {
         Tile clusterCenter = map.getClusterCenter(myUnits);
         Tile enemyClusterCenter = map.getClusterCenter(enemyUnits);
+        attackEnemy(clusterCenter, enemyClusterCenter);
+    }
+
+    private void attackEnemy(Tile clusterCenter, Tile enemyClusterCenter) {
         List<Tile> formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, 0);
         if (getContainedFraction(formationTiles, myUnits) > 0.5) {
             // move forward
@@ -119,6 +149,8 @@ public class DefaultCombatPositioning implements CombatPositioning {
         Tile bestTile = null;
         for (Aim aim : directions) {
             Tile nextTile = map.getTile(myTile, aim);
+            if (!map.isPassable(nextTile))
+                continue;
             if (nextMoves.containsValue(nextTile))
                 continue;
             if (formationTiles.contains(nextTile)) {
@@ -131,8 +163,9 @@ public class DefaultCombatPositioning implements CombatPositioning {
                 bestTile = nextTile;
             }
         }
+        bestTile = bestTile == null ? myTile : bestTile;
         nextMoves.put(myTile, bestTile);
-        return bestTile == null ? myTile : bestTile;
+        return bestTile;
     }
 
     private void sortByDistance(final Tile center, List<Tile> tiles) {

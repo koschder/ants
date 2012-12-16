@@ -21,14 +21,14 @@ public class AttackingCombatPositioning extends DefaultCombatPositioning {
         Tile clusterCenter = map.getClusterCenter(myUnits);
         BreadthFirstSearch bfs = new BreadthFirstSearch(map);
         int distanceToTarget = map.getSquaredDistance(clusterCenter, target);
-        List<Tile> enemiesGuardingTarget = bfs.floodFill(clusterCenter, distanceToTarget, new GoalTest() {
+        List<Tile> enemiesGuardingTarget = bfs.floodFill(target, distanceToTarget, new GoalTest() {
 
             @Override
             public boolean isGoal(Tile tile) {
                 return enemyUnits.contains(tile);
             }
         });
-        if ((enemiesGuardingTarget.size() * 2) < myUnits.size())
+        if ((enemiesGuardingTarget.size() * 2) <= myUnits.size())
             return Mode.ATTACK;
 
         // TODO if no enemies are near & we have at least 2 units, return Mode.CONTROL
