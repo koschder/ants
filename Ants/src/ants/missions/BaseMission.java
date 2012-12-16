@@ -9,8 +9,11 @@ import java.util.Map;
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.PathFinder.Strategy;
+import search.BreadthFirstSearch;
+import search.BreadthFirstSearch.GoalTest;
 import ants.LogCategory;
 import ants.entities.Ant;
+import ants.entities.Ilk;
 import ants.state.Ants;
 import api.entities.Aim;
 import api.entities.Tile;
@@ -103,10 +106,10 @@ public abstract class BaseMission implements Mission {
      */
     protected String checkEnviroment(Ant ant, boolean checkFood, boolean checkEnemyAnts, boolean checkEnemyHill) {
         final boolean foodNearby = checkFood && isFoodNearby(ant);
-        final boolean enemyIsMayor = false;// checkEnemyAnts && isEnemyMajor(ant);
+        final boolean enemyIsSuperior = checkEnemyAnts && isEnemySuperior(ant);
         boolean enemyHillNearby = checkEnemyHill && enemyHillNearby(ant);
 
-        return (foodNearby ? "food," : "") + (enemyIsMayor ? "enemy," : "") + (enemyHillNearby ? "enemyHill," : "");
+        return (foodNearby ? "food," : "") + (enemyIsSuperior ? "enemy," : "") + (enemyHillNearby ? "enemyHill," : "");
     }
 
     private boolean enemyHillNearby(Ant ant) {
@@ -123,10 +126,24 @@ public abstract class BaseMission implements Mission {
         return false;
     }
 
-    // private boolean isEnemyMajor(Ant ant) {
-    // List<Ant> enemy = ant.getEnemiesInRadius(Ants.getWorld().getViewRadius2(), false);
-    // return enemy.size() > getAnts().size();
-    // }
+    private boolean isEnemySuperior(final Ant ant) {
+        BreadthFirstSearch bfs = new BreadthFirstSearch(Ants.getWorld());
+        final Tile target;
+        if (ant.getPath().size() < 6)
+            target = ant.getPathEnd();
+        else
+            target = ant.getPath().get(5);
+        final int distanceToTarget = Ants.getWorld().getSquaredDistance(ant.getTile(), target);
+        List<Tile> enemiesInTheWay = bfs.floodFill(target, distanceToTarget, new GoalTest() {
+
+            @Override
+            public boolean isGoal(Tile tile) {
+                return Ants.getWorld().getIlk(tile) == Ilk.ENEMY_ANT
+                        && Ants.getWorld().getSquaredDistance(ant.getTile(), tile) < distanceToTarget;
+            }
+        });
+        return enemiesInTheWay.size() >= getAnts().size();
+    }
 
     /**
      * food is nearby but not on the path

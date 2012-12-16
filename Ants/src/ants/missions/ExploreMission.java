@@ -48,7 +48,7 @@ public class ExploreMission extends PathMission {
 
         for (Ant ant : this.ants) {
             // TODO really abort the mission if only one ant found something more interesting?
-            String abortReason = checkEnviroment(ant, true, false, true);
+            String abortReason = checkEnviroment(ant, true, true, true);
             if (abortReason.length() > 0) {
                 return "Found something [" + abortReason + "] more interesting";
             }
