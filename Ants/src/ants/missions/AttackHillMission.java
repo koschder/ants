@@ -215,7 +215,7 @@ public class AttackHillMission extends BaseMission {
                 putMissionOrder((Ant) ant, pos.getNextTile(ant));
             }
             LiveInfo.liveInfo(Ants.getAnts().getTurn(), enemyHill,
-                    "AttackingCombatPositioning for EnemyHill %s (mileStone %s) " + pos.getLog(), enemyHill, mileStone);
+                    "AttackingCombatPositioning for EnemyHill %s (mileStone: %s) " + pos.getLog(), enemyHill, mileStone);
         }
     }
 
