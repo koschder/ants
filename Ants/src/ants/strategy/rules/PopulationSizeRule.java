@@ -12,9 +12,9 @@ public class PopulationSizeRule extends BaseResourceAllocationRule {
     public void allocateResources() {
         final int popSize = Ants.getPopulation().getMyAnts().size();
         if (popSize < 25) {
-            incrementResources(Type.GATHER_FOOD, 21, Type.ATTACK_HILLS, Type.COMBAT, Type.DEFEND_HILL);
+            incrementResources(Type.GATHER_FOOD, 20, Type.ATTACK_HILLS, Type.DEFEND_HILL);
         } else if (popSize < 10) {
-            incrementResources(Type.GATHER_FOOD, 51, Type.ATTACK_HILLS, Type.COMBAT, Type.DEFEND_HILL);
+            incrementResources(Type.GATHER_FOOD, 50, Type.ATTACK_HILLS, Type.DEFEND_HILL);
         }
         if (popSize < 8 * Ants.getWorld().getMyHills().size()) {
             incrementResources(Type.GATHER_FOOD, 5, Type.DEFEND_HILL);

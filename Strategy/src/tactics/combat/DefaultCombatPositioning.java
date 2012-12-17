@@ -137,7 +137,12 @@ public class DefaultCombatPositioning implements CombatPositioning {
 
     private void attackEnemy() {
         Tile clusterCenter = map.getClusterCenter(myUnits);
-        Tile enemyClusterCenter = map.getClusterCenter(enemyUnits);
+        Tile enemyClusterCenter;
+        // TODO this should really be a separate mode, so we can actually do something sensible
+        if (enemyUnits.isEmpty())
+            enemyClusterCenter = map.getSafestNeighbour(myUnits.get(myUnits.size() - 1), influenceMap);
+        else
+            enemyClusterCenter = map.getClusterCenter(enemyUnits);
         attackEnemy(clusterCenter, enemyClusterCenter);
     }
 
