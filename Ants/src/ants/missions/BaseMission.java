@@ -14,6 +14,7 @@ import search.BreadthFirstSearch.GoalTest;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Ilk;
+import ants.search.AntsBreadthFirstSearch;
 import ants.state.Ants;
 import api.entities.Aim;
 import api.entities.Tile;
@@ -177,20 +178,11 @@ public abstract class BaseMission implements Mission {
 
     protected Map<Ant, List<Tile>> gatherAnts(Tile tile, int amount, int attractionDistance) {
         Map<Ant, List<Tile>> newAnts = new HashMap<Ant, List<Tile>>();
-        for (Ant a : Ants.getPopulation().getMyUnemployedAnts()) {
-            // if no additional ant is available, don't try to gather any more
-            if (!Ants.getPopulation().isNumberOfAntsAvailable(getTaskType(), 1)) {
-                LOGGER.info("no ant ressources avaiable for point %s", tile);
-                break;
-            }
-
-            if (newAnts.size() >= amount)
-                break;
-
-            if (Ants.getWorld().manhattanDistance(a.getTile(), tile) > attractionDistance) {
-                LOGGER.info("Ant %s it to far away for point %s, cant gather for mission", a, tile);
-                continue; // to far away
-            }
+        // don't search more ants than we are allowed to recruit
+        int maxAnts = Math.min(amount, Ants.getPopulation().getMaxAnts(getTaskType()));
+        AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
+        // create a path for all available ants within distance
+        for (Ant a : bfs.findUnemployedAntsInRadius(tile, maxAnts, attractionDistance)) {
             List<Tile> p = Ants.getPathFinder().search(Strategy.AStar, a.getTile(), tile);
             if (p == null)
                 continue;
