@@ -30,6 +30,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
     protected List<Tile> myUnits;
     protected List<Tile> enemyUnits;
     protected Tile target;
+    protected String log;
     protected Map<Tile, Tile> nextMoves = new HashMap<Tile, Tile>();
 
     protected enum Mode {
@@ -57,6 +58,9 @@ public class DefaultCombatPositioning implements CombatPositioning {
 
     private void calculatePositions() {
         Mode mode = determineMode();
+        log += "mode is: " + mode;
+        log += ", myUnits: " + myUnits;
+        log += ", enemyUnits: " + enemyUnits;
         switch (mode) {
         case FLEE:
             flee();
@@ -79,9 +83,13 @@ public class DefaultCombatPositioning implements CombatPositioning {
     }
 
     private void attackTarget() {
+        String log;
+        log = " AttackTarget: ";
         final Tile clusterCenter = map.getClusterCenter(myUnits);
-        BreadthFirstSearch bfs = new BreadthFirstSearch(map);
+        log += ", MyClusterCenter: " + clusterCenter;
+
         final int distanceToTarget = map.getSquaredDistance(clusterCenter, target);
+        BreadthFirstSearch bfs = new BreadthFirstSearch(map);
         List<Tile> enemiesInTheWay = bfs.floodFill(target, distanceToTarget, new GoalTest() {
 
             @Override
@@ -89,6 +97,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
                 return enemyUnits.contains(tile) && map.getSquaredDistance(clusterCenter, tile) < distanceToTarget;
             }
         });
+        log += ", enemiesInTheWay: " + enemiesInTheWay;
         if (enemiesInTheWay.isEmpty()) {
             for (Tile uTile : myUnits) {
                 PathFinder pf = new SimplePathFinder(map, influenceMap);
@@ -102,6 +111,12 @@ public class DefaultCombatPositioning implements CombatPositioning {
             final Tile enemyClusterCenter = map.getClusterCenter(enemiesInTheWay);
             attackEnemy(clusterCenter, enemyClusterCenter);
         }
+        LOGGER.debug(log);
+        this.log += log;
+    }
+
+    public String getLog() {
+        return this.log;
     }
 
     private void defendTarget() {
@@ -127,6 +142,11 @@ public class DefaultCombatPositioning implements CombatPositioning {
     }
 
     private void attackEnemy(Tile clusterCenter, Tile enemyClusterCenter) {
+        String log;
+
+        log = "AttackEnemy: clusterCenter:" + clusterCenter;
+        log += ", enemyClusterCenter:" + enemyClusterCenter;
+
         List<Tile> formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, 0);
         if (getContainedFraction(formationTiles, myUnits) > 0.5) {
             // move forward
@@ -145,6 +165,8 @@ public class DefaultCombatPositioning implements CombatPositioning {
                 break;
             }
         }
+        LOGGER.debug(log);
+        this.log = log;
     }
 
     private void flee() {

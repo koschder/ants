@@ -49,8 +49,8 @@ public class LiveInfo {
                 delimiter = ",";
                 liveInfo.seek(liveInfo.length() - 1); // this basically reads n bytes in the file
             }
-            String msg = String.format(message, parameters).replace("\"", "'").replace("<r", "&lt;r")
-                    .replace("\n", "<br/>");
+            message = String.format(message, parameters);
+            String msg = message.replace("\"", "'").replace("<r", "&lt;r").replace("\n", "<br/>");
             String sLiveInfo = String.format("%s\n\"%s#%s#%s#%s\" : \"%s\"", delimiter, liveInfo.length(), turn,
                     tile.getRow(), tile.getCol(), msg);
             // liveInfo.write("\n".getBytes());

@@ -4,14 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
 
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.PathFinder.Strategy;
+import search.BreadthFirstSearch;
+import search.BreadthFirstSearch.GoalTest;
 import tactics.combat.AttackingCombatPositioning;
 import tactics.combat.CombatPositioning;
 import ants.LogCategory;
 import ants.entities.Ant;
+import ants.entities.Ilk;
 import ants.search.AntsBreadthFirstSearch;
 import ants.state.Ants;
 import ants.tasks.Task.Type;
@@ -35,8 +39,8 @@ public class AttackHillMission extends BaseMission {
      */
     Tile enemyHill;
     int attackSaftey = 35;
-    int staySaftey = 70;
-    int gatherAntsRadius = 20;
+    int staySaftey = 75;
+    int gatherAntsRadius = 30;
     State missionState = State.AttackEnemyHill;
 
     enum State {
@@ -197,6 +201,89 @@ public class AttackHillMission extends BaseMission {
     }
 
     private void moveAnts() {
+
+        List<ArrayList<Unit>> groupedAnts = groupAnts(4, 10);
+        for (List<Unit> group : groupedAnts) {
+            List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, group.get(0).getTile(), enemyHill);
+
+            Tile mileStone = path.size() <= 10 ? path.get(path.size() - 1) : path.get(10);
+
+            List<Tile> enemy = getEnemiesInTheWay(Ants.getWorld().getClusterCenter(getTile(group)), mileStone);
+            CombatPositioning pos = new AttackingCombatPositioning(mileStone, Ants.getWorld(), Ants.getInfluenceMap(),
+                    group, enemy);
+            for (Unit ant : group) {
+                putMissionOrder((Ant) ant, pos.getNextTile(ant));
+            }
+            LiveInfo.liveInfo(Ants.getAnts().getTurn(), enemyHill,
+                    "AttackingCombatPositioning for EnemyHill %s (mileStone %s) " + pos.getLog(), enemyHill, mileStone);
+        }
+    }
+
+    private List<Tile> getTile(List<Unit> group) {
+        List<Tile> tiles = new ArrayList<Tile>();
+        for (Unit u : group)
+            tiles.add(u.getTile());
+        return tiles;
+    }
+
+    private List<Tile> getEnemiesInTheWay(final Tile clusterCenter, Tile target) {
+        final int distanceToTarget = Ants.getWorld().getSquaredDistance(clusterCenter, target);
+        BreadthFirstSearch bfs = new BreadthFirstSearch(Ants.getWorld());
+        List<Tile> enemiesInTheWay = bfs.floodFill(target, distanceToTarget, new GoalTest() {
+
+            @Override
+            public boolean isGoal(Tile tile) {
+                return Ants.getWorld().getIlk(tile) == Ilk.ENEMY_ANT
+                        && Ants.getWorld().getSquaredDistance(clusterCenter, tile) < distanceToTarget;
+            }
+        });
+        return enemiesInTheWay;
+    }
+
+    private List<ArrayList<Unit>> groupAnts(int radius, int maxDistance2) {
+        List<ArrayList<Unit>> groupedAnts = new ArrayList<ArrayList<Unit>>();
+        List<Unit> antAllocated = new ArrayList<Unit>();
+        for (Ant a : ants) {
+            if (antAllocated.contains(a))
+                continue;
+            LOGGER.debug("Calculate Near ants for: %s", a);
+            ArrayList<Unit> nearAnts = getNearAnts(a, radius, maxDistance2);
+            for (Unit allocated : antAllocated) {
+                if (nearAnts.contains(allocated)) {
+                    nearAnts.remove(allocated);
+                }
+            }
+            groupedAnts.add(nearAnts);
+            antAllocated.addAll(nearAnts);
+        }
+        return groupedAnts;
+    }
+
+    private ArrayList<Unit> getNearAnts(Ant baseAnt, int radius, int maxDistance2) {
+        AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
+        ArrayList<Unit> nearAnts = new ArrayList<Unit>();
+        nearAnts.add(baseAnt);
+        PriorityQueue<Tile> frontier = new PriorityQueue<Tile>();
+        frontier.add(baseAnt.getTile());
+        while (frontier.size() > 0) {
+            LOGGER.debug("frontier is: %s nearAnts are: %s", frontier, nearAnts);
+            Tile a = frontier.remove();
+            List<Tile> tiles = bfs.findFriendsInRadius(a, radius * radius);
+            for (Tile t : tiles) {
+                if (frontier.contains(t) || Ants.getWorld().manhattanDistance(t, baseAnt.getTile()) > maxDistance2)
+                    continue;
+                Ant temp = new Ant(t, 0);
+                if (!ants.contains(temp) || nearAnts.contains(temp))
+                    continue;
+
+                nearAnts.add(ants.get(ants.indexOf(temp)));
+                frontier.add(a);
+            }
+        }
+        return nearAnts;
+    }
+
+    private void moveAnts2() {
         List<Ant> antsToRelease = new ArrayList<Ant>();
         AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
         List<Tile> closeAnts = bfs.findFriendsInRadius(enemyHill, Ants.getWorld().getViewRadius2() * 2);
@@ -206,7 +293,7 @@ public class AttackHillMission extends BaseMission {
         LOGGER.debug("closeAnts: %s", closeAnts);
         LOGGER.debug("enemies: %s", enemies);
         for (Ant a : ants) {
-            if (false)// (closeAnts.contains(a.getTile()))
+            if (closeAnts.contains(a.getTile()))
                 combatAnts.add(a);
             else
                 nonCombatAnts.add(a);
@@ -218,6 +305,8 @@ public class AttackHillMission extends BaseMission {
             for (Unit ant : combatAnts) {
                 putMissionOrder((Ant) ant, pos.getNextTile(ant));
             }
+            LiveInfo.liveInfo(Ants.getAnts().getTurn(), enemyHill, "AttackingCombatPositioning for %s " + pos.getLog(),
+                    enemyHill);
         }
         for (Ant a : nonCombatAnts) {
             LOGGER.info("Move ant %s with path %s enemyhill %s", a, a.getPath(), enemyHill);
