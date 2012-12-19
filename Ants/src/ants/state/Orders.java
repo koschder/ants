@@ -1,8 +1,6 @@
 package ants.state;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -16,7 +14,6 @@ import ants.LogCategory;
 import ants.entities.Ant;
 import ants.missions.Mission;
 import ants.tasks.BaseTask;
-import ants.tasks.Task.Type;
 import ants.util.LiveInfo;
 import api.entities.Aim;
 import api.entities.Move;
@@ -160,19 +157,6 @@ public class Orders {
     }
 
     public void executeMissions(List<Mission> missions) {
-        Collections.sort(missions, new Comparator<Mission>() {
-
-            @Override
-            public int compare(Mission o1, Mission o2) {
-                // TODO this is just a silly hack to ensure the ants on completed 1-step combat tasks are available for
-                // gatherAnts();
-                if (o1.getTaskType() == Type.COMBAT)
-                    return -1;
-                else if (o2.getTaskType() == Type.COMBAT)
-                    return 1;
-                return 0;
-            }
-        });
         for (Iterator<Mission> it = missions.iterator(); it.hasNext();) {
             Mission mission = it.next();
             // LOGGER.debug("mission: %s", mission);

@@ -35,8 +35,8 @@ public class MissionTask extends BaseTask {
     @Override
     public void doPerform() {
         // declare explicit sortOrder for gathering mission types
-        List<Mission> missions = sort(Ants.getOrders().getMissions(), Type.DEFEND_HILL, Type.GATHER_FOOD,
-                Type.ATTACK_HILLS);
+        List<Mission> missions = sort(Ants.getOrders().getMissions(), Type.EXPLORE, Type.COMBAT, Type.DEFEND_HILL,
+                Type.GATHER_FOOD, Type.ATTACK_HILLS);
         LOGGER.debug("Current mission count: %s", missions.size());
         LOGGER.debug("Missions: %s", missions);
         Ants.getOrders().executeMissions(missions);
