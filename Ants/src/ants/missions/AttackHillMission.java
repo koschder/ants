@@ -200,25 +200,6 @@ public class AttackHillMission extends BaseMission {
         }
     }
 
-    private void moveAnts() {
-
-        List<ArrayList<Unit>> groupedAnts = groupAnts(4, 10);
-        for (List<Unit> group : groupedAnts) {
-            List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, group.get(0).getTile(), enemyHill);
-
-            Tile mileStone = path.size() <= 10 ? path.get(path.size() - 1) : path.get(10);
-
-            List<Tile> enemy = getEnemiesInTheWay(Ants.getWorld().getClusterCenter(getTile(group)), mileStone);
-            CombatPositioning pos = new AttackingCombatPositioning(mileStone, Ants.getWorld(), Ants.getInfluenceMap(),
-                    group, enemy);
-            for (Unit ant : group) {
-                putMissionOrder((Ant) ant, pos.getNextTile(ant));
-            }
-            LiveInfo.liveInfo(Ants.getAnts().getTurn(), enemyHill,
-                    "AttackingCombatPositioning for EnemyHill %s (mileStone: %s) " + pos.getLog(), enemyHill, mileStone);
-        }
-    }
-
     private List<Tile> getTile(List<Unit> group) {
         List<Tile> tiles = new ArrayList<Tile>();
         for (Unit u : group)
@@ -283,47 +264,74 @@ public class AttackHillMission extends BaseMission {
         return nearAnts;
     }
 
-    private void moveAnts2() {
-        List<Ant> antsToRelease = new ArrayList<Ant>();
-        AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
-        List<Tile> closeAnts = bfs.findFriendsInRadius(enemyHill, Ants.getWorld().getViewRadius2() * 2);
-        List<Tile> enemies = bfs.findEnemiesInRadius(enemyHill, Ants.getWorld().getViewRadius2() * 2);
-        List<Unit> combatAnts = new ArrayList<Unit>();
-        List<Ant> nonCombatAnts = new ArrayList<Ant>();
-        LOGGER.debug("closeAnts: %s", closeAnts);
-        LOGGER.debug("enemies: %s", enemies);
-        for (Ant a : ants) {
-            if (closeAnts.contains(a.getTile()))
-                combatAnts.add(a);
-            else
-                nonCombatAnts.add(a);
-        }
-        LOGGER.debug("CombatAnts: %s, NonCombatAnts: %s", combatAnts, nonCombatAnts);
-        if (combatAnts.size() > 0) {
-            CombatPositioning pos = new AttackingCombatPositioning(enemyHill, Ants.getWorld(), Ants.getInfluenceMap(),
-                    combatAnts, enemies);
-            for (Unit ant : combatAnts) {
-                putMissionOrder((Ant) ant, pos.getNextTile(ant));
-            }
-            LiveInfo.liveInfo(Ants.getAnts().getTurn(), enemyHill, "AttackingCombatPositioning for %s " + pos.getLog(),
-                    enemyHill);
-        }
-        for (Ant a : nonCombatAnts) {
-            LOGGER.info("Move ant %s with path %s enemyhill %s", a, a.getPath(), enemyHill);
-            String abortReason = checkEnviroment(a, false, false, false);
-            if (abortReason.length() > 0) {
-                // if food is nearby we get the food first.
-                LOGGER.info("remove ant %s something interesting [%s] nearby", a, abortReason);
-                antsToRelease.add(a);
-            } else {
-                if (!move(a)) {
+    private void moveAnts() {
+        if (missionState == State.AttackEnemyHill) {
+            moveInCombatFormation();
+        } else { // missionState is DestroyEnemyHill or ControlEnemyHill
+            List<Ant> antsToRelease = new ArrayList<Ant>();
+            for (Ant a : ants) {
+                LOGGER.info("Move ant %s with path %s enemyhill %s", a, a.getPath(), enemyHill);
+                String abortReason = checkEnviroment(a, false, false, false);
+                if (abortReason.length() > 0) {
+                    // if food is nearby we get the food first.
+                    LOGGER.info("remove ant %s something interesting [%s] nearby", a, abortReason);
                     antsToRelease.add(a);
+                } else {
+                    if (!move(a)) {
+                        antsToRelease.add(a);
+                    }
                 }
             }
+            LOGGER.info("Release ants %s of AttackHillMission %s", antsToRelease, enemyHill);
+            removeAnts(antsToRelease);
         }
-        LOGGER.info("Release ants %s of AttackHillMission %s", antsToRelease, enemyHill);
-        removeAnts(antsToRelease);
     }
+
+    private void moveInCombatFormation() {
+        List<ArrayList<Unit>> groupedAnts = groupAnts(4, 10);
+        for (List<Unit> group : groupedAnts) {
+            List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, group.get(0).getTile(), enemyHill);
+
+            Tile mileStone = path.size() <= 10 ? path.get(path.size() - 1) : path.get(10);
+
+            List<Tile> enemy = getEnemiesInTheWay(Ants.getWorld().getClusterCenter(getTile(group)), mileStone);
+            CombatPositioning pos = new AttackingCombatPositioning(mileStone, Ants.getWorld(), Ants.getInfluenceMap(),
+                    group, enemy);
+            for (Unit ant : group) {
+                putMissionOrder((Ant) ant, pos.getNextTile(ant));
+            }
+            LiveInfo.liveInfo(Ants.getAnts().getTurn(), enemyHill,
+                    "AttackingCombatPositioning for EnemyHill %s (mileStone: %s) " + pos.getLog(), enemyHill, mileStone);
+        }
+    }
+
+    // private void moveAnts2() {
+    //
+    // AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
+    // List<Tile> closeAnts = bfs.findFriendsInRadius(enemyHill, Ants.getWorld().getViewRadius2() * 2);
+    // List<Tile> enemies = bfs.findEnemiesInRadius(enemyHill, Ants.getWorld().getViewRadius2() * 2);
+    // List<Unit> combatAnts = new ArrayList<Unit>();
+    // List<Ant> nonCombatAnts = new ArrayList<Ant>();
+    // LOGGER.debug("closeAnts: %s", closeAnts);
+    // LOGGER.debug("enemies: %s", enemies);
+    // for (Ant a : ants) {
+    // if (closeAnts.contains(a.getTile()))
+    // combatAnts.add(a);
+    // else
+    // nonCombatAnts.add(a);
+    // }
+    // LOGGER.debug("CombatAnts: %s, NonCombatAnts: %s", combatAnts, nonCombatAnts);
+    // if (combatAnts.size() > 0) {
+    // CombatPositioning pos = new AttackingCombatPositioning(enemyHill, Ants.getWorld(), Ants.getInfluenceMap(),
+    // combatAnts, enemies);
+    // for (Unit ant : combatAnts) {
+    // putMissionOrder((Ant) ant, pos.getNextTile(ant));
+    // }
+    // LiveInfo.liveInfo(Ants.getAnts().getTurn(), enemyHill, "AttackingCombatPositioning for %s " + pos.getLog(),
+    // enemyHill);
+    // }
+    //
+    // }
 
     private boolean move(Ant ant) {
         if (missionState == State.DestroyHill) {
@@ -332,8 +340,7 @@ public class AttackHillMission extends BaseMission {
                 return false;
             }
             return moveToNextTileOnPath(ant);
-        }
-        if (missionState == State.ControlEnemyHill) {
+        } else if (missionState == State.ControlEnemyHill) {
             List<Aim> directions = Ants.getWorld().getDirections(ant.getTile(), enemyHill);
             if (Ants.getWorld().manhattanDistance(ant.getTile(), enemyHill) == 2 && directions.size() == 2) {
                 LOGGER.info("Ant %s is controlling ControlEnemyHill, keep position.", ant);
@@ -343,75 +350,77 @@ public class AttackHillMission extends BaseMission {
                 if (moveToSide(ant, directions.get(0)))
                     return true;
             }
-        }
-
-        if (!recalculatePath(ant)) {
-            LOGGER.info("Ant has a invalid path, and cannot be recalculated", ant);
-            return false;
-        }
-        if (!hasAntsOnAttackLine(ant) && hasAntBehind(ant)) {
-            if (moveToSide(ant, ant.currentDirection())) {
-                return true;
-            }
-
-        } else if (!hasAntsOnAttackLine(ant) && hasFollowingAnts(ant)) {
-            LOGGER.info("Ant %s is wating on other ants witch are following behind.", ant);
             putMissionOrder(ant);
             return true;
         }
-
-        Tile nextStep = ant.getPath().get(0);
-        int safetyNextTile = (Ants.getInfluenceMap().getSafety(nextStep));
-        boolean safeToMoveForward = safetyNextTile > attackSaftey || missionState != State.AttackEnemyHill;
-        if (safeToMoveForward) {
-            LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "next tile safety %s", safetyNextTile);
-            LOGGER.info("AttackHillMission: ant %s trying forward move to EnemyHill is %s (safety: %s)", ant,
-                    enemyHill, safetyNextTile);
-            if (putMissionOrder(ant, nextStep)) {
-                LOGGER.info("AttackHillMission: ant %s performing forward move to EnemyHill is %s (safety: %s)", ant,
-                        enemyHill, safetyNextTile);
-                ant.getPath().remove(0);
-            } else {
-                if (blockedByAntInMission(ant))
-                    LOGGER.info("AttackHillMission: %s is blocked by ant in mission. try to calcuate offsetpath", ant);
-                if (moveToOffsetPath(ant)) {
-                    LOGGER.info("AttackHillMission: offsetpath calculated sucessful for ant %s", ant);
-                    return true;
-                }
-                putMissionOrder(ant);
-            }
-            return true;
-        } else {
-            LOGGER.info("AttackHillMission: ant %s NO forward move to EnemyHill is %s (safety: %s)", ant, enemyHill,
-                    safetyNextTile);
-        }
-        int currentSafety = (Ants.getInfluenceMap().getSafety(ant.getTile()));
-        LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "current safety %s next tile safety %s",
-                currentSafety, safetyNextTile);
-        if (currentSafety > staySaftey) {
-            // current position is safety enough
-            LOGGER.info(
-                    "AttackHillMission:current position is safety enough (%s) safteyNextTile (%s), keep ant %s on position. Turns waited %s",
-                    currentSafety, safetyNextTile, ant, ant.getTurnsWaited());
-            putMissionOrder(ant);
-        } else {
-            moveToSafestTile(ant);
-        }
-        return true;
+        throw new IllegalArgumentException("invalid missionState in move(Ant ant): " + missionState);
+        // if (!recalculatePath(ant)) {
+        // LOGGER.info("Ant has a invalid path, and cannot be recalculated", ant);
+        // return false;
+        // }
+        // if (!hasAntsOnAttackLine(ant) && hasAntBehind(ant)) {
+        // if (moveToSide(ant, ant.currentDirection())) {
+        // return true;
+        // }
+        //
+        // } else if (!hasAntsOnAttackLine(ant) && hasFollowingAnts(ant)) {
+        // LOGGER.info("Ant %s is wating on other ants witch are following behind.", ant);
+        // putMissionOrder(ant);
+        // return true;
+        // }
+        //
+        // Tile nextStep = ant.getPath().get(0);
+        // int safetyNextTile = (Ants.getInfluenceMap().getSafety(nextStep));
+        // boolean safeToMoveForward = safetyNextTile > attackSaftey || missionState != State.AttackEnemyHill;
+        // if (safeToMoveForward) {
+        // LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "next tile safety %s", safetyNextTile);
+        // LOGGER.info("AttackHillMission: ant %s trying forward move to EnemyHill is %s (safety: %s)", ant,
+        // enemyHill, safetyNextTile);
+        // if (putMissionOrder(ant, nextStep)) {
+        // LOGGER.info("AttackHillMission: ant %s performing forward move to EnemyHill is %s (safety: %s)", ant,
+        // enemyHill, safetyNextTile);
+        // ant.getPath().remove(0);
+        // } else {
+        // if (blockedByAntInMission(ant))
+        // LOGGER.info("AttackHillMission: %s is blocked by ant in mission. try to calcuate offsetpath", ant);
+        // if (moveToOffsetPath(ant)) {
+        // LOGGER.info("AttackHillMission: offsetpath calculated sucessful for ant %s", ant);
+        // return true;
+        // }
+        // putMissionOrder(ant);
+        // }
+        // return true;
+        // } else {
+        // LOGGER.info("AttackHillMission: ant %s NO forward move to EnemyHill is %s (safety: %s)", ant, enemyHill,
+        // safetyNextTile);
+        // }
+        // int currentSafety = (Ants.getInfluenceMap().getSafety(ant.getTile()));
+        // LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "current safety %s next tile safety %s",
+        // currentSafety, safetyNextTile);
+        // if (currentSafety > staySaftey) {
+        // // current position is safety enough
+        // LOGGER.info(
+        // "AttackHillMission:current position is safety enough (%s) safteyNextTile (%s), keep ant %s on position. Turns waited %s",
+        // currentSafety, safetyNextTile, ant, ant.getTurnsWaited());
+        // putMissionOrder(ant);
+        // } else {
+        // moveToSafestTile(ant);
+        // }
+        // return true;
     }
 
-    private void moveToSafestTile(Ant ant) {
-        Tile safestTile = Ants.getWorld().getSafestNeighbour(ant.getTile(), Ants.getInfluenceMap());
-        if (safestTile != null) {
-            if (putMissionOrder(ant, safestTile)) {
-                ant.getPath().add(0, ant.getTile());
-                LOGGER.info("AttackHillMission:dangerous here! move ant %s backwards to %s. enemyHill %s", ant,
-                        safestTile, enemyHill);
-            }
-        } else {
-            putMissionOrder(ant);
-        }
-    }
+    // private void moveToSafestTile(Ant ant) {
+    // Tile safestTile = Ants.getWorld().getSafestNeighbour(ant.getTile(), Ants.getInfluenceMap());
+    // if (safestTile != null) {
+    // if (putMissionOrder(ant, safestTile)) {
+    // ant.getPath().add(0, ant.getTile());
+    // LOGGER.info("AttackHillMission:dangerous here! move ant %s backwards to %s. enemyHill %s", ant,
+    // safestTile, enemyHill);
+    // }
+    // } else {
+    // putMissionOrder(ant);
+    // }
+    // }
 
     private boolean moveToSide(Ant ant, Aim aim) {
         List<Aim> aims = Aim.getOrthogonalAims(aim);
@@ -423,77 +432,78 @@ public class AttackHillMission extends BaseMission {
         return false;
     }
 
-    private boolean hasAntBehind(Ant ant) {
-        Tile tile = ant.getPath().get(0);
-        Aim currentAim = Ants.getWorld().getDirections(ant.getTile(), tile).get(0);
-        Aim behind = Aim.getOpposite(currentAim);
+    // private boolean hasAntBehind(Ant ant) {
+    // Tile tile = ant.getPath().get(0);
+    // Aim currentAim = Ants.getWorld().getDirections(ant.getTile(), tile).get(0);
+    // Aim behind = Aim.getOpposite(currentAim);
+    //
+    // return ants.contains(Ants.getWorld().getTile(ant.getTile(), behind));
+    // }
 
-        return ants.contains(Ants.getWorld().getTile(ant.getTile(), behind));
-    }
-
-    private boolean hasAntsOnAttackLine(Ant ant) {
-        for (Aim a : Aim.getOrthogonalAims(ant.currentDirection())) {
-            if (ants.contains(Ants.getWorld().getTile(ant.getTile(), a))) {
-                LOGGER.info("there is an ant on the attackline of %s", ant);
-                return true;
-            }
-        }
-        return false;
-    }
-
-    private boolean hasFollowingAnts(Ant ant) {
-        Tile tile = ant.getPath().get(0);
-        Aim currentAim = Ants.getWorld().getDirections(ant.getTile(), tile).get(0);
-        Aim opposite = Aim.getOpposite(currentAim);
-        Tile back = Ants.getWorld().getTile(ant.getTile(), opposite);
-
-        if (ants.contains(back))
-            return true;
-
-        for (Aim a : Aim.getOrthogonalAims(currentAim)) {
-            if (ants.contains(Ants.getWorld().getTile(back, a)))
-                return true;
-        }
-        return false;
-    }
-
-    private boolean moveToOffsetPath(Ant a) {
-        Tile tile = a.getPath().get(0);
-        Aim currentAim = Ants.getWorld().getDirections(a.getTile(), tile).get(0);
-        List<Aim> aims = Aim.getOrthogonalAims(currentAim);
-
-        for (Aim aim : aims) {
-            Tile sideMove = Ants.getWorld().getTile(tile, aim);
-
-            if (Ants.getWorld().isPassable(sideMove)) {
-                if (Ants.getWorld().isPassable(Ants.getWorld().getTile(sideMove, currentAim))) {
-
-                    if (putMissionOrder(a, aim)) {
-                        // relcalculate path with a new offset.
-                        List<Tile> newpath = generateOffsetpath(a.getPath(), aim);
-                        // lead offset path to the enemy hill back
-                        newpath.add(Ants.getWorld().getTile(newpath.get(newpath.size() - 1), Aim.getOpposite(aim)));
-                        a.setPath(newpath);
-                        return true;
-                    }
-                }
-            }
-        }
-        return false;
-    }
-
-    private List<Tile> generateOffsetpath(List<Tile> path, Aim aim) {
-        List<Tile> newPath = new ArrayList<Tile>();
-        for (Tile t : path) {
-            newPath.add(Ants.getWorld().getTile(t, aim));
-        }
-        return newPath;
-    }
-
-    private boolean blockedByAntInMission(Ant a) {
-        Tile tile = a.getPath().get(0);
-        return (ants.contains(tile));
-    }
+    //
+    // private boolean hasAntsOnAttackLine(Ant ant) {
+    // for (Aim a : Aim.getOrthogonalAims(ant.currentDirection())) {
+    // if (ants.contains(Ants.getWorld().getTile(ant.getTile(), a))) {
+    // LOGGER.info("there is an ant on the attackline of %s", ant);
+    // return true;
+    // }
+    // }
+    // return false;
+    // }
+    //
+    // private boolean hasFollowingAnts(Ant ant) {
+    // Tile tile = ant.getPath().get(0);
+    // Aim currentAim = Ants.getWorld().getDirections(ant.getTile(), tile).get(0);
+    // Aim opposite = Aim.getOpposite(currentAim);
+    // Tile back = Ants.getWorld().getTile(ant.getTile(), opposite);
+    //
+    // if (ants.contains(back))
+    // return true;
+    //
+    // for (Aim a : Aim.getOrthogonalAims(currentAim)) {
+    // if (ants.contains(Ants.getWorld().getTile(back, a)))
+    // return true;
+    // }
+    // return false;
+    // }
+    //
+    // private boolean moveToOffsetPath(Ant a) {
+    // Tile tile = a.getPath().get(0);
+    // Aim currentAim = Ants.getWorld().getDirections(a.getTile(), tile).get(0);
+    // List<Aim> aims = Aim.getOrthogonalAims(currentAim);
+    //
+    // for (Aim aim : aims) {
+    // Tile sideMove = Ants.getWorld().getTile(tile, aim);
+    //
+    // if (Ants.getWorld().isPassable(sideMove)) {
+    // if (Ants.getWorld().isPassable(Ants.getWorld().getTile(sideMove, currentAim))) {
+    //
+    // if (putMissionOrder(a, aim)) {
+    // // relcalculate path with a new offset.
+    // List<Tile> newpath = generateOffsetpath(a.getPath(), aim);
+    // // lead offset path to the enemy hill back
+    // newpath.add(Ants.getWorld().getTile(newpath.get(newpath.size() - 1), Aim.getOpposite(aim)));
+    // a.setPath(newpath);
+    // return true;
+    // }
+    // }
+    // }
+    // }
+    // return false;
+    // }
+    //
+    // private List<Tile> generateOffsetpath(List<Tile> path, Aim aim) {
+    // List<Tile> newPath = new ArrayList<Tile>();
+    // for (Tile t : path) {
+    // newPath.add(Ants.getWorld().getTile(t, aim));
+    // }
+    // return newPath;
+    // }
+    //
+    // private boolean blockedByAntInMission(Ant a) {
+    // Tile tile = a.getPath().get(0);
+    // return (ants.contains(tile));
+    // }
 
     /***
      * if the fift
@@ -502,20 +512,25 @@ public class AttackHillMission extends BaseMission {
      * @return
      */
     private boolean recalculatePath(Ant ant) {
-        int tileToCheck = Math.min(5, ant.getPath().size() - 1);
-        // check if path doesn't lead throw water
-        boolean pathThroughWater = ant.hasPath() ? !Ants.getWorld().isPassable(ant.getPath().get(tileToCheck)) : false;
-        boolean nextPathStepValid = ant.hasPath() ? (Ants.getWorld().manhattanDistance(ant.getTile(),
-                ant.getPath().get(0)) == 1) : false;
 
-        if (!nextPathStepValid || pathThroughWater) {
+        boolean isValid = ant.hasPath();
+        if (isValid) {
+            // check if path doesn't lead throw water
+            int nextTile = Math.min(5, ant.getPath().size() - 1);
+            isValid = Ants.getWorld().isPassable(ant.getPath().get(nextTile));
+        }
+        if (isValid) {
+            // check next step is one tile away
+            LOGGER.error("path of  ant %s messed up: path: %s.", ant, ant.getPath());
+            isValid = Ants.getWorld().manhattanDistance(ant.getTile(), ant.getPath().get(0)) == 1;
+        }
+        if (!isValid) { // recalculate if not valid
             List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, ant.getTile(), enemyHill, 30);
             if (path == null || path.size() == 0) {
                 return false;
             }
             LOGGER.info("AttackHillMission:recalculatePath path for ant %s path: %s.", ant, path);
             ant.setPath(path);
-            return true;
         }
         return true;
     }

@@ -84,12 +84,12 @@ public abstract class BaseMission implements Mission {
     protected boolean moveToNextTileOnPath(Ant a) {
         if (a == null || !a.hasPath())
             return false;
-        Tile nextStep = a.getPath().remove(0);
+        Tile nextStep = a.getPath().get(0);
 
         if (putMissionOrder(a, nextStep)) {
+            a.getPath().remove(0);
             return true;
         }
-        a.getPath().add(0, nextStep);
         return false;
     }
 
