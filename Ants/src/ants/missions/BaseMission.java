@@ -2,6 +2,7 @@ package ants.missions;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -183,9 +184,14 @@ public abstract class BaseMission implements Mission {
         AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
         // create a path for all available ants within distance
         for (Ant a : bfs.findUnemployedAntsInRadius(tile, maxAnts, attractionDistance)) {
-            List<Tile> p = Ants.getPathFinder().search(Strategy.AStar, a.getTile(), tile);
+            List<Tile> p = Ants.getPathFinder().search(Strategy.AStar, tile, a.getTile());
             if (p == null)
                 continue;
+            /*
+             * we need to search a path from the hill to the ant instead of the other way around, because paths are not
+             * allowed to lead over our own hill. Therefore, we need to reverse the path afterwards.
+             */
+            Collections.reverse(p);
             newAnts.put(a, p);
         }
         return newAnts;
