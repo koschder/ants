@@ -97,6 +97,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
                 return enemyUnits.contains(tile) && map.getSquaredDistance(clusterCenter, tile) < distanceToTarget;
             }
         });
+
         log += ", enemiesInTheWay: " + enemiesInTheWay;
         if (enemiesInTheWay.isEmpty()) {
             for (Tile uTile : myUnits) {

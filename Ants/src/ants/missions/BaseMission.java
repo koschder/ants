@@ -178,7 +178,11 @@ public abstract class BaseMission implements Mission {
     }
 
     protected Map<Ant, List<Tile>> gatherAnts(Tile tile, int amount, int attractionDistance) {
+
         Map<Ant, List<Tile>> newAnts = new HashMap<Ant, List<Tile>>();
+        if (amount < 1)
+            return newAnts;
+
         // don't search more ants than we are allowed to recruit
         int maxAnts = Math.min(amount, Ants.getPopulation().getMaxAnts(getTaskType()));
         AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
