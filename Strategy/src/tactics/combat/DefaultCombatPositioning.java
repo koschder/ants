@@ -163,6 +163,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
         } else {
             log += "=> format ants";
         }
+        log += ", formationTiles: " + formationTiles;
         // perform positioning
         Set<Tile> targetedTiles = new HashSet<Tile>();
         sortByDistance(clusterCenter, myUnits);
