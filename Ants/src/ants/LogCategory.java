@@ -20,6 +20,7 @@ public enum LogCategory implements logging.LogCategory {
     RESOURCE_ALLOCATION(true),
     FLOCKING(false),
     SWARM(false),
+    WORLD(false),
     PATH_MISSION(false),
     DEFEND_HILL(false),
     ATTACK_HILLS_FLOCKED(false);

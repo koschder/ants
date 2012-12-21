@@ -142,7 +142,7 @@ public abstract class BaseMission implements Mission {
 
     private boolean isHillNearby(Ant ant, Tile hill, int maxManhattanDistance) {
         if (Ants.getWorld().manhattanDistance(ant.getTile(), hill) < maxManhattanDistance) {
-            List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, ant.getTile(), hill, maxManhattanDistance);
+            List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, hill, ant.getTile(), maxManhattanDistance);
             if (path != null) {
                 return true;
             }

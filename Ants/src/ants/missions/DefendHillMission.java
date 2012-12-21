@@ -141,7 +141,8 @@ public class DefendHillMission extends BaseMission {
             attInfo += "<br/> " + a;
 
         LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill,
-                "DefendHillMission attackers are: %s <br/> Defenders are: %s", attInfo, ants);
+                "DefendHillMission attackers are: %s <br/> Defenders are: %s Need help: %s", attInfo, ants,
+                needsMoreAnts);
         List<Ant> antsWithOrder = new ArrayList<Ant>();
 
         boolean orderDone = true;

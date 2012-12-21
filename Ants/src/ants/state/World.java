@@ -11,8 +11,11 @@ import java.util.Set;
 
 import javax.management.RuntimeErrorException;
 
+import logging.Logger;
+import logging.LoggerFactory;
 import pathfinder.PathFinder.Strategy;
 import pathfinder.entities.Node;
+import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Ilk;
 import api.entities.Aim;
@@ -30,6 +33,8 @@ import api.strategy.InfluenceMap;
  * 
  */
 public class World extends AbstractWraparoundMap implements SearchableUnitMap {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.WORLD);
 
     private int viewRadius2;
 
@@ -420,18 +425,20 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
 
     @Override
     public Tile getSafestNeighbour(Tile tile, InfluenceMap influenceMap) {
+        String log = "";
         Tile safestTile = null;
         int bestSafety = Integer.MIN_VALUE;
-        for (Tile neighbour : get4Neighbours(tile)) {
-            if (Ants.getOrders().isMovePossible(neighbour)) {
-                final int safety = influenceMap.getSafety(neighbour);
+        for (SearchTarget neighbour : getSuccessorsForPathfinding(tile, true)) {
+            if (Ants.getOrders().isMovePossible(neighbour.getTargetTile())) {
+                final int safety = influenceMap.getSafety(neighbour.getTargetTile());
+                log += neighbour + " saftey: " + safety + ",";
                 if (safety > bestSafety) {
-                    safestTile = neighbour;
+                    safestTile = neighbour.getTargetTile();
                     bestSafety = safety;
                 }
             }
         }
+        LOGGER.debug(log);
         return safestTile;
     }
-
 }

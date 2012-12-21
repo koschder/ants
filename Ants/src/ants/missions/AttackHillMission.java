@@ -134,8 +134,11 @@ public class AttackHillMission extends BaseMission {
             }
         } else {
             for (Ant a : ants) {
-                if (otherEnemyHillNear(a))
+                String abortReason = checkEnviroment(a, true, false, false, true);
+                if (otherEnemyHillNear(a) || abortReason.length() > 0)
                     antsToRelease.add(a);
+                LOGGER.info("remove ant %s something interesting [%s] nearby", a,
+                        abortReason.length() > 0 ? abortReason : "otherEnemyHill");
             }
         }
         removeAnts(antsToRelease);
@@ -280,15 +283,8 @@ public class AttackHillMission extends BaseMission {
             List<Ant> antsToRelease = new ArrayList<Ant>();
             for (Ant a : ants) {
                 LOGGER.info("Move ant %s with path %s enemyhill %s", a, a.getPath(), enemyHill);
-                String abortReason = checkEnviroment(a, false, false, false, false);
-                if (abortReason.length() > 0) {
-                    // if food is nearby we get the food first.
-                    LOGGER.info("remove ant %s something interesting [%s] nearby", a, abortReason);
+                if (!move(a)) {
                     antsToRelease.add(a);
-                } else {
-                    if (!move(a)) {
-                        antsToRelease.add(a);
-                    }
                 }
             }
             LOGGER.info("Release ants %s of AttackHillMission %s", antsToRelease, enemyHill);
