@@ -107,13 +107,14 @@ public class DefendHillMission extends BaseMission {
 
     private void defaultDefendHillMove(Ant a) {
         if (a.getTile().equals(hill)) {
-            if (!doAnyMove(a)) {
-                putMissionOrder(a);
-            }
+            if (doAnyMove(a))
+                return;
         }
-        if (Ants.getWorld().manhattanDistance(hill, a.getTile()) > 2)
-            if (!doMoveInDirection(a, hill))
-                putMissionOrder(a);
+        if (Ants.getWorld().manhattanDistance(hill, a.getTile()) > 2) {
+            if (doMoveInDirection(a, hill))
+                return;
+        }
+        putMissionOrder(a);
     }
 
     private void gatherOrReleaseAnts(List<Tile> attackers) {
