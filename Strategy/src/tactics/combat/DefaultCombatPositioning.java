@@ -153,13 +153,13 @@ public class DefaultCombatPositioning implements CombatPositioning {
         log = "AttackEnemy: clusterCenter:" + clusterCenter;
         log += ", enemyClusterCenter:" + enemyClusterCenter;
 
-        List<Tile> formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, 0);
+        List<Tile> formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, false);
         float percentFormated = getContainedFraction(formationTiles, myUnits);
         log += ", pf: " + percentFormated + " (lim: " + limit + ")";
         if (percentFormated > limit) {
             // move forward
             log += "=> forward ants";
-            formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, 4);
+            formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, true);
         } else {
             log += "=> format ants";
         }
@@ -221,10 +221,12 @@ public class DefaultCombatPositioning implements CombatPositioning {
         });
     }
 
-    private List<Tile> getFormationTiles(final Tile clusterCenter, final Tile enemyClusterCenter, int stepForward) {
-        final int dist = map.getSquaredDistance(clusterCenter, enemyClusterCenter) - stepForward;
-        final int minDist = dist - 5;
-        final int maxDist = dist + 5;
+    private List<Tile> getFormationTiles(final Tile clusterCenter, final Tile enemyClusterCenter, boolean advance) {
+        final int squaredDistance = map.getSquaredDistance(clusterCenter, enemyClusterCenter);
+        int stepForward = (int) (squaredDistance * 0.1);
+        final int dist = squaredDistance - stepForward;
+        final int minDist = dist - stepForward;
+        final int maxDist = dist + stepForward;
         BreadthFirstSearch bfs = new BreadthFirstSearch(map);
         final List<Tile> formationTiles = bfs.floodFill(clusterCenter, maxDist, new GoalTest() {
 
