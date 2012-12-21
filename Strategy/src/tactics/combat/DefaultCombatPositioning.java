@@ -155,11 +155,12 @@ public class DefaultCombatPositioning implements CombatPositioning {
 
     private void attackEnemy(Tile clusterCenter, Tile enemyClusterCenter) {
         String log;
-        float limit = 0.3f;
+        float limit = 0.5f;
         log = "AttackEnemy: clusterCenter:" + clusterCenter;
         log += ", enemyClusterCenter:" + enemyClusterCenter;
 
         List<Tile> formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, false);
+        formationTiles.add(clusterCenter);
         float percentFormated = getContainedFraction(formationTiles, myUnits);
         log += ", pf: " + percentFormated + " (lim: " + limit + ")";
         if (percentFormated > limit) {
@@ -232,9 +233,17 @@ public class DefaultCombatPositioning implements CombatPositioning {
     }
 
     private List<Tile> getFormationTiles(final Tile clusterCenter, final Tile enemyClusterCenter, boolean advance) {
-        final int squaredDistance = map.getSquaredDistance(clusterCenter, enemyClusterCenter);
-        int stepForward = (int) (squaredDistance * 0.1);
-        final int dist = squaredDistance - stepForward;
+        int squaredDistance = map.getSquaredDistance(clusterCenter, enemyClusterCenter);
+
+        int distance = (int) Math.sqrt(squaredDistance);
+        if (advance) {
+            distance += -1;
+            squaredDistance = (int) Math.pow(distance, 2);
+        }
+
+        int stepForward = distance * 2 - 5;
+
+        final int dist = squaredDistance;
         final int minDist = dist - stepForward;
         final int maxDist = dist + stepForward;
         BreadthFirstSearch bfs = new BreadthFirstSearch(map);
