@@ -280,7 +280,7 @@ public class AttackHillMission extends BaseMission {
             List<Ant> antsToRelease = new ArrayList<Ant>();
             for (Ant a : ants) {
                 LOGGER.info("Move ant %s with path %s enemyhill %s", a, a.getPath(), enemyHill);
-                String abortReason = checkEnviroment(a, false, false, false);
+                String abortReason = checkEnviroment(a, false, false, false, false);
                 if (abortReason.length() > 0) {
                     // if food is nearby we get the food first.
                     LOGGER.info("remove ant %s something interesting [%s] nearby", a, abortReason);

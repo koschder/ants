@@ -32,6 +32,7 @@ public class DefendHillMission extends BaseMission {
     private int controlArea = Math.max((int) Math.sqrt(Ants.getWorld().getViewRadius2() + 4), 8);
     private int guardHillTurn = 30;
     private int antsMoreThanEnemy = 2;
+    private boolean needsMoreAnts;
 
     public DefendHillMission(Tile hill) {
         this.hill = hill;
@@ -127,8 +128,10 @@ public class DefendHillMission extends BaseMission {
         }
         if (gatherAntsAmount > 0)
             gatherAnts(gatherAntsAmount);
-        else
+        else {
+            needsMoreAnts = false;
             releaseAnts(Math.abs(gatherAntsAmount));
+        }
     }
 
     private void defending(List<Tile> enemyNearBy) {
@@ -251,6 +254,8 @@ public class DefendHillMission extends BaseMission {
     private void gatherAnts(int amount) {
         Map<Ant, List<Tile>> antsNearBy = gatherAnts(hill, amount, controlArea);
         LOGGER.debug("gatherAnts: New ants %s for mission: %s (needed: %s)", antsNearBy.keySet(), this, amount);
+        if (antsNearBy.keySet().size() < amount)
+            needsMoreAnts = true;
         for (Ant a : antsNearBy.keySet()) {
             ants.add(a);
         }
@@ -265,6 +270,10 @@ public class DefendHillMission extends BaseMission {
             }
         }
         return tile;
+    }
+
+    public boolean needsMoreAnts() {
+        return needsMoreAnts;
     }
 
     @Override

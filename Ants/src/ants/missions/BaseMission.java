@@ -98,6 +98,8 @@ public abstract class BaseMission implements Mission {
      * 
      * @param ant
      *            to check
+     * @param checkDefendHill
+     *            TODO
      * @param food
      *            is food nearby
      * @param enemyAnts
@@ -106,23 +108,43 @@ public abstract class BaseMission implements Mission {
      *            is nearby
      * @return
      */
-    protected String checkEnviroment(Ant ant, boolean checkFood, boolean checkEnemyAnts, boolean checkEnemyHill) {
+    protected String checkEnviroment(Ant ant, boolean checkFood, boolean checkEnemyAnts, boolean checkEnemyHill,
+            boolean checkDefendHill) {
         final boolean foodNearby = checkFood && isFoodNearby(ant);
         final boolean enemyIsSuperior = checkEnemyAnts && isEnemySuperior(ant);
-        boolean enemyHillNearby = checkEnemyHill && enemyHillNearby(ant);
+        final boolean enemyHillNearby = checkEnemyHill && enemyHillNearby(ant);
+        final boolean defendHillNearby = checkDefendHill && defendHillNearby(ant);
 
-        return (foodNearby ? "food," : "") + (enemyIsSuperior ? "enemy," : "") + (enemyHillNearby ? "enemyHill," : "");
+        return (foodNearby ? "food," : "") + (enemyIsSuperior ? "enemy," : "") + (enemyHillNearby ? "enemyHill," : "")
+                + (defendHillNearby ? "defendHill," : "");
+    }
+
+    private boolean defendHillNearby(Ant ant) {
+        for (Mission mission : Ants.getOrders().getMissions()) {
+            if (mission instanceof DefendHillMission) {
+                DefendHillMission dhm = (DefendHillMission) mission;
+                int maxDistance = 10;
+                if (dhm.needsMoreAnts() && isHillNearby(ant, dhm.getHill(), maxDistance))
+                    return true;
+            }
+        }
+        return false;
     }
 
     private boolean enemyHillNearby(Ant ant) {
         int maxDistanceOfEnemyHill = 10;
         for (Tile enemyHill : Ants.getWorld().getEnemyHills()) {
-            if (Ants.getWorld().manhattanDistance(ant.getTile(), enemyHill) < maxDistanceOfEnemyHill) {
-                List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, ant.getTile(), enemyHill,
-                        maxDistanceOfEnemyHill);
-                if (path != null) {
-                    return true;
-                }
+            if (isHillNearby(ant, enemyHill, maxDistanceOfEnemyHill))
+                return true;
+        }
+        return false;
+    }
+
+    private boolean isHillNearby(Ant ant, Tile hill, int maxManhattanDistance) {
+        if (Ants.getWorld().manhattanDistance(ant.getTile(), hill) < maxManhattanDistance) {
+            List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, ant.getTile(), hill, maxManhattanDistance);
+            if (path != null) {
+                return true;
             }
         }
         return false;
