@@ -30,7 +30,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
     protected List<Tile> myUnits;
     protected List<Tile> enemyUnits;
     protected Tile target;
-    protected String log;
+    protected String log = "";
     protected Map<Tile, Tile> nextMoves = new HashMap<Tile, Tile>();
 
     protected enum Mode {
@@ -59,8 +59,8 @@ public class DefaultCombatPositioning implements CombatPositioning {
     private void calculatePositions() {
         Mode mode = determineMode();
         log += "mode is: " + mode;
-        log += ", myUnits: " + myUnits;
-        log += ", enemyUnits: " + enemyUnits;
+        log += "\n, myUnits: " + myUnits;
+        log += "\n, enemyUnits: " + enemyUnits;
         switch (mode) {
         case FLEE:
             flee();
@@ -149,14 +149,19 @@ public class DefaultCombatPositioning implements CombatPositioning {
 
     private void attackEnemy(Tile clusterCenter, Tile enemyClusterCenter) {
         String log;
-
+        float limit = 0.3f;
         log = "AttackEnemy: clusterCenter:" + clusterCenter;
         log += ", enemyClusterCenter:" + enemyClusterCenter;
 
         List<Tile> formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, 0);
-        if (getContainedFraction(formationTiles, myUnits) > 0.5) {
+        float percentFormated = getContainedFraction(formationTiles, myUnits);
+        log += ", pf: " + percentFormated + " (lim: " + limit + ")";
+        if (percentFormated > limit) {
             // move forward
+            log += "=> forward ants";
             formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, 4);
+        } else {
+            log += "=> format ants";
         }
         // perform positioning
         Set<Tile> targetedTiles = new HashSet<Tile>();
