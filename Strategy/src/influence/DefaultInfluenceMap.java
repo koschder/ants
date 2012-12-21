@@ -22,7 +22,7 @@ public class DefaultInfluenceMap implements InfluenceMap {
     private static final int MAX_INFLUENCE = 100;
     private final Map<Integer, int[][]> influence;
     private final int viewRadius2, attackRadius2;
-    private double decay = 0.25;
+    private double decay = 0.1;
 
     @Override
     public int getSafety(Tile tile) {
