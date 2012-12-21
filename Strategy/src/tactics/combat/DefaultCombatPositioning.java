@@ -121,7 +121,13 @@ public class DefaultCombatPositioning implements CombatPositioning {
     }
 
     private void defendTarget() {
-        // TODO Auto-generated method stub
+        if (enemyUnits.isEmpty()) {
+            // if no opponents are around, just position ourselves in the diagonals
+            BreadthFirstSearch bfs = new BreadthFirstSearch(map);
+            List<Tile> formationTiles = bfs.getDiagonalNeighbours(target);
+            // TODO choose a specific "center", e.g. one opposite water
+            positionUnits(formationTiles.get(0), formationTiles);
+        }
 
     }
 
@@ -165,6 +171,12 @@ public class DefaultCombatPositioning implements CombatPositioning {
         }
         log += ", formationTiles: " + formationTiles;
         // perform positioning
+        positionUnits(clusterCenter, formationTiles);
+        LOGGER.debug(log);
+        this.log = log;
+    }
+
+    private void positionUnits(Tile clusterCenter, List<Tile> formationTiles) {
         Set<Tile> targetedTiles = new HashSet<Tile>();
         sortByDistance(clusterCenter, myUnits);
         sortByDistance(clusterCenter, formationTiles);
@@ -177,8 +189,6 @@ public class DefaultCombatPositioning implements CombatPositioning {
                 break;
             }
         }
-        LOGGER.debug(log);
-        this.log = log;
     }
 
     private void flee() {

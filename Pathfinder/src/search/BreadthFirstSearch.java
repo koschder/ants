@@ -19,6 +19,15 @@ public class BreadthFirstSearch {
         this.map = map;
     }
 
+    public List<Tile> getDiagonalNeighbours(final Tile center) {
+        return floodFill(center, 4, new GoalTest() {
+            @Override
+            public boolean isGoal(Tile tile) {
+                return map.manhattanDistance(center, tile) == 2 && map.getDirections(center, tile).size() == 2;
+            }
+        });
+    }
+
     public List<Tile> floodFill(Tile center, int maxDistance2) {
         return floodFill(center, maxDistance2, new AlwaysTrueGoalTest());
     }

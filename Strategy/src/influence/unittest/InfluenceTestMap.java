@@ -110,7 +110,8 @@ public class InfluenceTestMap extends AbstractWraparoundMap implements Searchabl
 
     @Override
     public List<Unit> getUnits(int player) {
-        return players.get(player);
+        final List<Unit> units = players.get(player);
+        return units == null ? new ArrayList<Unit>() : units;
     }
 
     @Override
