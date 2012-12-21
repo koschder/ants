@@ -37,7 +37,7 @@ public enum Ilk {
      * @return <code>true</code> if this is a land tile or a dead ant tile, <code>false</code> otherwise
      */
     public boolean isUnoccupied() {
-        return this == LAND || this == DEAD || this == FOOD;
+        return this == LAND || this == DEAD;
     }
 
     /***

@@ -12,7 +12,6 @@ import java.util.TreeMap;
 
 import logging.Logger;
 import logging.LoggerFactory;
-import pathfinder.PathFinder.Strategy;
 import search.BreadthFirstSearch.GoalTest;
 import ants.LogCategory;
 import ants.entities.Ant;
@@ -81,26 +80,24 @@ public class DefendHillMission extends BaseMission {
                 return Ants.getWorld().getIlk(tile).isFood() && !Ants.getOrders().isFoodTargeted(tile);
             }
         });
-
+        Tile closestToFood = null;
+        if (food != null) {
+            closestToFood = bfs.findSingleClosestTile(food, hillReachable.size(), new GoalTest() {
+                @Override
+                public boolean isGoal(Tile tile) {
+                    return getAnts().contains(new Ant(tile, 0));
+                }
+            });
+        }
+        List<Ant> antsToRelease = new ArrayList<Ant>();
         for (Ant a : getAnts()) {
-            if (moveToNextTileOnPath(a))
-                continue;
-            if (food == null) {
-                defaultDefendHillMove(a);
-                continue;
-            }
-
-            List<Tile> t = Ants.getPathFinder().search(Strategy.AStar, a.getTile(), food);
-            if (t != null) {
-                Ants.getOrders().getAntsOnFood().put(food, a);
-                a.setPath(t.subList(0, t.size() - 1));
-                moveToNextTileOnPath(a);
-                food = null;
+            if (closestToFood != null && a.getTile().equals(closestToFood)) {
+                antsToRelease.add(a);
             } else {
                 defaultDefendHillMove(a);
             }
         }
-
+        removeAnts(antsToRelease);
         LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill, "DefendHillMission no attackers near by -+ " + controlArea
                 + " tiles");
 
