@@ -83,7 +83,10 @@ public class GatherFoodMission extends BaseMission {
         List<Ant> antsToRelease = new ArrayList<Ant>();
         List<Ant> antsFoodFound = new ArrayList<Ant>();
         for (Ant a : ants) {
-            if (!Ants.getWorld().getIlk(a.getPathEnd()).isFood())
+            if (!a.hasPath()) {
+                LOGGER.error("ant %s on food route has no path", a);
+                antsToRelease.add(a);
+            } else if (!Ants.getWorld().getIlk(a.getPathEnd()).isFood())
                 antsToRelease.add(a);
             else if (a.getPath().size() < 2)
                 antsFoodFound.add(a);
@@ -145,7 +148,8 @@ public class GatherFoodMission extends BaseMission {
                     && Ants.getOrders().getAntsOnFood().get(foodTile).getPath().size() < 5)
                 continue;
 
-            Ant nearestUnemployed = new AntsBreadthFirstSearch(Ants.getWorld()).findMyClosestUnemployedAnt(foodTile, 500);
+            Ant nearestUnemployed = new AntsBreadthFirstSearch(Ants.getWorld()).findMyClosestUnemployedAnt(foodTile,
+                    500);
             if (nearestUnemployed == null) {
                 LOGGER.debug("Could not find ant for food at %s", foodTile);
                 continue;
