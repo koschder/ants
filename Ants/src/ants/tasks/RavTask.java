@@ -25,15 +25,14 @@ public class RavTask extends BaseTask {
         AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
         // this odd loop structure is necessary to avoid a ConcurrentModificationException when marking an ant as
         // employed
-        int limit = 10;
+        long start = System.currentTimeMillis();
         while (true) {
+            // if there are unemployed ants for which we can't find a next move, this avoids an infinite loop
+            if ((System.currentTimeMillis() - start) > 50)
+                break;
             // break out when there are no more unemployed ants
             Collection<Ant> unemployed = Ants.getPopulation().getMyUnemployedAnts();
             if (!unemployed.iterator().hasNext())
-                break;
-            // if there are unemployed ants for which we can't find a next move, this avoids an infinite loop
-            limit--;
-            if (limit <= 0)
                 break;
 
             Ant ant = unemployed.iterator().next();
