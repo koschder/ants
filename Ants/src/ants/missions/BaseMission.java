@@ -186,8 +186,11 @@ public abstract class BaseMission implements Mission {
         // don't search more ants than we are allowed to recruit
         int maxAnts = Math.min(amount, Ants.getPopulation().getMaxAnts(getTaskType()));
         AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
+        final List<Ant> unemployed = bfs.findUnemployedAntsInRadius(tile, maxAnts, attractionDistance);
+        if (new AntsBreadthFirstSearch.UnemployedAntGoalTest().isGoal(tile))
+            unemployed.add(Ants.getPopulation().getMyAntAt(tile, true));
         // create a path for all available ants within distance
-        for (Ant a : bfs.findUnemployedAntsInRadius(tile, maxAnts, attractionDistance)) {
+        for (Ant a : unemployed) {
             List<Tile> p = Ants.getPathFinder().search(Strategy.AStar, tile, a.getTile());
             if (p == null)
                 continue;

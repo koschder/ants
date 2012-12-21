@@ -55,7 +55,7 @@ public class AntsBreadthFirstSearch extends BreadthFirstSearch {
         return ants;
     }
 
-    private static class UnemployedAntGoalTest implements GoalTest {
+    public static class UnemployedAntGoalTest implements GoalTest {
         @Override
         public boolean isGoal(Tile tile) {
             final boolean hasFriendlyAnt = Ants.getWorld().getIlk(tile).hasFriendlyAnt();
