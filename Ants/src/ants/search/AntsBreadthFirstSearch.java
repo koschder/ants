@@ -16,12 +16,15 @@ public class AntsBreadthFirstSearch extends BreadthFirstSearch {
     }
 
     public List<Tile> findEnemiesInRadius(Tile origin, int maxDistance2) {
-        return findClosestTiles(origin, Integer.MAX_VALUE, Integer.MAX_VALUE, maxDistance2, new GoalTest() {
+        List<Tile> tiles = findClosestTiles(origin, Integer.MAX_VALUE, Integer.MAX_VALUE, maxDistance2, new GoalTest() {
             @Override
             public boolean isGoal(Tile tile) {
                 return Ants.getWorld().getIlk(tile).hasEnemyAnt();
             }
         });
+        if (Ants.getWorld().getIlk(origin).hasEnemyAnt())
+            tiles.add(origin);
+        return tiles;
     }
 
     public List<Tile> findFriendsInRadius(Tile origin, int maxDistance2) {

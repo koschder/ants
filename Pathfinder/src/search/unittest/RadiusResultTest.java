@@ -55,6 +55,13 @@ public class RadiusResultTest {
         getFormationTiles(clusterCenter, enemyClusterCenter, 11);
     }
 
+    @Test
+    public void testFindSingleClosestTile7() {
+        Tile clusterCenter = new Tile(6, 10);
+        final Tile enemyClusterCenter = new Tile(8, 16);
+        getFormationTiles(clusterCenter, enemyClusterCenter, 4);
+    }
+
     private void getFormationTiles(Tile clusterCenter, final Tile enemyClusterCenter, int ants) {
         final UnitTestMap map = createMap();
         BreadthFirstSearch bfs = new BreadthFirstSearch(map);

@@ -178,21 +178,21 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
     }
 
     private int getAvgColDistanceFromOrigin(List<Tile> cluster) {
-        int sum = 0;
+        float sum = 0;
         int count;
         for (count = 0; count < cluster.size(); count++) {
             sum += getColDistanceFromOrigin(cluster.get(count));
         }
-        return sum / count;
+        return Math.round(sum / count);
     }
 
     private int getAvgRowDistanceFromOrigin(List<Tile> cluster) {
-        int sum = 0;
+        float sum = 0;
         int count;
         for (count = 0; count < cluster.size(); count++) {
             sum += getRowDistanceFromOrigin(cluster.get(count));
         }
-        return sum / count;
+        return Math.round(sum / count);
     }
 
     private int getRowDistanceFromOrigin(Tile tile) {

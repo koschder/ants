@@ -181,13 +181,15 @@ public class DefaultCombatPositioning implements CombatPositioning {
         Set<Tile> targetedTiles = new HashSet<Tile>();
         sortByDistance(clusterCenter, myUnits);
         sortByDistance(clusterCenter, formationTiles);
-        for (Tile uTile : myUnits) {
+        for (Tile unit : myUnits) {
             for (Tile fTile : formationTiles) {
                 if (targetedTiles.contains(fTile))
                     continue;
-                Tile actualTile = moveToward(fTile, uTile, clusterCenter, formationTiles);
-                targetedTiles.add(actualTile);
-                break;
+                Tile actualTile = moveToward(fTile, unit, clusterCenter, formationTiles);
+                if (actualTile != null) {
+                    targetedTiles.add(actualTile);
+                    break;
+                }
             }
         }
     }
@@ -267,7 +269,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
             distance--;
         }
 
-        ants = ants % 2 == 0 ? ants + 1 : ants; // proof symmetric formation tiles
+        ants += 1;// more opportiunities
 
         List<Tile> formationTiles = new ArrayList<Tile>();
         List<Tile> tempTiles;
