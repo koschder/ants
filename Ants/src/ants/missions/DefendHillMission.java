@@ -30,7 +30,7 @@ public class DefendHillMission extends BaseMission {
     private Set<Tile> hillReachable = new HashSet<Tile>();
     private int controlArea = Math.max((int) Math.sqrt(Ants.getWorld().getViewRadius2() + 4), 8);
     private int guardHillTurn = 30;
-    private int antsMoreThanEnemy = 2;
+    private int antsMoreThanEnemy = 1;
     private boolean needsMoreAnts;
 
     public DefendHillMission(Tile hill) {
@@ -117,6 +117,7 @@ public class DefendHillMission extends BaseMission {
 
     private void gatherOrReleaseAnts(List<Tile> attackers) {
         int gatherAntsAmount = 0;
+
         if (attackers.size() == 0 && Ants.getAnts().getTurn() > guardHillTurn) {
             // if there are no attackers but late in game (guardHillTurn) we gahter 1 ant for protection
             gatherAntsAmount = 1 - ants.size();

@@ -16,7 +16,7 @@
 			<arg line="&quot;${bot.opponent}&quot;" />
 			<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
 			<arg line="--log_dir logs" />
-			<arg line="--turns 200" />
+			<arg line="--turns 250" />
 			<arg line="--scenario" />
 			<arg line="--food symmetric" />
 			<arg line="--player_seed 7" />

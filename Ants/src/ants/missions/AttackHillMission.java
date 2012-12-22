@@ -70,7 +70,7 @@ public class AttackHillMission extends BaseMission {
                 continue;
             AttackHillMission ahm = (AttackHillMission) m;
 
-            if (ahm.isControlled() || ahm.equals(this))
+            if (ahm.isControlled() || ahm.getHill().equals(getHill()))
                 continue;
 
             if (Ants.getWorld().manhattanDistance(ahm.getHill(), a.getTile()) < 8) {
