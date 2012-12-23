@@ -121,14 +121,32 @@ public class DefaultCombatPositioning implements CombatPositioning {
     }
 
     private void defendTarget() {
+        // if no opponents are around, just position ourselves in the diagonals
         if (enemyUnits.isEmpty()) {
-            // if no opponents are around, just position ourselves in the diagonals
             BreadthFirstSearch bfs = new BreadthFirstSearch(map);
             List<Tile> formationTiles = bfs.getDiagonalNeighbours(target);
             // TODO choose a specific "center", e.g. one opposite water
             positionUnits(formationTiles.get(0), formationTiles);
+
+        } else {
+            // group enemies to determine which side of the hill needs how much protection
+
+            // position ants between enemy and hill
+            Tile enemyClusterCenter = map.getClusterCenter(enemyUnits);
+            Tile clusterCenter = calculateDefenseClusterCenter(enemyClusterCenter);
+            List<Tile> formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, myUnits.size(), false);
+            formationTiles.add(clusterCenter);
+            positionUnits(clusterCenter, formationTiles);
+            // if an enemy is isolated, try to take him down to free up resources, but don't run away too far
         }
 
+    }
+
+    private Tile calculateDefenseClusterCenter(Tile enemyClusterCenter) {
+        // TODO the cluster center should move toward the enemy if there are many defenders, so we don't block paths
+        // away from the hill
+        Aim direction = map.getPrincipalDirection(target, enemyClusterCenter);
+        return map.getTile(target, direction);
     }
 
     private void controlTarget() {

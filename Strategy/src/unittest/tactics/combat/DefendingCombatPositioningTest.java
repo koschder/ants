@@ -70,4 +70,32 @@ public class DefendingCombatPositioningTest {
         assertEquals(new Tile(2, 2), pos.getNextTile(myAnt1));
         assertEquals(new Tile(2, 4), pos.getNextTile(myAnt2));
     }
+
+    @Test
+    public void testPositioning_1Opponent_2Ants() {
+        String sMap = "";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+        sMap += "wo0oooooooowwwwwwwwwwooooooooooooooow";
+        sMap += "woo0ooooooowwwwwwwwwwooooooooooooooow";
+        sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
+        sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
+        sMap += "wo1ooooowwwwwwwwwwwwwooooowooooooooow";
+        sMap += "woooooooooooowoooooooooooowooooooooow";
+        sMap += "woooooooooooowoooowooooooowooooooooow";
+        sMap += "wooooooooooooooooowooooooowooooooooow";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+
+        InfluenceTestMap map = new InfluenceTestMap(37, sMap);
+
+        final InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
+        List<Unit> enemyAnts = map.getUnits(1);
+        List<Unit> myAnts = map.getUnits(0);
+
+        final Unit myAnt1 = new TestUnit(0, new Tile(1, 2));
+        final Unit myAnt2 = new TestUnit(0, new Tile(2, 3));
+
+        CombatPositioning pos = new DefendingCombatPositioning(map, iMap, myAnts, enemyAnts, new Tile(1, 3));
+        assertEquals(new Tile(2, 2), pos.getNextTile(myAnt1));
+        assertEquals(new Tile(2, 3), pos.getNextTile(myAnt2));
+    }
 }
