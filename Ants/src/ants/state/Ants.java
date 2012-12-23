@@ -65,6 +65,7 @@ public enum Ants {
         this.loadTime = loadTime;
         this.turnTime = turnTime;
         this.turns = turns;
+        this.turnStartTime = System.currentTimeMillis();
         this.world = new World(rows, cols, viewRadius2, attackRadius2, spawnRadius2);
         this.population = new Population();
         this.orders = new Orders();
