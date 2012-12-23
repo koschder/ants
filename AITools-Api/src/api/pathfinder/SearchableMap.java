@@ -33,6 +33,16 @@ public interface SearchableMap extends TileMap {
     public List<Aim> getDirections(Tile t1, Tile t2);
 
     /**
+     * Returns the principal direction tile t1 to t2 (i.e. if t2 is 3 steps to the north and 5 steps to the west, this
+     * method will return WEST)
+     * 
+     * @param t1
+     * @param t2
+     * @return
+     */
+    public Aim getPrincipalDirection(Tile t1, Tile t2);
+
+    /**
      * Returns location in the specified direction from the specified location.
      * 
      * @param tile

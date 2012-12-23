@@ -55,6 +55,22 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
     }
 
     @Override
+    public Aim getPrincipalDirection(Tile t1, Tile t2) {
+        final List<Aim> simpleDirections = getDirections(t1, t2);
+        if (simpleDirections.size() == 1)
+            return simpleDirections.get(0);
+
+        int rowDelta = getRowDistance(t1, t2);
+        int colDelta = getColDistance(t1, t2);
+        if (rowDelta >= colDelta) {
+            // getDirections is biased for N/S, so in this case the first direction is the one we want
+            return simpleDirections.get(0);
+        } else {
+            return simpleDirections.get(1);
+        }
+    }
+
+    @Override
     public Tile getTile(Tile tile, Aim direction) {
         if (direction == null)
             return tile;
@@ -95,19 +111,28 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
     @Override
     public int manhattanDistance(Tile tStart, Tile tEnd) {
 
-        int c = 0;
-        int r = 0;
-        c = Math.abs(tStart.getCol() - tEnd.getCol());
-        r = Math.abs(tStart.getRow() - tEnd.getRow());
-
-        // considering warparound
-        if (c > getCols() / 2)
-            c = getCols() - c;
-
-        if (r > getRows() / 2)
-            r = getRows() - r;
+        int c = getColDistance(tStart, tEnd);
+        int r = getRowDistance(tStart, tEnd);
 
         return r + c;
+    }
+
+    private int getColDistance(Tile t1, Tile t2) {
+
+        int colDistance = Math.abs(t1.getCol() - t2.getCol());
+        if (colDistance > getCols() / 2)
+            colDistance = getCols() - colDistance;
+
+        return colDistance;
+    }
+
+    private int getRowDistance(Tile t1, Tile t2) {
+
+        int rowDistance = Math.abs(t1.getRow() - t2.getRow());
+        if (rowDistance > getRows() / 2)
+            rowDistance = getRows() - rowDistance;
+
+        return rowDistance;
     }
 
     public List<Tile> get4Neighbours(Tile center) {
@@ -133,18 +158,8 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
 
     @Override
     public double beelineTo(Tile tStart, Tile tEnd) {
-
-        int c = 0;
-        int r = 0;
-        c = Math.abs(tStart.getCol() - tEnd.getCol());
-        r = Math.abs(tStart.getRow() - tEnd.getRow());
-
-        // considering warparound
-        if (c > getCols() / 2)
-            c = getCols() - c;
-
-        if (r > getRows() / 2)
-            r = getRows() - r;
+        int c = getColDistance(tStart, tEnd);
+        int r = getRowDistance(tStart, tEnd);
 
         return Math.sqrt(r * r + c * c);
     }
