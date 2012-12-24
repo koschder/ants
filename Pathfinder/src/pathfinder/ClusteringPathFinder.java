@@ -9,22 +9,36 @@ import pathfinder.search.SimpleSearchStrategy;
 import api.pathfinder.SearchableMap;
 
 /***
- * this is the main class of the pathfinder framework
+ * Clustering pathfinder is designed for big maps, where simple a star reaches its frontiers. the map will be clustered
+ * in smaller pieces in which the path is precalculated. if needing a path, this small path section will be combined to
+ * the final path precondition: every map area to be precalculated must be visible.
  * 
- * @author kaeserst
+ * @author kaeserst, kustl1
  * 
  */
 public class ClusteringPathFinder extends SimplePathFinder {
 
     private Clustering cluster;
 
-    // Default constructor
+    /**
+     * default constructor with the parameters
+     * 
+     * @param map
+     *            searchable map
+     * @param clusterSize
+     *            the size of each cluster (quadratic)
+     * @param clusterType
+     *            (Centered or Corner)
+     */
     public ClusteringPathFinder(SearchableMap map, int clusterSize, ClusterType clusterType) {
         super(map);
         initClustering(clusterSize, clusterType);
     }
 
-    // called every turn, updates clustering
+    /**
+     * called every turn, calculating clusters when more and more will be visible to cluster.
+     * 
+     */
     @Override
     public void update() {
         cluster.updateClusters();
@@ -38,6 +52,12 @@ public class ClusteringPathFinder extends SimplePathFinder {
         return this.cluster;
     }
 
+    /**
+     * get the strategy implementation
+     * 
+     * @param strategy
+     * @return the new instance of the search strategy
+     */
     @Override
     protected SearchStrategy getStrategy(Strategy strategy) {
         if (strategy == Strategy.Simple)
@@ -50,7 +70,7 @@ public class ClusteringPathFinder extends SimplePathFinder {
         throw new RuntimeException("Strategy not implemented: " + strategy);
     }
 
-    /***
+    /**
      * Initialize the clustering
      * 
      * @param clusterSize

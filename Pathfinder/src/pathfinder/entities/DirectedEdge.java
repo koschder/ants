@@ -6,10 +6,10 @@ import java.util.List;
 import api.entities.Tile;
 import api.pathfinder.SearchTarget;
 
-/***
- * DirectedEdge is used to define which is the start and the end node of the Edge
+/**
+ * DirectedEdge extended of Edge and is used to define which is the start and the end tile of the Edge
  * 
- * @author kaeserst
+ * @author kaeserst, kustl1
  * 
  */
 public class DirectedEdge extends Edge implements SearchTarget {

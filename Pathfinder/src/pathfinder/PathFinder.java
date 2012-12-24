@@ -7,18 +7,30 @@ import api.pathfinder.SearchTarget;
 import api.pathfinder.SearchableMap;
 import api.strategy.InfluenceMap;
 
+/**
+ * the interface for path find algorithm, all needed method for path finding are described.
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public interface PathFinder {
 
+    /**
+     * the implemented Strategies are Simple, AStar, HPAStar
+     * 
+     */
     public enum Strategy {
         Simple,
         AStar,
         HpaStar
     };
 
-    // called every turn, updates clustering
+    /**
+     * called every turn to do updates on the path finder if needed.
+     */
     public void update();
 
-    /***
+    /**
      * 
      * @param strategy
      *            witch strategy should be applied
@@ -32,9 +44,19 @@ public interface PathFinder {
      */
     public List<Tile> search(Strategy strategy, SearchTarget start, SearchTarget end, int maxCost);
 
+    /**
+     * 
+     * @param strategy
+     *            witch strategy should be applied
+     * @param start
+     *            position
+     * @param end
+     *            position
+     * @return the found path, or null if no path found.
+     */
     public List<Tile> search(Strategy strategy, SearchTarget start, SearchTarget end);
 
-    /***
+    /**
      * 
      * @param strategy
      *            witch strategy should be applied
@@ -53,8 +75,16 @@ public interface PathFinder {
     public List<Tile> search(Strategy strategy, SearchTarget start, SearchTarget end, Tile searchSpace0,
             Tile searchSpace1, int maxCost);
 
+    /**
+     * 
+     * @return the map where the path finder is applied to.
+     */
     public SearchableMap getMap();
 
+    /**
+     * 
+     * @return the influence map used on path finding (optionally)
+     */
     public InfluenceMap getInfluenceMap();
 
 }

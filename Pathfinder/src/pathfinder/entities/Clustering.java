@@ -32,7 +32,7 @@ public class Clustering extends AbstractWraparoundMap {
         Corner
     };
 
-    /***
+    /**
      * Initializes the clustering.
      * 
      * @param s
@@ -47,7 +47,7 @@ public class Clustering extends AbstractWraparoundMap {
         init(clusterSize, mapHeight, mapWidth);
     }
 
-    /***
+    /**
      * Initializes all the clusters.
      * 
      * @param clusterSize
