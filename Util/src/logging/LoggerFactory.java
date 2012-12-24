@@ -38,4 +38,14 @@ public class LoggerFactory {
         }
         return new DefaultLogger(category, logFile);
     }
+
+    /**
+     * Close all log files
+     */
+    public static void cleanup() {
+        logFile.close();
+        for (LogFile log : customLogFiles.values()) {
+            log.close();
+        }
+    }
 }

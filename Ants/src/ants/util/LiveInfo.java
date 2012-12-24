@@ -2,6 +2,7 @@ package ants.util;
 
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.RandomAccessFile;
 
 import api.entities.Tile;
@@ -62,5 +63,17 @@ public class LiveInfo {
             e.printStackTrace();
         }
 
+    }
+
+    /**
+     * Close the liveInfo file
+     */
+    public static void close() {
+        try {
+            liveInfo.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 }

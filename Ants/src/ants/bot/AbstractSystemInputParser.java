@@ -13,18 +13,31 @@ public abstract class AbstractSystemInputParser extends AbstractSystemInputReade
 
     private static final String GO = "go";
 
+    private static final String END = "end";
+
     private static final char COMMENT_CHAR = '#';
 
     private final List<String> input = new ArrayList<String>();
 
     private enum SetupToken {
-        LOADTIME, TURNTIME, ROWS, COLS, TURNS, VIEWRADIUS2, ATTACKRADIUS2, SPAWNRADIUS2;
+        LOADTIME,
+        TURNTIME,
+        ROWS,
+        COLS,
+        TURNS,
+        VIEWRADIUS2,
+        ATTACKRADIUS2,
+        SPAWNRADIUS2;
 
         private static final Pattern PATTERN = compilePattern(SetupToken.class);
     }
 
     private enum UpdateToken {
-        W, A, F, D, H;
+        W,
+        A,
+        F,
+        D,
+        H;
 
         private static final Pattern PATTERN = compilePattern(UpdateToken.class);
     }
@@ -57,6 +70,9 @@ public abstract class AbstractSystemInputParser extends AbstractSystemInputReade
             doTurn();
             finishTurn();
             input.clear();
+        } else if (line.equals(END)) {
+            cleanup();
+            finished = true;
         } else if (!line.isEmpty()) {
             input.add(line);
         }
@@ -267,6 +283,8 @@ public abstract class AbstractSystemInputParser extends AbstractSystemInputReade
     public abstract void doTurn();
 
     protected abstract void doFinishTurn();
+
+    protected abstract void cleanup();
 
     /**
      * Finishes turn.

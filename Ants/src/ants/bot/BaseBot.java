@@ -63,6 +63,13 @@ public abstract class BaseBot extends Bot {
         }
     }
 
+    @Override
+    protected void cleanup() {
+        LOGGER.info("Cleaning up");
+        LiveInfo.close();
+        LoggerFactory.cleanup();
+    }
+
     private void addTurnSummaryToLogfiles() {
         for (LogCategory logCat : LogCategory.values()) {
             addTurnSummary(logCat);

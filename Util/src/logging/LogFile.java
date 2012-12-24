@@ -40,4 +40,11 @@ public class LogFile {
     public void append(String message, Object... parameters) {
         log.println(String.format(message, parameters));
     }
+
+    /**
+     * Close the underlying stream
+     */
+    public void close() {
+        log.close();
+    }
 }

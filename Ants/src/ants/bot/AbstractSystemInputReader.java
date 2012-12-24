@@ -6,6 +6,8 @@ import java.io.IOException;
  * Handles system input stream reading.
  */
 public abstract class AbstractSystemInputReader {
+    protected boolean finished = false;
+
     /**
      * Reads system input stream line by line. All characters are converted to lower case and each line is passed for
      * processing to {@link #processLine(String)} method.
@@ -16,7 +18,7 @@ public abstract class AbstractSystemInputReader {
     public void readSystemInput() throws IOException {
         StringBuilder line = new StringBuilder();
         int c;
-        while ((c = System.in.read()) >= 0) {
+        while ((c = System.in.read()) >= 0 && !finished) {
             if (c == '\r' || c == '\n') {
                 processLine(line.toString().toLowerCase().trim());
                 line.setLength(0);
