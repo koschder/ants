@@ -2,6 +2,7 @@ package influence.unittest;
 
 import influence.DefaultInfluenceMap;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import api.entities.Tile;
@@ -11,8 +12,17 @@ import api.test.PixelDecorator;
 
 import static org.junit.Assert.*;
 
+/**
+ * the class containing all unit tests to prove the functionalities of the influence map
+ * 
+ * @author kaeserst
+ * 
+ */
 public class InfluenceTest {
 
+    /**
+     * this test creates an influence map, and writes an html file to see the results
+     */
     @Test
     public void safetyInfluenceTest() {
 
@@ -27,7 +37,11 @@ public class InfluenceTest {
         put.setMap(map);
         put.setClusterSize(5);
         put.addAllUnits();
-        put.saveHtmlMap("frickling_safetyInfluenceTest", getSafetyDecorator(iMap));
+        put.saveHtmlMap("InfluenceTest_safetyInfluenceTest", getSafetyDecorator(iMap));
+
+        Assert.assertEquals(iMap.getInfluence(1, new Tile(2, 4)), iMap.getInfluence(0, new Tile(2, 4)));
+        Assert.assertTrue(iMap.getSafety(new Tile(2, 3)) > 0);
+        Assert.assertTrue(iMap.getSafety(new Tile(2, 5)) < 0);
 
     }
 
@@ -46,6 +60,9 @@ public class InfluenceTest {
         return sMap;
     }
 
+    /**
+     * tests the update mechanism
+     */
     @Test
     public void safetyInfluenceUpdateTest() {
 
@@ -75,7 +92,7 @@ public class InfluenceTest {
         put.setMap(updateMap);
         put.setClusterSize(5);
         put.addAllUnits();
-        put.saveHtmlMap("frickling_safetyInfluenceUpdateTest", getSafetyDecorator(iMap));
+        put.saveHtmlMap("InfluenceTest_safetyInfluenceUpdateTest", getSafetyDecorator(iMap));
 
     }
 
@@ -89,6 +106,9 @@ public class InfluenceTest {
         };
     }
 
+    /**
+     * tests the total influence function each player
+     */
     @Test
     public void totalInfluenceTest() {
 

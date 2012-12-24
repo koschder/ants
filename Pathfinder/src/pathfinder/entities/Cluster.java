@@ -15,7 +15,7 @@ import api.entities.Tile;
 import api.pathfinder.SearchTarget;
 
 /***
- * a cluster is an area on the map. the cluster connects the neighbour cluster throw passable edges along the cluster
+ * a cluster is an area on the map. the cluster connects the neighbor cluster throw passable edges along the cluster
  * side. these edges are connected to edges inside the cluster if there is a passable path between.
  * 
  * @author kaeserst
@@ -47,7 +47,7 @@ public class Cluster {
      */
     private int row;
     /***
-     * col of the cluster reffering to the whole clustering.
+     * col of the cluster referring to the whole clustering.
      */
     private int col;
     /***

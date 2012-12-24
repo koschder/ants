@@ -1,7 +1,7 @@
 package logging;
 
 /**
- * interface of logger, the method, trace, debug, info, and error must be implemented to by using this interface.
+ * interface of logger, the methods: trace, debug, info, and error must be implemented to by using this interface.
  * 
  * @author kaeserst, kustl1
  * 
