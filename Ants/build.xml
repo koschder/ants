@@ -33,6 +33,12 @@
 			<param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
 		</antcall>
 	</target>
+	<target name="repeatMazeAgainstEgreavette" depends="jarMyBot" description="">
+	        <antcall target="mazeTestRepeat">
+	            <param name="bot.name" value="MyBot" />
+	            <param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
+	        </antcall>
+	    </target>
 	<target name="mazeAgainstNHaehnle" depends="jarMyBot" description="">
 		<antcall target="mazeTest">
 			<param name="bot.name" value="MyBot" />
