@@ -1,5 +1,11 @@
 package logging;
 
+/**
+ * interface of logger, the method, trace, debug, info, and error must be implemented to by using this interface.
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public interface Logger {
     public void trace(String message, Object... parameters);
 

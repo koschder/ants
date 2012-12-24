@@ -1,5 +1,12 @@
 package logging;
 
+/**
+ * this class is the default implementation of our logging functionality it is possible to log in different loglevel and
+ * categories and even in a different file for each category.
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public class DefaultLogger implements Logger {
 
     private LogCategory category;
