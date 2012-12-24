@@ -11,18 +11,37 @@ import api.pathfinder.SearchTarget;
 import api.pathfinder.SearchableMap;
 import api.strategy.InfluenceMap;
 
+/**
+ * the simple path finder provides two search strategies named AStar and Simple, use the main function search(..) to
+ * find a path.
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public class SimplePathFinder implements PathFinder {
 
     protected SearchableMap map;
-    protected InfluenceMap infMap;
+    protected InfluenceMap influenceMap;
 
+    /**
+     * default constructor, setting the map
+     * 
+     * @param map
+     */
     public SimplePathFinder(SearchableMap map) {
         this.map = map;
     }
 
+    /**
+     * Constructor setting the map an the influence map, if the influence map is set, it is used during path finding.
+     * 
+     * @param map
+     * @param infMap
+     *            the influence map
+     */
     public SimplePathFinder(SearchableMap map, InfluenceMap infMap) {
         this.map = map;
-        this.infMap = infMap;
+        this.influenceMap = infMap;
     }
 
     @Override
@@ -59,9 +78,10 @@ public class SimplePathFinder implements PathFinder {
     }
 
     /***
+     * get the strategy implementation
      * 
      * @param strategy
-     * @return the instance of the search strategy
+     * @return the new instance of the search strategy
      */
     protected SearchStrategy getStrategy(Strategy strategy) {
         if (strategy == Strategy.Simple)
@@ -137,13 +157,13 @@ public class SimplePathFinder implements PathFinder {
 
     @Override
     public InfluenceMap getInfluenceMap() {
-        return infMap;
+        return influenceMap;
     }
 
     public int getPathCosts(List<Tile> path) {
         int costs = 0;
         for (Tile t : path) {
-            costs += (infMap == null) ? 1 : infMap.getPathCosts(t);
+            costs += (influenceMap == null) ? 1 : influenceMap.getPathCosts(t);
         }
         return costs;
     }
@@ -151,7 +171,7 @@ public class SimplePathFinder implements PathFinder {
     public String getPathCostsString(List<Tile> path) {
         String costs = "";
         for (Tile t : path) {
-            costs += (infMap == null) ? ",1" : "," + infMap.getPathCosts(t);
+            costs += (influenceMap == null) ? ",1" : "," + influenceMap.getPathCosts(t);
         }
         return costs.length() > 0 ? costs.substring(1) : "";
     }

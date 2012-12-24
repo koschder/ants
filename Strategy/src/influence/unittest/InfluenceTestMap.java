@@ -15,6 +15,12 @@ import api.pathfinder.SearchableUnitMap;
 import api.strategy.InfluenceMap;
 import api.test.TestUnit;
 
+/**
+ * this implementation of the AbstractWraparoundMap is only use by the unit tests.
+ * 
+ * @author kaeserst, kustl1
+ * @see InfluenceTest
+ */
 public class InfluenceTestMap extends AbstractWraparoundMap implements SearchableUnitMap {
 
     int[][] map;

@@ -17,6 +17,11 @@ import api.strategy.InfluenceMap;
 import api.test.MapOutput;
 import api.test.PixelDecorator;
 
+/**
+ * 
+ * @author kaeserst
+ * 
+ */
 public class DefaultInfluenceMap implements InfluenceMap {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.INFLUENCE);
     private static final int MAX_INFLUENCE = 100;
