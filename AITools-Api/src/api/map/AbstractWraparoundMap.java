@@ -57,6 +57,8 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
     @Override
     public Aim getPrincipalDirection(Tile t1, Tile t2) {
         final List<Aim> simpleDirections = getDirections(t1, t2);
+        if (simpleDirections.isEmpty())
+            return null;
         if (simpleDirections.size() == 1)
             return simpleDirections.get(0);
 

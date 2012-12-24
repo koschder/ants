@@ -11,6 +11,16 @@ import static org.junit.Assert.*;
 public class WraparoundTest {
 
     /**
+     * Test getPrincipalDirection() with the same tile
+     */
+    @Test
+    public void testGetPrincipalDirection_directionToSelf() {
+        SearchableMap map = new SimpleUnitTestMap(10, 10);
+        Tile center = new Tile(5, 5);
+        assertNull(map.getPrincipalDirection(center, center));
+    }
+
+    /**
      * Test getPrincipalDirection() with adjacent tiles
      */
     @Test
