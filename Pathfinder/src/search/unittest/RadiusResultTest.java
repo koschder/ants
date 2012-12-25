@@ -12,6 +12,12 @@ import search.BreadthFirstSearch.GoalTest;
 import api.entities.Tile;
 import api.test.MapOutput;
 
+/**
+ * this tests are prove the functionalities of bfs to get tiles on a radius, used for formation our units
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public class RadiusResultTest {
     @Test
     public void testFindSingleClosestTile1() {

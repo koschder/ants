@@ -14,6 +14,12 @@ import pathfinder.SimplePathFinder;
 import api.entities.Tile;
 import api.test.MapOutput;
 
+/**
+ * these test compare the runtime of a star alogrithm
+ * 
+ * @author kaeserst
+ * 
+ */
 public class CompareStrategyTest {
 
     @Test

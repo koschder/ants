@@ -12,6 +12,12 @@ import pathfinder.entities.DirectedEdge;
 import api.entities.Tile;
 import api.pathfinder.SearchTarget;
 
+/**
+ * the class implements the HPA* search (hierarcical path A star)
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public class HPAStarSearchStrategy extends SearchStrategy {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.HPASTAR);
@@ -23,9 +29,11 @@ public class HPAStarSearchStrategy extends SearchStrategy {
         this.clustering = clustering;
     }
 
-    /***
+    /**
      * return the best path between the from and the to SearchTarget using the HPA* algorithm. if the clustering for the
      * HPA* is not ready yet we use A*
+     * 
+     * @return the found path, or null if no path is found
      */
     public List<Tile> searchPath(SearchTarget from, SearchTarget to) {
 

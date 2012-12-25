@@ -9,9 +9,12 @@ import pathfinder.entities.Edge;
 import pathfinder.entities.Vertex;
 import api.entities.Tile;
 
+/**
+ * comparing edges
+ */
 public class EdgeTest {
 
-    /***
+    /**
      * comparing edges
      */
     @Test

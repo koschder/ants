@@ -12,8 +12,8 @@ import api.map.TileMap;
 import api.map.WorldType;
 import api.pathfinder.SearchTarget;
 
-/***
- * definitions for a searchstrategy
+/**
+ * definitions for a search strategy
  * 
  * @author kases1, kustl1
  * 
@@ -46,7 +46,7 @@ public abstract class SearchStrategy {
      */
     protected abstract List<Tile> searchPath(SearchTarget from, SearchTarget to);
 
-    /***
+    /**
      * Searches the path and logs the calls
      * 
      * @param from
@@ -64,8 +64,8 @@ public abstract class SearchStrategy {
         return path;
     }
 
-    /***
-     * logs for every search the main facts about the done search
+    /**
+     * logs for every search the main facts about the executed search
      * 
      * @param path
      * @param from
@@ -82,16 +82,37 @@ public abstract class SearchStrategy {
 
     }
 
+    /**
+     * 
+     * @param p1
+     *            Upper left corner of the search space
+     * @param p2
+     *            Bottom right corner of the search space
+     */
     public void setSearchSpace(Tile p1, Tile p2) {
         this.searchSpace1 = p1;
         this.searchSpace2 = p2;
     }
 
+    /**
+     * the estimated costs are the beeline between the tiles
+     * 
+     * @param from
+     * @param to
+     * @return cost from to to
+     */
     protected double getEstimatedCosts(Tile from, Tile to) {
         return pathFinder.getMap().beelineTo(from, to);
 
     }
 
+    /**
+     * returns the actual calculated cost between for dest, by adding the actual and the new costs.
+     * 
+     * @param current
+     * @param dest
+     * @return the costs for dest
+     */
     protected final int getActualCost(Node current, SearchTarget dest) {
         if (useInflunceMap) {
             return current.getActualCost() + pathFinder.getInfluenceMap().getPathCosts(dest);
@@ -99,10 +120,16 @@ public abstract class SearchStrategy {
         return current.getActualCost() + dest.getCost();
     }
 
+    /**
+     * checks if the SearchTarget is in the defined search space
+     * 
+     * @param areaCheck
+     * @return true if inside
+     */
     protected boolean inSearchSpace(SearchTarget areaCheck) {
 
         if (searchSpace1 == null || searchSpace2 == null)
-            return true; // no searchspace defined.
+            return true; // no search space defined.
 
         if (!(areaCheck instanceof Tile))
             return true;
@@ -138,8 +165,13 @@ public abstract class SearchStrategy {
         return false;
     }
 
-    public void setMaxCost(int i) {
-        maxCost = i;
+    /**
+     * setter for define the max costs a path can have.
+     * 
+     * @param maxCosts
+     */
+    public void setMaxCost(int maxCosts) {
+        maxCost = maxCosts;
     }
 
     private long getTimeElapsed() {

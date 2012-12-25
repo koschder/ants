@@ -11,6 +11,12 @@ import pathfinder.SimplePathFinder;
 import api.entities.Tile;
 import api.test.MapOutput;
 
+/**
+ * check if search space restrictions work.
+ * 
+ * @author kaeserst
+ * 
+ */
 public class SearchSpaceTest {
 
     @Test

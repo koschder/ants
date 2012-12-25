@@ -10,15 +10,32 @@ import api.entities.Tile;
 import api.pathfinder.SearchTarget;
 import api.pathfinder.SearchableMap;
 
+/**
+ * this class implements the BFS (BreadthFirstSearch) search
+ * 
+ * @author kaeserst
+ * 
+ */
 public class BreadthFirstSearch {
     protected static final Logger LOGGER = LoggerFactory.getLogger(pathfinder.LogCategory.BFS);
 
     private SearchableMap map;
 
+    /**
+     * constructor with map on which the bfs is applied.
+     * 
+     * @param map
+     */
     public BreadthFirstSearch(SearchableMap map) {
         this.map = map;
     }
 
+    /**
+     * returning all diagonal neighbors of the Tile center
+     * 
+     * @param center
+     * @return
+     */
     public List<Tile> getDiagonalNeighbours(final Tile center) {
         return floodFill(center, 4, new GoalTest() {
             @Override
@@ -28,24 +45,60 @@ public class BreadthFirstSearch {
         });
     }
 
+    /**
+     * returns all tiles in a radius of the squared distance maxDistance. the bfs is starting at center
+     * 
+     * @param center
+     * @param maxDistance2
+     * @return
+     */
     public List<Tile> floodFill(Tile center, int maxDistance2) {
         return floodFill(center, maxDistance2, new AlwaysTrueGoalTest());
     }
 
+    /**
+     * returns all tiles in a radius of the squared distance maxDistance and the goalTest function. the bfs is starting
+     * at center
+     * 
+     * @param center
+     * @param maxDistance2
+     * @param goalTest
+     * @return
+     */
     public List<Tile> floodFill(Tile center, int maxDistance2, GoalTest goalTest) {
         return findClosestTiles(center, Integer.MAX_VALUE, Integer.MAX_VALUE, maxDistance2, goalTest);
     }
 
-    public Tile findSingleClosestTile(Tile origin, int maxNodes, GoalTest goalTest) {
-        List<Tile> found = findClosestTiles(origin, 1, maxNodes, Integer.MAX_VALUE, goalTest);
+    /**
+     * returns all tiles in a radius of the squared distance maxDistance and the goalTest function and a maximum node
+     * restriction. the bfs is starting at center
+     * 
+     * @param center
+     * @param maxNodes
+     * @param goalTest
+     * @return
+     */
+    public Tile findSingleClosestTile(Tile center, int maxNodes, GoalTest goalTest) {
+        List<Tile> found = findClosestTiles(center, 1, maxNodes, Integer.MAX_VALUE, goalTest);
         return found.isEmpty() ? null : found.get(0);
     }
 
-    public List<Tile> findClosestTiles(Tile origin, int numberOfHits, int maxNodes, int maxDistance2, GoalTest goalTest) {
-        LOGGER.debug("BFS params: origin=%s, numberOfHits=%s, maxNodes=%s, maxDistance=%s", origin, numberOfHits,
+    /**
+     * returns all tiles in a radius of the squared distance maxDistance and the goalTest function, a maximum node
+     * restriction and a numberOf hits restriction. the bfs is starting at center
+     * 
+     * @param center
+     * @param numberOfHits
+     * @param maxNodes
+     * @param maxDistance2
+     * @param goalTest
+     * @return
+     */
+    public List<Tile> findClosestTiles(Tile center, int numberOfHits, int maxNodes, int maxDistance2, GoalTest goalTest) {
+        LOGGER.debug("BFS params: origin=%s, numberOfHits=%s, maxNodes=%s, maxDistance=%s", center, numberOfHits,
                 maxNodes, maxDistance2);
         LinkedList<Tile> frontier = new LinkedList<Tile>();
-        frontier.add(origin);
+        frontier.add(center);
         List<Tile> explored = new ArrayList<Tile>();
         List<Tile> found = new ArrayList<Tile>();
         while (!frontier.isEmpty() && explored.size() < maxNodes) {
@@ -59,7 +112,7 @@ public class BreadthFirstSearch {
                     continue;
                 }
                 // check abort conditions
-                if (maxDistance2 < Integer.MAX_VALUE && map.getSquaredDistance(origin, childTile) > maxDistance2) {
+                if (maxDistance2 < Integer.MAX_VALUE && map.getSquaredDistance(center, childTile) > maxDistance2) {
                     LOGGER.debug("MaxDistance (%s) exceeded.", maxDistance2);
                     return found;
                 }
@@ -75,10 +128,16 @@ public class BreadthFirstSearch {
                     found.add(childTile);
             }
         }
-        LOGGER.debug("Searched from %s, found %s, explored %s", origin, found, explored.size());
+        LOGGER.debug("Searched from %s, found %s, explored %s", center, found, explored.size());
         return found;
     }
 
+    /**
+     * returns all neighbor tiles of the Tile next
+     * 
+     * @param next
+     * @return
+     */
     private List<SearchTarget> getSuccessors(Tile next) {
         return map.getSuccessorsForSearch(next, false);
     }
@@ -87,6 +146,12 @@ public class BreadthFirstSearch {
         boolean isGoal(Tile tile);
     }
 
+    /**
+     * this is a dummy implementation for the GoalTest it returns true for every Tile
+     * 
+     * @author kaeserst, kustl1
+     * 
+     */
     public static class AlwaysTrueGoalTest implements GoalTest {
         @Override
         public boolean isGoal(Tile tile) {

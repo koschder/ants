@@ -13,6 +13,12 @@ import api.test.MapOutput;
 
 import static org.junit.Assert.*;
 
+/**
+ * doing some tests to prove functionality of Astar
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public class FindAStarTest {
 
     @Test

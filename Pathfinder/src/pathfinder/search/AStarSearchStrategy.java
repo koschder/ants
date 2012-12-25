@@ -15,6 +15,12 @@ import pathfinder.entities.Node;
 import api.entities.Tile;
 import api.pathfinder.SearchTarget;
 
+/**
+ * this class implements the AStar algorithm for path finding
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public class AStarSearchStrategy extends SearchStrategy {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.PATHFINDING);
@@ -37,6 +43,15 @@ public class AStarSearchStrategy extends SearchStrategy {
         return list;
     }
 
+    /**
+     * main method, calculates a Astar path with actual and estimated costs, using a frontier and an explored list.
+     * 
+     * @param from
+     *            Start area
+     * @param to
+     *            Emd area
+     * @return path if found, else null
+     */
     private List<Tile> calculateBestPath(SearchTarget from, SearchTarget to) {
         if (from.equals(to))
             return to.getPath();
@@ -58,7 +73,7 @@ public class AStarSearchStrategy extends SearchStrategy {
 
             List<Node> nodes = expand(node);
             for (Node child : nodes) {
-                if (frontier.contains(child) || explored.contains(child.getState()) || maxCostReached(child, to)) {
+                if (frontier.contains(child) || explored.contains(child.getState()) || maxCostReached(child)) {
                     continue;
                 }
                 if (child.getState().isFinal(to)) {
@@ -70,10 +85,23 @@ public class AStarSearchStrategy extends SearchStrategy {
         return null; // failure
     }
 
-    private boolean maxCostReached(Node child, SearchTarget to) {
-        return child.getEstimatedCost() > maxCost && maxCost != -1;
+    /**
+     * are the maximum costs reached with this node..
+     * 
+     * @param node
+     * @param to
+     * @return
+     */
+    private boolean maxCostReached(Node node) {
+        return node.getEstimatedCost() > maxCost && maxCost != -1;
     }
 
+    /**
+     * expanding the node by looking up its neighbor tiles.
+     * 
+     * @param node
+     * @return the passable neighbors.
+     */
     public List<Node> expand(Node node) {
         List<Node> children = new ArrayList<Node>();
         List<SearchTarget> list = pathFinder.getMap().getSuccessorsForPathfinding(node.getState(),
@@ -84,6 +112,13 @@ public class AStarSearchStrategy extends SearchStrategy {
         return children;
     }
 
+    /**
+     * adding all children to its parent node.
+     * 
+     * @param parent
+     * @param children
+     * @param childState
+     */
     private void addChild(Node parent, List<Node> children, SearchTarget childState) {
         if (!inSearchSpace(childState)) {
             LOGGER.debug("tile %s is not in searchspace", childState);
@@ -95,6 +130,12 @@ public class AStarSearchStrategy extends SearchStrategy {
 
     }
 
+    /**
+     * returning the path from the child Node to the root node.
+     * 
+     * @param child
+     * @return
+     */
     private List<Tile> path(Node child) {
         List<Tile> path = new ArrayList<Tile>();
         addToPath(path, child);
@@ -102,6 +143,12 @@ public class AStarSearchStrategy extends SearchStrategy {
         return path;
     }
 
+    /**
+     * adds the path of the child node to the actual path
+     * 
+     * @param path
+     * @param child
+     */
     private void addToPath(List<Tile> path, Node child) {
         if (child == null)
             return;

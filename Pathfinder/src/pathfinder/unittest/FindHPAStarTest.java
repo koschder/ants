@@ -15,6 +15,12 @@ import api.test.MapOutput;
 
 import static org.junit.Assert.*;
 
+/**
+ * doing some tests to prove functionality of HPA*
+ * 
+ * @author kaeserst
+ * 
+ */
 public class FindHPAStarTest {
 
     @Test

@@ -9,6 +9,12 @@ import api.map.AbstractWraparoundMap;
 import api.pathfinder.SearchTarget;
 import api.strategy.InfluenceMap;
 
+/**
+ * test map for all unit tests.
+ * 
+ * @author kaeserst
+ * 
+ */
 public class UnitTestMap extends AbstractWraparoundMap {
 
     int[][] map;

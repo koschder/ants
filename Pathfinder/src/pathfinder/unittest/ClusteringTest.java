@@ -13,6 +13,12 @@ import pathfinder.entities.Clustering.ClusterType;
 import api.entities.Tile;
 import api.test.MapOutput;
 
+/**
+ * these tests check if the clustering mechanism works
+ * 
+ * @author kaeserst
+ * 
+ */
 public class ClusteringTest {
     @Test
     public void clusteringMapCornerTest() {

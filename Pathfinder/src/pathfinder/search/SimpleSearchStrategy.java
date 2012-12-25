@@ -11,6 +11,13 @@ import api.entities.Aim;
 import api.entities.Tile;
 import api.pathfinder.SearchTarget;
 
+/**
+ * the simplest algorithm for finding a path by connecting the destination and the target location with two straight
+ * lines.
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public class SimpleSearchStrategy extends SearchStrategy {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.PATHFINDING);
@@ -19,7 +26,7 @@ public class SimpleSearchStrategy extends SearchStrategy {
         super(f);
     }
 
-    /***
+    /**
      * the simplest algorithm for finding a path by connecting two straight lines. This alogrithm cannot be use by
      * DirectedEdges
      */
@@ -44,7 +51,7 @@ public class SimpleSearchStrategy extends SearchStrategy {
 
     }
 
-    /***
+    /**
      * try to get a path from to to with via
      * 
      * @param from
@@ -71,7 +78,7 @@ public class SimpleSearchStrategy extends SearchStrategy {
         return path;
     }
 
-    /***
+    /**
      * 
      * @param from
      * @param to

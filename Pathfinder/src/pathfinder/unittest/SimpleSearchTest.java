@@ -11,6 +11,12 @@ import pathfinder.SimplePathFinder;
 import api.entities.Tile;
 import api.test.MapOutput;
 
+/**
+ * test the simple algorithm
+ * 
+ * @author kaeserst
+ * 
+ */
 public class SimpleSearchTest {
 
     @Test
