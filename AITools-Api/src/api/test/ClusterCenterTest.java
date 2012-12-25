@@ -9,6 +9,12 @@ import api.entities.Tile;
 
 import static org.junit.Assert.*;
 
+/**
+ * test for calculating the cluster center
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public class ClusterCenterTest {
     @Test
     public void testFindClusterCenter() {
@@ -29,6 +35,17 @@ public class ClusterCenterTest {
         cluster.add(new Tile(30, 30));
 
         assertEquals(new Tile(10, 20), map.getClusterCenter(cluster));
+    }
+
+    @Test
+    public void testFindClusterCenter_3Points2() {
+        SimpleUnitTestMap map = new SimpleUnitTestMap(100, 100);
+        List<Tile> cluster = new ArrayList<Tile>();
+        cluster.add(new Tile(10, 10));
+        cluster.add(new Tile(11, 10));
+        cluster.add(new Tile(11, 11));
+
+        assertEquals(new Tile(11, 10), map.getClusterCenter(cluster));
     }
 
     @Test

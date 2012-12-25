@@ -7,9 +7,15 @@ import api.entities.Tile;
 import api.map.TileMap;
 import api.strategy.InfluenceMap;
 
+/**
+ * the interface SearchableMap defines the method used doing path searching on the map.
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public interface SearchableMap extends TileMap {
 
-    /***
+    /**
      * returns all neighbor fields, passable for any movable object
      * 
      * @param currentPosition
@@ -54,10 +60,30 @@ public interface SearchableMap extends TileMap {
      */
     public Tile getTile(Tile tile, Aim direction);
 
+    /**
+     * this method returns all successors "next tiles" this for SearchTarget
+     * 
+     * @param target
+     * @param isNextMove
+     * @return
+     */
     public List<SearchTarget> getSuccessorsForSearch(SearchTarget target, boolean isNextMove);
 
-    public Tile getSafestNeighbour(Tile tile, InfluenceMap influenceMap);
+    /**
+     * returns the safest next tile to the Tile position with a lookup on the influenceMap
+     * 
+     * @param position
+     * @param influenceMap
+     * @return
+     */
+    public Tile getSafestNeighbour(Tile position, InfluenceMap influenceMap);
 
+    /**
+     * calculates the center of all Tiles in {@code cluster}
+     * 
+     * @param cluster
+     * @return the cluster center
+     */
     public Tile getClusterCenter(List<Tile> cluster);
 
 }

@@ -7,11 +7,23 @@ import api.entities.Aim;
 import api.entities.Tile;
 import api.pathfinder.SearchableMap;
 
+/**
+ * AbstractWraparoundMap provide function for character of the map, and function to move on the map
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public abstract class AbstractWraparoundMap implements SearchableMap {
 
     protected int rows;
     protected int cols;
 
+    /**
+     * constructor, defining height and width of the map
+     * 
+     * @param rows
+     * @param cols
+     */
     public AbstractWraparoundMap(int rows, int cols) {
         this.rows = rows;
         this.cols = cols;
@@ -119,6 +131,13 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return r + c;
     }
 
+    /**
+     * the column (horizontal) distance between to tiles
+     * 
+     * @param t1
+     * @param t2
+     * @return the distance
+     */
     private int getColDistance(Tile t1, Tile t2) {
 
         int colDistance = Math.abs(t1.getCol() - t2.getCol());
@@ -128,6 +147,13 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return colDistance;
     }
 
+    /**
+     * the row (vertical) distance between the tiles
+     * 
+     * @param t1
+     * @param t2
+     * @return
+     */
     private int getRowDistance(Tile t1, Tile t2) {
 
         int rowDistance = Math.abs(t1.getRow() - t2.getRow());
@@ -145,6 +171,12 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return neighbours;
     }
 
+    /**
+     * returns all 8 neighbor of the Tile center
+     * 
+     * @param center
+     * @return the neighbor tiles
+     */
     public List<Tile> get8Neighbours(Tile center) {
         List<Tile> neighbours = new ArrayList<Tile>();
         for (Aim aim : Aim.values()) {
@@ -167,14 +199,14 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
     }
 
     /**
-     * Calculates distance between two locations on the game map.
+     * Calculates squared distance between two locations on the game map.
      * 
      * @param t1
      *            one location on the game map
      * @param t2
      *            another location on the game map
      * 
-     * @return distance between <code>t1</code> and <code>t2</code>
+     * @return the squared distance between <code>t1</code> and <code>t2</code>
      */
     @Override
     public int getSquaredDistance(Tile t1, Tile t2) {
@@ -194,6 +226,12 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return getTile(new Tile(0, 0), new Tile(row, col));
     }
 
+    /**
+     * calculates the column midpoint of all Tiles in cluster
+     * 
+     * @param cluster
+     * @return
+     */
     private int getAvgColDistanceFromOrigin(List<Tile> cluster) {
         float sum = 0;
         int count;
@@ -203,6 +241,12 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return Math.round(sum / count);
     }
 
+    /**
+     * calculates the row midpoint of all Tiles in cluster
+     * 
+     * @param cluster
+     * @return
+     */
     private int getAvgRowDistanceFromOrigin(List<Tile> cluster) {
         float sum = 0;
         int count;
@@ -212,10 +256,22 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return Math.round(sum / count);
     }
 
+    /**
+     * getting the row distance from the origin, can be negative because of the wraparound
+     * 
+     * @param tile
+     * @return distance
+     */
     private int getRowDistanceFromOrigin(Tile tile) {
         return tile.getRow() > (rows / 2) ? tile.getRow() - rows : tile.getRow();
     }
 
+    /**
+     * getting the col distance from the origin, can be negative because of the wraparound
+     * 
+     * @param tile
+     * @return distance
+     */
     private int getColDistanceFromOrigin(Tile tile) {
         return tile.getCol() > (cols / 2) ? tile.getCol() - cols : tile.getCol();
     }

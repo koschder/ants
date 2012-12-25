@@ -4,6 +4,12 @@ import java.util.List;
 
 import api.entities.Tile;
 
+/**
+ * the class describes some tiles on the map, as a group of objects
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public class MapObject {
 
     private List<Tile> tiles;

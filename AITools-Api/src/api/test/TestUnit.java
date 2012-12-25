@@ -3,6 +3,12 @@ package api.test;
 import api.entities.Tile;
 import api.entities.Unit;
 
+/**
+ * TestUnit are only used for UnitTests
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public class TestUnit implements Unit {
     private int player;
     private Tile tile;

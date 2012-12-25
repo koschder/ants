@@ -1,6 +1,6 @@
 package api.entities;
 
-/***
+/**
  * a move stores the current position and the direction where to move.
  * 
  * @author kustl1, kases1

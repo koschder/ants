@@ -8,6 +8,12 @@ import api.pathfinder.SearchableMap;
 
 import static org.junit.Assert.*;
 
+/**
+ * theses methods prove correct functionality of the wraparaound map
+ * 
+ * @author kaeserst
+ * 
+ */
 public class WraparoundTest {
 
     /**

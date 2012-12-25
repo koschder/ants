@@ -13,6 +13,12 @@ import api.map.MapObject;
 import api.map.TileMap;
 import api.map.UnitMap;
 
+/**
+ * this class is used in the unit test to visualize the test results
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public class MapOutput {
 
     private TileMap map;
@@ -23,6 +29,12 @@ public class MapOutput {
 
     private List<MapObject> objects = new ArrayList<MapObject>();
 
+    /**
+     * saves the map into a html file
+     * 
+     * @param fileName
+     * @param decorator
+     */
     public void saveHtmlMap(String fileName, PixelDecorator decorator) {
         if (map == null)
             throw new IllegalArgumentException("map must be defined");
@@ -120,11 +132,15 @@ public class MapOutput {
         if (i % clusterSize == 0 || i % clusterSize == clusterSize - 1)
             return true;
 
-        // if (maxSize <= i + 2)
-        // return true;
         return false;
     }
 
+    /**
+     * add object to the map
+     * 
+     * @param tiles
+     * @param desc
+     */
     public void addObject(List<Tile> tiles, String desc) {
 
         if (tiles == null || tiles.size() == 0)
@@ -134,6 +150,9 @@ public class MapOutput {
 
     }
 
+    /**
+     * add all units of UnitMap to the OutputMap
+     */
     public void addAllUnits() {
 
         if (map instanceof UnitMap) {

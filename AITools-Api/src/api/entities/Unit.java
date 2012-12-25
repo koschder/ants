@@ -1,12 +1,17 @@
 package api.entities;
 
-
+/**
+ * interface Unit, getTile() for the location unit, a getPlayer() to determine the owner
+ * 
+ * @author kaeserst, kustl1
+ * 
+ */
 public interface Unit {
 
-    public abstract boolean isMine();
+    public boolean isMine();
 
-    public abstract int getPlayer();
+    public int getPlayer();
 
-    public abstract Tile getTile();
+    public Tile getTile();
 
 }
