@@ -2,27 +2,27 @@ package pathfinder.entities;
 
 import api.pathfinder.SearchTarget;
 
-/***
+/**
  * this class is used in the as item in the frontier and in the explored list at A* algorithm.
  * 
- * @author kaeserst
+ * @author kaeserst, kustl1
  * 
  */
 public class Node implements Comparable<Node> {
 
-    /***
+    /**
      * current SearchTarget
      */
     private SearchTarget state;
-    /***
+    /**
      * parent node
      */
     private Node parent;
-    /***
+    /**
      * the estimated cost from start to the target node.
      */
     private double costEstimated;
-    /***
+    /**
      * the path cost until this node.
      */
     private int actualCost;
@@ -34,7 +34,7 @@ public class Node implements Comparable<Node> {
         this.costEstimated = actualCost + costEstimated;
     }
 
-    /***
+    /**
      * 
      * @return the position of the tile
      */

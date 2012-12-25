@@ -37,12 +37,7 @@ public class DirectedEdge extends Edge implements SearchTarget {
             startTile = getTile1();
     }
 
-    // @Override
-    // public int manhattanDistanceTo(SearchTarget dest) {
-    // return getEnd().manhattanDistanceTo(dest.getTargetTile());
-    // }
-
-    /***
+    /**
      * returns the path between the two tiles, if the path is not known it is calculated.
      */
     @Override
@@ -58,7 +53,7 @@ public class DirectedEdge extends Edge implements SearchTarget {
         }
     }
 
-    /***
+    /**
      * 
      * @return the end node of this edge
      */
@@ -66,7 +61,7 @@ public class DirectedEdge extends Edge implements SearchTarget {
         return getTile1().equals(startTile) ? getTile2() : getTile1();
     }
 
-    /***
+    /**
      * 
      * @return the start node of this edge
      */
@@ -120,10 +115,5 @@ public class DirectedEdge extends Edge implements SearchTarget {
         return Math.abs(getStart().getRow() - getEnd().getRow()) + Math.abs(getStart().getCol() - getEnd().getCol());
 
     }
-
-    // @Override
-    // public double beelineTo(SearchTarget dest) {
-    // return getEnd().beelineTo(dest.getTargetTile());
-    // }
 
 }

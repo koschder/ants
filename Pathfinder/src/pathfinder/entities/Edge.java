@@ -4,7 +4,7 @@ import java.util.List;
 
 import api.entities.Tile;
 
-/***
+/**
  * Describes a edge consists of to tiles as start and end node.
  * 
  * @author kases1,kustl1
@@ -20,12 +20,12 @@ public class Edge {
         Intra
     };
 
-    private Tile v1;
-    private Tile v2;
+    private Tile vertex1;
+    private Tile vertex2;
     private Cluster cluster;
     private EdgeType type;
 
-    /***
+    /**
      * path between the tiles
      */
     protected List<Tile> path;
@@ -35,8 +35,8 @@ public class Edge {
     }
 
     public Edge(Tile vertices, Tile lastVertices, Cluster c, EdgeType et) {
-        v1 = vertices;
-        v2 = lastVertices;
+        vertex1 = vertices;
+        vertex2 = lastVertices;
         cluster = c;
         type = et;
     }
@@ -49,8 +49,8 @@ public class Edge {
     public Edge(List<Tile> path) {
         if (path == null || path.size() < 2)
             throw new IllegalArgumentException("Path must have a size of at least 2");
-        v1 = path.get(0);
-        v2 = path.get(path.size() - 1);
+        vertex1 = path.get(0);
+        vertex2 = path.get(path.size() - 1);
         this.setPath(path);
     }
 
@@ -59,8 +59,8 @@ public class Edge {
         boolean result = false;
         if (o instanceof Edge) {
             Edge e = (Edge) o;
-            result = v1.equals(e.v1) && v2.equals(e.v2);
-            result |= v2.equals(e.v1) && v1.equals(e.v2);
+            result = vertex1.equals(e.vertex1) && vertex2.equals(e.vertex2);
+            result |= vertex2.equals(e.vertex1) && vertex1.equals(e.vertex2);
         }
         return result;
     }
@@ -74,11 +74,11 @@ public class Edge {
     }
 
     public Tile getTile1() {
-        return v1;
+        return vertex1;
     }
 
     public Tile getTile2() {
-        return v2;
+        return vertex2;
     }
 
     public EdgeType getType() {
@@ -107,6 +107,6 @@ public class Edge {
 
     @Override
     public String toString() {
-        return v1 + "-" + v2 + " " + type;
+        return vertex1 + "-" + vertex2 + " " + type;
     }
 }

@@ -68,7 +68,7 @@ public class SimplePathFinder implements PathFinder {
         return searchStrat.search(start, end);
     }
 
-    /***
+    /**
      * 
      * @return the map on witch the path finder acts.
      */
@@ -97,6 +97,12 @@ public class SimplePathFinder implements PathFinder {
         // nothing to do
     }
 
+    /**
+     * checks the path, that from tile to tile there is only a Manhattan distance of one.
+     * 
+     * @param path
+     * @return
+     */
     public boolean validatePath(List<Tile> path) {
         boolean ret = true;
         if (path.isEmpty())
@@ -119,10 +125,27 @@ public class SimplePathFinder implements PathFinder {
         return ret;
     }
 
+    /**
+     * path smoothing with default parameters (smoothing size: 10 tiles, recursive: false)
+     * 
+     * @param path
+     * @return the smoothed path
+     */
     public List<Tile> smoothPath(List<Tile> path) {
         return smoothPath(path, 10, false);
     }
 
+    /**
+     * path smoothing
+     * 
+     * @param path
+     *            to smooth
+     * @param size
+     *            path piece size which is tried to slice.
+     * @param recursive
+     *            recursion, until no smoothing is done.
+     * @return the smoothed path.
+     */
     public List<Tile> smoothPath(List<Tile> path, int size, boolean recursive) {
         if (path == null || path.size() < size)
             return path;
@@ -160,6 +183,12 @@ public class SimplePathFinder implements PathFinder {
         return influenceMap;
     }
 
+    /**
+     * get the path costs for the path, if the influenceMap is set, it is considered.
+     * 
+     * @param path
+     * @return costs of the path.
+     */
     public int getPathCosts(List<Tile> path) {
         int costs = 0;
         for (Tile t : path) {
@@ -168,6 +197,12 @@ public class SimplePathFinder implements PathFinder {
         return costs;
     }
 
+    /**
+     * each cost of tile is comma separated joined to a string.
+     * 
+     * @param path
+     * @return
+     */
     public String getPathCostsString(List<Tile> path) {
         String costs = "";
         for (Tile t : path) {

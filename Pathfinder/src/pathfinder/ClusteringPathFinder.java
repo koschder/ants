@@ -84,7 +84,7 @@ public class ClusteringPathFinder extends SimplePathFinder {
 
         cluster = new Clustering(this, clusterSize, map.getRows(), map.getCols());
         cluster.setClusterType(clusterType);
-        cluster.setWorldType(map.getWorldType());
+        // cluster.setWorldType(map.getWorldType());
 
     }
 

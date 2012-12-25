@@ -11,7 +11,6 @@ import pathfinder.SimplePathFinder;
 import api.entities.Aim;
 import api.entities.Tile;
 import api.map.AbstractWraparoundMap;
-import api.map.WorldType;
 import api.pathfinder.SearchTarget;
 import api.strategy.InfluenceMap;
 
@@ -35,14 +34,18 @@ public class Clustering extends AbstractWraparoundMap {
     /**
      * Initializes the clustering.
      * 
-     * @param s
+     * @param finder
+     *            the PathFinder
      * @param clusterSize
+     *            the side length of each cluster (quadratic)
      * @param mapHeight
+     *            Size of the map we deal with
      * @param mapWidth
+     *            Size of the map we deal with
      */
-    public Clustering(SimplePathFinder s, int clusterSize, int mapHeight, int mapWidth) {
+    public Clustering(SimplePathFinder finder, int clusterSize, int mapHeight, int mapWidth) {
         super(mapHeight, mapWidth);
-        this.pathFinder = s;
+        this.pathFinder = finder;
         this.clusterType = ClusterType.Corner;
         init(clusterSize, mapHeight, mapWidth);
     }
@@ -97,7 +100,7 @@ public class Clustering extends AbstractWraparoundMap {
         return clusters;
     }
 
-    /***
+    /**
      * returns the cluster considering if the cluster is wrapped around.
      * 
      * @param row
@@ -112,7 +115,7 @@ public class Clustering extends AbstractWraparoundMap {
         return clusters[r][c];
     }
 
-    /***
+    /**
      * Returns a edge in the cluster witch has a passable path the the start tile and is most suitable in direction to
      * the end tile.
      * 
@@ -140,7 +143,7 @@ public class Clustering extends AbstractWraparoundMap {
         return null;
     }
 
-    /***
+    /**
      * calculates the cluster of who the tile is part of, and returns the cluster.
      * 
      * @param start
@@ -150,7 +153,7 @@ public class Clustering extends AbstractWraparoundMap {
         return getClusterWrapAround(start.getRow() / clusterSize, start.getCol() / clusterSize);
     }
 
-    /***
+    /**
      * start clustering the map
      */
     public void updateClusters() {
@@ -303,13 +306,13 @@ public class Clustering extends AbstractWraparoundMap {
 
     }
 
-    /***
+    /**
      * 
      * @param r
      *            row
      * @param c
      *            column
-     * @return a tile considering it the parameters must be fit to the world size
+     * @return a tile considering the parameters must be fit to the world size
      */
     private Tile getWrapAroundTile(int r, int c) {
 
@@ -324,6 +327,11 @@ public class Clustering extends AbstractWraparoundMap {
         return pathFinder;
     }
 
+    /**
+     * returns all vertices of all clusters.
+     * 
+     * @return
+     */
     public List<Tile> getAllVertices() {
         List<Tile> verts = new ArrayList<Tile>();
         for (Cluster[] cs : getClusters())
@@ -334,10 +342,6 @@ public class Clustering extends AbstractWraparoundMap {
                 }
             }
         return verts;
-    }
-
-    public void setWorldType(WorldType t) {
-        // TODO
     }
 
     public void printVertices() {
@@ -376,8 +380,11 @@ public class Clustering extends AbstractWraparoundMap {
         return true;
     }
 
+    /**
+     * prints all Edges of each cluster to the console
+     */
     public void printEdges() {
-        for (Cluster[] cs : getClusters())
+        for (Cluster[] cs : getClusters()) {
             for (Cluster c : cs) {
                 System.out.println("cluster: " + c.name);
                 for (Edge e : c.edges) {
@@ -385,6 +392,7 @@ public class Clustering extends AbstractWraparoundMap {
                             e.path == null ? "Null" : e.path.size(), e.path == null ? "Null" : e.path));
                 }
             }
+        }
     }
 
     @Override

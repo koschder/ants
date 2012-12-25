@@ -5,8 +5,8 @@ import java.util.List;
 
 import api.entities.Tile;
 
-/***
- * Describes a node in a search path and stores the sucessor edges.
+/**
+ * Describes a node in a search path and stores the successor edges.
  * 
  * @author kases1, kustl1
  * 
@@ -33,13 +33,4 @@ public class Vertex extends Tile {
         }
         return result;
     }
-
-    // public int compareTo(Vertex o) {
-    // return hashCode() - hashCode();
-    // }
-    //
-    // public int hashCode() {
-    // return super.hashCode();
-    // }
-
 }

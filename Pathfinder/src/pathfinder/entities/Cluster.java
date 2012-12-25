@@ -14,11 +14,11 @@ import api.entities.Aim;
 import api.entities.Tile;
 import api.pathfinder.SearchTarget;
 
-/***
+/**
  * a cluster is an area on the map. the cluster connects the neighbor cluster throw passable edges along the cluster
  * side. these edges are connected to edges inside the cluster if there is a passable path between.
  * 
- * @author kaeserst
+ * @author kaeserst, kustl1
  * 
  */
 public class Cluster {
@@ -67,20 +67,20 @@ public class Cluster {
     /***
      * initialize a cluster
      * 
-     * @param r
-     * @param c
+     * @param rowIndex
+     * @param colIndex
      * @param csize
      * @param idx
      * @param clstering
      */
-    public Cluster(int r, int c, int csize, int idx, Clustering clstering) {
+    public Cluster(int rowIndex, int colIndex, int csize, int idx, Clustering clstering) {
         index = idx;
         clusterSize = csize;
-        row = r;
-        col = c;
+        row = rowIndex;
+        col = colIndex;
         clustering = clstering;
-        name = "Cluster Idx:" + index + " Dimension R:" + r * clusterSize + " C:" + c * clusterSize + "xR:" + (r + 1)
-                * clusterSize + " C:" + (c + 1) * clusterSize;
+        name = "Cluster Idx:" + index + " Dimension R:" + rowIndex * clusterSize + " C:" + colIndex * clusterSize
+                + "xR:" + (rowIndex + 1) * clusterSize + " C:" + (colIndex + 1) * clusterSize;
     }
 
     public Set<Aim> getAims() {
@@ -123,7 +123,7 @@ public class Cluster {
         return other.name == name;
     }
 
-    /***
+    /**
      * connecting two tiles (nodes) with each other by creation a new edge.
      * 
      * @param tStart
@@ -146,12 +146,9 @@ public class Cluster {
         Tile searchSpace1 = new Tile((row + 1) * clusterSize + 1, (col + 1) * clusterSize + 1);
         List<Tile> path = clustering.getPathFinder().search(PathFinder.Strategy.AStar, tStart, tEnd, searchSpace0,
                 searchSpace1, costs);
-        // List<Tile> path = PathFinder.bestPath(PathFinder.SIMPLE, tStart,
-        // tEnd);
+
         if (path == null)
             return;
-
-        // path.add(0, tEnd); // TODO may be adding tEnd must be done by a star
 
         LOGGER.trace("%s: found!!", name);
         edge.setPath(path);
@@ -161,7 +158,7 @@ public class Cluster {
 
     }
 
-    /***
+    /**
      * returns all edges laying on a specific side defined by the aim
      * 
      * @param a
@@ -176,7 +173,8 @@ public class Cluster {
         return null;
     }
 
-    /***
+    /**
+     * Converting Aim to EdgeType
      * 
      * @param a
      * @return edge type for an aim
@@ -194,11 +192,12 @@ public class Cluster {
         return null;
     }
 
-    /***
+    /**
      * returns all successor node of a DirectedEdge in the and in the neighbor clusters.
      * 
      * @param e
-     * @return
+     *            DirectedEdge
+     * @return all successor nodes
      */
     public List<SearchTarget> getEdgeWithNeighbourCluster(DirectedEdge e) {
         List<SearchTarget> list = new ArrayList<SearchTarget>();
@@ -228,7 +227,7 @@ public class Cluster {
         return list;
     }
 
-    /***
+    /**
      * 
      * @return the col position of left side of the cluster
      */
@@ -236,7 +235,7 @@ public class Cluster {
         return col * clusterSize;
     }
 
-    /***
+    /**
      * 
      * @return the col position of right side of the cluster
      */
@@ -245,7 +244,7 @@ public class Cluster {
         return (col + 1) * clusterSize;
     }
 
-    /***
+    /**
      * 
      * @return the row position of top side of the cluster
      */
@@ -253,7 +252,7 @@ public class Cluster {
         return row * clusterSize;
     }
 
-    /***
+    /**
      * 
      * @return the row position of bottom side of the cluster
      */
@@ -261,7 +260,7 @@ public class Cluster {
         return (row + 1) * clusterSize;
     }
 
-    /***
+    /**
      * returns all continuative edges of the cluster[clusterRow][clusterCol]
      * 
      * @param start
@@ -285,7 +284,7 @@ public class Cluster {
         return list;
     }
 
-    /***
+    /**
      * 
      * @param checkAim
      * @return true if this aim is already processed.
@@ -294,7 +293,7 @@ public class Cluster {
         return scannedAims.contains(checkAim);
     }
 
-    /***
+    /**
      * 
      * @return true if all four side of the cluster ar processed.
      */
@@ -302,7 +301,7 @@ public class Cluster {
         return scannedAims.size() == 4;
     }
 
-    /***
+    /**
      * the vertices of the new edges are connected with the already existing vertices.
      * 
      * @param newEdges
@@ -328,7 +327,7 @@ public class Cluster {
 
     }
 
-    /***
+    /**
      * add the vertices to the vertices list if they aren't yet.
      * 
      * @param t
@@ -348,7 +347,7 @@ public class Cluster {
         }
     }
 
-    /***
+    /**
      * new scanned edges are integrated into the cluster and are connected with existing edges.
      * 
      * @param newaim
@@ -381,7 +380,7 @@ public class Cluster {
         return name + " Scanned aims: " + scannedAims + " Edge: " + edges.size() + " Vertices: " + vertices.size();
     }
 
-    /***
+    /**
      * this method adds new vertices found on a cluster side. they get linked with already existing vertices.
      * 
      * @param sideAim
