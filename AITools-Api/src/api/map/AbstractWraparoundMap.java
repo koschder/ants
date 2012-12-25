@@ -276,4 +276,22 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return tile.getCol() > (cols / 2) ? tile.getCol() - cols : tile.getCol();
     }
 
+    @Override
+    public int getManhattanDistanceToNextImpassableTile(Tile origin, Aim direction) {
+        // in case there are no impassable tiles, limit search distance to the size of the map
+        int maxDistance;
+        if (direction == Aim.NORTH || direction == Aim.SOUTH)
+            maxDistance = rows;
+        else
+            maxDistance = cols;
+
+        Tile tile = getTile(origin, direction);
+        int distance = 1;
+        while (isPassable(tile) && distance < maxDistance) {
+            tile = getTile(tile, direction);
+            distance++;
+        }
+        return distance;
+    }
+
 }

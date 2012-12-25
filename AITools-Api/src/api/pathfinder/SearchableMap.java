@@ -86,4 +86,13 @@ public interface SearchableMap extends TileMap {
      */
     public Tile getClusterCenter(List<Tile> cluster);
 
+    /**
+     * Calculates the manhattan distance to the next impassable tile in the given direction.
+     * 
+     * @param origin
+     * @param direction
+     * @return the manhattan distance
+     */
+    public int getManhattanDistanceToNextImpassableTile(Tile origin, Aim direction);
+
 }
