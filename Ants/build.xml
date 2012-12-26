@@ -15,39 +15,52 @@
 	            <param name="bot.opponent3" value="python tools/bots/wraithan/MyBot.pypy" />
 	        </antcall>
 	    </target>
+	<target name="mazeProfiles" depends="jarMyBot" description="">
+	        <antcall target="mazeWithProfiles">
+	            <param name="bot.name" value="MyBot" />
+	            <param name="profile1" value="aggressive" />
+                <param name="profile2" value="default" />
+	        </antcall>
+	    </target>
 	<target name="mazeAgainstGreentea" depends="jarMyBot" description="">
 		<antcall target="mazeTest">
 			<param name="bot.name" value="MyBot" />
+            <param name="profile" value="default" />
 			<param name="bot.opponent" value="java -jar tools/bots/greentea/SixPoolRush.jar" />
 		</antcall>
 	</target>
 	<target name="mazeAgainstWraithan" depends="jarMyBot" description="">
 		<antcall target="mazeTest">
 			<param name="bot.name" value="MyBot" />
+            <param name="profile" value="default" />
 			<param name="bot.opponent" value="python tools/bots/wraithan/MyBot.pypy" />
 		</antcall>
 	</target>
 	<target name="mazeAgainstEgreavette" depends="jarMyBot" description="">
 		<antcall target="mazeTest">
 			<param name="bot.name" value="MyBot" />
+            <param name="profile" value="default" />
 			<param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
 		</antcall>
 	</target>
 	<target name="repeatMazeAgainstEgreavette" depends="jarMyBot" description="">
 	        <antcall target="mazeTestRepeat">
 	            <param name="bot.name" value="MyBot" />
+	        	<param name="profile" value="default" />
 	            <param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
 	        </antcall>
 	    </target>
 	<target name="mazeAgainstNHaehnle" depends="jarMyBot" description="">
 		<antcall target="mazeTest">
 			<param name="bot.name" value="MyBot" />
+            <param name="profile" value="default" />
 			<param name="bot.opponent" value="c++ tools/bots/nhaehnle/MyBot.cc" />
 		</antcall>
 	</target>
 	<target name="mazeAgainstXathis" depends="jarMyBot" description="">
 		<antcall target="mazeTest">
 			<param name="bot.name" value="MyBot" />
+            <param name="profile" value="default" />
 			<param name="bot.opponent" value="java -jar tools/bots/xathis/xathis.jar" />
 		</antcall>
 	</target>

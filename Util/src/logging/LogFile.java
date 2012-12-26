@@ -13,6 +13,8 @@ import java.io.PrintStream;
 public class LogFile {
 
     private PrintStream log;
+    private boolean initialized = false;
+    private LogCategory category;
 
     /**
      * constructor, creating file if not exists.
@@ -20,12 +22,18 @@ public class LogFile {
      * @param filePath
      *            name an path of the file.
      */
-    public LogFile(String filePath) {
+    public LogFile(LogCategory category) {
+        this.category = category;
+    }
+
+    private void initLogFile() {
         try {
-            final File file = new File(filePath);
+            final String name = category == null ? "debug" : category.toString();
+            final File file = new File(LoggerFactory.getBaseDir() + name + ".log");
             if (!file.exists())
                 file.createNewFile();
             log = new PrintStream(file);
+            initialized = true;
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -38,6 +46,8 @@ public class LogFile {
      * @param parameters
      */
     public void append(String message, Object... parameters) {
+        if (!initialized)
+            initLogFile();
         log.println(String.format(message, parameters));
     }
 

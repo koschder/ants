@@ -4,6 +4,7 @@ import pathfinder.PathFinder;
 import pathfinder.SimplePathFinder;
 import pathfinder.entities.Clustering;
 import ants.entities.Ilk;
+import ants.profile.Profile;
 import api.entities.Tile;
 import api.strategy.InfluenceMap;
 
@@ -40,6 +41,8 @@ public enum Ants {
 
     private InfluenceMap influence;
 
+    private Profile profile;
+
     /**
      * Creates new {@link Ants} object.
      * 
@@ -61,7 +64,7 @@ public enum Ants {
      *            squared spawn radius of each ant
      */
     public void setup(int loadTime, int turnTime, int rows, int cols, int turns, int viewRadius2, int attackRadius2,
-            int spawnRadius2) {
+            int spawnRadius2, Profile profile) {
         this.loadTime = loadTime;
         this.turnTime = turnTime;
         this.turns = turns;
@@ -70,6 +73,7 @@ public enum Ants {
         this.population = new Population();
         this.orders = new Orders();
         this.pathFinder = new SimplePathFinder(world, influence);
+        this.profile = profile;
     }
 
     /**
@@ -181,6 +185,10 @@ public enum Ants {
 
     public static void setInfluenceMap(InfluenceMap influenceMap) {
         INSTANCE.influence = influenceMap;
+    }
+
+    public static Profile getProfile() {
+        return INSTANCE.profile;
     }
 
     /**

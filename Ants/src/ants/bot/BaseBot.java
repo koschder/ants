@@ -12,6 +12,7 @@ import logging.Logger;
 import logging.LoggerFactory;
 import ants.LogCategory;
 import ants.entities.Ant;
+import ants.profile.Profile;
 import ants.state.Ants;
 import ants.state.World;
 import ants.tasks.Task;
@@ -30,6 +31,8 @@ public abstract class BaseBot extends Bot {
     private static final Logger LOGGER_STATISTICS = LoggerFactory.getLogger(LogCategory.STATISTICS);
     private static final Logger LOGGER_RESOURCES = LoggerFactory.getLogger(LogCategory.RESOURCE_ALLOCATION);
 
+    protected String profile;
+
     protected Map<Task.Type, Task> tasks = new LinkedHashMap<Task.Type, Task>();
 
     // generating a history how many ants we have in each turn
@@ -38,6 +41,13 @@ public abstract class BaseBot extends Bot {
     // generates a history how our influence to the enemies is
     // (myants/enemiesants)
     private List<Integer> statAntsInfluenceHistory = new ArrayList<Integer>();
+
+    @Override
+    public void setup(int loadTime, int turnTime, int rows, int cols, int turns, int viewRadius2, int attackRadius2,
+            int spawnRadius2) {
+        Ants.getAnts().setup(loadTime, turnTime, rows, cols, turns, viewRadius2, attackRadius2, spawnRadius2,
+                new Profile(profile));
+    }
 
     @Override
     public void doTurn() {

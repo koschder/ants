@@ -3,6 +3,7 @@ package ants.bot.impl;
 import java.io.IOException;
 
 import logging.LogLevel;
+import logging.LoggerFactory;
 import logging.LoggingConfig;
 import ants.LogCategory;
 import ants.bot.BaseBot;
@@ -26,6 +27,11 @@ import ants.tasks.Task.Type;
  * @author kases1,kustl1
  */
 public class MyBot extends BaseBot {
+
+    public MyBot(String profile) {
+        this.profile = profile;
+    }
+
     /**
      * Main method executed by the game engine for starting the bot.
      * 
@@ -36,39 +42,42 @@ public class MyBot extends BaseBot {
      *             if an I/O error occurs
      */
     public static void main(String[] args) throws IOException {
-        initLogging();
-        new MyBot().readSystemInput();
+        // we only support one arg, and that is assumed to be the profile name
+        String profile = args.length == 1 ? args[0] : null;
+        initLogging(profile);
+        new MyBot(profile).readSystemInput();
     }
 
-    private static void initLogging() {
-        LoggingConfig.configure(LogCategory.ATTACK_HILLS, LogLevel.DEBUG);
+    private static void initLogging(String profile) {
+        LoggerFactory.setProfile(profile);
+        LoggingConfig.configure(LogCategory.ATTACK_HILLS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.CLEAR_HILL, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.COMBAT, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.DEFEND, LogLevel.DEBUG);
-        LoggingConfig.configure(LogCategory.DEFEND_HILL, LogLevel.DEBUG);
+        LoggingConfig.configure(LogCategory.DEFEND, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.DEFEND_HILL, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.EXCEPTION, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.EXECUTE_TASKS, LogLevel.DEBUG);
-        LoggingConfig.configure(LogCategory.EXECUTE_MISSIONS, LogLevel.DEBUG);
-        LoggingConfig.configure(LogCategory.EXPLORE, LogLevel.DEBUG);
+        LoggingConfig.configure(LogCategory.EXECUTE_TASKS, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.EXECUTE_MISSIONS, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.EXPLORE, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.FOLLOW, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.FOOD, LogLevel.DEBUG);
+        LoggingConfig.configure(LogCategory.FOOD, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.PATH_MISSION, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.ORDERS, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.PERFORMANCE, LogLevel.DEBUG);
-        LoggingConfig.configure(LogCategory.SETUP, LogLevel.DEBUG);
+        LoggingConfig.configure(LogCategory.PERFORMANCE, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.SETUP, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.STATISTICS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.TURN, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.FLOCKING, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.WORLD, LogLevel.DEBUG);
-        LoggingConfig.configure(LogCategory.RESOURCE_ALLOCATION, LogLevel.DEBUG);
-        LoggingConfig.configure(LogCategory.CONCENTRATE, LogLevel.DEBUG);
+        LoggingConfig.configure(LogCategory.WORLD, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.RESOURCE_ALLOCATION, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.CONCENTRATE, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.PATHFINDING, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.BFS, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.CLUSTERING, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.CLUSTERED_ASTAR, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.HPASTAR, LogLevel.INFO);
         LoggingConfig.configure(influence.LogCategory.INFLUENCE, LogLevel.INFO);
-        LoggingConfig.configure(strategy.LogCategory.COMBAT_POSITIONING, LogLevel.DEBUG);
+        LoggingConfig.configure(strategy.LogCategory.COMBAT_POSITIONING, LogLevel.INFO);
     }
 
     protected void initTasks() {

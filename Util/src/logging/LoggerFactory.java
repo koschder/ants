@@ -1,5 +1,6 @@
 package logging;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,10 +12,11 @@ import java.util.Map;
  */
 public class LoggerFactory {
 
+    private static String baseDir = "logs/";
     /**
      * default log path/file
      */
-    private static final LogFile logFile = new LogFile("logs/debug.log");
+    private static final LogFile logFile = new LogFile(null);
     /**
      * stores all already created files each log category
      */
@@ -31,12 +33,21 @@ public class LoggerFactory {
         if (category.useCustomLogFile()) {
             LogFile file = customLogFiles.get(category);
             if (file == null) {
-                file = new LogFile("logs/" + category.toString() + ".log");
+                file = new LogFile(category);
                 customLogFiles.put(category, file);
             }
             return new DefaultLogger(category, file);
         }
         return new DefaultLogger(category, logFile);
+    }
+
+    public static void setProfile(String profile) {
+        baseDir += profile == null ? "" : profile + "/";
+        new File(baseDir).mkdirs();
+    }
+
+    public static String getBaseDir() {
+        return baseDir;
     }
 
     /**

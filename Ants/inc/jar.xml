@@ -6,20 +6,26 @@
 		<javac  includeantruntime="false" srcdir="${basedir}/../AITools-Api/src" destdir="${basedir}/../AITools-Api/bin" />
 		<javac  includeantruntime="false" srcdir="${basedir}/../Pathfinder/src" destdir="${basedir}/../Pathfinder/bin" />
 		<javac  includeantruntime="false" srcdir="${basedir}/../Strategy/src" destdir="${basedir}/../Strategy/bin" />
-		<jar destfile="${basedir}/${bot.name}.jar" filesetmanifest="mergewithoutmain">
+		<jar destfile="${basedir}/${bot.name}-${profile}.jar" filesetmanifest="mergewithoutmain">
 			<manifest>
 				<attribute name="Main-Class" value="ants.bot.impl.${bot.name}" />
 			</manifest>
-			<fileset dir="${basedir}/bin" includes="**/*.class" />
+			<fileset dir="${basedir}/bin" includes="**/*.class, **/*.properties" />
 			<fileset dir="${basedir}/../Util/bin" includes="**/*.class" />
 			<fileset dir="${basedir}/../AITools-Api/bin" includes="**/*.class" />
 			<fileset dir="${basedir}/../Pathfinder/bin" includes="**/*.class" />
 			<fileset dir="${basedir}/../Strategy/bin" includes="**/*.class" />
 		</jar>
 	</target>
+	<!-- build separate jars for each profile because running a game with several copies of the same jar produces timeouts -->
 	<target name="jarMyBot">
+        <antcall target="jar">
+            <param name="bot.name" value="MyBot" />
+            <param name="profile" value="aggressive" />
+        </antcall>
 		<antcall target="jar">
 			<param name="bot.name" value="MyBot" />
+            <param name="profile" value="default" />
 		</antcall>
 	</target>
 	<target name="jarConcentrateBot">

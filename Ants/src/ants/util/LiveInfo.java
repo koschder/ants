@@ -19,15 +19,19 @@ public class LiveInfo {
 
     private static RandomAccessFile liveInfo;
 
+    private static boolean enabled = true;
+
     static {
-        try {
-            String jsonfile = "logs/additionalInfo.json";
-            File f = new File(jsonfile);
-            if (f.exists())
-                f.delete();
-            liveInfo = new RandomAccessFile(new File(jsonfile), "rw");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        if (enabled) {
+            try {
+                String jsonfile = "logs/additionalInfo.json";
+                File f = new File(jsonfile);
+                if (f.exists())
+                    f.delete();
+                liveInfo = new RandomAccessFile(new File(jsonfile), "rw");
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -40,6 +44,8 @@ public class LiveInfo {
      * @param parameters
      */
     public static void liveInfo(int turn, Tile tile, String message, Object... parameters) {
+        if (!enabled)
+            return;
         try {
             String delimiter = "";
             if (isFirst) {
@@ -69,6 +75,8 @@ public class LiveInfo {
      * Close the liveInfo file
      */
     public static void close() {
+        if (!enabled)
+            return;
         try {
             liveInfo.close();
         } catch (IOException e) {
