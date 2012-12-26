@@ -26,6 +26,7 @@ public class MapOutput {
     private int clusterSize = -1;
     private String relativeBasePath = "./../../res/";
     private String comment = "";
+    private String contentStore = "";
 
     private List<MapObject> objects = new ArrayList<MapObject>();
 
@@ -43,8 +44,36 @@ public class MapOutput {
         if (fileName.contains("/"))
             relativeBasePath = "./../../../res/";
         sb.append("<html>\n<head>\n<link rel=\"stylesheet\" href=\"" + relativeBasePath
-                + "css/cssUnitTest.css\" />\n</head>\n<body>\n<table>\n");
+                + "css/cssUnitTest.css\" />\n</head>\n<body>\n");
         sb.append("<h1>" + fileName + "</h1>");
+        sb.append(contentStore);
+        String content = getContent(decorator);
+        sb.append(content);
+        sb.append("\n</body>\n</html>\n");
+
+        try {
+            File logdir = new File("logs");
+            logdir.mkdirs();
+            Writer output = null;
+            String text = sb.toString();
+            if (fileName.contains("/")) {
+                File dir = new File(logdir, fileName.split("/")[0]);
+                dir.mkdirs();
+                // fileName = fileName.split("/")[1];
+            }
+            File file = new File(logdir, fileName + ".html");
+            output = new BufferedWriter(new FileWriter(file));
+            output.write(text);
+            output.close();
+            // System.out.println("Log file saved: " + file);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private String getContent(PixelDecorator decorator) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<table>\n");
         for (int i = 0; i < map.getRows(); i++) {
 
             StringBuilder sbRow = new StringBuilder();
@@ -74,26 +103,9 @@ public class MapOutput {
         sb.append("</table>\n");
         sb.append("<h2>Comments</h2>" + comment.toString());
         sb.append(getObjectHistory());
-        sb.append("\n</body>\n</html>\n");
+        sb.append("<br/><br/>");
 
-        try {
-            File logdir = new File("logs");
-            logdir.mkdirs();
-            Writer output = null;
-            String text = sb.toString();
-            if (fileName.contains("/")) {
-                File dir = new File(logdir, fileName.split("/")[0]);
-                dir.mkdirs();
-                // fileName = fileName.split("/")[1];
-            }
-            File file = new File(logdir, fileName + ".html");
-            output = new BufferedWriter(new FileWriter(file));
-            output.write(text);
-            output.close();
-            // System.out.println("Log file saved: " + file);
-        } catch (Exception ex) {
-            ex.printStackTrace();
-        }
+        return sb.toString();
     }
 
     public void saveHtmlMap(String fileName) {
@@ -106,7 +118,7 @@ public class MapOutput {
         for (MapObject o : objects) {
             if (o.getTiles().contains(t)) {
                 int color = objects.indexOf(o);
-                String dotPath = relativeBasePath + "dot" + color + ".jpg";
+                String dotPath = relativeBasePath + "dot" + color + ".png";
                 sb.append(String.format("<img src=\"%s\" class=\"poi\">", dotPath));
             }
 
@@ -119,7 +131,7 @@ public class MapOutput {
         sb.append("<h2>Object History</h2>");
         for (MapObject o : objects) {
             int color = objects.indexOf(o);
-            String dotPath = relativeBasePath + "dot" + color + ".jpg";
+            String dotPath = relativeBasePath + "dot" + color + ".png";
             sb.append(String.format("<br/><img src=\"%s\" class=\"poi\"> %s", dotPath, o.getDesc()));
         }
         return sb.toString();
@@ -180,6 +192,13 @@ public class MapOutput {
 
     public void addComment(String comment) {
         this.comment += "<br/>" + comment.replace(">", "&gt;").replace("<", "&lt;");
+    }
+
+    public void cleanUp(boolean store, PixelDecorator decorator) {
+        if (store)
+            contentStore += getContent(decorator);
+        objects.clear();
+        comment = "";
     }
 
 }

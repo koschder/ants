@@ -175,6 +175,11 @@ public class AttackHillMission extends BaseMission {
         }
         List<Tile> enemies = bfs.findEnemiesInRadius(enemyHill, searchDistance);
 
+        // if last missionState was ControlEnemyHill we remove attacker on the hill because they
+        // get eliminated so soon as they see daylight.
+        if (missionState == State.ControlEnemyHill)
+            enemies.remove(enemyHill);
+
         LiveInfo.liveInfo(Ants.getAnts().getTurn(), enemyHill, "AttackHillMission enemies are: %s", enemies);
         LOGGER.info("AttackHillMission: determineState for hill %s: friends=%s enemies=%s", enemyHill, friends.size(),
                 enemies.size());
@@ -348,7 +353,7 @@ public class AttackHillMission extends BaseMission {
     }
 
     /***
-     * if the fift
+     * checks if the path is still valid and recalculated it, if necessary
      * 
      * @param ant
      * @return
