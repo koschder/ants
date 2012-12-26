@@ -179,16 +179,35 @@ public enum Ants {
         INSTANCE.population = population;
     }
 
+    /**
+     * 
+     * @return the singleton instance of InfluenceMap
+     */
     public static InfluenceMap getInfluenceMap() {
         return INSTANCE.influence;
     }
 
+    /**
+     * 
+     * Set a new InfluenceMap
+     */
     public static void setInfluenceMap(InfluenceMap influenceMap) {
         INSTANCE.influence = influenceMap;
     }
 
+    /**
+     * 
+     * @return the singleton instance of Profile
+     */
     public static Profile getProfile() {
         return INSTANCE.profile;
+    }
+
+    /**
+     * For testing only: set a Profile instance
+     */
+    public static void setProfile(Profile profile) {
+        INSTANCE.profile = profile;
     }
 
     /**

@@ -9,6 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import ants.entities.Ant;
+import ants.profile.Profile;
 import ants.state.Ants;
 import ants.state.Orders;
 import ants.state.Population;
@@ -50,12 +51,13 @@ public class ResourceAllocatorTest {
         // method under test
         resourceAllocator.allocateResources();
 
-        assertEquals(Integer.valueOf(foodResources - 12), Ants.getPopulation().getMaxResources(Type.GATHER_FOOD));
+        assertEquals(Integer.valueOf(foodResources + 9), Ants.getPopulation().getMaxResources(Type.GATHER_FOOD));
     }
 
     private void initResourceAllocator(int population) {
         Ants.setPopulation(getPopulation(population));
         Ants.setOrders(new Orders());
+        Ants.setProfile(new Profile(null));
         resourceAllocator = new ResourceAllocator(influence);
     }
 
