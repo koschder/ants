@@ -30,6 +30,9 @@ public class DefaultCombatPositioning implements CombatPositioning {
     protected InfluenceMap influenceMap;
     protected List<Tile> myUnits;
     protected List<Tile> enemyUnits;
+    private List<Tile> formationTiles;
+    private Tile enemyClusterCenter;
+    private Tile clusterCenter;
     protected Tile target;
     protected String log = "";
     protected Map<Tile, Tile> nextMoves = new HashMap<Tile, Tile>();
@@ -86,7 +89,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
     private void attackTarget() {
         String log;
         log = " AttackTarget: ";
-        final Tile clusterCenter = map.getClusterCenter(myUnits);
+        clusterCenter = map.getClusterCenter(myUnits);
         log += ", MyClusterCenter: " + clusterCenter;
 
         final int distanceToTarget = map.getSquaredDistance(clusterCenter, target);
@@ -110,7 +113,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
                     nextMoves.put(uTile, uTile);
             }
         } else {
-            final Tile enemyClusterCenter = map.getClusterCenter(enemiesInTheWay);
+            enemyClusterCenter = map.getClusterCenter(enemiesInTheWay);
             attackEnemy(clusterCenter, enemyClusterCenter);
         }
         LOGGER.debug(log);
@@ -202,10 +205,9 @@ public class DefaultCombatPositioning implements CombatPositioning {
     }
 
     private void attackEnemy() {
-        Tile clusterCenter = map.getClusterCenter(myUnits);
+        clusterCenter = map.getClusterCenter(myUnits);
         // TODO this should really be a separate mode, so we can actually do something sensible
         final Tile furthestUnitTile = myUnits.get(myUnits.size() - 1);
-        Tile enemyClusterCenter;
         if (enemyUnits.isEmpty())
             enemyClusterCenter = map.getSafestNeighbour(furthestUnitTile, influenceMap);
         else
@@ -219,7 +221,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
         log = "AttackEnemy: clusterCenter:" + clusterCenter;
         log += ", enemyClusterCenter:" + enemyClusterCenter;
 
-        List<Tile> formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, myUnits.size(), false);
+        formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, myUnits.size(), false);
         formationTiles.add(clusterCenter);
         float percentFormated = getContainedFraction(formationTiles, myUnits);
         log += ", pf: " + percentFormated + " (lim: " + limit + ")";
@@ -232,7 +234,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
         }
         log += ", formationTiles: " + formationTiles;
         // perform positioning
-        positionUnits(clusterCenter, formationTiles);
+        positionUnits(enemyClusterCenter, formationTiles);
         LOGGER.debug(log);
         this.log = log;
     }
@@ -298,32 +300,6 @@ public class DefaultCombatPositioning implements CombatPositioning {
         });
     }
 
-    // private List<Tile> getFormationTiles(final Tile clusterCenter, final Tile enemyClusterCenter, boolean advance) {
-    // int squaredDistance = map.getSquaredDistance(clusterCenter, enemyClusterCenter);
-    //
-    // int distance = (int) Math.sqrt(squaredDistance);
-    // if (advance) {
-    // distance += -1;
-    // squaredDistance = (int) Math.pow(distance, 2);
-    // }
-    //
-    // int stepForward = distance * 2;
-    //
-    // final int dist = squaredDistance;
-    // final int minDist = dist - stepForward;
-    // final int maxDist = dist + stepForward;
-    // BreadthFirstSearch bfs = new BreadthFirstSearch(map);
-    // final List<Tile> formationTiles = bfs.floodFill(clusterCenter, maxDist, new GoalTest() {
-    //
-    // @Override
-    // public boolean isGoal(Tile tile) {
-    // final int distance = map.getSquaredDistance(tile, enemyClusterCenter);
-    // return distance >= minDist && distance <= maxDist;
-    // }
-    // });
-    // return formationTiles;
-    // }
-
     private List<Tile> getFormationTiles(Tile clusterCenter, final Tile enemyClusterCenter, int ants,
             boolean moveForward) {
         BreadthFirstSearch bfs = new BreadthFirstSearch(map);
@@ -333,28 +309,28 @@ public class DefaultCombatPositioning implements CombatPositioning {
             distance--;
         }
 
-        ants += 1;// more opportiunities
+        // ants += 1;// more opportunities
 
         List<Tile> formationTiles = new ArrayList<Tile>();
         List<Tile> tempTiles;
-        do {
-            distance++;
-            final int dist = (int) Math.pow(distance, 2);
-            final int minDist = dist - distance * 2;
-            final int maxDist = dist;
-            final int maxSpread = (int) Math.pow(distance * 2 - 1.5, 2);
-            tempTiles = bfs.findClosestTiles(clusterCenter, ants - formationTiles.size(), Integer.MAX_VALUE, maxSpread,
-                    new GoalTest() {
+        // do {
+        distance++;
+        final int dist = (int) Math.pow(distance, 2);
+        final int minDist = dist - distance * 2;
+        final int maxDist = dist;
+        final int maxSpread = (int) Math.pow(distance * 2 - 1.5, 2);
+        tempTiles = bfs.findClosestTiles(clusterCenter, ants - formationTiles.size(), Integer.MAX_VALUE, maxSpread,
+                new GoalTest() {
 
-                        @Override
-                        public boolean isGoal(Tile tile) {
-                            final int distance = map.getSquaredDistance(tile, enemyClusterCenter);
-                            return distance >= minDist && distance <= maxDist;
-                        }
-                    });
-            formationTiles.addAll(tempTiles);
-            // as long as we need formation tiles and we get new.
-        } while (tempTiles.size() > 0 && formationTiles.size() < ants);
+                    @Override
+                    public boolean isGoal(Tile tile) {
+                        final int distance = map.getSquaredDistance(tile, enemyClusterCenter);
+                        return distance >= minDist && distance <= maxDist;
+                    }
+                });
+        formationTiles.addAll(tempTiles);
+        // as long as we need formation tiles and we get new.
+        // } while (tempTiles.size() > 0 && formationTiles.size() < ants);
         return formationTiles;
     }
 
@@ -379,5 +355,17 @@ public class DefaultCombatPositioning implements CombatPositioning {
     public Tile getNextTile(Unit u) {
         final Tile nextTile = nextMoves.get(u.getTile());
         return nextTile == null ? u.getTile() : nextTile;
+    }
+
+    public List<Tile> getFormationTiles() {
+        return formationTiles;
+    }
+
+    public Tile getEnemyClusterCenter() {
+        return enemyClusterCenter;
+    }
+
+    public Tile getClusterCenter() {
+        return clusterCenter;
     }
 }

@@ -8,6 +8,7 @@ import java.util.TreeSet;
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.PathFinder;
+import pathfinder.PathFinder.Strategy;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Route;
@@ -119,15 +120,21 @@ public class GatherFoodMission extends BaseMission {
     }
 
     protected boolean moveToNextTile(Ant a) {
-        if (a == null || !a.hasPath())
-            return false;
-        Tile nextStep = a.getPath().get(0);
-        if (putMissionOrder(a, nextStep)) {
-            LOGGER.debug("FoodMission: move ant %s towards food %s nextstep: %s", a, a.getPathEnd(), nextStep);
-            a.getPath().remove(0);
+        if (moveToNextTile(a)) {
             return true;
+        } else if (a.hasPath()) {
+            // try to recalculate the path, to turn small obstacles
+            List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, a.getTile(), a.getPathEnd(),
+                    a.getPath().size() + 2);
+            if (path == null || path.size() == 0) {
+                return false;
+            }
+            a.setPath(path);
+            if (moveToNextTile(a))
+                return true;
         }
-        LOGGER.debug("FoodMission:cannot move ant %s to nextstep: %s", a, nextStep);
+
+        LOGGER.debug("FoodMission:cannot move ant %s on path: %s", a, a.getPath());
         return false;
     }
 
