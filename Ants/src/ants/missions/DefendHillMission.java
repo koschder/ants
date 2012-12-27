@@ -58,7 +58,6 @@ public class DefendHillMission extends BaseMission {
         } else {
             keepAntDoingStuff();
         }
-
     }
 
     private void resetAnts() {
@@ -68,7 +67,6 @@ public class DefendHillMission extends BaseMission {
                 a.setPath(null);
             }
         }
-
     }
 
     private void keepAntDoingStuff() {
@@ -119,7 +117,7 @@ public class DefendHillMission extends BaseMission {
         int gatherAntsAmount = 0;
 
         if (attackers.size() == 0 && Ants.getAnts().getTurn() > guardHillTurn) {
-            // if there are no attackers but late in game (guardHillTurn) we gahter 1 ant for protection
+            // if there are no attackers but late in game (guardHillTurn) we gather 1 ant for protection
             gatherAntsAmount = 1 - ants.size();
         } else if (attackers.size() > 0) {
             gatherAntsAmount = attackers.size() - ants.size() + antsMoreThanEnemy;
@@ -166,7 +164,6 @@ public class DefendHillMission extends BaseMission {
                 continue;
             defaultDefendHillMove(a);
         }
-
     }
 
     private boolean putDefendOrder(Ant ant, Aim aim) {

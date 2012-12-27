@@ -120,7 +120,7 @@ public class GatherFoodMission extends BaseMission {
     }
 
     protected boolean moveToNextTile(Ant a) {
-        if (moveToNextTile(a)) {
+        if (moveToNextTileOnPath(a)) {
             return true;
         } else if (a.hasPath()) {
             // try to recalculate the path, to turn small obstacles
@@ -130,7 +130,7 @@ public class GatherFoodMission extends BaseMission {
                 return false;
             }
             a.setPath(path);
-            if (moveToNextTile(a))
+            if (moveToNextTileOnPath(a))
                 return true;
         }
 
