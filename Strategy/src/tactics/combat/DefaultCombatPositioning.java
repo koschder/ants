@@ -227,7 +227,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
                 continue; // protected by water
             sidesToProtect.add(entry.getKey());
         }
-        return sidesToProtect.subList(0, 2);
+        return sidesToProtect;
     }
 
     private Tile calculateDefenseClusterCenter(Tile enemyClusterCenter) {
