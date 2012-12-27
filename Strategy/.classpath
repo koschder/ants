@@ -5,6 +5,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/AITools-Api"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Search"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/Util"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/Logging"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
