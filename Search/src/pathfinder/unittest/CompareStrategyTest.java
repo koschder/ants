@@ -50,7 +50,7 @@ public class CompareStrategyTest {
     }
 
     private UnitTestMap initMap() {
-        String sFileName = "../Pathfinder/maps/cell_maze_p04_10.map";
+        String sFileName = "../Search/maps/cell_maze_p04_10.map";
         try {
             UnitTestMap map = new UnitTestMap(parseFile(sFileName));
             return map;

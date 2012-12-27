@@ -146,6 +146,8 @@ public class DefaultCombatPositioning implements CombatPositioning {
                     if (map.getDirections(target, enemy).contains(aim))
                         enemies.add(enemy);
                 }
+                if (enemies.isEmpty())
+                    continue;
                 enemiesPerSide.put(aim, enemies);
                 // divide up defenders, assuming max 2 sides
                 if (defendersPerSide.isEmpty())
