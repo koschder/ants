@@ -1,26 +1,24 @@
 package ants.missions;
 
 import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
-import java.util.TreeMap;
 
 import logging.Logger;
 import logging.LoggerFactory;
 import search.BreadthFirstSearch.GoalTest;
+import tactics.combat.CombatPositioning;
+import tactics.combat.DefendingCombatPositioning;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.search.AntsBreadthFirstSearch;
 import ants.state.Ants;
 import ants.tasks.Task.Type;
 import ants.util.LiveInfo;
-import api.entities.Aim;
 import api.entities.Tile;
+import api.entities.Unit;
 
 public class DefendHillMission extends BaseMission {
 
@@ -54,7 +52,19 @@ public class DefendHillMission extends BaseMission {
         gatherOrReleaseAnts(enemyNearBy);
         if (hasAttackers) {
             resetAnts();
-            defending(enemyNearBy);
+            String attInfo = "";
+            for (Tile a : enemyNearBy)
+                attInfo += "<br/> " + a;
+            LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill,
+                    "DefendHillMission attackers are: %s <br/> Defenders are: %s Need help: %s", attInfo, ants,
+                    needsMoreAnts);
+            CombatPositioning cp = new DefendingCombatPositioning(hill, Ants.getWorld(), Ants.getInfluenceMap(),
+                    new ArrayList<Unit>(ants), enemyNearBy);
+            for (Ant ant : ants) {
+                putMissionOrder(ant, cp.getNextTile(ant));
+            }
+            LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill, "DCP: " + cp.getLog());
+            // defending(enemyNearBy);
         } else {
             keepAntDoingStuff();
         }
@@ -127,123 +137,6 @@ public class DefendHillMission extends BaseMission {
         else {
             needsMoreAnts = false;
             releaseAnts(Math.abs(gatherAntsAmount));
-        }
-    }
-
-    private void defending(List<Tile> enemyNearBy) {
-        String attInfo = "";
-        Map<Aim, List<Tile>> attackers = attackersByDirection(enemyNearBy);
-        for (Entry<Aim, List<Tile>> a : attackers.entrySet())
-            attInfo += "<br/> " + a;
-
-        LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill,
-                "DefendHillMission attackers are: %s <br/> Defenders are: %s Need help: %s", attInfo, ants,
-                needsMoreAnts);
-        List<Ant> antsWithOrder = new ArrayList<Ant>();
-
-        boolean orderDone = true;
-        while (orderDone) {
-            int antsWithOrderCount = antsWithOrder.size();
-            for (Entry<Aim, List<Tile>> attackDirection : attackers.entrySet()) {
-                int antsInDirection = 0;
-                for (Ant a : ants) {
-                    if (antsWithOrder.contains(a))
-                        continue;
-                    if (putDefendOrder(a, attackDirection.getKey())) {
-                        antsInDirection++;
-                        antsWithOrder.add(a);
-                    }
-                    if (antsInDirection - 1 == attackDirection.getValue().size())
-                        break;
-                }
-            }
-            orderDone = antsWithOrderCount < antsWithOrder.size();
-        }
-        for (Ant a : ants) {
-            if (antsWithOrder.contains(a))
-                continue;
-            defaultDefendHillMove(a);
-        }
-    }
-
-    private boolean putDefendOrder(Ant ant, Aim aim) {
-        // ant is to far away from hill call it back
-        if (Ants.getWorld().manhattanDistance(ant.getTile(), hill) > 4) {
-            for (Aim ai : Ants.getWorld().getDirections(ant.getTile(), hill)) {
-                if (putMissionOrder(ant, ai)) {
-                    return true;
-                }
-            }
-        }
-
-        // we want to defend two tiles away from our hill
-        Tile t = Ants.getWorld().getTile(hill, aim);
-        t = Ants.getWorld().getTile(t, aim);
-
-        if (t.equals(ant.getTile()))
-            return putMissionOrder(ant);
-
-        if ((aim == Aim.NORTH || aim == Aim.SOUTH) && ant.getTile().getRow() == t.getRow()) {
-            // is on correct row, move to middle or stay
-            if (!putMissionOrder(ant, Ants.getWorld().getDirections(ant.getTile(), t).get(0))) {
-                return putMissionOrder(ant);
-            } else {
-                return true;
-            }
-        }
-        if ((aim == Aim.EAST || aim == Aim.WEST) && ant.getTile().getCol() == t.getCol()) {
-            // is on correct column, move to middle stay
-            if (!putMissionOrder(ant, Ants.getWorld().getDirections(ant.getTile(), t).get(0))) {
-                return putMissionOrder(ant);
-            } else {
-                return true;
-            }
-        }
-
-        return putMissionOrder(ant, aim);
-    }
-
-    private Map<Aim, List<Tile>> attackersByDirection(List<Tile> tiles) {
-
-        Map<Aim, List<Tile>> attackers = new HashMap<Aim, List<Tile>>();
-        TreeMap<Aim, List<Tile>> sortedAttackers = new TreeMap<Aim, List<Tile>>(new ValueComparator(attackers));
-
-        for (Tile t : tiles) {
-            Aim attackAim = null;
-            int diffx = t.getRow() - hill.getRow();
-            int diffy = t.getCol() - hill.getCol();
-            if (Math.abs(diffx) > Math.abs(diffy))
-                attackAim = Ants.getWorld().getDirections(hill, new Tile(t.getRow(), hill.getCol())).get(0);
-            else
-                attackAim = Ants.getWorld().getDirections(hill, new Tile(hill.getRow(), t.getCol())).get(0);
-
-            List<Tile> l = new ArrayList<Tile>();
-            if (attackers.containsKey(attackAim)) {
-                l = attackers.remove(attackAim);
-            }
-            l.add(t);
-            attackers.put(attackAim, l);
-        }
-        LOGGER.debug("Attackers %s from directions %s ", tiles, attackers);
-        sortedAttackers.putAll(attackers);
-        return sortedAttackers;
-    }
-
-    class ValueComparator implements Comparator<Aim> {
-
-        Map<Aim, List<Tile>> base;
-
-        public ValueComparator(Map<Aim, List<Tile>> base) {
-            this.base = base;
-        }
-
-        // Note: this comparator imposes orderings that are inconsistent with equals.
-        public int compare(Aim a, Aim b) {
-            if (base.get(a).size() >= base.get(b).size()) {
-                return -1;
-            } else {
-                return 1;
-            } // returning 0 would merge keys
         }
     }
 

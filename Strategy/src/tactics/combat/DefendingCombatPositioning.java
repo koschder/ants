@@ -23,4 +23,9 @@ public class DefendingCombatPositioning extends DefaultCombatPositioning {
     protected Mode determineMode() {
         return Mode.DEFEND;
     }
+
+    @Override
+    protected boolean shouldStepOnTarget() {
+        return false;
+    }
 }

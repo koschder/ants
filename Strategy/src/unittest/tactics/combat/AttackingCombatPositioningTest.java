@@ -178,9 +178,6 @@ public class AttackingCombatPositioningTest {
         List<Unit> enemyAnts = map.getUnits(1);
         List<Unit> myAnts = map.getUnits(0);
 
-        final Unit myAnt1 = new TestUnit(0, new Tile(6, 9));
-        final Unit myAnt2 = new TestUnit(0, new Tile(6, 11));
-
         MapOutput put = new MapOutput();
         put.addObject(getTiles(myAnts), "MyAnts");
         put.addObject(getTiles(enemyAnts), "enemyAnts");
