@@ -1,18 +1,18 @@
 <project default="runTutorial">
 	<import file="${basedir}/inc/jar.xml" />
 	<import file="${basedir}/inc/base.xml" />
-	
+
 	<!-- Online Tests -->
-	
+
 	<target name="testOnline" depends="jarMyBot" description="Test the bot online">
 		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
 		<antcall target="online">
 			<param name="bot.name" value="MyBot" />
 		</antcall>
 	</target>
-	
+
 	<!-- Maze Tests against other bots -->
-	
+
 	<target name="maze4Players" depends="jarMyBot" description="Test the bot against 3 other bots">
 		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
 		<antcall target="mazeTest4p">
@@ -68,8 +68,14 @@
 	</target>
 
 	<!-- Maze tests against ourselves with different profiles -->
-	
-	<target name="maze4PlayersProfiles" depends="jarMyBot" description="">
+
+	<target name="mazeProfiles4Players" depends="jarMyBot" description="">
+		<!-- clean the log dir -->
+		<delete>
+			<fileset dir="${basedir}/logs">
+				<include name="**/*" />
+			</fileset>
+		</delete>
 		<antcall target="maze4pWithProfiles">
 			<param name="bot.name" value="MyBot" />
 			<param name="profile1" value="default" />
@@ -85,9 +91,9 @@
 			<param name="profile2" value="default" />
 		</antcall>
 	</target>
-	
+
 	<!-- Debug Tests -->
-	
+
 	<target name="debugConcentrateBot" depends="jarConcentrateBot" description="">
 		<antcall target="debugTest">
 			<param name="bot.name" value="ConcentrateBot" />
@@ -125,7 +131,7 @@
 	</target>
 
 	<!-- Test & Tutorial -->
-	
+
 	<target name="testBot">
 		<exec executable="python" failonerror="true">
 			<arg line="tools/playgame.py" />

@@ -25,37 +25,37 @@
 		</exec>
 	</target>
 	<target name="mazeWithProfiles">
-	        <exec executable="python" failonerror="true">
-	            <arg line="tools/playgame.py" />
-	            <arg line="&quot;java -jar ${bot.name}-${profile1}.jar ${profile1}&quot;" />
-                <arg line="&quot;java -jar ${bot.name}-${profile2}.jar ${profile2}&quot;" />
-	            <arg line="--map_file tools/maps/maze/maze_p02_02.map" />
-	            <arg line="--log_dir logs" />
-	            <arg line="--turns 250" />
-	            <arg line="--scenario" />
-	            <arg line="--food symmetric" />
-	            <arg line="--player_seed 7" />
-	            <arg line="--verbose" />
-	            <arg line="-e" />
-	        </exec>
-	    </target>
+		<exec executable="python" failonerror="true">
+			<arg line="tools/playgame.py" />
+			<arg line="&quot;java -jar ${bot.name}-${profile1}.jar ${profile1}&quot;" />
+			<arg line="&quot;java -jar ${bot.name}-${profile2}.jar ${profile2}&quot;" />
+			<arg line="--map_file tools/maps/maze/maze_p02_02.map" />
+			<arg line="--log_dir logs" />
+			<arg line="--turns 250" />
+			<arg line="--scenario" />
+			<arg line="--food symmetric" />
+			<arg line="--player_seed 7" />
+			<arg line="--verbose" />
+			<arg line="-e" />
+		</exec>
+	</target>
 	<target name="maze4pWithProfiles">
-	        <exec executable="python" failonerror="true">
-	            <arg line="tools/playgame.py" />
-                <arg line="&quot;java -jar ${bot.name}-${profile1}.jar ${profile1}&quot;" />
-                <arg line="&quot;java -jar ${bot.name}-${profile2}.jar ${profile2}&quot;" />
-                <arg line="&quot;java -jar ${bot.name}-${profile3}.jar ${profile3}&quot;" />
-                <arg line="&quot;java -jar ${bot.name}-${profile4}.jar ${profile4}&quot;" />
-	            <arg line="--map_file tools/maps/maze/maze_p04_08.map" />
-	            <arg line="--log_dir logs" />
-	            <arg line="--turns 200" />
-	            <arg line="--scenario" />
-	            <arg line="--food symmetric" />
-	            <arg line="--player_seed 7" />
-	            <arg line="--verbose" />
-	            <arg line="-e" />
-	        </exec>
-	    </target>
+		<exec executable="python" failonerror="true">
+			<arg line="tools/playgame.py" />
+			<arg line="&quot;java -jar ${bot.name}-${profile1}.jar ${profile1}&quot;" />
+			<arg line="&quot;java -jar ${bot.name}-${profile2}.jar ${profile2}&quot;" />
+			<arg line="&quot;java -jar ${bot.name}-${profile3}.jar ${profile3}&quot;" />
+			<arg line="&quot;java -jar ${bot.name}-${profile4}.jar ${profile4}&quot;" />
+			<arg line="--map_file tools/maps/maze/maze_p04_08.map" />
+			<arg line="--log_dir logs" />
+			<arg line="--turns 200" />
+			<arg line="--scenario" />
+			<arg line="--food symmetric" />
+			<arg line="--player_seed 7" />
+			<arg line="--verbose" />
+			<arg line="-e" />
+		</exec>
+	</target>
 	<target name="mazeTestRepeat">
 		<!-- clean the log dir -->
 		<delete>
@@ -85,7 +85,7 @@
 	<target name="mazeTest4p">
 		<exec executable="python" failonerror="true">
 			<arg line="tools/playgame.py" />
-            <arg line="&quot;java -jar ${bot.name}-${profile}.jar ${profile}&quot;" />
+			<arg line="&quot;java -jar ${bot.name}-${profile}.jar ${profile}&quot;" />
 			<arg line="&quot;${bot.opponent}&quot;" />
 			<arg line="&quot;${bot.opponent2}&quot;" />
 			<arg line="&quot;${bot.opponent3}&quot;" />
