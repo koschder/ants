@@ -180,6 +180,10 @@ public class DefaultCombatPositioning implements CombatPositioning {
 
     private Map<Aim, List<Tile>> getDefendersPerSide(Map<Aim, List<Tile>> enemiesPerSide) {
         Map<Aim, List<Tile>> defendersPerSide = new HashMap<Aim, List<Tile>>();
+        // TODO this means an enemy is attacking from a supposedly protected side. Ideally we should catch that, but in
+        // practice it occurs very rarely
+        if (enemiesPerSide.isEmpty())
+            return defendersPerSide;
         List<Tile> assignedDefenders = new ArrayList<Tile>();
         for (Aim aim : enemiesPerSide.keySet()) {
             List<Tile> defenders = getUnitsInDirection(aim, myUnits, true);
