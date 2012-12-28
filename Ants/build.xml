@@ -1,15 +1,20 @@
 <project default="runTutorial">
 	<import file="${basedir}/inc/jar.xml" />
 	<import file="${basedir}/inc/base.xml" />
+	
+	<!-- Online Tests -->
+	
 	<target name="testOnline" depends="jarMyBot" description="Test the bot online">
-        <input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
+		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
 		<antcall target="online">
 			<param name="bot.name" value="MyBot" />
 		</antcall>
 	</target>
-	<!-- Maze Tests -->
-	<target name="maze4Players" depends="jarMyBot" description="">
-        <input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
+	
+	<!-- Maze Tests against other bots -->
+	
+	<target name="maze4Players" depends="jarMyBot" description="Test the bot against 3 other bots">
+		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
 		<antcall target="mazeTest4p">
 			<param name="bot.name" value="MyBot" />
 			<param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
@@ -17,6 +22,53 @@
 			<param name="bot.opponent3" value="python tools/bots/wraithan/MyBot.pypy" />
 		</antcall>
 	</target>
+
+	<target name="mazeAgainstGreentea" depends="jarMyBot" description="Test the bot against Greentea">
+		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
+		<antcall target="mazeTest">
+			<param name="bot.name" value="MyBot" />
+			<param name="bot.opponent" value="java -jar tools/bots/greentea/SixPoolRush.jar" />
+		</antcall>
+	</target>
+	<target name="mazeAgainstWraithan" depends="jarMyBot" description="Test the bot against Wraithan">
+		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
+		<antcall target="mazeTest">
+			<param name="bot.name" value="MyBot" />
+			<param name="bot.opponent" value="python tools/bots/wraithan/MyBot.pypy" />
+		</antcall>
+	</target>
+	<target name="mazeAgainstEgreavette" depends="jarMyBot" description="Test the bot against Egreavette">
+		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
+		<antcall target="mazeTest">
+			<param name="bot.name" value="MyBot" />
+			<param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
+		</antcall>
+	</target>
+	<target name="mazeAgainstNHaehnle" depends="jarMyBot" description="Test the bot against NHahnle">
+		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
+		<antcall target="mazeTest">
+			<param name="bot.name" value="MyBot" />
+			<param name="bot.opponent" value="c++ tools/bots/nhaehnle/MyBot.cc" />
+		</antcall>
+	</target>
+	<target name="mazeAgainstXathis" depends="jarMyBot" description="Test the bot against Xathis">
+		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
+		<antcall target="mazeTest">
+			<param name="bot.name" value="MyBot" />
+			<param name="bot.opponent" value="java -jar tools/bots/xathis/xathis.jar" />
+		</antcall>
+	</target>
+
+	<target name="repeatMazeAgainstEgreavette" depends="jarMyBot" description="">
+		<antcall target="mazeTestRepeat">
+			<param name="bot.name" value="MyBot" />
+			<param name="profile" value="default" />
+			<param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
+		</antcall>
+	</target>
+
+	<!-- Maze tests against ourselves with different profiles -->
+	
 	<target name="maze4PlayersProfiles" depends="jarMyBot" description="">
 		<antcall target="maze4pWithProfiles">
 			<param name="bot.name" value="MyBot" />
@@ -33,50 +85,9 @@
 			<param name="profile2" value="default" />
 		</antcall>
 	</target>
-	<target name="mazeAgainstGreentea" depends="jarMyBot" description="">
-		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
-		<antcall target="mazeTest">
-			<param name="bot.name" value="MyBot" />
-			<param name="bot.opponent" value="java -jar tools/bots/greentea/SixPoolRush.jar" />
-		</antcall>
-	</target>
-	<target name="mazeAgainstWraithan" depends="jarMyBot" description="">
-		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
-		<antcall target="mazeTest">
-			<param name="bot.name" value="MyBot" />
-			<param name="bot.opponent" value="python tools/bots/wraithan/MyBot.pypy" />
-		</antcall>
-	</target>
-	<target name="mazeAgainstEgreavette" depends="jarMyBot" description="">
-		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
-		<antcall target="mazeTest">
-			<param name="bot.name" value="MyBot" />
-			<param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
-		</antcall>
-	</target>
-	<target name="repeatMazeAgainstEgreavette" depends="jarMyBot" description="">
-		<antcall target="mazeTestRepeat">
-			<param name="bot.name" value="MyBot" />
-			<param name="profile" value="default" />
-			<param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
-		</antcall>
-	</target>
-	<target name="mazeAgainstNHaehnle" depends="jarMyBot" description="">
-		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
-		<antcall target="mazeTest">
-			<param name="bot.name" value="MyBot" />
-			<param name="bot.opponent" value="c++ tools/bots/nhaehnle/MyBot.cc" />
-		</antcall>
-	</target>
-	<target name="mazeAgainstXathis" depends="jarMyBot" description="">
-		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
-		<antcall target="mazeTest">
-			<param name="bot.name" value="MyBot" />
-			<param name="bot.opponent" value="java -jar tools/bots/xathis/xathis.jar" />
-		</antcall>
-	</target>
-
+	
 	<!-- Debug Tests -->
+	
 	<target name="debugConcentrateBot" depends="jarConcentrateBot" description="">
 		<antcall target="debugTest">
 			<param name="bot.name" value="ConcentrateBot" />
@@ -114,6 +125,7 @@
 	</target>
 
 	<!-- Test & Tutorial -->
+	
 	<target name="testBot">
 		<exec executable="python" failonerror="true">
 			<arg line="tools/playgame.py" />
@@ -132,14 +144,14 @@
 	</target>
 	<target name="testMyBot" depends="jarMyBot" description="">
 		<antcall target="testBot">
-			<param name="bot.name" value="MyBot" />
+			<param name="bot.name" value="MyBot-default" />
 			<param name="turn.limit" value="100" />
 		</antcall>
 	</target>
 	<target name="runTutorial" depends="jarMyBot" description="">
 		<exec executable="python" failonerror="true">
 			<arg line="tools/playgame.py" />
-			<arg line="&quot;java -jar MyBot.jar&quot;" />
+			<arg line="&quot;java -jar MyBot-default.jar&quot;" />
 			<arg line="&quot;python tools/sample_bots/python/HunterBot.py&quot;" />
 			<arg line="--map_file tools/maps/example/tutorial1.map" />
 			<arg line="--log_dir logs" />
