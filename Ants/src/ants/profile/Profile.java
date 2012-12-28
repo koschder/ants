@@ -154,7 +154,7 @@ public class Profile {
                 LOGGER.error("Could not load properties for profile %s, running with default profile", profile);
             }
         }
-        LOGGER.info("Configured profile (%s): %s \n", profile == null ? "DEFAULT" : profile.toUpperCase(),
+        LOGGER.info("Configured profile (%s):\n%s ", profile == null ? "DEFAULT" : profile.toUpperCase(),
                 getPropertiesAsString());
         validate();
     }

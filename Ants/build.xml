@@ -36,10 +36,31 @@
 			<param name="bot.opponent" value="python tools/bots/wraithan/MyBot.pypy" />
 		</antcall>
 	</target>
-	<target name="mazeAgainstEgreavette" depends="jarMyBot" description="">
+	<target name="mazeAgainstEgreavetteDefault" depends="jarMyBot" description="">
 		<antcall target="mazeTest">
 			<param name="bot.name" value="MyBot" />
             <param name="profile" value="default" />
+			<param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
+		</antcall>
+	</target>
+	<target name="mazeAgainstEgreavetteAggressive" depends="jarMyBot" description="">
+		<antcall target="mazeTest">
+			<param name="bot.name" value="MyBot" />
+            <param name="profile" value="aggressive" />
+			<param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
+		</antcall>
+	</target>
+	<target name="mazeAgainstEgreavetteExpansive" depends="jarMyBot" description="">
+		<antcall target="mazeTest">
+			<param name="bot.name" value="MyBot" />
+            <param name="profile" value="expansive" />
+			<param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
+		</antcall>
+	</target>
+	<target name="mazeAgainstEgreavetteDefensive" depends="jarMyBot" description="">
+		<antcall target="mazeTest">
+			<param name="bot.name" value="MyBot" />
+            <param name="profile" value="defensive" />
 			<param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
 		</antcall>
 	</target>
