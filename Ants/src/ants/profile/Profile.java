@@ -19,19 +19,19 @@ public class Profile {
 
     private enum Key {
         /**
-         * Default allocation of resources for gathering food.
+         * Default allocation of resources for gathering food. Value in percent of available resources.
          */
         DEFAULT_ALLOCATION_GATHER_FOOD("defaultAllocation.gatherFood"),
         /**
-         * Default allocation of resources for exploration.
+         * Default allocation of resources for exploration. Value in percent of available resources.
          */
         DEFAULT_ALLOCATION_EXPLORE("defaultAllocation.explore"),
         /**
-         * Default allocation of resources for attacking hills.
+         * Default allocation of resources for attacking hills. Value in percent of available resources.
          */
         DEFAULT_ALLOCATION_ATTACK_HILLS("defaultAllocation.attackHills"),
         /**
-         * Default allocation of resources for defending hills.
+         * Default allocation of resources for defending hills. Value in percent of available resources.
          */
         DEFAULT_ALLOCATION_DEFEND_HILLS("defaultAllocation.defendHills"),
         /**
@@ -50,7 +50,22 @@ public class Profile {
          * Determines how much exploration is boosted when the threshold is met. Expressed as a fraction of 1, default
          * is 0.25.
          */
-        EXPLORE_FORCE_GAIN("explore.forceGain");
+        EXPLORE_FORCE_GAIN("explore.forceGain"),
+        /**
+         * Determines how much exploration is boosted when we have a dominant position. Value in percent of available
+         * resources.
+         */
+        EXPLORE_DOMINANT_POSITION_BOOST("explore.dominantPositionBoost"),
+        /**
+         * Determines how much attacking hills is boosted when we have a dominant position. Value in percent of
+         * available resources.
+         */
+        ATTACK_HILLS_DOMINANT_POSITION_BOOST("attackHills.dominantPositionBoost"),
+        /**
+         * After half-time, attacking hills is emphasized. This determines how much. Value in percent of available
+         * resources.
+         */
+        ATTACK_HILLS_HALFTIME_BOOST("attackHills.halfTimeBoost");
         private String key;
 
         private Key(String key) {
@@ -70,6 +85,9 @@ public class Profile {
         defaultProperties.setProperty(Key.DEFEND_HILLS_MIN_CONTROL_RADIUS.key, "8");
         defaultProperties.setProperty(Key.EXPLORE_FORCE_THRESHOLD_PERCENT.key, "80");
         defaultProperties.setProperty(Key.EXPLORE_FORCE_GAIN.key, "0.25");
+        defaultProperties.setProperty(Key.EXPLORE_DOMINANT_POSITION_BOOST.key, "5");
+        defaultProperties.setProperty(Key.ATTACK_HILLS_DOMINANT_POSITION_BOOST.key, "2");
+        defaultProperties.setProperty(Key.ATTACK_HILLS_HALFTIME_BOOST.key, "20");
     }
 
     /*
@@ -108,6 +126,18 @@ public class Profile {
         return getFloat(Key.EXPLORE_FORCE_GAIN);
     }
 
+    public int getExplore_DominantPositionBoost() {
+        return getInteger(Key.EXPLORE_DOMINANT_POSITION_BOOST);
+    }
+
+    public int getAttackHills_HalfTimeBoost() {
+        return getInteger(Key.ATTACK_HILLS_HALFTIME_BOOST);
+    }
+
+    public int getAttackHills_DominantPositionBoost() {
+        return getInteger(Key.ATTACK_HILLS_DOMINANT_POSITION_BOOST);
+    }
+
     public Profile(String profile) {
         properties = new Properties(defaultProperties);
         if (profile != null) {
@@ -130,14 +160,23 @@ public class Profile {
     }
 
     private void validate() {
+        // make sure there are default values set for every parameter
+        for (Key key : Key.values()) {
+            if (defaultProperties.get(key.key) == null)
+                throw new InvalidProfileConfigurationException("No default property set for key " + key);
+        }
+        // make sure the default resource allocation values add up to 100
         int totalDefaultAllocation = getDefaultAllocation_AttackHills() + getDefaultAllocation_DefendHills()
                 + getDefaultAllocation_Explore() + getDefaultAllocation_GatherFood();
         if (totalDefaultAllocation != 100)
             throw new InvalidProfileConfigurationException("Default resource allocations do not add up to 100");
-        if (getExplore_ForceThresholdPercent() > 100 || getExplore_ForceThresholdPercent() < 0)
-            throw new InvalidProfileConfigurationException("explore.forceThresholdPercent must be between 0 and 100");
-        if (getExplore_ForceGain() > 1.0f || getExplore_ForceGain() < 0.0f)
-            throw new InvalidProfileConfigurationException("explore.forceGain must be between 0.0 and 1.0");
+        // values that need to be between 0 and 100
+        checkValidPercentRange(Key.EXPLORE_FORCE_THRESHOLD_PERCENT, getExplore_ForceThresholdPercent());
+        checkValidPercentRange(Key.ATTACK_HILLS_HALFTIME_BOOST, getAttackHills_HalfTimeBoost());
+        checkValidPercentRange(Key.EXPLORE_DOMINANT_POSITION_BOOST, getExplore_DominantPositionBoost());
+        checkValidPercentRange(Key.ATTACK_HILLS_DOMINANT_POSITION_BOOST, getAttackHills_DominantPositionBoost());
+        // values that need to be between 0 and 1
+        checkValidFraction(Key.EXPLORE_FORCE_GAIN, getExplore_ForceGain());
     }
 
     private int getInteger(Key key) {
@@ -146,6 +185,16 @@ public class Profile {
 
     private float getFloat(Key key) {
         return Float.valueOf(properties.getProperty(key.key));
+    }
+
+    private void checkValidPercentRange(Key key, int value) {
+        if (value > 100 || value < 0)
+            throw new InvalidProfileConfigurationException(key.key + " must be between 0 and 100");
+    }
+
+    private void checkValidFraction(Key key, float value) {
+        if (value > 1.0f || value < 0.0f)
+            throw new InvalidProfileConfigurationException(key.key + " must be between 0.0 and 1.0");
     }
 
     private String getPropertiesAsString() {
