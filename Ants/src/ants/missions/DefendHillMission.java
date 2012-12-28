@@ -26,8 +26,9 @@ public class DefendHillMission extends BaseMission {
 
     private Tile hill = null;
     private Set<Tile> hillReachable = new HashSet<Tile>();
-    private int controlArea = Math.max((int) Math.sqrt(Ants.getWorld().getViewRadius2() + 4), 8);
-    private int guardHillTurn = 30;
+    private int controlArea = Math.max((int) Math.sqrt(Ants.getWorld().getViewRadius2() + 4), Ants.getProfile()
+            .getDefendHills_MinControlRadius());
+    private int guardHillTurn = Ants.getProfile().getDefendHills_StartTurn();
     private int antsMoreThanEnemy = 1;
     private boolean needsMoreAnts;
 
@@ -64,7 +65,6 @@ public class DefendHillMission extends BaseMission {
                 putMissionOrder(ant, cp.getNextTile(ant));
             }
             LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill, "DCP: " + cp.getLog());
-            // defending(enemyNearBy);
         } else {
             keepAntDoingStuff();
         }

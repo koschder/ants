@@ -21,7 +21,9 @@ public class Profile {
         DEFAULT_ALLOCATION_GATHER_FOOD("defaultAllocation.gatherFood"),
         DEFAULT_ALLOCATION_EXPLORE("defaultAllocation.explore"),
         DEFAULT_ALLOCATION_ATTACK_HILLS("defaultAllocation.attackHills"),
-        DEFAULT_ALLOCATION_DEFEND_HILLS("defaultAllocation.defendHills");
+        DEFAULT_ALLOCATION_DEFEND_HILLS("defaultAllocation.defendHills"),
+        DEFEND_HILLS_START_TURN("defendHills.startTurn"),
+        DEFEND_HILLS_MIN_CONTROL_RADIUS("defendHills.minControlRadius");
         private String key;
 
         private Key(String key) {
@@ -37,6 +39,8 @@ public class Profile {
         defaultProperties.setProperty(Key.DEFAULT_ALLOCATION_EXPLORE.key, "25");
         defaultProperties.setProperty(Key.DEFAULT_ALLOCATION_ATTACK_HILLS.key, "25");
         defaultProperties.setProperty(Key.DEFAULT_ALLOCATION_DEFEND_HILLS.key, "25");
+        defaultProperties.setProperty(Key.DEFEND_HILLS_START_TURN.key, "30");
+        defaultProperties.setProperty(Key.DEFEND_HILLS_MIN_CONTROL_RADIUS.key, "8");
     }
 
     /*
@@ -59,6 +63,14 @@ public class Profile {
         return getInteger(Key.DEFAULT_ALLOCATION_DEFEND_HILLS);
     }
 
+    public int getDefendHills_StartTurn() {
+        return getInteger(Key.DEFEND_HILLS_START_TURN);
+    }
+
+    public int getDefendHills_MinControlRadius() {
+        return getInteger(Key.DEFEND_HILLS_MIN_CONTROL_RADIUS);
+    }
+
     public Profile(String profile) {
         properties = new Properties(defaultProperties);
         if (profile != null) {
@@ -75,7 +87,7 @@ public class Profile {
                 LOGGER.error("Could not load properties for profile %s, running with default profile", profile);
             }
         }
-        LOGGER.info("Configured profile (%s): %s", profile == null ? "DEFAULT" : profile.toUpperCase(),
+        LOGGER.info("Configured profile (%s): %s \n", profile == null ? "DEFAULT" : profile.toUpperCase(),
                 getPropertiesAsString());
         validate();
     }
@@ -85,6 +97,7 @@ public class Profile {
                 + getDefaultAllocation_Explore() + getDefaultAllocation_GatherFood();
         if (totalDefaultAllocation != 100)
             throw new InvalidProfileConfigurationException("Default resource allocations do not add up to 100");
+
     }
 
     private int getInteger(Key key) {
