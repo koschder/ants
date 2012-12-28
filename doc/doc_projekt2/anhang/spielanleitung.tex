@@ -1,0 +1,18 @@
+\chapter{Spielanleitung}
+\label{chap:spielanleitung}
+
+Dieser Anhang beschreibt kurz, wie ein Spiel mit unserem Bot ausgef\"uhrt werden kann.
+
+Das File \texttt{Ants.zip} enth\"alt das Eclipse-Projekt mit dem gesamten Source-Code unserer Implementation, und der offiziellen Spiel-Engine. Zum einfachen Ausf\"uhren eines Spiels haben wir ein ANT-Buildfile (build.xml) erstellt. Dieses definiert 3 Targets, mit denen ein Spiel mit jeweils unterschiedlichen Parametern gestartet werden kann.
+\begin{enumerate}
+\item{Das Target \texttt{testBot} ist lediglich zum einfachen Testen eines Bots sinnvoll und entspricht dem Spiel, das verwendet wird, um Bots, die auf der Website hochgeladen werden, zu testen.}
+
+\item{Das Target \texttt{runTutorial} f\"uhrt ein Spiel mit den Parametern aus, die im Tutorial auf der Website zur Erkl\"arung der Spielmechanik verwendet werden.}
+\item{
+Das Target \texttt{maze} f\"uhrt ein Spiel auf einer komplexeren und gr\"osseren, labyrinthartigen Karte aus und ist das interessanteste von den 3.}
+
+\end{enumerate}
+
+Im Unterordner \texttt{tools} befindet sich die in Python implementierte Spiel-Engine. Unter \texttt{tools/maps} liegen noch weitere vordefinierte Umgebungen, und unter \texttt{tools/mapgen} liegen verschieden Map-Generatoren, die zur Erzeugung beliebiger weiterer Karten verwendet werden k\"onnen. 
+
+Im Unterordner \texttt{tools/sample\_bots} befinden sich einige einfache Beispiel-Bots, gegen die man spielen kann. Viele der Teilnehmer haben zudem ihren Quellcode auf dem Internet publiziert, an m\"oglichen Gegner besteht also auch kein Mangel.
