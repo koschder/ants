@@ -11,9 +11,9 @@ public abstract class BaseResourceAllocationRule implements ResourceAllocationRu
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.RESOURCE_ALLOCATION);
 
     protected void incrementResources(Type taskType, int increment, Type... tasksToDecrement) {
+        // ensure increment is evenly distributable
+        increment += increment % tasksToDecrement.length;
         LOGGER.debug("%s: Incrementing Resources for %s by %s", getClass().getSimpleName(), taskType, increment);
-        if ((increment % tasksToDecrement.length) != 0)
-            throw new IllegalArgumentException("Cannot evenly distribute the increment");
         final int decrementPerTask = increment / tasksToDecrement.length;
         for (Type type : tasksToDecrement) {
             int maxResources = Ants.getPopulation().getMaxResources(type);
