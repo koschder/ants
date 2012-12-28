@@ -1,0 +1,30 @@
+
+\select@language {ngerman}
+\save@tocdepth \setcounter {tocdepth}{1}
+\contentsline {chapter}{\numberline {1}Allgemeines}{1}{chapter.1}
+\contentsline {section}{\numberline {1.1}Zweck des Dokuments}{1}{section.1.1}
+\contentsline {section}{\numberline {1.2}Ausgangslage}{1}{section.1.2}
+\contentsline {section}{\numberline {1.3}Ziel des Moduls 7321 Bachelor Thesis}{1}{section.1.3}
+\contentsline {section}{\numberline {1.4}Aufgabenstellung}{1}{section.1.4}
+\contentsline {chapter}{\numberline {2}Ziele}{3}{chapter.2}
+\contentsline {section}{\numberline {2.1}Funktionale Anforderungen}{3}{section.2.1}
+\contentsline {subsection}{\numberline {2.1.1}Musskriterien}{3}{subsection.2.1.1}
+\contentsline {subsection}{\numberline {2.1.2}Kannkriterien}{4}{subsection.2.1.2}
+\contentsline {section}{\numberline {2.2}Nicht funktionale Anforderungen}{4}{section.2.2}
+\contentsline {subsection}{\numberline {2.2.1}Musskriterien}{4}{subsection.2.2.1}
+\contentsline {subsection}{\numberline {2.2.2}Kannkriterien}{4}{subsection.2.2.2}
+\contentsline {section}{\numberline {2.3}Abgrenzungskriterien}{4}{section.2.3}
+\contentsline {chapter}{\numberline {3}Rahmenbedingungen}{5}{chapter.3}
+\contentsline {section}{\numberline {3.1}Spielbeschrieb}{5}{section.3.1}
+\contentsline {subsection}{\numberline {3.1.1}Der Wettbewerb}{5}{subsection.3.1.1}
+\contentsline {subsection}{\numberline {3.1.2}Wettbewerbsteilnahme}{5}{subsection.3.1.2}
+\contentsline {subsection}{\numberline {3.1.3}Spielregeln}{5}{subsection.3.1.3}
+\contentsline {subsection}{\numberline {3.1.4}Schnittstelle}{6}{subsection.3.1.4}
+\contentsline {section}{\numberline {3.2}Verwendete Software}{6}{section.3.2}
+\contentsline {section}{\numberline {3.3}Verwendete Hardware}{6}{section.3.3}
+\contentsline {chapter}{\numberline {4}Projektorganisation}{7}{chapter.4}
+\contentsline {section}{\numberline {4.1}Beteiligte Personen}{7}{section.4.1}
+\contentsline {section}{\numberline {4.2}Projektmeetings}{7}{section.4.2}
+\contentsline {section}{\numberline {4.3}Dokumentation}{7}{section.4.3}
+\contentsline {section}{\numberline {4.4}Abgabe}{7}{section.4.4}
+\contentsline {section}{\numberline {4.5}Zeitplan}{7}{section.4.5}
