@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import org.json.simple.JSONArray;
@@ -22,7 +23,10 @@ public class TestReader {
 	public static void main(String[] args) throws Exception {
 		final File[] replayFiles = getReplayFiles();
 		writeReport(replayFiles);
-		writeSummary(replayFiles);
+		if (getResultsPerBot(replayFiles).size() > 2)
+			writeProfileSummary(replayFiles);
+		else
+			writeSummary(replayFiles);
 	}
 
 	private static void writeSummary(File[] replayFiles) throws Exception {
@@ -54,6 +58,67 @@ public class TestReader {
 				+ otherBotName + " Summary .csv");
 		fileWriter.write(summary.toString());
 		fileWriter.close();
+	}
+
+	private static void writeProfileSummary(File[] replayFiles)
+			throws Exception {
+		Map<String, List<TestResult>> resultsPerBot = getResultsPerBot(replayFiles);
+		List<String> botNames = new ArrayList<String>(resultsPerBot.keySet());
+		List<List<TestResult>> testResults = new ArrayList<List<TestResult>>();
+		for (String bot : botNames) {
+			testResults.add(resultsPerBot.get(bot));
+		}
+		StringBuilder sb = new StringBuilder("Profile,");
+		sb.append(TestSummary.SUMMARY_HEADER);
+		for (String bot : botNames) {
+			sb.append(bot).append(",");
+			List<TestResult> myTestResults = resultsPerBot.get(bot);
+			Map<String, List<TestResult>> opponentResults = getOpponentTestResults(
+					resultsPerBot, bot);
+			TestSummary summary = new TestSummary();
+			for (int i = 0; i < myTestResults.size(); i++) {
+				summary.games++;
+				TestResult myRes = myTestResults.get(i);
+				if (myRes.status.equals("survived"))
+					summary.timesSurvived++;
+
+				if (myRes.rank.equals("0")) {
+					boolean draw = false;
+					for (List<TestResult> res : opponentResults.values()) {
+						if (res.get(i).rank.equals("0")) {
+							summary.draws++;
+							draw = true;
+							break;
+						}
+					}
+					if (!draw)
+						summary.wins++;
+				} else
+					summary.losses++;
+
+				summary.totalPointsWon += Integer.valueOf(myRes.score);
+				for (List<TestResult> res : opponentResults.values()) {
+					summary.totalPointsLost += Integer
+							.valueOf(res.get(i).score);
+				}
+			}
+			summary.appendSummaryLine(sb);
+		}
+
+		System.out.println(sb);
+		final FileWriter fileWriter = new FileWriter("Profile Summary .csv");
+		fileWriter.write(sb.toString());
+		fileWriter.close();
+	}
+
+	private static Map<String, List<TestResult>> getOpponentTestResults(
+			Map<String, List<TestResult>> resultsPerBot, String myBot) {
+		Map<String, List<TestResult>> results = new HashMap<String, List<TestResult>>();
+		for (Entry<String, List<TestResult>> entry : resultsPerBot.entrySet()) {
+			if (!entry.getKey().equals(myBot))
+				results.put(entry.getKey(), entry.getValue());
+		}
+		return results;
 	}
 
 	private static String getMyBotName(Set<String> keySet) {
@@ -200,6 +265,7 @@ public class TestReader {
 	}
 
 	static class TestSummary {
+		static final String SUMMARY_HEADER = "Wins,Losses,Draws,Total Points won, Total Points lost, Times survived, Games\n";
 		int wins = 0;
 		int losses = 0;
 		int draws = 0;
@@ -210,14 +276,17 @@ public class TestReader {
 
 		@Override
 		public String toString() {
-			StringBuilder sb = new StringBuilder(
-					"Wins,Losses,Draws,Total Points won, Total Points lost, Times survived, Games\n");
+			StringBuilder sb = new StringBuilder(SUMMARY_HEADER);
+			appendSummaryLine(sb);
+			return sb.toString();
+		}
+
+		void appendSummaryLine(StringBuilder sb) {
 			sb.append(wins).append(",").append(losses).append(",")
 					.append(draws).append(",").append(totalPointsWon)
 					.append(",").append(totalPointsLost).append(",")
 					.append(timesSurvived).append(",").append(games)
 					.append("\n");
-			return sb.toString();
 		}
 
 	}
