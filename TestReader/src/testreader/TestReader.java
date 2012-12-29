@@ -2,10 +2,10 @@ package testreader;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileWriter;
 import java.io.FilenameFilter;
 import java.io.InputStream;
-import java.util.HashMap;
-import java.util.Map;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -22,15 +22,49 @@ public class TestReader {
 				return name.endsWith("replay");
 			}
 		});
-		Map<String, Integer> wins = new HashMap<String, Integer>();
-		for (File replayFile : replayFiles) {
-			String winner = getWinner(replayFile);
-			if (wins.containsKey(winner))
-				wins.put(winner, wins.get(winner) + 1);
-			else
-				wins.put(winner, 1);
+		StringBuffer report = new StringBuffer("Round,");
+		for (int i = 0; i < replayFiles.length; i++) {
+			File replayFile = replayFiles[i];
+			JSONObject json = readJson(replayFile);
+			if (i == 0)
+				writeHeader(report, json);
+			report.append(i).append(",");
+			writeLine(report, json);
 		}
-		System.out.println(wins);
+		System.out.println(report);
+		final FileWriter fileWriter = new FileWriter("Testreport.csv");
+		fileWriter.write(report.toString());
+		fileWriter.close();
+	}
+
+	private static JSONObject readJson(File replayFile)
+			throws FileNotFoundException {
+		InputStream is = new FileInputStream(replayFile);
+		String jsonTxt = readString(is);
+		Object obj = JSONValue.parse(jsonTxt);
+		return (JSONObject) obj;
+	}
+
+	private static void writeHeader(StringBuffer report, JSONObject json) {
+		String[] names = getBotNames(json);
+		for (String name : names) {
+			report.append("Rank(").append(name).append(")").append(",");
+			report.append("Score(").append(name).append(")").append(",");
+			report.append("Ants(").append(name).append(")").append(",");
+		}
+		report.append("\n");
+	}
+
+	private static void writeLine(StringBuffer report, JSONObject json) {
+		String[] ranks = getBotRanks(json);
+		String[] scores = getBotScores(json);
+		// String[] ants = getBotAnts(json);
+		for (int i = 0; i < ranks.length; i++) {
+			report.append(ranks[i]).append(",");
+			report.append(scores[i]).append(",");
+			report.append("?").append(",");
+		}
+		report.append("\n");
 	}
 
 	private static String readString(InputStream is) {
@@ -38,17 +72,31 @@ public class TestReader {
 		return s.hasNext() ? s.next() : "";
 	}
 
-	private static String getWinner(File replayFile) throws Exception {
-		InputStream is = new FileInputStream(replayFile);
-		String jsonTxt = readString(is);
-		Object obj = JSONValue.parse(jsonTxt);
-		JSONObject json = (JSONObject) obj;
-		JSONArray ranks = (JSONArray) json.get("rank");
+	private static String[] getBotNames(JSONObject json) {
 		JSONArray playerNames = (JSONArray) json.get("playernames");
-		for (int i = 0; i < ranks.size(); i++) {
-			if (ranks.get(i).equals(0L))
-				return (String) playerNames.get(i);
-		}
-		return null;
+		return toStringArray(playerNames);
 	}
+
+	private static String[] getBotRanks(JSONObject json) {
+		JSONArray ranks = (JSONArray) json.get("rank");
+		return toStringArray(ranks);
+	}
+
+	private static String[] getBotScores(JSONObject json) {
+		JSONArray scores = (JSONArray) json.get("score");
+		return toStringArray(scores);
+	}
+
+	private static String[] toStringArray(JSONArray jsonArray) {
+		String[] strings = new String[jsonArray.size()];
+		for (int i = 0; i < strings.length; i++) {
+			strings[i] = String.valueOf(jsonArray.get(i));
+		}
+		return strings;
+	}
+	// private static String[] getBotAnts(JSONObject json) {
+	// JSONArray playerNames = (JSONArray) json.get("playernames");
+	// return (String[]) playerNames.toArray();
+	// }
+
 }
