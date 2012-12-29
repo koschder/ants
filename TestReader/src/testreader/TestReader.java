@@ -5,7 +5,13 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -14,14 +20,82 @@ import org.json.simple.JSONValue;
 public class TestReader {
 
 	public static void main(String[] args) throws Exception {
-		File logdir = new File("../Ants/logs/");
-		final File[] replayFiles = logdir.listFiles(new FilenameFilter() {
+		final File[] replayFiles = getReplayFiles();
+		writeReport(replayFiles);
+		writeSummary(replayFiles);
+	}
 
-			@Override
-			public boolean accept(File dir, String name) {
-				return name.endsWith("replay");
+	private static void writeSummary(File[] replayFiles) throws Exception {
+		Map<String, List<TestResult>> resultsPerBot = getResultsPerBot(replayFiles);
+		String myBotName = getMyBotName(resultsPerBot.keySet());
+		String otherBotName = getOtherBotName(resultsPerBot.keySet());
+		List<TestResult> myTestResults = resultsPerBot.get(myBotName);
+		List<TestResult> opponentResults = resultsPerBot.get(otherBotName);
+
+		TestSummary summary = new TestSummary();
+		for (int i = 0; i < myTestResults.size(); i++) {
+			summary.games++;
+			TestResult myRes = myTestResults.get(i);
+			TestResult oppRes = opponentResults.get(i);
+			if (myRes.status.equals("survived"))
+				summary.timesSurvived++;
+			if (myRes.rank.equals("0")) {
+				if (oppRes.rank.equals("0"))
+					summary.draws++;
+				summary.wins++;
+			} else
+				summary.losses++;
+			summary.totalPointsWon += Integer.valueOf(myRes.score);
+			summary.totalPointsLost += Integer.valueOf(oppRes.score);
+		}
+
+		System.out.println(summary);
+		final FileWriter fileWriter = new FileWriter(myBotName + " vs "
+				+ otherBotName + " Summary .csv");
+		fileWriter.write(summary.toString());
+		fileWriter.close();
+	}
+
+	private static String getMyBotName(Set<String> keySet) {
+		for (String string : keySet) {
+			if (string.startsWith("MyBot-"))
+				return string;
+		}
+		return null;
+	}
+
+	private static String getOtherBotName(Set<String> keySet) {
+		for (String string : keySet) {
+			if (!string.startsWith("MyBot-"))
+				return string;
+		}
+		return null;
+	}
+
+	private static Map<String, List<TestResult>> getResultsPerBot(
+			File[] replayFiles) throws Exception {
+		Map<String, List<TestResult>> resultsPerBot = new HashMap<String, List<TestResult>>();
+		for (int i = 0; i < replayFiles.length; i++) {
+			File replayFile = replayFiles[i];
+			JSONObject json = readJson(replayFile);
+			String[] players = getBotNames(json);
+			String[] ranks = getBotRanks(json);
+			String[] scores = getBotScores(json);
+			String[] status = getBotStatus(json);
+
+			for (int j = 0; j < players.length; j++) {
+				if (i == 0) {
+					resultsPerBot.put(players[j], new ArrayList<TestResult>());
+				}
+				resultsPerBot.get(players[j]).add(
+						new TestResult(ranks[j], scores[j], status[j]));
 			}
-		});
+		}
+		return resultsPerBot;
+	}
+
+	private static void writeReport(final File[] replayFiles)
+			throws FileNotFoundException, IOException {
 		StringBuffer report = new StringBuffer("Round,");
 		for (int i = 0; i < replayFiles.length; i++) {
 			File replayFile = replayFiles[i];
@@ -35,6 +109,18 @@ public class TestReader {
 		final FileWriter fileWriter = new FileWriter("Testreport.csv");
 		fileWriter.write(report.toString());
 		fileWriter.close();
+	}
+
+	private static File[] getReplayFiles() {
+		File logdir = new File("../Ants/logs/");
+		final File[] replayFiles = logdir.listFiles(new FilenameFilter() {
+
+			@Override
+			public boolean accept(File dir, String name) {
+				return name.endsWith("replay");
+			}
+		});
+		return replayFiles;
 	}
 
 	private static JSONObject readJson(File replayFile)
@@ -100,4 +186,39 @@ public class TestReader {
 		return strings;
 	}
 
+	static class TestResult {
+		String rank;
+		String score;
+		String status;
+
+		TestResult(String rank, String score, String status) {
+			super();
+			this.rank = rank;
+			this.score = score;
+			this.status = status;
+		}
+	}
+
+	static class TestSummary {
+		int wins = 0;
+		int losses = 0;
+		int draws = 0;
+		int totalPointsWon = 0;
+		int totalPointsLost = 0;
+		int timesSurvived = 0;
+		int games = 0;
+
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder(
+					"Wins,Losses,Draws,Total Points won, Total Points lost, Times survived, Games\n");
+			sb.append(wins).append(",").append(losses).append(",")
+					.append(draws).append(",").append(totalPointsWon)
+					.append(",").append(totalPointsLost).append(",")
+					.append(timesSurvived).append(",").append(games)
+					.append("\n");
+			return sb.toString();
+		}
+
+	}
 }
