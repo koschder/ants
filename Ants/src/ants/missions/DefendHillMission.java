@@ -1,13 +1,12 @@
 package ants.missions;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import logging.Logger;
 import logging.LoggerFactory;
+import search.BreadthFirstSearch;
 import search.BreadthFirstSearch.GoalTest;
 import tactics.combat.CombatPositioning;
 import tactics.combat.DefendingCombatPositioning;
@@ -25,18 +24,18 @@ public class DefendHillMission extends BaseMission {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.DEFEND_HILL);
 
     private Tile hill = null;
-    private Set<Tile> hillReachable = new HashSet<Tile>();
-    private int controlArea = Math.max((int) Math.sqrt(Ants.getWorld().getViewRadius2() + 4), Ants.getProfile()
+    private List<Tile> tilesAroundHill = new ArrayList<Tile>();
+    private int controlAreaRadius2 = Math.max((int) Math.sqrt(Ants.getWorld().getViewRadius2() + 4), Ants.getProfile()
             .getDefendHills_MinControlRadius());
     private int guardHillTurn = Ants.getProfile().getDefendHills_StartTurn();
     private int antsMoreThanEnemy = 1;
     private boolean needsMoreAnts;
 
-    public DefendHillMission(Tile hill) {
-        this.hill = hill;
-
-        hillReachable = Ants.getWorld().getAreaFlooded(hill, controlArea);
-        LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill, "DefendArea: %s", hillReachable);
+    public DefendHillMission(Tile myhill) {
+        this.hill = myhill;
+        BreadthFirstSearch bfs = new BreadthFirstSearch(Ants.getWorld());
+        tilesAroundHill = bfs.floodFill(myhill, controlAreaRadius2);
+        LiveInfo.liveInfo(Ants.getAnts().getTurn(), myhill, "DefendArea: %s", tilesAroundHill);
     }
 
     @Override
@@ -82,7 +81,7 @@ public class DefendHillMission extends BaseMission {
     private void keepAntDoingStuff() {
 
         AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
-        Tile food = bfs.findSingleClosestTile(hill, hillReachable.size(), new GoalTest() {
+        Tile food = bfs.findSingleClosestTile(hill, tilesAroundHill.size(), new GoalTest() {
             @Override
             public boolean isGoal(Tile tile) {
                 return Ants.getWorld().getIlk(tile).isFood() && !Ants.getOrders().isFoodTargeted(tile);
@@ -90,7 +89,7 @@ public class DefendHillMission extends BaseMission {
         });
         Tile closestToFood = null;
         if (food != null) {
-            closestToFood = bfs.findSingleClosestTile(food, hillReachable.size(), new GoalTest() {
+            closestToFood = bfs.findSingleClosestTile(food, tilesAroundHill.size(), new GoalTest() {
                 @Override
                 public boolean isGoal(Tile tile) {
                     return getAnts().contains(new Ant(tile, 0));
@@ -106,8 +105,8 @@ public class DefendHillMission extends BaseMission {
             }
         }
         removeAnts(antsToRelease);
-        LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill, "DefendHillMission no attackers near by -+ " + controlArea
-                + " tiles");
+        LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill, "DefendHillMission no attackers near by -+ "
+                + controlAreaRadius2 + " tiles");
 
     }
 
@@ -141,7 +140,7 @@ public class DefendHillMission extends BaseMission {
     }
 
     private void gatherAnts(int amount, boolean hasAttackers) {
-        Map<Ant, List<Tile>> antsNearBy = gatherAnts(hill, amount, controlArea);
+        Map<Ant, List<Tile>> antsNearBy = gatherAnts(hill, amount, controlAreaRadius2);
         LOGGER.debug("gatherAnts: New ants %s for mission: %s (needed: %s)", antsNearBy.keySet(), this, amount);
         if (antsNearBy.keySet().size() < amount)
             needsMoreAnts = hasAttackers;
@@ -153,7 +152,7 @@ public class DefendHillMission extends BaseMission {
 
     private List<Tile> getEnemyAntsNearby() {
         List<Tile> tile = new ArrayList<Tile>();
-        for (Tile around : hillReachable) {
+        for (Tile around : tilesAroundHill) {
             if (Ants.getWorld().getIlk(around).hasEnemyAnt()) {
                 tile.add(around);
             }
