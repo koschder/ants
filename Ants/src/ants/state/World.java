@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.Set;
 
 import javax.management.RuntimeErrorException;
@@ -14,7 +13,6 @@ import javax.management.RuntimeErrorException;
 import logging.Logger;
 import logging.LoggerFactory;
 import pathfinder.PathFinder.Strategy;
-import pathfinder.entities.Node;
 import ants.LogCategory;
 import ants.entities.Ant;
 import ants.entities.Ilk;
@@ -384,35 +382,6 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
             }
             System.out.println();
         }
-    }
-
-    public Set<Tile> getAreaFlooded(Tile hill, int nearBy) {
-        Set<Tile> floodedTiles = new HashSet<Tile>();
-
-        PriorityQueue<Node> frontier = new PriorityQueue<Node>();
-        frontier.add(new Node(hill, null, 0, 0));
-        while (!frontier.isEmpty()) {
-
-            Node node = frontier.poll();
-            floodedTiles.add(node.getState().getTargetTile());
-
-            List<SearchTarget> tiles = getSuccessorsForPathfinding(node.getState().getTargetTile(), false);
-            int cost = node.getActualCost() + 1;
-            for (SearchTarget child : tiles) {
-
-                Node n = new Node(child.getTargetTile(), null, cost, cost);
-                if (frontier.contains(n) || floodedTiles.contains(child.getTargetTile())) {
-                    continue;
-                }
-                if (cost == nearBy) {
-                    floodedTiles.add(child.getTargetTile());
-                } else if (cost < nearBy) {
-                    frontier.add(n);
-                }
-            }
-        }
-
-        return floodedTiles;
     }
 
     public boolean isInAttackZone(Tile myTile, Tile enemyTile) {
