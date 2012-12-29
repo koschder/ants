@@ -66,6 +66,14 @@
 			<param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
 		</antcall>
 	</target>
+	
+	<target name="repeatMazeAgainstXathis" depends="jarMyBot" description="">
+			<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
+			<antcall target="mazeTestRepeat">
+				<param name="bot.name" value="MyBot" />
+				<param name="bot.opponent" value="java -jar tools/bots/xathis/xathis.jar" />
+			</antcall>
+		</target>
 
 	<!-- Maze tests against ourselves with different profiles -->
 
