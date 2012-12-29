@@ -50,7 +50,7 @@ public class TestReader {
 		for (String name : names) {
 			report.append("Rank(").append(name).append(")").append(",");
 			report.append("Score(").append(name).append(")").append(",");
-			report.append("Ants(").append(name).append(")").append(",");
+			report.append("Status(").append(name).append(")").append(",");
 		}
 		report.append("\n");
 	}
@@ -58,11 +58,11 @@ public class TestReader {
 	private static void writeLine(StringBuffer report, JSONObject json) {
 		String[] ranks = getBotRanks(json);
 		String[] scores = getBotScores(json);
-		// String[] ants = getBotAnts(json);
+		String[] status = getBotStatus(json);
 		for (int i = 0; i < ranks.length; i++) {
 			report.append(ranks[i]).append(",");
 			report.append(scores[i]).append(",");
-			report.append("?").append(",");
+			report.append(status[i]).append(",");
 		}
 		report.append("\n");
 	}
@@ -87,6 +87,11 @@ public class TestReader {
 		return toStringArray(scores);
 	}
 
+	private static String[] getBotStatus(JSONObject json) {
+		JSONArray status = (JSONArray) json.get("status");
+		return toStringArray(status);
+	}
+
 	private static String[] toStringArray(JSONArray jsonArray) {
 		String[] strings = new String[jsonArray.size()];
 		for (int i = 0; i < strings.length; i++) {
@@ -94,9 +99,5 @@ public class TestReader {
 		}
 		return strings;
 	}
-	// private static String[] getBotAnts(JSONObject json) {
-	// JSONArray playerNames = (JSONArray) json.get("playernames");
-	// return (String[]) playerNames.toArray();
-	// }
 
 }
