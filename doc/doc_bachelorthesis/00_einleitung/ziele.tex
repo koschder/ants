@@ -1,2 +1,88 @@
 \section{Ziele}
 \label{sec:einleitung.Ziele}
+
+Nachfolgend sind die Ziele aufgelistet welche wir uns vor der Arbeit gestellt und im Pflichtenheft niedergeschrieben haben. Die farbigen Pfeile zeigt den Erfüllungsgrad an. Ist ein Ziel nicht vollständig erreicht wird in \textit{kursiver} Schrift ein Grund angegeben.
+\newline
+\newline
+\includegraphics[height=3mm]{91_bilder/pfeil-gruen.png}  Vollständig Erfüllt
+\newline
+\includegraphics[height=3mm]{91_bilder/pfeil-orange.png} Teilweise Erfüllt
+\newline
+\includegraphics[height=3mm]{91_bilder/pfeil-red.png}  Nicht Erfüllt
+\newline
+\newline
+Der im Rahmen von Projekt 2 entwickelte Bot soll um Logik für taktische und strategische Entscheidungen und koordinierte Bewegung erweitert werden.
+
+\subsection{Funktionale Anforderungen}
+\label{sec:einleitung.Ziele.FunktionaleAnforderungen}
+\subsubsection{Musskriterien}
+\label{sec:einleitung.Ziele.FunktionaleAnforderungen.Musskriterien}
+
+\includegraphics[height=3mm]{91_bilder/pfeil-gruen.png}
+Der Bot unterscheidet zwischen diversen Aufgaben:
+	\begin{itemize}
+	\item Nahrungsbeschaffung
+	\item Angriff
+	\item Verteidigung
+	\item Erkundung
+	\end{itemize}
+
+\vspace{\vspacecm}
+
+Der Bot identifiziert zur Erfüllung dieser Aufgaben konkrete Ziele, wie z.B.:
+	\begin{itemize}
+	\item 
+	\includegraphics[height=3mm]{91_bilder/pfeil-gruen.png}
+	 Gegnerische Hügel angreifen, was bei Erfolg den Score erhöht und das eigentliche Ziel des Spiels ist.
+	\item
+	\includegraphics[height=3mm]{91_bilder/pfeil-gruen.png}
+	Isolierte gegnerische Ameisen angreifen.
+	\newline
+	\textit{Grund: Keine Zeit für blabal...}
+	\item 
+	\includegraphics[height=3mm]{91_bilder/pfeil-orange.png}
+	Schwachstellen in der gegnerischen Verteidigung ausnutzen.
+	\item
+	\includegraphics[height=3mm]{91_bilder/pfeil-red.png} 
+	Engpässe im Terrain sichern bzw. versperren.
+	\item Konfliktzonen, d.h. viele Ameisen auf einem engen Raum, erkennen und entsprechend reagieren.
+	\end{itemize}
+\vspace{\vspacecm}
+
+Die Auswahl von Taktik und Strategie basiert auf der Bewertung der Situation auf dem Spielfeld, z.B. anhand folgender Kriterien:
+	\begin{itemize}
+	\item Dominante/unterlegene Position
+	\item Sicherheit verschiedener Gebiete des Spielfelds (eigener/gegnerischer Einfluss)
+	\item Konfliktpotenzial in verschiedenen Gebieten des Spielfelds
+	\end{itemize}
+		
+Anhand der Situationsbeurteilung werden die unterschiedlichen Aufgaben entsprechend gewichtet. Stark gewichtete Aufgaben erhalten mehr Ressourcen (Ameisen) zur Durchführung.
+
+
+\vspace{\vspacecm}
+
+Die Situationsbeurteilung fliesst auch in die taktische Logik ein, wie folgende Beispiele illustrieren:
+	\begin{itemize}
+	\item Bei der Pfadsuche wird die Sicherheit der zu durchquerenden Gebiete berücksichtigt
+	\item In Kampfsituationen kann der Bot die Ameisen in Formationen gliedern, die geeignet sind, eine lokale Überzahl eigener gegenüber gegnerischen Ameisen zu erzeugen
+	\item Beim Aufeinandertreffen mit gegnerischen Ameisen wird entschieden, ob angegriffen, die Stellung gehalten oder geflüchtet wird.
+	\end{itemize}
+
+\subsubsection{Kannkriterien}
+\label{sec:einleitung.Ziele.FunktionaleAnforderungen.Kannkriterien}
+Das Verhalten des Bots ist konfigurierbar, so dass zum Beispiel ein “agressiver” Bot gegen einen defensiven Bot antreten kann.
+
+\subsection{Nicht funktionale Anforderungen}
+\label{sec:einleitung.Ziele.NichtFunktionaleAnforderungen}
+
+\subsubsection{Musskriterien}
+\label{sec:einleitung.Ziele.NichtFunktionaleAnforderungen.Musskriterien}
+Modularer Aufbau für eine gute Testbarkeit der Komponenten.
+
+Wichtige Funktionen wie die Pfadsuche und die Berechnung von Influence Maps sollen in separaten Modulen implementiert werden, damit sie auch von anderen Projekten verwendet werden könnten.
+
+Die Codedokumentation ist vollständig und dient der Verständlichkeit.
+
+\subsubsection{Kannkriterien}
+\label{sec:einleitung.Ziele.NichtFunktionaleAnforderungen.Kannkriterien}
+Für die wiederverwendbaren Module wird jeweils ein kleines Tutorial geschrieben, wie die Module verwendbar sind.

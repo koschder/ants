@@ -9,7 +9,7 @@
 	<!-- Maze Tests -->	
 	<target name="maze4Players" depends="jarMyBot" description="">
 	        <antcall target="mazeTest4p">
-	            <param name="bot.name" value="MyBot" />
+	            <param name="bot.name" value="MyBot-default" />
 	            <param name="bot.opponent" value="python tools/bots/egreavette/mybotV10/MyBotV10.pypy" />
 	            <param name="bot.opponent2" value="java -jar tools/bots/greentea/SixPoolRush.jar" />
 	            <param name="bot.opponent3" value="python tools/bots/wraithan/MyBot.pypy" />

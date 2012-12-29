@@ -1,12 +1,12 @@
 \section{Spielbeschrieb}
 \label{sec:einleitung.Spielbeschrieb}
 
-\section{Der Wettbewerb}
-\label{sec:spielbeschrieb_wettbewerb}
+\subsection{Der Wettbewerb}
+\label{sec:einleitung.Spielbeschrieb.wettbewerb}
 Die AI Challenge\footnote{\url{http://www.aichallenge.org}} ist ein internationaler Wettbwerb des University of Waterloo Computer Science Club der im Zeitraum Herbst 2011 bis Januar 2012 zum 3. Mal stattgefunden hat. Das Spiel ist ein zugbasiertes Multiplayerspiel in welchem sich Ameisenvölker gegenseitig bekämpfen. Ziel einer AI-Challenge ist es, einen Bot zu schreiben, der die gegebenen Aufgaben mit möglichst intelligenten Algorithmen löst. Die zu lösenden Aufgaben der Ants AI Challenge sind die Futtersuche, das Explorieren der Karten, das Angreifen von gegnerischen Völkern und deren Ameisenhaufen sowie dem Schützen des eigenen Ameisenhaufen.
 
-\section{Spielregeln}
-\label{sec:spielbeschrieb_spielregeln}
+\subsection{Spielregeln}
+\label{sec:einleitung.Spielbeschrieb.spielregeln}
 Nachfolgend sind die wichtigsten Regeln, die während dem Spiel berücksichtigt werden müssen, aufgelistet.
 \begin{itemize} 
 \item Pro Zug können alle Ameisen um ein Feld (vertikal oder horizontal) verschoben werden.
@@ -19,8 +19,8 @@ Nachfolgend sind die wichtigsten Regeln, die während dem Spiel berücksichtigt we
 \end{itemize}
 Die ausführlichen Regeln können auf der Webseite nachgelesen werden: \url{http://aichallenge.org/specification.php}
 
-\section{Schnittstelle}
-\label{sec:spielbeschrieb_schnittstelle}
+\subsection{Schnittstelle}
+\label{sec:einleitung.Spielbeschrieb.schnittstelle}
 Die Spielschnittstelle ist simpel gehalten. Nach jeder Spielrunde erhält der Bot das neue Spielfeld mittels String-InputStream, die Spielzüge gibt der Bot dem Spielcontroller mittels String-OutputStream bekannt. Unser MyBot leitet von der Basis-Klasse Bot\footnote{Die Klasse ist im Code unter ants.bot.Bot.Java auffindbar } ab. Ein Spielzug wird im folgendem Format in den Output-Stream gelegt:
 \newline
 \newline

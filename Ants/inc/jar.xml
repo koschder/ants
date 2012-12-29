@@ -20,7 +20,7 @@
 	<!-- build separate jars for each profile because running a game with several copies of the same jar produces timeouts -->
 	<target name="jarMyBot">
         <antcall target="jar">
-            <param name="bot.name" value="MyBot" />
+            <param name="bot.name" value="MyBot" />	
             <param name="profile" value="aggressive" />
         </antcall>
 		<antcall target="jar">

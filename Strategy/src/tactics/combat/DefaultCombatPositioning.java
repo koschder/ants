@@ -146,6 +146,10 @@ public class DefaultCombatPositioning implements CombatPositioning {
                     continue;
                 enemiesPerSide.put(aim, enemies);
             }
+
+            if (enemiesPerSide.size() == 0)
+                throw new IllegalArgumentException("enmies not splited to side " + enemyUnits);
+
             Map<Aim, List<Tile>> defendersPerSide = getDefendersPerSide(enemiesPerSide);
             // position ants between enemy and hill
             for (Entry<Aim, List<Tile>> entry : enemiesPerSide.entrySet()) {
@@ -188,6 +192,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
         }
         TreeMap<Aim, List<Tile>> sortedEnemies = new TreeMap<Aim, List<Tile>>(new ListSizeComparator(enemiesPerSide));
         sortedEnemies.putAll(enemiesPerSide);
+
         Aim mostAttackers = sortedEnemies.firstKey();
         for (Tile tile : myUnits) {
             if (assignedDefenders.contains(tile))
