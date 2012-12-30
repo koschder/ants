@@ -34,13 +34,13 @@ public class CombatPositioningTest {
         InfluenceTestMap map = new InfluenceTestMap(37, sMap);
 
         final InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
-        List<Unit> enemyAnts = map.getUnits(1);
-        List<Unit> myAnts = map.getUnits(0);
+        List<Unit> enemyUnits = map.getUnits(1);
+        List<Unit> myUnits = map.getUnits(0);
 
-        final Unit myAnt = myAnts.get(0);
+        final Unit myUnit = myUnits.get(0);
 
-        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myAnts, enemyAnts, null);
-        assertEquals(new Tile(5, 4), pos.getNextTile(myAnt));
+        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myUnits, enemyUnits, null);
+        assertEquals(new Tile(5, 4), pos.getNextTile(myUnit));
     }
 
     @Test
@@ -60,13 +60,13 @@ public class CombatPositioningTest {
         InfluenceTestMap map = new InfluenceTestMap(37, sMap);
 
         final InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
-        List<Unit> enemyAnts = map.getUnits(1);
-        List<Unit> myAnts = map.getUnits(0);
+        List<Unit> enemyUnits = map.getUnits(1);
+        List<Unit> myUnits = map.getUnits(0);
 
-        final Unit myAnt = myAnts.get(0);
+        final Unit myUnit = myUnits.get(0);
 
-        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myAnts, enemyAnts, null);
-        assertEquals(new Tile(4, 5), pos.getNextTile(myAnt));
+        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myUnits, enemyUnits, null);
+        assertEquals(new Tile(4, 5), pos.getNextTile(myUnit));
     }
 
     @Test
@@ -86,15 +86,15 @@ public class CombatPositioningTest {
         InfluenceTestMap map = new InfluenceTestMap(37, sMap);
 
         final InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
-        List<Unit> enemyAnts = map.getUnits(1);
-        List<Unit> myAnts = map.getUnits(0);
+        List<Unit> enemyUnits = map.getUnits(1);
+        List<Unit> myUnits = map.getUnits(0);
 
-        final Unit ant1 = new TestUnit(0, new Tile(2, 2));
-        final Unit ant2 = new TestUnit(0, new Tile(2, 6));
+        final Unit unit1 = new TestUnit(0, new Tile(2, 2));
+        final Unit unit2 = new TestUnit(0, new Tile(2, 6));
 
-        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myAnts, enemyAnts, null);
-        assertEquals(new Tile(2, 3), pos.getNextTile(ant1));
-        assertEquals(new Tile(2, 5), pos.getNextTile(ant2));
+        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myUnits, enemyUnits, null);
+        assertEquals(new Tile(2, 3), pos.getNextTile(unit1));
+        assertEquals(new Tile(2, 5), pos.getNextTile(unit2));
     }
 
     @Test
@@ -114,15 +114,15 @@ public class CombatPositioningTest {
         InfluenceTestMap map = new InfluenceTestMap(37, sMap);
 
         final InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
-        List<Unit> enemyAnts = map.getUnits(1);
-        List<Unit> myAnts = map.getUnits(0);
+        List<Unit> enemyUnits = map.getUnits(1);
+        List<Unit> myUnits = map.getUnits(0);
 
-        final Unit ant1 = new TestUnit(0, new Tile(2, 3));
-        final Unit ant2 = new TestUnit(0, new Tile(2, 5));
+        final Unit unit1 = new TestUnit(0, new Tile(2, 3));
+        final Unit unit2 = new TestUnit(0, new Tile(2, 5));
 
-        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myAnts, enemyAnts, null);
-        assertEquals(new Tile(3, 3), pos.getNextTile(ant1));
-        assertEquals(new Tile(3, 5), pos.getNextTile(ant2));
+        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myUnits, enemyUnits, null);
+        assertEquals(new Tile(3, 3), pos.getNextTile(unit1));
+        assertEquals(new Tile(3, 5), pos.getNextTile(unit2));
     }
 
     @Test
@@ -142,15 +142,15 @@ public class CombatPositioningTest {
         InfluenceTestMap map = new InfluenceTestMap(37, sMap);
 
         final InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
-        List<Unit> enemyAnts = map.getUnits(1);
-        List<Unit> myAnts = map.getUnits(0);
+        List<Unit> enemyUnits = map.getUnits(1);
+        List<Unit> myUnits = map.getUnits(0);
 
-        final Unit ant1 = new TestUnit(0, new Tile(2, 3));
-        final Unit ant2 = new TestUnit(0, new Tile(2, 10));
+        final Unit unit1 = new TestUnit(0, new Tile(2, 3));
+        final Unit unit2 = new TestUnit(0, new Tile(2, 10));
 
-        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myAnts, enemyAnts, null);
-        assertEquals(new Tile(2, 4), pos.getNextTile(ant1));
-        assertEquals(new Tile(2, 9), pos.getNextTile(ant2));
+        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myUnits, enemyUnits, null);
+        assertEquals(new Tile(2, 4), pos.getNextTile(unit1));
+        assertEquals(new Tile(2, 9), pos.getNextTile(unit2));
     }
 
     @Test
@@ -170,16 +170,16 @@ public class CombatPositioningTest {
         InfluenceTestMap map = new InfluenceTestMap(37, sMap);
 
         final InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
-        List<Unit> enemyAnts = map.getUnits(1);
-        List<Unit> myAnts = map.getUnits(0);
+        List<Unit> enemyUnits = map.getUnits(1);
+        List<Unit> myUnits = map.getUnits(0);
 
-        final Unit ant1 = new TestUnit(0, new Tile(2, 10));
-        final Unit ant2 = new TestUnit(0, new Tile(3, 10));
-        final Unit ant3 = new TestUnit(0, new Tile(4, 10));
+        final Unit unit1 = new TestUnit(0, new Tile(2, 10));
+        final Unit unit2 = new TestUnit(0, new Tile(3, 10));
+        final Unit unit3 = new TestUnit(0, new Tile(4, 10));
 
-        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myAnts, enemyAnts, null);
-        assertEquals(new Tile(2, 9), pos.getNextTile(ant1));
-        assertEquals(new Tile(2, 10), pos.getNextTile(ant2));
-        assertEquals(new Tile(4, 9), pos.getNextTile(ant3));
+        CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myUnits, enemyUnits, null);
+        assertEquals(new Tile(2, 9), pos.getNextTile(unit1));
+        assertEquals(new Tile(2, 10), pos.getNextTile(unit2));
+        assertEquals(new Tile(4, 9), pos.getNextTile(unit3));
     }
 }

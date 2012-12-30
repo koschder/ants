@@ -137,7 +137,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
         } else {
             // check for water
             List<Aim> sidesToProtect = getSidesToProtect(target);
-            // group enemies to determine which side of the hill needs how much protection
+            // group enemies to determine which side of the target needs how much protection
             // TODO implement k-means?
             Map<Aim, List<Tile>> enemiesPerSide = new HashMap<Aim, List<Tile>>();
             for (Aim aim : sidesToProtect) {
@@ -151,7 +151,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
                 throw new IllegalArgumentException("enmies not splited to side " + enemyUnits);
 
             Map<Aim, List<Tile>> defendersPerSide = getDefendersPerSide(enemiesPerSide);
-            // position ants between enemy and hill
+            // position units between enemy and target
             for (Entry<Aim, List<Tile>> entry : enemiesPerSide.entrySet()) {
                 Tile enemyClusterCenter = map.getClusterCenter(entry.getValue());
                 Tile clusterCenter = calculateDefenseClusterCenter(enemyClusterCenter);
@@ -225,10 +225,10 @@ public class DefaultCombatPositioning implements CombatPositioning {
         }
     }
 
-    private List<Aim> getSidesToProtect(Tile hill) {
+    private List<Aim> getSidesToProtect(Tile target) {
         Map<Aim, Integer> distanceToWater = new HashMap<Aim, Integer>();
         for (Aim aim : Aim.values()) {
-            distanceToWater.put(aim, map.getManhattanDistanceToNextImpassableTile(hill, aim));
+            distanceToWater.put(aim, map.getManhattanDistanceToNextImpassableTile(target, aim));
         }
         List<Aim> sidesToProtect = new ArrayList<Aim>();
         for (Entry<Aim, Integer> entry : distanceToWater.entrySet()) {
@@ -241,7 +241,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
 
     private Tile calculateDefenseClusterCenter(Tile enemyClusterCenter) {
         // TODO the cluster center should move toward the enemy if there are many defenders, so we don't block paths
-        // away from the hill
+        // away from the target
         Aim direction = map.getPrincipalDirection(target, enemyClusterCenter);
         return map.getTile(target, direction);
     }
@@ -280,10 +280,10 @@ public class DefaultCombatPositioning implements CombatPositioning {
         log += ", pf: " + percentFormated + " (lim: " + limit + ")";
         if (percentFormated > limit) {
             // move forward
-            log += "=> forward ants";
+            log += "=> forward units";
             formationTiles = getFormationTiles(clusterCenter, enemyClusterCenter, myUnits.size(), true);
         } else {
-            log += "=> format ants";
+            log += "=> format units";
         }
         log += ", formationTiles: " + formationTiles;
         // perform positioning
@@ -365,7 +365,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
         });
     }
 
-    private List<Tile> getFormationTiles(Tile clusterCenter, final Tile enemyClusterCenter, int ants,
+    private List<Tile> getFormationTiles(Tile clusterCenter, final Tile enemyClusterCenter, int units,
             boolean moveForward) {
         BreadthFirstSearch bfs = new BreadthFirstSearch(map);
         int squaredDistance = map.getSquaredDistance(clusterCenter, enemyClusterCenter);
@@ -380,7 +380,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
         final int minDist = dist - distance * 2;
         final int maxDist = dist;
         final int maxSpread = (int) Math.pow(distance * 2 - 1.5, 2);
-        formationTiles = bfs.findClosestTiles(clusterCenter, ants, Integer.MAX_VALUE, maxSpread, new GoalTest() {
+        formationTiles = bfs.findClosestTiles(clusterCenter, units, Integer.MAX_VALUE, maxSpread, new GoalTest() {
 
             @Override
             public boolean isGoal(Tile tile) {

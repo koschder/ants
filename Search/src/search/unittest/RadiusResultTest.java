@@ -68,7 +68,7 @@ public class RadiusResultTest {
         getFormationTiles(clusterCenter, enemyClusterCenter, 4);
     }
 
-    private void getFormationTiles(Tile clusterCenter, final Tile enemyClusterCenter, int ants) {
+    private void getFormationTiles(Tile clusterCenter, final Tile enemyClusterCenter, int units) {
         final UnitTestMap map = createMap();
         BreadthFirstSearch bfs = new BreadthFirstSearch(map);
         int squaredDistance = map.getSquaredDistance(clusterCenter, enemyClusterCenter);
@@ -77,7 +77,7 @@ public class RadiusResultTest {
             distance--;
         }
 
-        ants = ants % 2 == 0 ? ants + 1 : ants; // proof symmetric formation tiles
+        units = units % 2 == 0 ? units + 1 : units; // proof symmetric formation tiles
 
         List<Tile> formationTiles = new ArrayList<Tile>();
         List<Tile> tempTiles;
@@ -87,8 +87,8 @@ public class RadiusResultTest {
             final int minDist = dist - distance * 2;
             final int maxDist = dist;
             final int maxSpread = (int) Math.pow(distance * 2 - 1.5, 2);
-            tempTiles = bfs.findClosestTiles(clusterCenter, ants - formationTiles.size(), Integer.MAX_VALUE, maxSpread,
-                    new GoalTest() {
+            tempTiles = bfs.findClosestTiles(clusterCenter, units - formationTiles.size(), Integer.MAX_VALUE,
+                    maxSpread, new GoalTest() {
 
                         @Override
                         public boolean isGoal(Tile tile) {
@@ -97,14 +97,14 @@ public class RadiusResultTest {
                         }
                     });
             formationTiles.addAll(tempTiles);
-        } while (tempTiles.size() > 0 && formationTiles.size() < ants);
+        } while (tempTiles.size() > 0 && formationTiles.size() < units);
 
         MapOutput put = new MapOutput();
         put.setMap(map);
         put.addObject(formationTiles, "Radius");
         put.addObject(Arrays.asList(new Tile[] { clusterCenter }), "AttackCenter");
         put.addObject(Arrays.asList(new Tile[] { enemyClusterCenter }), "EnemyCenter");
-        put.addComment(formationTiles.size() + " Tiles found for " + ants + " Ants");
+        put.addComment(formationTiles.size() + " Tiles found for " + units + " Units");
         put.saveHtmlMap("RadiusResultTest_testFindSingleClosestTile_" + squaredDistance);
 
     }

@@ -147,8 +147,8 @@ public class DefaultInfluenceMap implements InfluenceMap {
     public void printDebugMap(int turn, UnitMap world, List<Tile> myUnits, List<Tile> enemyUnits) {
         MapOutput output = new MapOutput();
         output.setMap(world);
-        output.addObject(myUnits, "myAnts");
-        output.addObject(enemyUnits, "enemyAnts");
+        output.addObject(myUnits, "myUnits");
+        output.addObject(enemyUnits, "enemyUnits");
 
         output.saveHtmlMap("influence/" + turn, new PixelDecorator() {
             @Override
