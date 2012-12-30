@@ -39,7 +39,7 @@ public class Profile {
          */
         DEFEND_HILLS_START_TURN("defendHills.startTurn"),
         /**
-         * Minimum control radius for hill defense (measured in tiles).
+         * Minimum control radius for hill defense (radius squared).
          */
         DEFEND_HILLS_MIN_CONTROL_RADIUS("defendHills.minControlRadius"),
         /**
