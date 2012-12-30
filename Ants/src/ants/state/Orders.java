@@ -106,9 +106,7 @@ public class Orders {
 
         if (Ants.getWorld().getIlk(nextLocation).isUnoccupied())
             return true;
-        // TODO why is here getEmployedAnts() not filled??
         // the field is occupied at the moment, but the ant is moving away with the next move.
-        // if (Ants.getPopulation().getEmployedAnts().contains(nextLocation)) {
         sLog += "check if ant will go away neighbrs are: ";
         List<SearchTarget> neighbours = Ants.getWorld().getSuccessorsForPathfinding(nextLocation, false);
         sLog += neighbours;
@@ -125,10 +123,6 @@ public class Orders {
                 }
             }
         }
-        // } else {
-        // sLog += "no employeed ant on field " + nextLocation + " till now ["
-        // + Ants.getPopulation().getEmployedAnts().size() + "] ";
-        // }
         LOGGER_TASKS.debug(sLog);
         return false;
     }
@@ -159,11 +153,9 @@ public class Orders {
     public void executeMissions(List<Mission> missions) {
         for (Iterator<Mission> it = missions.iterator(); it.hasNext();) {
             Mission mission = it.next();
-            // LOGGER.debug("mission: %s", mission);
             if (mission.isComplete()) {
                 removeAnts(mission);
                 getMissions().remove(mission);
-                // it.remove();
                 LOGGER_MISSIONS.debug("Mission removed, its complete: %s (Ants: %s)", mission.getClass()
                         .getSimpleName(), mission.getAnts());
                 continue;
@@ -183,7 +175,6 @@ public class Orders {
                         .getClass().getSimpleName(), mission.getAnts(), valid);
                 removeAnts(mission);
                 getMissions().remove(mission);
-                // it.remove();
             }
         }
     }

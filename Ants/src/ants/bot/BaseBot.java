@@ -173,7 +173,6 @@ public abstract class BaseBot extends Bot {
 
         // every 10 steps we write the statistic to the log
         if (Ants.getAnts().getTurn() % 10 == 0) {
-            // Ants.getWorld().printIlk();
             LOGGER_STATISTICS.info("Statistics: Influence history: %s", statAntsInfluenceHistory);
             LOGGER_STATISTICS.info("Statistics: Ants amount history: %s", statAntsAmountHistory);
         }

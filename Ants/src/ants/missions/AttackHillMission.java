@@ -188,10 +188,6 @@ public class AttackHillMission extends BaseMission {
             Ants.getOrders().issueOrder(new Ant(enemyHill, 0), null, "AttackHillMission");
             return;
         }
-        // else if (enemies.size() >= friends.size()) {
-        // // missionState = State.DestroyHill;
-        // return;
-        // }/
         missionState = State.AttackEnemyHill;
     }
 

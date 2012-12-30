@@ -86,9 +86,7 @@ public class ConcentrateMission extends BaseMission {
         diffx = 0;
         diffy = 0;
         for (Ant a : ants) {
-            // diffx += Math.abs(a.getTile().getCol() - troopPoint.getCol());
             diffx += a.getTile().getCol();
-            // diffy += Math.abs(a.getTile().getRow() - troopPoint.getRow());
             diffy += a.getTile().getRow();
         }
 

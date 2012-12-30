@@ -37,7 +37,6 @@ public class FindHPAStarTest {
         ClusteringPathFinder pf = new ClusteringPathFinder(map, clusterSize, type);
         pf.update();
 
-        // pf.getClustering().printEdges();
         Tile start = new Tile(10, 10);
         Tile end = new Tile(15, 20);
         List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, start, end, -1);
@@ -49,7 +48,6 @@ public class FindHPAStarTest {
         MapOutput put = new MapOutput();
         put.setMap(pf.getMap());
         put.addObject(path, "HpaStar Path");
-        // put.addComment("Path " + path.toString());
         put.addComment("Start: " + start + " end: " + end);
         put.setClusterSize(clusterSize);
         put.addObject(pf.getClustering().getAllVertices(), "Cluster Points");
@@ -63,7 +61,6 @@ public class FindHPAStarTest {
     @Test
     public void someWaterTest() {
         someWaterTestbyType(ClusterType.Corner);
-        // someWaterTestbyType(ClusterType.Centered);
     }
 
     public void someWaterTestbyType(ClusterType type) {

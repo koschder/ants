@@ -163,7 +163,6 @@ public class SimplePathFinder implements PathFinder {
                 newSubPath = search(Strategy.AStar, subPath.get(0), subPath.get(subPath.size() - 1), subPath.size() - 1);
             }
             if (newSubPath != null) {
-                // Collections.reverse(newSubPath); // todo why is here the path the other way round.
                 newPath.addAll(newSubPath);
                 if (recursive) {
                     newPath = smoothPath(newPath, newPath.size(), true);

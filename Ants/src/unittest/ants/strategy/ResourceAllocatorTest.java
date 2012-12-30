@@ -17,7 +17,6 @@ import ants.state.World;
 import ants.strategy.BaseResourceAllocator;
 import ants.strategy.ResourceAllocator;
 import ants.tasks.AttackHillsTask;
-import ants.tasks.CombatTask;
 import ants.tasks.ExploreTask;
 import ants.tasks.GatherFoodTask;
 import ants.tasks.Task;
@@ -36,7 +35,6 @@ public class ResourceAllocatorTest {
     public void setUp() {
         tasks.put(Type.GATHER_FOOD, new GatherFoodTask());
         tasks.put(Type.ATTACK_HILLS, new AttackHillsTask());
-        tasks.put(Type.COMBAT, new CombatTask());
         tasks.put(Type.EXPLORE, new ExploreTask());
     }
 

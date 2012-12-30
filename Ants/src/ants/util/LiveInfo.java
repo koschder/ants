@@ -65,7 +65,6 @@ public class LiveInfo {
             liveInfo.write("}".getBytes());
 
         } catch (Exception e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
 
@@ -80,7 +79,6 @@ public class LiveInfo {
         try {
             liveInfo.close();
         } catch (IOException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }

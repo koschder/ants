@@ -59,7 +59,6 @@ public class MapOutput {
             if (fileName.contains("/")) {
                 File dir = new File(logdir, fileName.split("/")[0]);
                 dir.mkdirs();
-                // fileName = fileName.split("/")[1];
             }
             File file = new File(logdir, fileName + ".html");
             output = new BufferedWriter(new FileWriter(file));

@@ -25,7 +25,6 @@ import api.entities.Tile;
  */
 public class GatherFoodMission extends BaseMission {
 
-    // Tile food;
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.FOOD);
 
     public GatherFoodMission() {
@@ -66,10 +65,6 @@ public class GatherFoodMission extends BaseMission {
             Ants.getOrders().getAntsOnFood().put(a.getPathEnd(), a);
 
         }
-        // LOGGER.debug("size of entrySet is: %s", Ants.getOrders().getAntsOnFood().size());
-        // for (Entry<Tile, Ant> entry : Ants.getOrders().getAntsOnFood().entrySet()) {
-        // LOGGER.debug("-Ant: %s food: %s", entry.getValue(), entry.getKey());
-        // }
 
         checkAntsRoutes();
         gatherAnts();
