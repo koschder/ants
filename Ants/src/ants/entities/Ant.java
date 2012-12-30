@@ -9,11 +9,10 @@ import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
 
-public class Ant implements Comparable<Ant>, Unit, Cloneable {
+public class Ant implements Comparable<Ant>, Unit {
     public static final int MINE = 0;
     private Tile tile;
     private Tile nextTile;
-    // private Mission mission;
     private int player;
     private List<Tile> path;
     private int turnsWaited;
@@ -97,15 +96,7 @@ public class Ant implements Comparable<Ant>, Unit, Cloneable {
 
     @Override
     public String toString() {
-        // String paths = path != null ? " , path= " + path : "";
-        // return tile.toString() + paths;
         return tile.toString() + ", Player=" + player;
-    }
-
-    @Override
-    protected Object clone() throws CloneNotSupportedException {
-        // TODO Auto-generated method stub
-        return super.clone();
     }
 
     public List<Tile> getPath() {
