@@ -67,6 +67,14 @@
 		</antcall>
 	</target>
 
+	<target name="repeatMazeAgainstXathis" depends="jarMyBot" description="">
+		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile" />
+		<antcall target="mazeTestRepeat">
+			<param name="bot.name" value="MyBot" />
+			<param name="bot.opponent" value="java -jar tools/bots/xathis/xathis.jar" />
+		</antcall>
+	</target>
+
 	<!-- Maze tests against ourselves with different profiles -->
 
 	<target name="mazeProfiles4Players" depends="jarMyBot" description="">
@@ -91,7 +99,22 @@
 			<param name="profile2" value="default" />
 		</antcall>
 	</target>
-
+	<target name="repeatMazeProfiles" depends="jarMyBot" description="">
+		<input message="What profile should we use?" validargs="default,aggressive,expansive,defensive" defaultvalue="default" addproperty="profile2" />
+		<antcall target="mazeTestRepeatProfiles">
+			<param name="bot.name" value="MyBot" />
+			<param name="profile1" value="default" />
+		</antcall>
+	</target>
+	<target name="repeatMazeAllProfiles" depends="jarMyBot" description="">
+		<antcall target="mazeTestRepeat4Profiles">
+			<param name="bot.name" value="MyBot" />
+			<param name="profile1" value="default" />
+            <param name="profile2" value="aggressive" />
+            <param name="profile3" value="expansive" />
+            <param name="profile4" value="defensive" />
+		</antcall>
+	</target>
 	<!-- Debug Tests -->
 
 	<target name="debugConcentrateBot" depends="jarConcentrateBot" description="">
