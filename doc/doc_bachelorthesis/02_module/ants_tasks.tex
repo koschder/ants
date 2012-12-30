@@ -9,38 +9,34 @@
 \end{figure}
 Zu Beginn des Projekts haben wir die wichtigsten Aufgaben einer Ameise identifiziert. Diese Aufgaben wurden als Tasks in eigenen Klassen implementiert. Das Interface Task\footnote{Das Interface ist im Code unter ants.tasks.Bot.Java auffindbar.} definiert eine setup()-Methode welche den Task initiiert, sowie eine perform()-Methode welche den Task ausführt. Im Programm werden die Tasks nach deren Wichtigkeit ausgeführt, was auch der nachfolgenden Reihenfolge entspricht. Jedem Task stehen nur die unbeschäftigten Ameisen zur Verfügung, d.h. jene welchen noch keine Aufgabe zugeteilt wurde.
 
-\subsubsection{MissionTask}
+\subsection{MissionTask}
 \label{subsec:implementation.Tasks.MissionTask}
 Dieser Task prüft alle aktuellen Missionen auf deren Gültigkeit, beispielsweise ob die Ameise der Mission den letzten Zug überlebt hat und die Mission weiterführen kann. Falls gültig, wird der nächste Schritt der Mission ausgeführt.
 
-\subsubsection{GatherFoodTask}
+\subsection{GatherFoodTask}
 \label{subsec:implementation.Tasks.GatherFoodTask}
 Für jedes Food-Tile werden in einem definierbaren Radius r die nächsten Ameisen bestimmt. Danach wird nach aufsteigender Luftliniendistanz mit dem Pfadsuchalgorithmus SIMPLE (s. Abschnitt \ref{subsec:implementation.Pfadsuche.Simple}) oder -- falls dieser keinen Pfad gefunden hat -- mit A* eine passierbare Route gesucht. Wenn ein Pfad existiert, kann mit der Ameise und dem Food-Tile eine GatherFoodMission erstellt werden, welche die Ameise zum Food-Tile führt. Zu jedem Food-Tile wird immer nur eine Ameise geschickt.
 
-\subsubsection{AttackHillsTask}
+\subsection{AttackHillsTask}
 \label{subsec:implementation.Tasks.AttackHillsTask}
 Sobald gegnerische Ameisenhaufen sichtbar sind, sollen diese angegriffen werden. Das Zerstören eines gegnerischen Haufens ist wie erwähnt 2 Punkte wert. Die Kriterien, nach denen eine Pfad zum gegnerischen Haufen gesucht wird, sind die selben wie beim GatherFoodTask, ausser dass mehrere Ameisen das Ziel angreifen können. Es wird eine AttackHillMission erstellt.
 
-\subsubsection{CombatTask}
+\subsection{CombatTask}
 \label{subsec:implementation.Tasks.CombatTask}
 Beim Angriffstask wird berechnet ob wir in einem Kampfgebiet (definiert über den Sichtradius einer Ameise) die Überhand, d.h. mehr Ameisen platziert haben. Falls ja, wird die gegnerische Ameise angegriffen.
 
-\subsubsection{DefendAreaTask}
-\label{subsec:implementation.Tasks.DefendAreaTask}
-Dieser Task wäre vogesehen um eine Region wie zum Beispiel den eigenen Ameisenhügel zu schützen. Dieser Task wurde im Zuge dieser Arbeit nicht implementiert.
-
-\subsubsection{ExploreTask}
+\subsection{ExploreTask}
 \label{subsec:implementation.Tasks.ExploreTask}
 Für alle noch unbeschäftigten Ameisen wird mittels ManhattanDistance der nächste Ort gesucht, der noch nicht sichtbar, also unerforscht ist. Falls ein Pfad mittels Pfadsuchalgorithmus gefunden wird, wird eine ExploreMission (s. Abschnitt \ref{sec:implementation.Missionen}) erstellt. Die Ameise wird den gefundenen Pfad in den nächsten Spielzügen ablaufen.
 
-\subsubsection{FollowTask}
+\subsection{FollowTask}
 \label{subsec:implementation.Tasks.FollowTask}
 Der FollowTask ist für Ameisen angedacht welche aktuell keine Aufgabe haben. Diese Ameisen sollen einer nahe gelegenen, beschäftigten Ameise folgen, damit diese nicht alleine unterwegs ist.
 
-\subsubsection{ClearHillTask}
+\subsection{ClearHillTask}
 \label{subsec:implementation.Tasks.ClearHillTask}
 Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel ''schlüpfen``, vom Hügel weg. So werden nachfolgende Ameisen nicht durch diese blockiert.
 
-\subsubsection{ClusteringTask}
+\subsection{ClusteringTask}
 \label{subsec:implementation.Tasks.ClusteringTask}
 Der ClusteringTask wird als Vorbereitung für den HPA* Algorithmus verwendet. Hier wird für alle sichtbaren Kartenregionen ein Clustering vorgenommen. Das Clustering wird im Kapitel \ref{subsec:implementation.Pfadsuche.HPAstar} im Detail beschreiben.

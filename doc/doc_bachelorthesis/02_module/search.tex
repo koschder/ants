@@ -1,12 +1,12 @@
-\section{Suchalgorithmen}
+\chapter{Suchalgorithmen}
 \label{sec:module.Suchalgorithmen}
 
-\subsection{Pfadsuche}
+\section{Pfadsuche}
 \label{sec:module.Suchalgorithmen.Pfadsuche}
 Wir haben drei mögliche Pfadalgorithmen in unserem Code eingebaut. Via PathFinder-Klasse kann für die Pfadsuche der Algorithmus ausgewählt werden.
 
 
-\subsubsection{Simple Algorithmus}
+\subsection{Simple Algorithmus}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.Simple}
 
 Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, dann die andere Achse abläuft. Sobald ein Hindernis in den Weg kommt, bricht der Algorithmus ab. In der Abbildung \ref{fig:SimplePath} sucht der Algorithmus zuerst den Vertikal-Horizontal Pfad. Da dieser Pfad wegen dem Wasserhindernis (blau) nicht ans Ziel führt, wird via Horizontal-Vertikal Pfad gesucht. Hier wird ein Pfad gefunden. Dieser Algorithmus ist, wie der Name bereits aussagt, sehr einfach aufgebaut und kostet wenig Rechenzeit. Dafür kann er keinen Hindernissen ausweichen.
@@ -19,7 +19,7 @@ Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, 
 \label{fig:SimplePath}
 \end{figure}
 
-\subsubsection{A* Algorithmus}
+\subsection{A* Algorithmus}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.Astar}
 Beim A* Algorithmus werden für jeden expandierten Knoten die geschätzten Kosten f(x) für die gesamte Pfadlänge berechnet. f(x) besteht aus einem Teil g(x) welches die effektiven Kosten vom Startknoten zum aktuellen Knoten berechnet. Der andere Teil h(x) ist ein heuristischer Wert, der die Pfadkosten bis zum Zielknoten approximiert. Dieser Wert muss die effektiven Kosten zum Ziel immer unterschätzen. Dies ist in unserem Spiel dadurch gegeben, dass sich die Ameisen nicht diagonal bewegen können, wir aber für den heuristischen Wert die Luftlinie zum Ziel verwenden. Die Pfadsuche wird immer bei dem Knoten fortgesetzt welcher die kleinsten Kosten f(x) hat.
 
@@ -34,12 +34,12 @@ Die Abbildung \ref{fig:heuristicAstar} zeigt den effektiven Pfad (grau) vom zu e
 
 Dieser A*-Algorithmus wird in unserem Code für eine Pfadsuche über alle Pixel (jedes Pixel ist ein Node) verwendet. Der gleiche Code wir aber auch für die Pfadsuche mit dem Pfadnetz des HPA* verwendet.
 
-\subsubsection{HPA* Algorthmus}
+\subsection{HPA* Algorthmus}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.HPAstar}
 
 Eine Pfadsuche A* über alle Pixel ist sehr teuer, da es viel Pfade gibt, die zum Teil nur ein Pixel nebeneinander liegen. Es werden bis zum Schluss verschiedenen Pfaden nachgegangen. Abhilfe zu dieser sehr feinmaschigen Pfadsuche bietet der Hierarchical Pathfinding A* bei welchem im sogenanten Clustering über mehrere Pixel verlaufende Kanten und Knoten berechnet werden.
 
-\subsubsubsection{Clustering}
+\subsubsection{Clustering}
 Das Clustering wird während dem ClusteringTask ausgeführt, Dabei wird die Landkarte in sogenannte Clusters unterteilt. Auf dem Bild \ref{fig.clusteredMap} wurde die Karte in 16 Clusters aufgeteilt. 
 
 \begin{figure}[bth]
@@ -76,7 +76,7 @@ In der Abbildung \ref{fig.clusteredMap4} wird ein Pfad vom Pixel (3,9) nach (13,
 \label{fig.clusteredMap4}
 \end{figure}
 
-\subsubsection{Breitensuche}
+\section{Breitensuche}
 \label{subsec:module.Suchalgorithmen.Breitensuche}
 
 Die Breitensuche (engl. breadth-first search (BFS)) war eine der Neuimplementierungen während der Bachelorarbeit. Man könnte die BFS auch für die Pfadsuche verwenden, dies wäre aber sehr ineffizient. Wir verwenden diese Suche vielmehr für die Umgebung einer Ameise oder eines Hügels zu analysieren. Sie wurde generisch implementierte, so dass sie vielseitig einsetzbar ist. So können zum Beispiel mittels 'GoalTest' je nach Anwendungsfall die Tiles beschrieben werden welche gesucht sind. Folgende Breitensuche findet die Ameise welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Sie wird initialisiert indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 entspricht. Falls keien Ameise gefunden wird gibt der Algorithmus NULL zurück.
