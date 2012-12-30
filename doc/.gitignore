@@ -1,0 +1,14 @@
+# First, ignore everything
+/doc_bachelorthesis
+/doc_projekt2
+/doc_Pflichtenheft
+# And all the file types you're interested in.
+!*.tex
+!*.bib
+!*.pdf
+!*.png
+!*.tif
+!*.jpg
+!*.vpp
+!*.xml
+
