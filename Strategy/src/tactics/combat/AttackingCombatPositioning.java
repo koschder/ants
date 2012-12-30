@@ -36,8 +36,6 @@ public class AttackingCombatPositioning extends DefaultCombatPositioning {
         if ((enemiesGuardingTarget.size() * 2) <= myUnits.size())
             return Mode.ATTACK;
 
-        // TODO if no enemies are near & we have at least 2 units, return Mode.CONTROL
-
         // fall back to default
         return super.determineMode();
     }

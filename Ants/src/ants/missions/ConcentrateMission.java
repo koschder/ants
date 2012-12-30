@@ -60,7 +60,6 @@ public class ConcentrateMission extends BaseMission {
             return false;
 
         for (Ant a : ants) {
-            // TODO define max manhattanDistance considering amount
             int maxDistance = (amount / 4) + 2; // vierer nachbarschaft.
             if (Ants.getWorld().manhattanDistance(a.getTile(), troopPoint) > maxDistance) {
                 LOGGER.info("Ant %s it to far away of TroopPoint %s. mission isn't compelete yet", a, troopPoint);
@@ -184,7 +183,6 @@ public class ConcentrateMission extends BaseMission {
         LOGGER.info("ConcentrateMission_gatherAnts TroopPoint %s", troopPoint);
 
         Map<Ant, List<Tile>> antsNearBy = gatherAnts(troopPoint, amount - ants.size(), attractionDistance);
-        // TODO what with the path?
         for (Entry<Ant, List<Tile>> entry : antsNearBy.entrySet()) {
             List<Tile> p = entry.getValue();
             if (p == null || p.size() <= 1)
@@ -227,7 +225,6 @@ public class ConcentrateMission extends BaseMission {
 
     @Override
     protected String getVisualizeInfos() {
-        // TODO Auto-generated method stub
         return super.getVisualizeInfos() + " TroopPoint " + troopPoint;
     }
 

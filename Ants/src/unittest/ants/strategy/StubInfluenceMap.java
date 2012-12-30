@@ -14,7 +14,6 @@ public class StubInfluenceMap implements InfluenceMap {
 
     @Override
     public int getSafety(Tile tile) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
@@ -30,7 +29,6 @@ public class StubInfluenceMap implements InfluenceMap {
 
     @Override
     public void update(SearchableUnitMap map) {
-        // TODO Auto-generated method stub
 
     }
 
@@ -44,13 +42,11 @@ public class StubInfluenceMap implements InfluenceMap {
 
     @Override
     public int getPathCosts(SearchTarget dest) {
-        // TODO Auto-generated method stub
         return 0;
     }
 
     @Override
     public int getInfluence(Integer player, Tile tile) {
-        // TODO Auto-generated method stub
         return 0;
     }
 

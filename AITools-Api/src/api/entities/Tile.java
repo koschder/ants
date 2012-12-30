@@ -73,7 +73,6 @@ public class Tile implements Comparable<Tile>, SearchTarget {
      */
     @Override
     public int hashCode() {
-        // TODO unschen
         return row * 2000 + col;
     }
 

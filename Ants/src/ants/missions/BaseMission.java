@@ -100,13 +100,13 @@ public abstract class BaseMission implements Mission {
      * @param ant
      *            to check
      * @param checkDefendHill
-     *            TODO
-     * @param food
-     *            is food nearby
-     * @param enemyAnts
-     *            is nearby
-     * @param enemyHill
-     *            is nearby
+     *            is a DefendHillMission in need of ants nearby?
+     * @param checkFood
+     *            is food nearby?
+     * @param checkEnemyAnts
+     *            are enemies nearby?
+     * @param checkEnemyHill
+     *            is an enemy hill nearby?
      * @return
      */
     protected String checkEnviroment(Ant ant, boolean checkFood, boolean checkEnemyAnts, boolean checkEnemyHill,
@@ -279,7 +279,7 @@ public abstract class BaseMission implements Mission {
     protected boolean putMissionOrder(Ant a, Tile to) {
         if (a.getTile().equals(to)) {
             return putMissionOrder(a);
-        } // TODO fix for flock mission, discuss with luke
+        }
         List<Aim> aims = Ants.getWorld().getDirections(a.getTile(), to);
         if (aims.size() != 1)
             throw new RuntimeException(String.format("Ant cannot move from %s to %s", a.getTile(), to));

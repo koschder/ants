@@ -124,12 +124,12 @@ public class DefaultInfluenceMap implements InfluenceMap {
 
     @Override
     public int getPathCosts(SearchTarget dest) {
-        int maxInfluence = 200; // cost spectrum -1000 to 1000 //TODO
+        int maxInfluence = 200; // cost spectrum -1000 to 1000
 
         int costs = 0;
         for (Tile t : dest.getPath()) {
-            // prohibit negativ values (if saftey is negativ) (maxCost + getSafety(t))
-            // reverse safety, negativ safty means the path cost must rise
+            // prohibit negative values (if safety is negative) (maxCost + getSafety(t))
+            // reverse safety, negative safety means the path cost must rise
             int safteyCost = (maxInfluence + getSafety(t) * -1) * maxPathCost / (maxInfluence * 2);
             costs += defaultPathCost + safteyCost;
         }

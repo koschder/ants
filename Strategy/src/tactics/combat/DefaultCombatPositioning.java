@@ -131,14 +131,13 @@ public class DefaultCombatPositioning implements CombatPositioning {
         if (enemyUnits.isEmpty()) {
             BreadthFirstSearch bfs = new BreadthFirstSearch(map);
             List<Tile> formationTiles = bfs.getDiagonalNeighbours(target);
-            // TODO choose a specific "center", e.g. one opposite water
             positionUnits(formationTiles.get(0), formationTiles);
             log += ", FormationTiles: " + formationTiles;
         } else {
             // check for water
             List<Aim> sidesToProtect = getSidesToProtect(target);
             // group enemies to determine which side of the target needs how much protection
-            // TODO implement k-means?
+            // TODO implement k-means for proper clustering
             Map<Aim, List<Tile>> enemiesPerSide = new HashMap<Aim, List<Tile>>();
             for (Aim aim : sidesToProtect) {
                 List<Tile> enemies = getUnitsInDirection(aim, enemyUnits, false);
