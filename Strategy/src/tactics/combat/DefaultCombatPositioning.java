@@ -146,9 +146,6 @@ public class DefaultCombatPositioning implements CombatPositioning {
                 enemiesPerSide.put(aim, enemies);
             }
 
-            if (enemiesPerSide.size() == 0) // enemy is on a side we do not protect
-                throw new IllegalArgumentException("enmies not splited to side " + enemyUnits);
-
             Map<Aim, List<Tile>> defendersPerSide = getDefendersPerSide(enemiesPerSide);
             // position units between enemy and target
             for (Entry<Aim, List<Tile>> entry : enemiesPerSide.entrySet()) {
