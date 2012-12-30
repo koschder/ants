@@ -3,7 +3,7 @@ package logging;
 /**
  * interface of logger, the methods: trace, debug, info, and error must be implemented to by using this interface.
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public interface Logger {

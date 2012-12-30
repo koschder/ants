@@ -24,7 +24,7 @@ import ants.tasks.Task.Type;
  * Bot implementation. This was originally based on the sample bot from the starter package, but the implementation is
  * completely different, although the hierarchy is still the same.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  */
 public class MyBot extends BaseBot {
 

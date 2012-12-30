@@ -16,7 +16,7 @@ import api.map.UnitMap;
 /**
  * this class is used in the unit test to visualize the test results
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class MapOutput {

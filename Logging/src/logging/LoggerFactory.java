@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * LoggerFactory uses the factory pattern providing a Logger for each category
  * 
- * @author kaeserst,kustl1
+ * @author kases1, kustl1
  * 
  */
 public class LoggerFactory {

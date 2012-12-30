@@ -9,7 +9,7 @@ import api.pathfinder.SearchTarget;
 /**
  * DirectedEdge extended of Edge and is used to define which is the start and the end tile of the Edge
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class DirectedEdge extends Edge implements SearchTarget {

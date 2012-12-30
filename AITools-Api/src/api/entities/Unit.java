@@ -3,7 +3,7 @@ package api.entities;
 /**
  * interface Unit, getTile() for the location unit, a getPlayer() to determine the owner
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public interface Unit {

@@ -11,7 +11,7 @@ import ants.LogCategory;
  * This class represents a profile for the bot. It contains all parameters that can be configured to tweak the bot's
  * behavior.
  * 
- * @author S. Käser, L. Kuster
+ * @author kases1, kustl1
  * 
  */
 public class Profile {

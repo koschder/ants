@@ -13,7 +13,7 @@ import api.pathfinder.SearchableMap;
 /**
  * this class implements the BFS (BreadthFirstSearch) search
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public class BreadthFirstSearch {
@@ -149,7 +149,7 @@ public class BreadthFirstSearch {
     /**
      * this is a dummy implementation for the GoalTest it returns true for every Tile
      * 
-     * @author kaeserst, kustl1
+     * @author kases1, kustl1
      * 
      */
     public static class AlwaysTrueGoalTest implements GoalTest {

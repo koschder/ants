@@ -10,7 +10,7 @@ import api.entities.Tile;
 /**
  * Logger class that writes application logs to a separate log file.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  * 
  */
 public class LiveInfo {

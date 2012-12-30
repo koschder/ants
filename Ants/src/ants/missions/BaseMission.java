@@ -23,7 +23,7 @@ import api.entities.Tile;
 /***
  * Implements the interface Mission an handles the base tasks of a mission.
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public abstract class BaseMission implements Mission {

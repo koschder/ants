@@ -17,7 +17,7 @@ import api.test.MapOutput;
 /**
  * these test compare the runtime of a star alogrithm
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public class CompareStrategyTest {

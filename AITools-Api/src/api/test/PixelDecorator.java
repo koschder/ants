@@ -5,7 +5,7 @@ import api.entities.Tile;
 /**
  * the PixelDecorator is used with MapOutput to print custom content on a map's tile.
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public interface PixelDecorator {

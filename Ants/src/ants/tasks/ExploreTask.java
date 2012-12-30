@@ -21,7 +21,7 @@ import api.entities.Tile;
  * This task sends ants into unexplored areas of the map to discover new frontiers - to boldly go where no ant has gone
  * before.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  * 
  */
 public class ExploreTask extends BaseTask {

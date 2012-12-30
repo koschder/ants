@@ -5,8 +5,7 @@ import java.util.Iterator;
 /**
  * Abstract base class for an {@link Algorithm} implementation.
  * 
- * @author kustl1
- * @author kases1
+ * @author kases1, kustl1
  * 
  */
 public abstract class AbstractAlgorithm implements Algorithm {

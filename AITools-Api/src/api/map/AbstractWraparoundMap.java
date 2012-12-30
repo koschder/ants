@@ -10,7 +10,7 @@ import api.pathfinder.SearchableMap;
 /**
  * AbstractWraparoundMap provide function for character of the map, and function to move on the map
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public abstract class AbstractWraparoundMap implements SearchableMap {

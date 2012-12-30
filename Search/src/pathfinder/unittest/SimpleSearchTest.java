@@ -14,7 +14,7 @@ import api.test.MapOutput;
 /**
  * test the simple algorithm
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public class SimpleSearchTest {

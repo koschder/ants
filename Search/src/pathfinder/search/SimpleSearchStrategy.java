@@ -15,7 +15,7 @@ import api.pathfinder.SearchTarget;
  * the simplest algorithm for finding a path by connecting the destination and the target location with two straight
  * lines.
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class SimpleSearchStrategy extends SearchStrategy {

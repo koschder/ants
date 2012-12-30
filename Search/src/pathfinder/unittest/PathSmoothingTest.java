@@ -16,7 +16,7 @@ import api.test.MapOutput;
 /***
  * some tests to test the smoothing
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public class PathSmoothingTest {

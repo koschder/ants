@@ -18,7 +18,7 @@ import static org.junit.Assert.*;
 /**
  * doing some tests to prove functionality of HPA*
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public class FindHPAStarTest {

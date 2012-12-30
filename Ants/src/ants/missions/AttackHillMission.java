@@ -27,7 +27,7 @@ import api.entities.Unit;
 /***
  * This mission used for attacking the enemies hills
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  * 
  */
 public class AttackHillMission extends BaseMission {

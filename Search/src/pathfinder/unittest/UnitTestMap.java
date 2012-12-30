@@ -12,7 +12,7 @@ import api.strategy.InfluenceMap;
 /**
  * test map for all unit tests.
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public class UnitTestMap extends AbstractWraparoundMap {

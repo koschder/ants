@@ -10,7 +10,7 @@ import api.strategy.InfluenceMap;
 /**
  * the interface for path find algorithm, all needed method for path finding are described.
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public interface PathFinder {

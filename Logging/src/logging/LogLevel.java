@@ -3,7 +3,7 @@ package logging;
 /**
  * this enum defines all available log levels
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public enum LogLevel {

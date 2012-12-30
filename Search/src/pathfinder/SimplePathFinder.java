@@ -15,7 +15,7 @@ import api.strategy.InfluenceMap;
  * the simple path finder provides two search strategies named AStar and Simple, use the main function search(..) to
  * find a path.
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class SimplePathFinder implements PathFinder {

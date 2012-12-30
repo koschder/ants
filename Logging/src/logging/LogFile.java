@@ -7,7 +7,7 @@ import java.io.PrintStream;
 /**
  * this class represents a log file, logs are written with the append(..) function
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public class LogFile {

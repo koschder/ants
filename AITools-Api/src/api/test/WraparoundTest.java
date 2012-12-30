@@ -11,7 +11,7 @@ import static org.junit.Assert.*;
 /**
  * theses methods prove correct functionality of the wraparaound map
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public class WraparoundTest {

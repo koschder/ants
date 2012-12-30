@@ -19,7 +19,7 @@ import api.test.PixelDecorator;
 
 /**
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public class DefaultInfluenceMap implements InfluenceMap {

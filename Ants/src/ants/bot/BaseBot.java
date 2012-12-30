@@ -23,7 +23,7 @@ import api.entities.Tile;
  * Bot implementation. This was originally based on the sample bot from the starter package, but the implementation is
  * completely different, although the hierarchy is still the same.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  */
 public abstract class BaseBot extends Bot {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.TURN);

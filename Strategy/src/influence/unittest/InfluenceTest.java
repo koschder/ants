@@ -15,7 +15,7 @@ import static org.junit.Assert.*;
 /**
  * the class containing all unit tests to prove the functionalities of the influence map
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public class InfluenceTest {

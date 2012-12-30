@@ -11,7 +11,7 @@ import api.entities.Tile;
  * Task that ensures that no ant blocks our hills. This should be executed last, since it just issues a random order for
  * the last of our unemployed ants.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  * 
  */
 public class ClearHillTask extends BaseTask {

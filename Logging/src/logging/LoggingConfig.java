@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * with this class we determine if we have to write a log according to its category and log level.
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class LoggingConfig {

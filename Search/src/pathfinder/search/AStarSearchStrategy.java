@@ -18,7 +18,7 @@ import api.pathfinder.SearchTarget;
 /**
  * this class implements the AStar algorithm for path finding
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class AStarSearchStrategy extends SearchStrategy {

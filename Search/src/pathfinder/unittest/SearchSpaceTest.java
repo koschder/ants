@@ -14,7 +14,7 @@ import api.test.MapOutput;
 /**
  * check if search space restrictions work.
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public class SearchSpaceTest {

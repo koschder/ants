@@ -3,7 +3,7 @@ package ants.tasks;
 /**
  * Interface for a task to be performed each turn.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  * 
  */
 public interface Task {

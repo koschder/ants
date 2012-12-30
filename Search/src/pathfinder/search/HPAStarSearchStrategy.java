@@ -15,7 +15,7 @@ import api.pathfinder.SearchTarget;
 /**
  * the class implements the HPA* search (hierarcical path A star)
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class HPAStarSearchStrategy extends SearchStrategy {

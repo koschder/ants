@@ -7,7 +7,7 @@ import api.pathfinder.SearchableUnitMap;
 /**
  * this interface defines the methods a InfuenceMap must provide
  * 
- * @author kaeserst,kustl1
+ * @author kases1, kustl1
  * 
  */
 public interface InfluenceMap {

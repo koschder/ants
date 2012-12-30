@@ -18,7 +18,7 @@ import api.entities.Tile;
  * This class keeps track of our and the enemies' ant populations. It also tracks which of our ants are already employed
  * each turn.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  * 
  */
 public class Population {

@@ -5,7 +5,7 @@ import api.entities.Tile;
 /**
  * the interface describes with method must be implemented for beeing a TileMap
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public interface TileMap {

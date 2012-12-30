@@ -10,7 +10,7 @@ import api.strategy.InfluenceMap;
 /**
  * Simple map for unit tests that need to test the abstract methods on {@link AbstractWraparoundMap}.
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 class SimpleUnitTestMap extends AbstractWraparoundMap {

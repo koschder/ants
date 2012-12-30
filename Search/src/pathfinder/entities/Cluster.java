@@ -18,7 +18,7 @@ import api.pathfinder.SearchTarget;
  * a cluster is an area on the map. the cluster connects the neighbor cluster throw passable edges along the cluster
  * side. these edges are connected to edges inside the cluster if there is a passable path between.
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class Cluster {

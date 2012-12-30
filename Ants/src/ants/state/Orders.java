@@ -23,7 +23,7 @@ import api.pathfinder.SearchTarget;
 /**
  * This class tracks all orders and missions for our ants. It ensures that no conflicting orders are given.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  * 
  */
 public class Orders {

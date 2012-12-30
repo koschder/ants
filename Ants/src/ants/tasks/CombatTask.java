@@ -4,7 +4,7 @@ package ants.tasks;
 /**
  * This task identifies vulnerable enemy ants and sends a troop of our ants to attack them.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  * 
  */
 public class CombatTask extends BaseTask {

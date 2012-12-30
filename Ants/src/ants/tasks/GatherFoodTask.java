@@ -6,7 +6,7 @@ import ants.state.Ants;
 /**
  * Searches for food and sends our ants to gather it.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  * 
  */
 public class GatherFoodTask extends BaseTask {

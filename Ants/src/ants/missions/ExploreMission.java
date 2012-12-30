@@ -11,7 +11,7 @@ import api.entities.Tile;
 /***
  * Mission for exploring the world
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public class ExploreMission extends PathMission {

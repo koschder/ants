@@ -5,7 +5,7 @@ import api.pathfinder.SearchTarget;
 /**
  * this class is used in the as item in the frontier and in the explored list at A* algorithm.
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class Node implements Comparable<Node> {

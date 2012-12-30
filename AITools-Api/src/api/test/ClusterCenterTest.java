@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 /**
  * test for calculating the cluster center
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class ClusterCenterTest {

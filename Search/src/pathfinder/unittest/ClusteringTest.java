@@ -16,7 +16,7 @@ import api.test.MapOutput;
 /**
  * these tests check if the clustering mechanism works
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public class ClusteringTest {

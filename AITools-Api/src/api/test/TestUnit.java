@@ -6,7 +6,7 @@ import api.entities.Unit;
 /**
  * TestUnit are only used for UnitTests
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class TestUnit implements Unit {

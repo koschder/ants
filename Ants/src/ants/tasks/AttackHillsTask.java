@@ -8,7 +8,7 @@ import api.entities.Tile;
 /**
  * Task that identifies enemy hills suitable for attacking and sends Ants to attack them.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  * 
  */
 public class AttackHillsTask extends BaseTask {

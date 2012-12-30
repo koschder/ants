@@ -13,7 +13,7 @@ import api.pathfinder.SearchableMap;
  * in smaller pieces in which the path is precalculated. if needing a path, this small path section will be combined to
  * the final path precondition: every map area to be precalculated must be visible.
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class ClusteringPathFinder extends SimplePathFinder {

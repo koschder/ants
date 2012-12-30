@@ -27,7 +27,7 @@ import api.strategy.InfluenceMap;
 /**
  * This class holds state about the game world.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  * 
  */
 public class World extends AbstractWraparoundMap implements SearchableUnitMap {

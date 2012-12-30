@@ -15,7 +15,7 @@ import api.test.MapOutput;
 /**
  * this tests are prove the functionalities of bfs to get tiles on a radius, used for formation our units
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class RadiusResultTest {

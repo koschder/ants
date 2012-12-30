@@ -10,7 +10,7 @@ import api.strategy.InfluenceMap;
 /**
  * the interface SearchableMap defines the method used doing path searching on the map.
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public interface SearchableMap extends TileMap {

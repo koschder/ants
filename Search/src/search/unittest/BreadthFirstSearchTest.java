@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 /**
  * some tests for the bfs
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class BreadthFirstSearchTest {

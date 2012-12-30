@@ -3,7 +3,7 @@ package logging;
 /**
  * Interface for log category
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public interface LogCategory {

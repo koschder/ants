@@ -7,7 +7,7 @@ import api.entities.Tile;
 /**
  * Describes a edge consists of to tiles as start and end node.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  * 
  */
 public class Edge {

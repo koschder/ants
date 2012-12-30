@@ -20,7 +20,7 @@ import api.entities.Tile;
 /***
  * Mission for gathering a food tile
  * 
- * @author kustl1, kases1
+ * @author kases1, kustl1
  * 
  */
 public class GatherFoodMission extends BaseMission {

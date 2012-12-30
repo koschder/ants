@@ -8,7 +8,7 @@ import ants.tasks.Task.Type;
 /***
  * defines which method must be implemented by a mission
  * 
- * @author kaeserst
+ * @author kases1, kustl1
  * 
  */
 public interface Mission {

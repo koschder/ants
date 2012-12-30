@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
 /**
  * doing some tests to prove functionality of Astar
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class FindAStarTest {

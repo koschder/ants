@@ -9,7 +9,7 @@ import api.entities.Tile;
 /***
  * This mission is created for attacking enemy ants.
  * 
- * @author kases1,kustl1
+ * @author kases1, kustl1
  * 
  */
 public class AttackAntMission extends PathMission {

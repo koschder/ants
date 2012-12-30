@@ -3,7 +3,7 @@ package influence;
 /**
  * log categories (implements for base LogCategory) to log the influence stuff
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public enum LogCategory implements logging.LogCategory {

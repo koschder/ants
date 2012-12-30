@@ -7,7 +7,7 @@ import api.entities.Tile;
 /**
  * the class describes some tiles on the map, as a group of objects
  * 
- * @author kaeserst, kustl1
+ * @author kases1, kustl1
  * 
  */
 public class MapObject {
