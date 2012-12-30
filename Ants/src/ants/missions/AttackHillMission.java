@@ -187,10 +187,11 @@ public class AttackHillMission extends BaseMission {
             missionState = State.ControlEnemyHill;
             Ants.getOrders().issueOrder(new Ant(enemyHill, 0), null, "AttackHillMission");
             return;
-        } else if (enemies.size() >= friends.size()) {
-            missionState = State.DestroyHill;
-            return;
         }
+        // else if (enemies.size() >= friends.size()) {
+        // // missionState = State.DestroyHill;
+        // return;
+        // }/
         missionState = State.AttackEnemyHill;
     }
 
@@ -221,7 +222,9 @@ public class AttackHillMission extends BaseMission {
     }
 
     private List<Tile> getEnemiesInTheWay(final Tile clusterCenter, Tile target) {
-        final int distanceToTarget = Ants.getWorld().getSquaredDistance(clusterCenter, target);
+        final int distanceSquared = Ants.getWorld().getSquaredDistance(clusterCenter, target);
+        final int distanceToTarget = (int) Math.pow(Math.sqrt(distanceSquared) + 3, 2);
+
         BreadthFirstSearch bfs = new BreadthFirstSearch(Ants.getWorld());
         List<Tile> enemiesInTheWay = bfs.floodFill(target, distanceToTarget, new GoalTest() {
 
@@ -301,8 +304,8 @@ public class AttackHillMission extends BaseMission {
         List<ArrayList<Unit>> groupedAnts = groupAnts(4, 10);
         for (List<Unit> group : groupedAnts) {
             List<Tile> path = Ants.getPathFinder().search(Strategy.AStar, group.get(0).getTile(), enemyHill);
-
-            Tile mileStone = path.size() <= 10 ? path.get(path.size() - 1) : path.get(10);
+            int mileStoneAway = 5;
+            Tile mileStone = path.size() <= mileStoneAway ? path.get(path.size() - 1) : path.get(mileStoneAway);
 
             List<Tile> enemy = getEnemiesInTheWay(Ants.getWorld().getClusterCenter(getTile(group)), mileStone);
             CombatPositioning pos = new AttackingCombatPositioning(mileStone, Ants.getWorld(), Ants.getInfluenceMap(),

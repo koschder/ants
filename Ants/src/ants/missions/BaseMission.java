@@ -30,6 +30,7 @@ public abstract class BaseMission implements Mission {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.EXECUTE_MISSIONS);
     protected List<Ant> ants;
     private boolean abandon = false;
+    private int foodSafetyToAbandonMission = 0;
 
     @Override
     public boolean isAbandoned() {
@@ -170,7 +171,8 @@ public abstract class BaseMission implements Mission {
     }
 
     /**
-     * food is nearby but not on the path
+     * food is nearby, and it isn't targeted yet, the ant is not moving toward it and it is reachable then we will
+     * return true for 'foodNearby'
      * 
      * @param ant
      * @return
@@ -179,24 +181,34 @@ public abstract class BaseMission implements Mission {
         List<Tile> foods = Ants.getWorld().isFoodNearby(ant.getTile());
         if (foods.isEmpty())
             return false; // no food nearby
-        else if (!ant.hasPath())
-            return true; // food nearby and ant has no path
-
-        int nextSteps = Math.min(3, ant.getPath().size() - 1);
 
         for (Tile t : foods) {
-            for (int i = 0; i < nextSteps; i++) {
-                if (Ants.getWorld().manhattanDistance(t, ant.getPath().get(i)) <= 1) {
-                    // ant is moving towards food, we don't have to break this mission.
-                    return false;
+            if (ant.hasPath()) {
+                int nextSteps = Math.min(4, ant.getPath().size() - 1);
+                for (int i = 0; i < nextSteps; i++) {
+                    if (Ants.getWorld().manhattanDistance(t, ant.getPath().get(i)) <= 1) {
+                        // ant is moving towards some food, we don't have to break this mission.
+                        return false;
+                    }
                 }
             }
-            if (Ants.getOrders().isFoodTargeted(t) || !Ants.getWorld().isEasilyReachable(ant.getTile(), t))
-                continue;
-            else
+            if (shouldTakeFood(ant, t))
                 return true;
         }
         return false;
+    }
+
+    private boolean shouldTakeFood(Ant ant, Tile t) {
+        if (Ants.getOrders().isFoodTargeted(t))
+            return false;
+        if (!Ants.getWorld().isEasilyReachable(ant.getTile(), t))
+            return false;
+        int safety = Ants.getInfluenceMap().getSafety(t);
+        if (safety < foodSafetyToAbandonMission) {
+            LOGGER.info("Don't abandon Mission food %s is not safe for ant %s", t, safety, ant);
+            return false;
+        }
+        return true;
     }
 
     protected Map<Ant, List<Tile>> gatherAnts(Tile tile, int amount, int attractionDistance) {

@@ -9,7 +9,7 @@ package strategy;
 public enum LogCategory implements logging.LogCategory {
 
     /**
-     * COMBAT_POSITIONING is the only log category known in the influence packages
+     * COMBAT_POSITIONING is the only log category known in the strategy packages
      */
     COMBAT_POSITIONING(true);
     private boolean useCustomLogFile;

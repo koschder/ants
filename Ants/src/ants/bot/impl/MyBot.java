@@ -60,7 +60,7 @@ public class MyBot extends BaseBot {
         LoggingConfig.configure(LogCategory.EXECUTE_MISSIONS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.EXPLORE, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.FOLLOW, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.FOOD, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.FOOD, LogLevel.DEBUG);
         LoggingConfig.configure(LogCategory.PATH_MISSION, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.ORDERS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.PERFORMANCE, LogLevel.INFO);
@@ -77,7 +77,7 @@ public class MyBot extends BaseBot {
         LoggingConfig.configure(pathfinder.LogCategory.CLUSTERED_ASTAR, LogLevel.INFO);
         LoggingConfig.configure(pathfinder.LogCategory.HPASTAR, LogLevel.INFO);
         LoggingConfig.configure(influence.LogCategory.INFLUENCE, LogLevel.INFO);
-        LoggingConfig.configure(strategy.LogCategory.COMBAT_POSITIONING, LogLevel.INFO);
+        LoggingConfig.configure(strategy.LogCategory.COMBAT_POSITIONING, LogLevel.DEBUG);
     }
 
     protected void initTasks() {

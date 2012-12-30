@@ -47,9 +47,13 @@ public class DefendHillMission extends BaseMission {
     public void execute() {
 
         List<Tile> enemyNearBy = getEnemyAntsNearby();
-
         boolean hasAttackers = enemyNearBy.size() > 0;
         gatherOrReleaseAnts(enemyNearBy);
+
+        // unfortunately we don't have any ant to defend.
+        if (ants.size() == 0)
+            return;
+
         if (hasAttackers) {
             resetAnts();
             String attInfo = "";

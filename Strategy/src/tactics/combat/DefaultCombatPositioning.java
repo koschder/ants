@@ -147,7 +147,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
                 enemiesPerSide.put(aim, enemies);
             }
 
-            if (enemiesPerSide.size() == 0)
+            if (enemiesPerSide.size() == 0) // enemy is on a side we do not protect
                 throw new IllegalArgumentException("enmies not splited to side " + enemyUnits);
 
             Map<Aim, List<Tile>> defendersPerSide = getDefendersPerSide(enemiesPerSide);
@@ -293,6 +293,9 @@ public class DefaultCombatPositioning implements CombatPositioning {
     }
 
     private void positionUnits(List<Tile> units, Tile clusterCenter, List<Tile> formationTiles) {
+
+        String log = "Positioning for " + units + " fromationTiles are " + formationTiles;
+
         Set<Tile> targetedTiles = new HashSet<Tile>();
         sortByDistance(clusterCenter, units);
         sortByDistance(clusterCenter, formationTiles);
@@ -303,10 +306,12 @@ public class DefaultCombatPositioning implements CombatPositioning {
                 Tile actualTile = moveToward(fTile, unit, clusterCenter, formationTiles);
                 if (actualTile != null) {
                     targetedTiles.add(actualTile);
+                    log += "Unit " + unit + " to " + actualTile;
                     break;
                 }
             }
         }
+        LOGGER.info(log);
     }
 
     private void positionUnits(Tile clusterCenter, List<Tile> formationTiles) {
