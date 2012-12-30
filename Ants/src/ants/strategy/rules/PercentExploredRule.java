@@ -6,7 +6,7 @@ import ants.tasks.Task.Type;
 public class PercentExploredRule extends BaseResourceAllocationRule {
 
     @Override
-    /***
+    /**
      * if not much is visible we force the explore task
      */
     public void allocateResources() {

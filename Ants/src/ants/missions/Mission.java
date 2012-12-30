@@ -5,7 +5,7 @@ import java.util.List;
 import ants.entities.Ant;
 import ants.tasks.Task.Type;
 
-/***
+/**
  * defines which method must be implemented by a mission
  * 
  * @author kases1, kustl1

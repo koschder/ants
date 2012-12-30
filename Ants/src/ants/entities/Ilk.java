@@ -40,7 +40,7 @@ public enum Ilk {
         return this == LAND || this == DEAD;
     }
 
-    /***
+    /**
      * 
      * @return true if it is a food Ilk.
      */

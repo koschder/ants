@@ -5,7 +5,7 @@ import java.util.List;
 import ants.entities.Ant;
 import api.entities.Tile;
 
-/***
+/**
  * this mission is implemented to follow a path defined while creating the class
  * 
  * @author kases1, kustl1
@@ -22,7 +22,7 @@ public abstract class PathMission extends BaseMission {
         return ants.size() > 0 ? ants.get(0) : null;
     }
 
-    /***
+    /**
      * 
      * @return the whole path as a string.
      */
@@ -45,7 +45,7 @@ public abstract class PathMission extends BaseMission {
             abandonMission();
     }
 
-    /***
+    /**
      * puts the order in the order list where the ant has to go and remove this path piece.
      * 
      * @return true if order is put successful.

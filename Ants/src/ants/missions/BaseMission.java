@@ -20,7 +20,7 @@ import ants.state.Ants;
 import api.entities.Aim;
 import api.entities.Tile;
 
-/***
+/**
  * Implements the interface Mission an handles the base tasks of a mission.
  * 
  * @author kases1, kustl1
@@ -94,7 +94,7 @@ public abstract class BaseMission implements Mission {
         return false;
     }
 
-    /***
+    /**
      * Abort mission if something disturbs the mission
      * 
      * @param ant
@@ -238,7 +238,7 @@ public abstract class BaseMission implements Mission {
         return newAnts;
     }
 
-    /***
+    /**
      * cancels the mission. (Attention: Must not have made a move this turn yet).
      */
     protected void abandonMission() {
@@ -246,7 +246,7 @@ public abstract class BaseMission implements Mission {
         abandon = true;
     }
 
-    /***
+    /**
      * puts the next move of the ant in the orders set.
      * 
      * @param ant
@@ -261,7 +261,7 @@ public abstract class BaseMission implements Mission {
         return Ants.getOrders().issueOrder(ant, null, getVisualizeInfos());
     }
 
-    /***
+    /**
      * 
      * @return the name of the mission.
      */
@@ -269,7 +269,7 @@ public abstract class BaseMission implements Mission {
         return getClass().getSimpleName();
     }
 
-    /***
+    /**
      * Abstract class must be implemented be the mission. it checks if the mission is still vaild.
      * 
      * @return true if mission is vaild

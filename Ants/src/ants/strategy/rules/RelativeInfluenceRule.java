@@ -12,7 +12,7 @@ public class RelativeInfluenceRule extends BaseResourceAllocationRule {
     }
 
     @Override
-    /***
+    /**
      * if our in influence is the highest we force our aggressiveness
      */
     public void allocateResources() {

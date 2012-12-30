@@ -26,45 +26,45 @@ public class Cluster {
     private static final Logger LOGGER_PATH = LoggerFactory.getLogger(LogCategory.PATHFINDING);
     private static final Logger LOGGER_ASTAR = LoggerFactory.getLogger(LogCategory.CLUSTERED_ASTAR);
 
-    /***
+    /**
      * stores all edges located in the cluster
      */
     public List<Edge> edges = new ArrayList<Edge>();
-    /***
+    /**
      * stores all vertices aka nodes located in the cluster.
      */
     public List<Vertex> vertices = new ArrayList<Vertex>();
-    /***
+    /**
      * name of the cluster consists of the index and the dimensions.
      */
     public String name;
-    /***
+    /**
      * the index of the cluster.
      */
     public int index;
-    /***
+    /**
      * row of the cluster referring to the whole clustering
      */
     private int row;
-    /***
+    /**
      * col of the cluster referring to the whole clustering.
      */
     private int col;
-    /***
+    /**
      * the height and weight of the cluster.
      */
     private int clusterSize;
-    /***
+    /**
      * clustering of who this cluster is part of.
      */
     private Clustering clustering;
 
-    /***
+    /**
      * the cluster sides which are already scanned.
      */
     public Set<Aim> scannedAims = new HashSet<Aim>();
 
-    /***
+    /**
      * initialize a cluster
      * 
      * @param rowIndex
@@ -100,7 +100,7 @@ public class Cluster {
         return this.edges;
     }
 
-    /***
+    /**
      * print all edges of the cluster into the log file.
      */
     public void debugEdges() {

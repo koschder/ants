@@ -6,7 +6,7 @@ import ants.entities.Ant;
 import ants.tasks.Task.Type;
 import api.entities.Tile;
 
-/***
+/**
  * This mission is created for attacking enemy ants.
  * 
  * @author kases1, kustl1
@@ -18,7 +18,7 @@ public class AttackAntMission extends PathMission {
         super(ant, path);
     }
 
-    /***
+    /**
      * is always valid
      */
     @Override

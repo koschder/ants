@@ -17,7 +17,7 @@ import ants.state.Ants;
 import ants.tasks.Task.Type;
 import api.entities.Tile;
 
-/***
+/**
  * Mission for gathering a food tile
  * 
  * @author kases1, kustl1
@@ -33,7 +33,7 @@ public class GatherFoodMission extends BaseMission {
 
     }
 
-    /***
+    /**
      * is valid as long the food is on the map
      */
     @Override

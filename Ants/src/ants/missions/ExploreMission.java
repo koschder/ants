@@ -8,7 +8,7 @@ import ants.tasks.Task.Type;
 import ants.util.LiveInfo;
 import api.entities.Tile;
 
-/***
+/**
  * Mission for exploring the world
  * 
  * @author kases1, kustl1
@@ -40,7 +40,7 @@ public class ExploreMission extends PathMission {
             abandonMission();
     }
 
-    /***
+    /**
      * mission isn't valid if there is food near the ant or there is an emeny near the ant.
      */
     @Override

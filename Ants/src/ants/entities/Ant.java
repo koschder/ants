@@ -46,7 +46,7 @@ public class Ant implements Comparable<Ant>, Unit, Cloneable {
         this.nextTile = nextTile;
     }
 
-    /***
+    /**
      * places the ant on the tile, where it was moved in the last round.
      */
     public void setup() {

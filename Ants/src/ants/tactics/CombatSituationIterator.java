@@ -20,7 +20,7 @@ public class CombatSituationIterator implements Iterator<Game> {
     // bauern = board.getMovingBauern();
     // }
     //
-    // /***
+    // /**
     // * checks if there is a next vaild move
     // */
     // @Override
@@ -28,7 +28,7 @@ public class CombatSituationIterator implements Iterator<Game> {
     // return getNext() != null;
     // }
     //
-    // /***
+    // /**
     // *
     // * @return the Game on which the "next move" was applied and increments the
     // * iterator
@@ -42,7 +42,7 @@ public class CombatSituationIterator implements Iterator<Game> {
     // throw new NoSuchElementException();
     // }
     //
-    // /***
+    // /**
     // * the Game on which the "next move" was applied
     // *
     // * @return

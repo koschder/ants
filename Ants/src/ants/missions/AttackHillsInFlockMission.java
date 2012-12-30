@@ -34,7 +34,7 @@ public class AttackHillsInFlockMission extends BaseMission {
         partialMission.execute();
     }
 
-    /***
+    /**
      * mission is as long valid, as long the enemy hill exists.
      */
     @Override

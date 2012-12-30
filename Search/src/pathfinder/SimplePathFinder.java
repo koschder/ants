@@ -77,7 +77,7 @@ public class SimplePathFinder implements PathFinder {
         return this.map;
     }
 
-    /***
+    /**
      * get the strategy implementation
      * 
      * @param strategy

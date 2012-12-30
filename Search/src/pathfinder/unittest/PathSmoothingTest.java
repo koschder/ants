@@ -13,7 +13,7 @@ import pathfinder.entities.Clustering.ClusterType;
 import api.entities.Tile;
 import api.test.MapOutput;
 
-/***
+/**
  * some tests to test the smoothing
  * 
  * @author kases1, kustl1

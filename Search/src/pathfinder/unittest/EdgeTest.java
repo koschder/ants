@@ -51,7 +51,7 @@ public class EdgeTest {
 
     }
 
-    /***
+    /**
      * compare directed edges
      */
     @Test

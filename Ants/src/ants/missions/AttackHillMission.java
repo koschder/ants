@@ -24,7 +24,7 @@ import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
 
-/***
+/**
  * This mission used for attacking the enemies hills
  * 
  * @author kases1, kustl1
@@ -34,7 +34,7 @@ public class AttackHillMission extends BaseMission {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.ATTACK_HILLS);
 
-    /***
+    /**
      * the enemy hill.
      */
     Tile enemyHill;
@@ -54,7 +54,7 @@ public class AttackHillMission extends BaseMission {
         LOGGER.info("AttackHillMission created. EnemyHill is %s", enemyHill);
     }
 
-    /***
+    /**
      * mission is as long valid, as long the enemy hill exists.
      */
     @Override
@@ -355,7 +355,7 @@ public class AttackHillMission extends BaseMission {
         return false;
     }
 
-    /***
+    /**
      * checks if the path is still valid and recalculated it, if necessary
      * 
      * @param ant
