@@ -4,8 +4,8 @@ import java.util.List;
 
 import api.entities.Tile;
 import api.entities.Unit;
-import api.search.SearchableUnitMap;
 import api.strategy.InfluenceMap;
+import api.strategy.SearchableUnitMap;
 
 public class DefendingCombatPositioning extends DefaultCombatPositioning {
 

@@ -2,7 +2,6 @@ package api.strategy;
 
 import api.entities.Tile;
 import api.search.PathPiece;
-import api.search.SearchableUnitMap;
 
 /**
  * this interface defines the methods a InfuenceMap must provide

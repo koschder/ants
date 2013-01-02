@@ -12,8 +12,8 @@ import api.entities.Tile;
 import api.entities.Unit;
 import api.map.UnitMap;
 import api.search.PathPiece;
-import api.search.SearchableUnitMap;
 import api.strategy.InfluenceMap;
+import api.strategy.SearchableUnitMap;
 import api.test.MapOutput;
 import api.test.PixelDecorator;
 

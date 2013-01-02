@@ -5,8 +5,8 @@ import java.util.Map;
 
 import api.entities.Tile;
 import api.search.PathPiece;
-import api.search.SearchableUnitMap;
 import api.strategy.InfluenceMap;
+import api.strategy.SearchableUnitMap;
 
 public class StubInfluenceMap implements InfluenceMap {
     private Map<Integer, Integer> influencePerPlayer = new HashMap<Integer, Integer>();

@@ -21,8 +21,8 @@ import api.entities.Tile;
 import api.entities.Unit;
 import api.map.AbstractWraparoundMap;
 import api.search.PathPiece;
-import api.search.SearchableUnitMap;
 import api.strategy.InfluenceMap;
+import api.strategy.SearchableUnitMap;
 
 /**
  * This class holds state about the game world.
