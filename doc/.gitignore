@@ -34,3 +34,4 @@
 *.tcp
 *.tps
 *.bak
+*.vpp*~*
