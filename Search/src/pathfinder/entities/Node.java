@@ -1,6 +1,6 @@
 package pathfinder.entities;
 
-import api.pathfinder.SearchTarget;
+import api.search.SearchTarget;
 
 /**
  * this class is used in the as item in the frontier and in the explored list at A* algorithm.

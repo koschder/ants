@@ -5,7 +5,7 @@ import java.util.List;
 
 import api.entities.Aim;
 import api.entities.Tile;
-import api.pathfinder.SearchableMap;
+import api.search.SearchableMap;
 
 /**
  * AbstractWraparoundMap provide function for character of the map, and function to move on the map

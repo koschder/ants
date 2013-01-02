@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import api.entities.Aim;
 import api.entities.Tile;
-import api.pathfinder.SearchableMap;
+import api.search.SearchableMap;
 
 import static org.junit.Assert.*;
 

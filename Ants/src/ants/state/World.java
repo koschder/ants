@@ -20,8 +20,8 @@ import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
 import api.map.AbstractWraparoundMap;
-import api.pathfinder.SearchTarget;
-import api.pathfinder.SearchableUnitMap;
+import api.search.SearchTarget;
+import api.search.SearchableUnitMap;
 import api.strategy.InfluenceMap;
 
 /**

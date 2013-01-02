@@ -10,7 +10,7 @@ import pathfinder.SimplePathFinder;
 import pathfinder.entities.Clustering;
 import pathfinder.entities.DirectedEdge;
 import api.entities.Tile;
-import api.pathfinder.SearchTarget;
+import api.search.SearchTarget;
 
 /**
  * the class implements the HPA* search (hierarcical path A star)

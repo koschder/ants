@@ -13,7 +13,7 @@ import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import pathfinder.entities.Node;
 import api.entities.Tile;
-import api.pathfinder.SearchTarget;
+import api.search.SearchTarget;
 
 /**
  * this class implements the AStar algorithm for path finding

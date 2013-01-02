@@ -6,7 +6,7 @@ import search.BreadthFirstSearch;
 import search.BreadthFirstSearch.GoalTest;
 import api.entities.Tile;
 import api.entities.Unit;
-import api.pathfinder.SearchableUnitMap;
+import api.search.SearchableUnitMap;
 import api.strategy.InfluenceMap;
 
 public class AttackingCombatPositioning extends DefaultCombatPositioning {

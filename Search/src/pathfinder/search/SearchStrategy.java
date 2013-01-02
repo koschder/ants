@@ -10,7 +10,7 @@ import pathfinder.entities.Node;
 import api.entities.Tile;
 import api.map.TileMap;
 import api.map.WorldType;
-import api.pathfinder.SearchTarget;
+import api.search.SearchTarget;
 
 /**
  * definitions for a search strategy

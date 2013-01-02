@@ -11,7 +11,7 @@ import pathfinder.SimplePathFinder;
 import api.entities.Aim;
 import api.entities.Tile;
 import api.map.AbstractWraparoundMap;
-import api.pathfinder.SearchTarget;
+import api.search.SearchTarget;
 import api.strategy.InfluenceMap;
 
 public class Clustering extends AbstractWraparoundMap {

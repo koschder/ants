@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import api.entities.Tile;
-import api.pathfinder.SearchTarget;
+import api.search.SearchTarget;
 
 /**
  * DirectedEdge extended of Edge and is used to define which is the start and the end tile of the Edge

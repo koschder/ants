@@ -12,7 +12,7 @@ import pathfinder.PathFinder;
 import pathfinder.entities.Edge.EdgeType;
 import api.entities.Aim;
 import api.entities.Tile;
-import api.pathfinder.SearchTarget;
+import api.search.SearchTarget;
 
 /**
  * a cluster is an area on the map. the cluster connects the neighbor cluster throw passable edges along the cluster

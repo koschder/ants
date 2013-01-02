@@ -7,7 +7,7 @@ import search.BreadthFirstSearch;
 import ants.entities.Ant;
 import ants.state.Ants;
 import api.entities.Tile;
-import api.pathfinder.SearchableMap;
+import api.search.SearchableMap;
 
 public class AntsBreadthFirstSearch extends BreadthFirstSearch {
 

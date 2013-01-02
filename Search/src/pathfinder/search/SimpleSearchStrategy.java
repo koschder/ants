@@ -9,7 +9,7 @@ import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import api.entities.Aim;
 import api.entities.Tile;
-import api.pathfinder.SearchTarget;
+import api.search.SearchTarget;
 
 /**
  * the simplest algorithm for finding a path by connecting the destination and the target location with two straight

@@ -4,7 +4,7 @@ import java.util.List;
 
 import api.entities.Tile;
 import api.map.AbstractWraparoundMap;
-import api.pathfinder.SearchTarget;
+import api.search.SearchTarget;
 import api.strategy.InfluenceMap;
 
 /**

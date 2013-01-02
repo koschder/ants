@@ -6,7 +6,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import api.pathfinder.SearchTarget;
+import api.search.SearchTarget;
 
 /**
  * Represents a tile of the game map.

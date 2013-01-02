@@ -6,7 +6,7 @@ import pathfinder.search.AStarSearchStrategy;
 import pathfinder.search.HPAStarSearchStrategy;
 import pathfinder.search.SearchStrategy;
 import pathfinder.search.SimpleSearchStrategy;
-import api.pathfinder.SearchableMap;
+import api.search.SearchableMap;
 
 /**
  * Clustering pathfinder is designed for big maps, where simple a star reaches its frontiers. the map will be clustered

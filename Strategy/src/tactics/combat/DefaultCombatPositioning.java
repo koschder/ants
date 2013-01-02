@@ -22,7 +22,7 @@ import strategy.LogCategory;
 import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
-import api.pathfinder.SearchableUnitMap;
+import api.search.SearchableUnitMap;
 import api.strategy.InfluenceMap;
 
 public class DefaultCombatPositioning implements CombatPositioning {

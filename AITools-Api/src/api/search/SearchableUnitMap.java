@@ -1,4 +1,4 @@
-package api.pathfinder;
+package api.search;
 
 import api.map.UnitMap;
 

@@ -7,8 +7,8 @@ import pathfinder.search.AStarSearchStrategy;
 import pathfinder.search.SearchStrategy;
 import pathfinder.search.SimpleSearchStrategy;
 import api.entities.Tile;
-import api.pathfinder.SearchTarget;
-import api.pathfinder.SearchableMap;
+import api.search.SearchTarget;
+import api.search.SearchableMap;
 import api.strategy.InfluenceMap;
 
 /**

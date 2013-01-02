@@ -4,8 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import api.entities.Tile;
-import api.pathfinder.SearchTarget;
-import api.pathfinder.SearchableUnitMap;
+import api.search.SearchTarget;
+import api.search.SearchableUnitMap;
 import api.strategy.InfluenceMap;
 
 public class StubInfluenceMap implements InfluenceMap {

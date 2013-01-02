@@ -7,8 +7,8 @@ import java.util.List;
 import logging.Logger;
 import logging.LoggerFactory;
 import api.entities.Tile;
-import api.pathfinder.SearchTarget;
-import api.pathfinder.SearchableMap;
+import api.search.SearchTarget;
+import api.search.SearchableMap;
 
 /**
  * this class implements the BFS (BreadthFirstSearch) search

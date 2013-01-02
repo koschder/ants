@@ -18,7 +18,7 @@ import ants.util.LiveInfo;
 import api.entities.Aim;
 import api.entities.Move;
 import api.entities.Tile;
-import api.pathfinder.SearchTarget;
+import api.search.SearchTarget;
 
 /**
  * This class tracks all orders and missions for our ants. It ensures that no conflicting orders are given.
