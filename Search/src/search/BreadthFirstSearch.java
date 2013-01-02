@@ -84,6 +84,21 @@ public class BreadthFirstSearch {
     }
 
     /**
+     * returns all tiles in a radius of the squared distance maxDistance and the goalTest function and a maximum node
+     * restriction. the bfs is starting at center
+     * 
+     * @param center
+     * @param numberOfHits
+     * @param maxNodes
+     * @param maxDistance2
+     * @param goalTest
+     * @return
+     */
+    public List<Tile> findClosestTiles(Tile center, int numberOfHits, int maxNodes, int maxDistance2, GoalTest goalTest) {
+        return findClosestTiles(center, numberOfHits, maxNodes, maxDistance2, goalTest, new AlwaysFrontierTrueTest());
+    }
+
+    /**
      * returns all tiles in a radius of the squared distance maxDistance and the goalTest function, a maximum node
      * restriction and a numberOf hits restriction. the bfs is starting at center
      * 
@@ -94,7 +109,8 @@ public class BreadthFirstSearch {
      * @param goalTest
      * @return
      */
-    public List<Tile> findClosestTiles(Tile center, int numberOfHits, int maxNodes, int maxDistance2, GoalTest goalTest) {
+    public List<Tile> findClosestTiles(Tile center, int numberOfHits, int maxNodes, int maxDistance2,
+            GoalTest goalTest, FrontierTest frontierTest) {
         LOGGER.debug("BFS params: origin=%s, numberOfHits=%s, maxNodes=%s, maxDistance=%s", center, numberOfHits,
                 maxNodes, maxDistance2);
         LinkedList<Tile> frontier = new LinkedList<Tile>();
@@ -122,7 +138,8 @@ public class BreadthFirstSearch {
                 }
 
                 // add child to frontier
-                frontier.add(childTile);
+                if (frontierTest.isFrontier(childTile))
+                    frontier.add(childTile);
                 // add child to found if it is a goal
                 if (goalTest.isGoal(childTile))
                     found.add(childTile);
@@ -146,6 +163,10 @@ public class BreadthFirstSearch {
         boolean isGoal(Tile tile);
     }
 
+    public static interface FrontierTest {
+        boolean isFrontier(Tile tile);
+    }
+
     /**
      * this is a dummy implementation for the GoalTest it returns true for every Tile
      * 
@@ -155,6 +176,19 @@ public class BreadthFirstSearch {
     public static class AlwaysTrueGoalTest implements GoalTest {
         @Override
         public boolean isGoal(Tile tile) {
+            return true;
+        }
+    }
+
+    /**
+     * this is a dummy implementation for the FrontierTest it returns true for every Tile
+     * 
+     * @author kases1, kustl1
+     * 
+     */
+    public static class AlwaysFrontierTrueTest implements FrontierTest {
+        @Override
+        public boolean isFrontier(Tile tile) {
             return true;
         }
     }

@@ -294,4 +294,21 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return distance;
     }
 
+    @Override
+    public List<Tile> getTilesToNextImpassableTile(Tile origin, Aim direction, int maxDistance) {
+        // in case there are no impassable tiles, limit search distance to the size of the map
+        if (direction == Aim.NORTH || direction == Aim.SOUTH)
+            maxDistance = Math.min(rows, maxDistance);
+        else
+            maxDistance = Math.min(cols, maxDistance);
+
+        Tile tile = getTile(origin, direction);
+        List<Tile> tiles = new ArrayList<Tile>();
+        while (isPassable(tile) && tiles.size() < maxDistance) {
+            tiles.add(tile);
+            tile = getTile(tile, direction);
+        }
+        return tiles;
+    }
+
 }

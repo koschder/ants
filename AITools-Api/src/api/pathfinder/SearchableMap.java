@@ -95,4 +95,14 @@ public interface SearchableMap extends TileMap {
      */
     public int getManhattanDistanceToNextImpassableTile(Tile origin, Aim direction);
 
+    /**
+     * returns all tiles in one direction until it is impassable
+     * 
+     * @param origin
+     * @param direction
+     * @param maxDistnace
+     * @return tiles in one direction
+     */
+    List<Tile> getTilesToNextImpassableTile(Tile origin, Aim direction, int maxDistnace);
+
 }
