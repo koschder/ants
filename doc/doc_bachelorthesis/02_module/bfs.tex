@@ -1,0 +1,29 @@
+\section{Breitensuche}
+\label{subsec:module.Suchalgorithmen.Breitensuche}
+
+Die Breitensuche (engl. breadth-first search (BFS)) war eine der Neuimplementierungen während der Bachelorarbeit. Man könnte die BFS auch für die Pfadsuche verwenden, dies wäre aber sehr ineffizient. Wir verwenden diese Suche vielmehr für die Umgebung einer Ameise oder eines Hügels zu analysieren. Sie wurde generisch implementierte, so dass sie vielseitig einsetzbar ist. So können zum Beispiel mittels 'GoalTest' je nach Anwendungsfall die Tiles beschrieben werden welche gesucht sind. Folgende Breitensuche findet die Ameise welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Sie wird initialisiert indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 entspricht. Falls keien Ameise gefunden wird gibt der Algorithmus NULL zurück.
+
+\begin{verbatim}
+AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
+Tile food = new Tile(20,16);
+Tile antClosestToFood = bfs.findSingleClosestTile(food, 40, new GoalTest() {
+      @Override
+      public boolean isGoal(Tile tile) {
+          return isAntOnTile(tile);
+      }
+  });
+\end{verbatim}
+
+Es ist auch möglich mehrere Tiles zurück zu bekommen. Dazu wird die Methode findClosestTiles(...) aufgerufen.
+\newline
+\newline
+
+Der gleiche Alogrithmus kann aber auch alle passierbaren Tiles in einem gewissen Umkreis zurückgeben. Dies haben wir unteranderem beim Initialisieren der DefendHillMission verwendet. Wir berechnen beim Erstellen der Mission die passierbaren Tiles rundum den Hügel. Runde für Runde prüfen wir diese Tiles auf gegnerische Ameisen um die entsprechenden Verteidigungsmassnahmen zu ergreifen. Der Parameter controlAreaRadius2 definiert den Radius des 'Radars' und kann je nach Profile unterschiedlich eingestellt werden.
+
+\begin{verbatim}
+public DefendHillMission(Tile myhill) {
+    this.hill = myhill;
+    BreadthFirstSearch bfs = new BreadthFirstSearch(Ants.getWorld());
+    tilesAroundHill = bfs.floodFill(myhill, controlAreaRadius2);
+}
+\end{verbatim}
