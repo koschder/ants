@@ -99,4 +99,43 @@ List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, start, end, -1);
 \end{verbatim}
 
 \subsection{Pfadsuche mittels Influence Map}
-\label{subsec:module.Suchalgorithmen.Pfadsuche.HPAstar}
+\label{subsec:module.Suchalgorithmen.Pfadsuche.WithInfluenceMap}
+
+Die Influence Map, welche wir während der Bachelorarbeit neu implementiert haben, kann auch für die Pfadsuche verwendet werden. Dabei sind die Pfadkosten für Gebiete in die vom Gegner kontrolliert sind höher als für neutrale Gebiete und tiefer für solche Gebiete die von unseren Ameisen kontrolliert werden. (Details zur Implementierung der Influence Map sieh Kapitel TODO) Die Methode getActualCost(...) in der Klasse SearchStrategy wurde erweitert. Falls die Suche mit einer InfluenceMap initialisiert wurde, sind die Kosten nicht eine Einheit pro Pfadtile, sondern können zwischen 1 (sicheres Gebiet) - 4 (gefährliches Gebiet) Einheiten varieren. (Die Pfadkosten dürfen nicht negativ sein, sonst würde der A* Algorithmus nicht mehr korrekt funktionieren.) Die Kosten für jeden Pfadabschnitt werden durch die Methode getPathCosts(...) der InfluenceMap berechnet.
+
+\begin{verbatim}
+protected final int getActualCost(Node current, PathPiece piece) {
+    int costOfPiece = 0;
+    if (useInflunceMap)
+        costOfPiece = pathFinder.getInfluenceMap().getPathCosts(piece);
+    else
+        costOfPiece = piece.getCost();
+    return current.getActualCost() + costOfPiece;
+}
+\end{verbatim}
+
+Dadurch resultiert ein Pfad der durch sicheres Gebiet führt. Folgende Ausgabe, welche durch einen UnitTest generiert wurde, bezeugt die korrekte Funktionalität. Der rote Punkt soll mit dem schwarzen Punkt durch einen Pfad verbunden werden. Auf der Karte sind zudem die eigenen, orangen Einheiten sowie die gengerischen Einheiten (blau) abgebildet. Jede Einheit trägt zur Berechnung der Influence Map bei. Pro Tile wird die Sicherheit ausgegeben, negativ für Gebiete die vom Gegner kontrolliert werden und positiv in unserem Hoheitsgebiet.
+
+\begin{figure}[bth]
+\centering
+\includegraphics[height=50mm]{91_bilder/influenceAStar01.jpg}
+\caption{Ausgangslage Pfadsuche mit A* und InfluenceMap}
+\label{fig.InfluenceAndPathfinding01}
+\end{figure}
+
+Ohne Berücksichtigung der InfluenceMap würde der A* Algorithmus einen Pfad finden der auf direktem Weg waagrecht zum Zielpunkt führt. Sobald aber die InfluenceMap berücksichtigt wird, führt der Pfad nicht mehr auf dem direktestem Weg zum Ziel, sondern nimmt einen Umweg über sicheres Gebiet. Unten abgebildet ist der kürzeste Pfad mit Berücksichtigung der Influence Map (blau) und ohne Influence Map-Berücksichtigung (orange). 
+
+\begin{figure}[bth]
+\centering
+\includegraphics[height=50mm]{91_bilder/influenceAStar02.jpg}
+\caption{Resultierende Pfade mit und ohne Berücksichtigung der Influence Map}
+\label{fig.InfluenceAndPathfinding02}
+\end{figure}
+
+Die Pfadkosten für beide Pfade verglichen, legt offen, dass je nach Berücksichtigung der Influence Map nicht der gleiche Pfad als der 'Kürzeste' von A* gefunden wird.
+
+\begin{tabular}{p{3cm}|p{5cm}|p{5cm}}
+ & Kosten ohne Influence Map &Kosten mit Influence Map \\
+ Oranger Pfad & \textbf{34} & 110 \\
+ BlauerPfad & 46 & \textbf{106} \\
+ \end{tabular}

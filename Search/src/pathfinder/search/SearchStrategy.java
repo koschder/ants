@@ -113,11 +113,13 @@ public abstract class SearchStrategy {
      * @param dest
      * @return the costs for dest
      */
-    protected final int getActualCost(Node current, PathPiece dest) {
-        if (useInflunceMap) {
-            return current.getActualCost() + pathFinder.getInfluenceMap().getPathCosts(dest);
-        }
-        return current.getActualCost() + dest.getCost();
+    protected final int getActualCost(Node current, PathPiece piece) {
+        int costOfPiece = 0;
+        if (useInflunceMap)
+            costOfPiece = pathFinder.getInfluenceMap().getPathCosts(piece);
+        else
+            costOfPiece = piece.getCost();
+        return current.getActualCost() + costOfPiece;
     }
 
     /**

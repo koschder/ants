@@ -3,6 +3,7 @@ package unittest.ants.strategy;
 import influence.DefaultInfluenceMap;
 import influence.unittest.InfluenceTestMap;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.junit.Test;
@@ -35,6 +36,15 @@ public class InfluenceMapAstar {
 
         MapOutput put = new MapOutput();
         put.setMap(map);
+        put.addAllUnits();
+        put.addObject(Arrays.asList(new Tile[] { start }), "start");
+        put.addObject(Arrays.asList(new Tile[] { end }), "end");
+
+        put.cleanUp(true, getSafetyDecorator(iMap));
+
+        put.addObject(Arrays.asList(new Tile[] {}), "start");
+        put.addObject(Arrays.asList(new Tile[] {}), "end");
+
         put.addObject(path, "Cheapest path without influence");
         put.addObject(pathInf, "Cheapest path considering influence");
         put.addComment("Path costs yellow path without influence map:" + pf.getPathCosts(path));
@@ -44,8 +54,8 @@ public class InfluenceMapAstar {
         put.addComment("Path costs of blue path without influence map:" + pf.getPathCosts(pathInf));
         put.addComment("Path costs of blue path with influence map:" + pfInf.getPathCosts(pathInf));
         put.addComment(" Detail costs:  [" + pfInf.getPathCostsString(pathInf) + "]");
-        put.setClusterSize(5);
-        put.addAllUnits();
+        // // put.setClusterSize(5);
+        // put.addAllUnits();
         put.saveHtmlMap("InfluenceMapAstar_aStarInfluenceTest", getSafetyDecorator(iMap));
 
     }
@@ -54,12 +64,12 @@ public class InfluenceMapAstar {
         String sMap = "";
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
         sMap += "woooooooooowwwwwwwwwwooooooooooooooow";
-        sMap += "woo0o1oooo2ooo2ooo2o2oo0ooooooo0oooow";
+        sMap += "woo0o1oooo1ooo1ooo1o1oo0ooooooo0oooow";
         sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
         sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
         sMap += "wooo0ooowwwwwwwwwwwwwooooowooo1ooooow";
         sMap += "woooooooooooow0ooooooo0ooowooooooooow";
-        sMap += "wooooooooooo0woo0owoooooo2wooooooooow";
+        sMap += "wooooooooooo0woo0owoooooo1wooooooooow";
         sMap += "woooo1oooooooooooowooooooowooooooooow";
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
         return sMap;
