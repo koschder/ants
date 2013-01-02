@@ -103,19 +103,6 @@ public class Tile implements Comparable<Tile>, PathPiece {
     }
 
     @Override
-    public boolean isInSearchSpace(Tile searchSpace1, Tile searchSpace2) {
-
-        if (searchSpace1 == null || searchSpace2 == null)
-            return true; // no searchspace defined.
-
-        if (searchSpace1.getRow() <= this.getRow() && searchSpace1.getCol() <= this.getCol())
-            if (searchSpace2.getRow() >= this.getRow() && searchSpace2.getCol() >= this.getCol())
-                return true;
-
-        return false;
-    }
-
-    @Override
     public Tile getTargetTile() {
         return this;
 
