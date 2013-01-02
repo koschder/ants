@@ -7,7 +7,7 @@ import pathfinder.search.AStarSearchStrategy;
 import pathfinder.search.SearchStrategy;
 import pathfinder.search.SimpleSearchStrategy;
 import api.entities.Tile;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 import api.search.SearchableMap;
 import api.strategy.InfluenceMap;
 
@@ -45,7 +45,7 @@ public class SimplePathFinder implements PathFinder {
     }
 
     @Override
-    public List<Tile> search(Strategy strategy, SearchTarget start, SearchTarget end, int maxCost) {
+    public List<Tile> search(Strategy strategy, PathPiece start, PathPiece end, int maxCost) {
         SearchStrategy searchStrat = getStrategy(strategy);
         searchStrat.setMaxCost(maxCost);
         final List<Tile> path = searchStrat.search(start, end);
@@ -55,12 +55,12 @@ public class SimplePathFinder implements PathFinder {
     }
 
     @Override
-    public List<Tile> search(Strategy strategy, SearchTarget start, SearchTarget end) {
+    public List<Tile> search(Strategy strategy, PathPiece start, PathPiece end) {
         return search(strategy, start, end, -1);
     }
 
     @Override
-    public List<Tile> search(Strategy strategy, SearchTarget start, SearchTarget end, Tile searchSpace0,
+    public List<Tile> search(Strategy strategy, PathPiece start, PathPiece end, Tile searchSpace0,
             Tile searchSpace1, int maxCost) {
         SearchStrategy searchStrat = getStrategy(strategy);
         searchStrat.setMaxCost(maxCost);

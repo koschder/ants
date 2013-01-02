@@ -20,7 +20,7 @@ import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
 import api.map.AbstractWraparoundMap;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 import api.search.SearchableUnitMap;
 import api.strategy.InfluenceMap;
 
@@ -280,18 +280,18 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
     }
 
     @Override
-    public List<SearchTarget> getSuccessorsForPathfinding(SearchTarget target, boolean isNextMove) {
+    public List<PathPiece> getSuccessorsForPathfinding(PathPiece target, boolean isNextMove) {
         return getSuccessorsInternal(target, isNextMove, false);
     }
 
     @Override
-    public List<SearchTarget> getSuccessorsForSearch(SearchTarget target, boolean isNextMove) {
+    public List<PathPiece> getSuccessorsForSearch(PathPiece target, boolean isNextMove) {
         return getSuccessorsInternal(target, isNextMove, true);
     }
 
-    private List<SearchTarget> getSuccessorsInternal(SearchTarget target, boolean isNextMove, boolean includeOwnHills) {
+    private List<PathPiece> getSuccessorsInternal(PathPiece target, boolean isNextMove, boolean includeOwnHills) {
         Tile state = target.getTargetTile();
-        List<SearchTarget> list = new ArrayList<SearchTarget>();
+        List<PathPiece> list = new ArrayList<PathPiece>();
         if (isPassable(getTile(state, Aim.NORTH), isNextMove, includeOwnHills))
             list.add(getTile(state, Aim.NORTH));
         if (isPassable(getTile(state, Aim.SOUTH), isNextMove, includeOwnHills))
@@ -397,7 +397,7 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
         String log = "";
         Tile safestTile = null;
         int bestSafety = Integer.MIN_VALUE;
-        for (SearchTarget neighbour : getSuccessorsForPathfinding(tile, true)) {
+        for (PathPiece neighbour : getSuccessorsForPathfinding(tile, true)) {
             if (Ants.getOrders().isMovePossible(neighbour.getTargetTile())) {
                 final int safety = influenceMap.getSafety(neighbour.getTargetTile());
                 log += neighbour + " saftey: " + safety + ",";

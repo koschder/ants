@@ -4,7 +4,7 @@ import java.util.List;
 
 import api.entities.Tile;
 import api.map.AbstractWraparoundMap;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 import api.strategy.InfluenceMap;
 
 /**
@@ -20,12 +20,12 @@ class SimpleUnitTestMap extends AbstractWraparoundMap {
     }
 
     @Override
-    public List<SearchTarget> getSuccessorsForPathfinding(SearchTarget currentPosition, boolean isNextMove) {
+    public List<PathPiece> getSuccessorsForPathfinding(PathPiece currentPosition, boolean isNextMove) {
         return null;
     }
 
     @Override
-    public List<SearchTarget> getSuccessorsForSearch(SearchTarget target, boolean isNextMove) {
+    public List<PathPiece> getSuccessorsForSearch(PathPiece target, boolean isNextMove) {
         return null;
     }
 

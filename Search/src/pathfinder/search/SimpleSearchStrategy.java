@@ -9,7 +9,7 @@ import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import api.entities.Aim;
 import api.entities.Tile;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 
 /**
  * the simplest algorithm for finding a path by connecting the destination and the target location with two straight
@@ -31,7 +31,7 @@ public class SimpleSearchStrategy extends SearchStrategy {
      * DirectedEdges
      */
     @Override
-    public List<Tile> searchPath(SearchTarget areaFrom, SearchTarget areaTo) {
+    public List<Tile> searchPath(PathPiece areaFrom, PathPiece areaTo) {
 
         if (!(areaFrom instanceof Tile && areaTo instanceof Tile))
             throw new RuntimeException("SimpleSearchStrategy not implmented for class" + areaTo.getClass());

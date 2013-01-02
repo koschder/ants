@@ -1,7 +1,7 @@
 package api.strategy;
 
 import api.entities.Tile;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 import api.search.SearchableUnitMap;
 
 /**
@@ -59,6 +59,6 @@ public interface InfluenceMap {
      *            a path piece
      * @return costs
      */
-    public int getPathCosts(SearchTarget pathPiece);
+    public int getPathCosts(PathPiece pathPiece);
 
 }

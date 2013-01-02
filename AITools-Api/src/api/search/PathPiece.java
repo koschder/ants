@@ -10,17 +10,17 @@ import api.entities.Tile;
  * @author kases1, kustl1
  * 
  */
-public interface SearchTarget {
+public interface PathPiece {
 
     /**
-     * Returns the path which this SearchTarget overcomes
+     * Returns the path which this PathPiece overcomes
      * 
      * @return
      */
     List<Tile> getPath();
 
     /**
-     * Checks if this SearchTarget is in a search space given by the parameters.
+     * Checks if this PathPiece is in a search space given by the parameters.
      * 
      * @param searchSpace1
      * @param searchSpace2
@@ -29,7 +29,7 @@ public interface SearchTarget {
     boolean isInSearchSpace(Tile searchSpace1, Tile searchSpace2);
 
     /**
-     * returns the tile on wich this SearchTarget leds to.
+     * returns the tile on wich this PathPiece leds to.
      * 
      * @return
      */
@@ -44,9 +44,9 @@ public interface SearchTarget {
     /**
      * 
      * @param to
-     * @return True if the SearchTarget is the final state (target) of the search.
+     * @return True if the PathPiece is the final state (target) of the search.
      */
-    boolean isFinal(SearchTarget to);
+    boolean isFinal(PathPiece to);
 
     /**
      * 

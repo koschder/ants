@@ -7,7 +7,7 @@ import java.util.List;
 import logging.Logger;
 import logging.LoggerFactory;
 import api.entities.Tile;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 import api.search.SearchableMap;
 
 /**
@@ -120,8 +120,8 @@ public class BreadthFirstSearch {
         while (!frontier.isEmpty() && explored.size() < maxNodes) {
             Tile next = frontier.poll();
             explored.add(next);
-            List<SearchTarget> tiles = getSuccessors(next);
-            for (SearchTarget child : tiles) {
+            List<PathPiece> tiles = getSuccessors(next);
+            for (PathPiece child : tiles) {
                 final Tile childTile = child.getTargetTile();
                 // don't consider a tile twice
                 if (frontier.contains(childTile) || explored.contains(childTile)) {
@@ -155,7 +155,7 @@ public class BreadthFirstSearch {
      * @param next
      * @return
      */
-    private List<SearchTarget> getSuccessors(Tile next) {
+    private List<PathPiece> getSuccessors(Tile next) {
         return map.getSuccessorsForSearch(next, false);
     }
 

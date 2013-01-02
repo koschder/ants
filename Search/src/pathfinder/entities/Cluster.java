@@ -12,7 +12,7 @@ import pathfinder.PathFinder;
 import pathfinder.entities.Edge.EdgeType;
 import api.entities.Aim;
 import api.entities.Tile;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 
 /**
  * a cluster is an area on the map. the cluster connects the neighbor cluster throw passable edges along the cluster
@@ -199,8 +199,8 @@ public class Cluster {
      *            DirectedEdge
      * @return all successor nodes
      */
-    public List<SearchTarget> getEdgeWithNeighbourCluster(DirectedEdge e) {
-        List<SearchTarget> list = new ArrayList<SearchTarget>();
+    public List<PathPiece> getEdgeWithNeighbourCluster(DirectedEdge e) {
+        List<PathPiece> list = new ArrayList<PathPiece>();
 
         list.addAll(getEdgesOfCluster(e.getEnd(), row, col));
 
@@ -222,7 +222,7 @@ public class Cluster {
             list.addAll(getEdgesOfCluster(e.getEnd(), row, col + 1));
 
         LOGGER_ASTAR.debug("%s neighbour cluster found", list.size());
-        for (SearchTarget t : list)
+        for (PathPiece t : list)
             LOGGER_ASTAR.debug("      => %s", t);
         return list;
     }
@@ -268,10 +268,10 @@ public class Cluster {
      * @param clusterCol
      * @return
      */
-    private List<SearchTarget> getEdgesOfCluster(Tile start, int clusterRow, int clusterCol) {
+    private List<PathPiece> getEdgesOfCluster(Tile start, int clusterRow, int clusterCol) {
         Cluster c = clustering.getClusterWrapAround(clusterRow, clusterCol);
         LOGGER_PATH.debug("search edge starts with %s in %s", start, c);
-        List<SearchTarget> list = new ArrayList<SearchTarget>();
+        List<PathPiece> list = new ArrayList<PathPiece>();
         for (Edge e : c.edges) {
             // LOGGER_PATH.debug("scan edge %s ", e);
             if (e.getTile1().equals(start)) {

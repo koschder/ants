@@ -11,7 +11,7 @@ import pathfinder.SimplePathFinder;
 import api.entities.Aim;
 import api.entities.Tile;
 import api.map.AbstractWraparoundMap;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 import api.strategy.InfluenceMap;
 
 public class Clustering extends AbstractWraparoundMap {
@@ -355,9 +355,9 @@ public class Clustering extends AbstractWraparoundMap {
     }
 
     @Override
-    public List<SearchTarget> getSuccessorsForPathfinding(SearchTarget currentEdge, boolean isNextMove) {
+    public List<PathPiece> getSuccessorsForPathfinding(PathPiece currentEdge, boolean isNextMove) {
         if (!(currentEdge instanceof DirectedEdge)) {
-            throw new IllegalArgumentException("SearchTarget must be of the type DirectedEdge");
+            throw new IllegalArgumentException("PathPiece must be of the type DirectedEdge");
         }
 
         DirectedEdge e = (DirectedEdge) currentEdge;
@@ -366,7 +366,7 @@ public class Clustering extends AbstractWraparoundMap {
     }
 
     @Override
-    public List<SearchTarget> getSuccessorsForSearch(SearchTarget currentEdge, boolean isNextMove) {
+    public List<PathPiece> getSuccessorsForSearch(PathPiece currentEdge, boolean isNextMove) {
         return getSuccessorsForPathfinding(currentEdge, isNextMove);
     }
 

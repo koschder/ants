@@ -13,7 +13,7 @@ import pathfinder.LogCategory;
 import pathfinder.PathFinder;
 import pathfinder.entities.Node;
 import api.entities.Tile;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 
 /**
  * this class implements the AStar algorithm for path finding
@@ -29,7 +29,7 @@ public class AStarSearchStrategy extends SearchStrategy {
         super(f);
     }
 
-    private SearchTarget to;
+    private PathPiece to;
 
     @Override
     /*
@@ -37,7 +37,7 @@ public class AStarSearchStrategy extends SearchStrategy {
      * 
      * @see starter.SearchStrategy#bestPath(starter.Tile, starter.Tile)
      */
-    public List<Tile> searchPath(SearchTarget from, SearchTarget to) {
+    public List<Tile> searchPath(PathPiece from, PathPiece to) {
         this.to = to;
         List<Tile> list = calculateBestPath(from, to);
         return list;
@@ -52,11 +52,11 @@ public class AStarSearchStrategy extends SearchStrategy {
      *            Emd area
      * @return path if found, else null
      */
-    private List<Tile> calculateBestPath(SearchTarget from, SearchTarget to) {
+    private List<Tile> calculateBestPath(PathPiece from, PathPiece to) {
         if (from.equals(to))
             return to.getPath();
         boolean bPrintFrontier = false;
-        Set<SearchTarget> explored = new HashSet<SearchTarget>();
+        Set<PathPiece> explored = new HashSet<PathPiece>();
         PriorityQueue<Node> frontier = new PriorityQueue<Node>();
         frontier.add(new Node(from, null, 0, getEstimatedCosts(from.getTargetTile(), to.getTargetTile())));
         while (!frontier.isEmpty()) {
@@ -104,9 +104,9 @@ public class AStarSearchStrategy extends SearchStrategy {
      */
     public List<Node> expand(Node node) {
         List<Node> children = new ArrayList<Node>();
-        List<SearchTarget> list = pathFinder.getMap().getSuccessorsForPathfinding(node.getState(),
+        List<PathPiece> list = pathFinder.getMap().getSuccessorsForPathfinding(node.getState(),
                 node.getParent() == null);
-        for (SearchTarget a : list) {
+        for (PathPiece a : list) {
             addChild(node, children, a);
         }
         return children;
@@ -119,7 +119,7 @@ public class AStarSearchStrategy extends SearchStrategy {
      * @param children
      * @param childState
      */
-    private void addChild(Node parent, List<Node> children, SearchTarget childState) {
+    private void addChild(Node parent, List<Node> children, PathPiece childState) {
         if (!inSearchSpace(childState)) {
             LOGGER.debug("tile %s is not in searchspace", childState);
             return;

@@ -10,7 +10,7 @@ import pathfinder.SimplePathFinder;
 import pathfinder.entities.Clustering;
 import pathfinder.entities.DirectedEdge;
 import api.entities.Tile;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 
 /**
  * the class implements the HPA* search (hierarcical path A star)
@@ -30,12 +30,12 @@ public class HPAStarSearchStrategy extends SearchStrategy {
     }
 
     /**
-     * return the best path between the from and the to SearchTarget using the HPA* algorithm. if the clustering for the
+     * return the best path between the from and the to PathPiece using the HPA* algorithm. if the clustering for the
      * HPA* is not ready yet we use A*
      * 
      * @return the found path, or null if no path is found
      */
-    public List<Tile> searchPath(SearchTarget from, SearchTarget to) {
+    public List<Tile> searchPath(PathPiece from, PathPiece to) {
 
         Tile start = from.getTargetTile();
         Tile end = to.getTargetTile();
@@ -70,7 +70,7 @@ public class HPAStarSearchStrategy extends SearchStrategy {
 
     }
 
-    private List<Tile> findPathWithAStar(SearchTarget start, SearchTarget end, int maxCost) {
+    private List<Tile> findPathWithAStar(PathPiece start, PathPiece end, int maxCost) {
         return pathFinder.search(PathFinder.Strategy.AStar, start, end, maxCost);
     }
 

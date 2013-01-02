@@ -1,6 +1,6 @@
 package pathfinder.entities;
 
-import api.search.SearchTarget;
+import api.search.PathPiece;
 
 /**
  * this class is used in the as item in the frontier and in the explored list at A* algorithm.
@@ -11,9 +11,9 @@ import api.search.SearchTarget;
 public class Node implements Comparable<Node> {
 
     /**
-     * current SearchTarget
+     * current PathPiece
      */
-    private SearchTarget state;
+    private PathPiece state;
     /**
      * parent node
      */
@@ -27,7 +27,7 @@ public class Node implements Comparable<Node> {
      */
     private int actualCost;
 
-    public Node(SearchTarget state, Node parent, int actualCosts, double costEstimated) {
+    public Node(PathPiece state, Node parent, int actualCosts, double costEstimated) {
         this.state = state;
         this.parent = parent;
         this.actualCost = actualCosts;
@@ -38,7 +38,7 @@ public class Node implements Comparable<Node> {
      * 
      * @return the position of the tile
      */
-    public SearchTarget getState() {
+    public PathPiece getState() {
         return state;
     }
 

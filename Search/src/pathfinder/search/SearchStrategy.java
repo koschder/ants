@@ -10,7 +10,7 @@ import pathfinder.entities.Node;
 import api.entities.Tile;
 import api.map.TileMap;
 import api.map.WorldType;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 
 /**
  * definitions for a search strategy
@@ -44,7 +44,7 @@ public abstract class SearchStrategy {
      * @param to
      * @return the path in a list or null if no path is found.
      */
-    protected abstract List<Tile> searchPath(SearchTarget from, SearchTarget to);
+    protected abstract List<Tile> searchPath(PathPiece from, PathPiece to);
 
     /**
      * Searches the path and logs the calls
@@ -53,7 +53,7 @@ public abstract class SearchStrategy {
      * @param to
      * @return the path if found, or null if path is empty
      */
-    public List<Tile> search(SearchTarget from, SearchTarget to) {
+    public List<Tile> search(PathPiece from, PathPiece to) {
         long start = System.currentTimeMillis();
 
         List<Tile> path = searchPath(from, to);
@@ -71,7 +71,7 @@ public abstract class SearchStrategy {
      * @param from
      * @param to
      */
-    private void log(List<Tile> path, SearchTarget from, SearchTarget to) {
+    private void log(List<Tile> path, PathPiece from, PathPiece to) {
         String pathlength = path != null ? "path has size of " + path.size() : "path not found";
         String searchSpaceInfo = "";
         if (searchSpace1 != null) {
@@ -113,7 +113,7 @@ public abstract class SearchStrategy {
      * @param dest
      * @return the costs for dest
      */
-    protected final int getActualCost(Node current, SearchTarget dest) {
+    protected final int getActualCost(Node current, PathPiece dest) {
         if (useInflunceMap) {
             return current.getActualCost() + pathFinder.getInfluenceMap().getPathCosts(dest);
         }
@@ -121,12 +121,12 @@ public abstract class SearchStrategy {
     }
 
     /**
-     * checks if the SearchTarget is in the defined search space
+     * checks if the PathPiece is in the defined search space
      * 
      * @param areaCheck
      * @return true if inside
      */
-    protected boolean inSearchSpace(SearchTarget areaCheck) {
+    protected boolean inSearchSpace(PathPiece areaCheck) {
 
         if (searchSpace1 == null || searchSpace2 == null)
             return true; // no search space defined.

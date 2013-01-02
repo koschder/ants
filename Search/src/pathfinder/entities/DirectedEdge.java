@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 
 import api.entities.Tile;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 
 /**
  * DirectedEdge extended of Edge and is used to define which is the start and the end tile of the Edge
@@ -12,7 +12,7 @@ import api.search.SearchTarget;
  * @author kases1, kustl1
  * 
  */
-public class DirectedEdge extends Edge implements SearchTarget {
+public class DirectedEdge extends Edge implements PathPiece {
 
     private Tile startTile;
 
@@ -103,7 +103,7 @@ public class DirectedEdge extends Edge implements SearchTarget {
     }
 
     @Override
-    public boolean isFinal(SearchTarget to) {
+    public boolean isFinal(PathPiece to) {
         return getEnd().equals(to.getTargetTile()) || getStart().equals(to.getTargetTile());
     }
 

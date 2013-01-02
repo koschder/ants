@@ -18,7 +18,7 @@ import ants.util.LiveInfo;
 import api.entities.Aim;
 import api.entities.Move;
 import api.entities.Tile;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 
 /**
  * This class tracks all orders and missions for our ants. It ensures that no conflicting orders are given.
@@ -108,9 +108,9 @@ public class Orders {
             return true;
         // the field is occupied at the moment, but the ant is moving away with the next move.
         sLog += "check if ant will go away neighbrs are: ";
-        List<SearchTarget> neighbours = Ants.getWorld().getSuccessorsForPathfinding(nextLocation, false);
+        List<PathPiece> neighbours = Ants.getWorld().getSuccessorsForPathfinding(nextLocation, false);
         sLog += neighbours;
-        for (SearchTarget neighbour : neighbours) {
+        for (PathPiece neighbour : neighbours) {
             if (orders.containsKey(neighbour.getTargetTile())) {
                 sLog += "there is a order to neighbour " + neighbour;
                 // there is a move where a ant goes to a neighbour cell, maybe it's the ant of "nextlocation"

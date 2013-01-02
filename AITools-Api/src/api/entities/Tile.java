@@ -6,12 +6,12 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import api.search.SearchTarget;
+import api.search.PathPiece;
 
 /**
  * Represents a tile of the game map.
  */
-public class Tile implements Comparable<Tile>, SearchTarget {
+public class Tile implements Comparable<Tile>, PathPiece {
     private final int row;
 
     private final int col;
@@ -127,7 +127,7 @@ public class Tile implements Comparable<Tile>, SearchTarget {
     }
 
     @Override
-    public boolean isFinal(SearchTarget to) {
+    public boolean isFinal(PathPiece to) {
         return this.equals(to);
     }
 

@@ -11,7 +11,7 @@ import search.BreadthFirstSearch;
 import api.entities.Tile;
 import api.entities.Unit;
 import api.map.UnitMap;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 import api.search.SearchableUnitMap;
 import api.strategy.InfluenceMap;
 import api.test.MapOutput;
@@ -123,7 +123,7 @@ public class DefaultInfluenceMap implements InfluenceMap {
     private int defaultPathCost = 1;
 
     @Override
-    public int getPathCosts(SearchTarget dest) {
+    public int getPathCosts(PathPiece dest) {
         int maxInfluence = 200; // cost spectrum -1000 to 1000
 
         int costs = 0;

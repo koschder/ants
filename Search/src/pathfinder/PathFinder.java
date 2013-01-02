@@ -3,7 +3,7 @@ package pathfinder;
 import java.util.List;
 
 import api.entities.Tile;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 import api.search.SearchableMap;
 import api.strategy.InfluenceMap;
 
@@ -42,7 +42,7 @@ public interface PathFinder {
      *            maximum Costs for the path, if param is set to -1 no costs are calculated.
      * @return the found path, or null if no path found.
      */
-    public List<Tile> search(Strategy strategy, SearchTarget start, SearchTarget end, int maxCost);
+    public List<Tile> search(Strategy strategy, PathPiece start, PathPiece end, int maxCost);
 
     /**
      * 
@@ -54,7 +54,7 @@ public interface PathFinder {
      *            position
      * @return the found path, or null if no path found.
      */
-    public List<Tile> search(Strategy strategy, SearchTarget start, SearchTarget end);
+    public List<Tile> search(Strategy strategy, PathPiece start, PathPiece end);
 
     /**
      * 
@@ -72,7 +72,7 @@ public interface PathFinder {
      *            maximum Costs for the path, if param is set to -1 no costs are calculated.
      * @return the found path, or null if no path found.
      */
-    public List<Tile> search(Strategy strategy, SearchTarget start, SearchTarget end, Tile searchSpace0,
+    public List<Tile> search(Strategy strategy, PathPiece start, PathPiece end, Tile searchSpace0,
             Tile searchSpace1, int maxCost);
 
     /**

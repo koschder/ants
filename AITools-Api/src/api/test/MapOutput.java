@@ -9,7 +9,6 @@ import java.util.List;
 
 import api.entities.Tile;
 import api.entities.Unit;
-import api.map.MapObject;
 import api.map.TileMap;
 import api.map.UnitMap;
 

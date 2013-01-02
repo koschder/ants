@@ -6,7 +6,7 @@ import java.util.List;
 import api.entities.Aim;
 import api.entities.Tile;
 import api.map.AbstractWraparoundMap;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 import api.strategy.InfluenceMap;
 
 /**
@@ -90,9 +90,9 @@ public class UnitTestMap extends AbstractWraparoundMap {
         return true;
     }
 
-    public List<SearchTarget> getSuccessorsForPathfinding(SearchTarget target, boolean isNextMove) {
+    public List<PathPiece> getSuccessorsForPathfinding(PathPiece target, boolean isNextMove) {
         Tile state = target.getTargetTile();
-        List<SearchTarget> list = new ArrayList<SearchTarget>();
+        List<PathPiece> list = new ArrayList<PathPiece>();
         if (isPassable(getTile(state, Aim.NORTH)))
             list.add(getTile(state, Aim.NORTH));
         if (isPassable(getTile(state, Aim.SOUTH)))
@@ -106,7 +106,7 @@ public class UnitTestMap extends AbstractWraparoundMap {
     }
 
     @Override
-    public List<SearchTarget> getSuccessorsForSearch(SearchTarget currentEdge, boolean isNextMove) {
+    public List<PathPiece> getSuccessorsForSearch(PathPiece currentEdge, boolean isNextMove) {
         return getSuccessorsForPathfinding(currentEdge, isNextMove);
     }
 

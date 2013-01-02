@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import api.entities.Tile;
-import api.search.SearchTarget;
+import api.search.PathPiece;
 import api.search.SearchableUnitMap;
 import api.strategy.InfluenceMap;
 
@@ -41,7 +41,7 @@ public class StubInfluenceMap implements InfluenceMap {
     }
 
     @Override
-    public int getPathCosts(SearchTarget dest) {
+    public int getPathCosts(PathPiece dest) {
         return 0;
     }
 

@@ -24,7 +24,7 @@ public interface SearchableMap extends TileMap {
      *            (is this path part used for next game step or later)
      * @return all "next" positions
      */
-    public List<SearchTarget> getSuccessorsForPathfinding(SearchTarget currentPosition, boolean isNextMove);
+    public List<PathPiece> getSuccessorsForPathfinding(PathPiece currentPosition, boolean isNextMove);
 
     /**
      * Returns one or two orthogonal directions from one location to the another.
@@ -61,13 +61,13 @@ public interface SearchableMap extends TileMap {
     public Tile getTile(Tile tile, Aim direction);
 
     /**
-     * this method returns all successors "next tiles" this for SearchTarget
+     * this method returns all successors "next tiles" this for PathPiece
      * 
      * @param target
      * @param isNextMove
      * @return
      */
-    public List<SearchTarget> getSuccessorsForSearch(SearchTarget target, boolean isNextMove);
+    public List<PathPiece> getSuccessorsForSearch(PathPiece target, boolean isNextMove);
 
     /**
      * returns the safest next tile to the Tile position with a lookup on the influenceMap

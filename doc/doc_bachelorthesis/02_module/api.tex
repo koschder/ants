@@ -1,2 +1,50 @@
 \chapter{API}
 \label{sec:module.API}
+
+Unsere AITools API dient als Grundbaustein des gesamten Projekt. Sie entkapselt die Interfaces zu unseren Search- und Strategieimpelementierungen. Sie beinhaltet zudem Basisklassen, welche überall verwendet werden. Der Inhalt ist wiefolgt:
+
+\section{Entities}
+\label{sec:mocule.API.Entities}
+\begin{itemize}
+\item
+\textbf{Aim}: Richtungsangabe zum Beschreiben einer Bewegung der Ameise
+\item
+\textbf{Tile}: Ortsangabe auf dem Spielfeld mit Row (Zeile) und Column (Spalte) beschrieben.
+\item
+\textbf{Move}: Diese Klasse beschreibt einen Spielzug mit den Eigenschaften Tile, von wo aus der Zug statt findet, und Aim, in welche Richtung der Zug ausgeführt wird.
+\item
+\textbf{Unit}: Unit besteht aus Tile und Spieler und definiert eine Einheit eines Spielers auf der Karte.
+\end{itemize}
+
+\section{Map}
+\label{sec:mocule.API.Map}
+
+\begin{itemize}
+\item
+\textbf{TileMap}:  Dieses Interface definiert, welche Methoden eine auf Tiles aufbauende Spielkarte anbieten muss. Dazu gehören die Masse der Karte, ob ein Tile auf der Karte sichtbar und passierbar ist, sowie Distanz Messfunktion wie ManhattanDistanz, Luftlinie, quadrierte Distanz.
+\item
+\textbf{UnitMap}: UnitMap ist auch ein Interface welches auf TileMap aufbaut und zusätzlich die Methoden definiert die Einheiten und Spieler zurückzugeben.
+\item
+\textbf{AbstractWraparoundMap}: Implementiert das Interface SearchableMap (siehe: Search). Hier sind alle Methoden implementiert, welche die Karte anbieten muss, damit sie mit den Suchalgorihmen verwendet werden kann. Zudem sind die Methoden aus TileMap implementiert. Diese geben über die Geländebeschaffenheit und Distanzen Auskunft.
+\item
+\textbf{WorldType}: WorldType ist ein Enum und definiert die Art der Karte. Der Typ Globus hat keine Kartenränder, ist also ringsum begehbar. Von diesem Typ ist auch die Ants Challenge somit auch die Klasse AbstractWraparoundMap. Der zweite Enumtyp ist Pizza und definiert eine Welt so wie unsere Erde vor 500 Jahren noch definiert wurde, eine Scheibe mit Rändern, welche die Welt begrenzen. Dieser zweite Typ wurde provisorisch erstellt. Falls diese API eine Weiterverwendung findet, kann dieser Typ zusätzlich implementiert werden.
+\end{itemize}
+
+
+TODO Grafik vererbung UnitMap SearchableMap WarparaoundMAP
+
+
+\section{Search}
+\label{sec:mocule.API.Search}
+
+\begin{itemize}
+\item
+\textbf{SearchableMap}: Richtungsangabe zum Beschreiben einer Bewegung der Ameise
+\item
+\textbf{SearchableUnitMap}: Ortsangabe auf dem Spielfeld mit Row (Zeile) und Column (Spalte) beschrieben.
+\item
+\textbf{SearchTarget}: Diese Klasse beschreibt einen Spielzug mit den Eigenschaften Tile, von wo aus der Zug statt findet, und Aim, in welche Richtung der Zug ausgeführt wird.
+\item
+\textbf{Unit}: Unit besteht aus Tile und Spieler und definiert eine Einheit eines Spielers auf der Karte.
+\end{itemize}
+ 
