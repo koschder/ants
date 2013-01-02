@@ -22,8 +22,8 @@ import strategy.LogCategory;
 import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
-import api.search.SearchableUnitMap;
 import api.strategy.InfluenceMap;
+import api.strategy.SearchableUnitMap;
 
 public class DefaultCombatPositioning implements CombatPositioning {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.COMBAT_POSITIONING);

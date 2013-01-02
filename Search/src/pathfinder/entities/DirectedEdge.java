@@ -1,3 +1,4 @@
+
 package pathfinder.entities;
 
 import java.util.Collections;
@@ -67,11 +68,6 @@ public class DirectedEdge extends Edge implements PathPiece {
      */
     public Tile getStart() {
         return this.startTile;
-    }
-
-    @Override
-    public boolean isInSearchSpace(Tile searchSpace1, Tile searchSpace2) {
-        return true;
     }
 
     @Override
