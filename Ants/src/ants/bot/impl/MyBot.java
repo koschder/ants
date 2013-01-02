@@ -16,7 +16,7 @@ import ants.tasks.DefendHillTask;
 import ants.tasks.ExploreTask;
 import ants.tasks.GatherFoodTask;
 import ants.tasks.MissionTask;
-import ants.tasks.RavTask;
+import ants.tasks.CombatTask;
 import ants.tasks.Task;
 import ants.tasks.Task.Type;
 
@@ -88,7 +88,7 @@ public class MyBot extends BaseBot {
             tasks.put(Type.DEFEND_HILL, new DefendHillTask());
             tasks.put(Type.EXPLORE, new ExploreTask());
             tasks.put(Type.CLEAR_HILL, new ClearHillTask());
-            tasks.put(Type.COMBAT, new RavTask());
+            tasks.put(Type.COMBAT, new CombatTask());
             tasks.put(Type.CLUSTERING, new ClusteringTask());
         }
         new ResourceAllocator(Ants.getInfluenceMap()).allocateResources();
