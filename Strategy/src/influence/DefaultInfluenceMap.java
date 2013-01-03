@@ -25,6 +25,9 @@ import api.test.PixelDecorator;
 public class DefaultInfluenceMap implements InfluenceMap {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.INFLUENCE);
     private static final int MAX_INFLUENCE = 100;
+    private static final int ATTACKRADIUSINFLUENCE = 50;
+    private static final int EXTENDEDATTACKRADIUSINFLUENCE = 30;
+    private static final int VIEWRADIUSINFLUENCE = 10;
     private final Map<Integer, int[][]> influence;
     private final int viewRadius2, attackRadius2;
     private double decay = 0.1;
@@ -87,12 +90,13 @@ public class DefaultInfluenceMap implements InfluenceMap {
             LOGGER.debug("Calculating influence for unit %s; attackRadius: %s, viewRadius: %s", unit,
                     tilesInAttackRadius, tilesInViewRadius);
             for (Tile t : tilesInViewRadius) {
-                if (tilesInAttackRadius.contains(t))
-                    updateTileInfluence(t, player, 50, decay);
-                else if (tilesInExpandedAttackRadius.contains(t))
-                    updateTileInfluence(t, player, 30, decay);
-                else
-                    updateTileInfluence(t, player, 10, decay);
+                if (tilesInAttackRadius.contains(t)) {
+                    updateTileInfluence(t, player, ATTACKRADIUSINFLUENCE, decay);
+                } else if (tilesInExpandedAttackRadius.contains(t)) {
+                    updateTileInfluence(t, player, EXTENDEDATTACKRADIUSINFLUENCE, decay);
+                } else {
+                    updateTileInfluence(t, player, VIEWRADIUSINFLUENCE, decay);
+                }
             }
         }
     }

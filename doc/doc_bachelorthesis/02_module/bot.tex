@@ -1,4 +1,3 @@
-
 \section{Bot}
 \label{sec:module.Bot}
 
@@ -17,7 +16,22 @@
 \label{fig:turn}
 \end{figure}
 
-Als Basis für unsere Bot Implementation haben wir den Beispiel-Bot verwendet, der im Java-Starter-Package enthalten ist, das von der AI-Challenge-Website heruntergeladen werden kann. Dieser erbt von den Klassen AbstractSystemInputReader und AbstractSystemInputParser, die die Interaktion mit der Spiele-Engine über die System-Input/Output Streams kapseln. Für eine optimierte Lösung könnte der Bot auch angepasst werden, indem er selber auf die Streams zugreift. Im Rahmen dieser Arbeit erschien uns das aber noch nicht nötig.
+Als Basis für unsere Bot Implementation haben wir den Beispiel-Bot (Klasse Bot.java) verwendet, der im Java-Starter-Package enthalten ist, das von der AI-Challenge-Website heruntergeladen werden kann. Dieser erbt von den Klassen AbstractSystemInputReader und AbstractSystemInputParser, die die Interaktion mit der Spiele-Engine über die System-Input/Output Streams kapseln. Für eine optimierte Lösung könnte der Bot auch angepasst werden, indem er selber auf die Streams zugreift. Im Rahmen dieser Arbeit erschien uns das aber noch nicht nötig.
+
+\subsection{MyBot}
+\label{sec:module.Bot.MyBot}
+
+
+
+
+\begin{figure}[bth]
+\centering
+\includegraphics[width=0.7\textwidth]{91_bilder/Vererbung_bots}
+\caption{Vererbung der Bots wobei auf Stufe impl (Implementation) nur MyBot verwendet wird.}
+\label{fig:entitiesSearch}
+\end{figure}
+
+TODO IMAGE 
 
 \subsection{Ablauf eines Zugs} 
 \label{sec:implementation.Bot.Turn}

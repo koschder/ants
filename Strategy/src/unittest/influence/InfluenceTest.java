@@ -1,4 +1,4 @@
-package unittest.influence;
+package influence.unittest;
 
 import influence.DefaultInfluenceMap;
 
@@ -9,8 +9,6 @@ import api.entities.Tile;
 import api.strategy.InfluenceMap;
 import api.test.MapOutput;
 import api.test.PixelDecorator;
-
-import static org.junit.Assert.*;
 
 /**
  * the class containing all unit tests to prove the functionalities of the influence map
@@ -49,13 +47,13 @@ public class InfluenceTest {
         String sMap = "";
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
         sMap += "woooooooooowwwwwwwwwwooooooooooooooow";
-        sMap += "woo0o1ooooowwwwwwwwwwoo2ooooooo0oooow";
+        sMap += "woo0o1ooooowwwwwwwwwwoo1oooooooooooow";
         sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
-        sMap += "woooooooooowwwwwwwwwwooooowooooooooow";
-        sMap += "wooo0ooowwwwwwwwwwwwwooooowooo1ooooow";
+        sMap += "woooooooooowwwwwwwwwwooooowoooooooo0w";
+        sMap += "wooo0ooowwwwwwwwwwwwwooooowooooooooow";
         sMap += "woooooooooooowoooooooooooowooooooooow";
-        sMap += "wooooooooooo0woooowoooooo2wooooooooow";
-        sMap += "woooo11ooooooooooowooooooowooooooooow";
+        sMap += "wooooooooooo0woooowoooooo0wooooooooow";
+        sMap += "woooo1oooooooooooowooooooowooooooooow";
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
         return sMap;
     }
@@ -90,7 +88,6 @@ public class InfluenceTest {
 
         MapOutput put = new MapOutput();
         put.setMap(updateMap);
-        put.setClusterSize(5);
         put.addAllUnits();
         put.saveHtmlMap("InfluenceTest_safetyInfluenceUpdateTest", getSafetyDecorator(iMap));
 
@@ -110,18 +107,17 @@ public class InfluenceTest {
      * tests the total influence function each player
      */
     @Test
-    public void totalInfluenceTest() {
+    public void influenceTestWithAntsRadiusValues() {
 
         System.out.println("safetyInfluenceTest");
         String sMap = getDefaultTestMap();
-
         InfluenceTestMap map = new InfluenceTestMap(37, sMap);
+        InfluenceMap iMap = new DefaultInfluenceMap(map, 77, 5);
 
-        InfluenceMap iMap = new DefaultInfluenceMap(map, 8, 4);
-
-        assertEquals(2520, iMap.getTotalInfluence(0));
-        assertEquals(2370, iMap.getTotalInfluence(1));
-        assertEquals(1120, iMap.getTotalInfluence(2));
+        MapOutput put = new MapOutput();
+        put.setMap(map);
+        put.addAllUnits();
+        put.saveHtmlMap("InfluenceTest_influenceTestWithAntsRadiusValues", getSafetyDecorator(iMap));
 
     }
 }

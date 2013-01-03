@@ -42,7 +42,6 @@ public class DefaultCombatPositioning implements CombatPositioning {
         DEFAULT,
         DEFEND,
         ATTACK,
-        CONTROL, //
         FLEE;
     }
 
@@ -75,9 +74,6 @@ public class DefaultCombatPositioning implements CombatPositioning {
             break;
         case ATTACK:
             attackTarget();
-            break;
-        case CONTROL:
-            controlTarget();
             break;
         case DEFAULT:
         default:
@@ -240,10 +236,6 @@ public class DefaultCombatPositioning implements CombatPositioning {
         // away from the target
         Aim direction = map.getPrincipalDirection(target, enemyClusterCenter);
         return map.getTile(target, direction);
-    }
-
-    private void controlTarget() {
-
     }
 
     protected Mode determineMode() {

@@ -9,7 +9,7 @@ Unsere AITools API dient als Grundbaustein des gesamten Projekt. Sie entkapselt 
 \item
 \textbf{Aim}: Richtungsangabe zum Beschreiben einer Bewegung der Ameise
 \item
-\textbf{Tile}: Ortsangabe auf dem Spielfeld mit Row (Zeile) und Column (Spalte) beschrieben.
+\textbf{Tile}: Repräsentiert eine Zelle auf dem Spielfeld, welche mit Row (Zeile) und Column (Spalte) beschrieben ist.
 \item
 \textbf{Move}: Diese Klasse beschreibt einen Spielzug mit den Eigenschaften Tile, von wo aus der Zug statt findet, und Aim, in welche Richtung der Zug ausgeführt wird.
 \item
@@ -39,10 +39,13 @@ TODO Grafik vererbung UnitMap SearchableMap WarparaoundMAP
 
 \begin{itemize}
 \item
-\textbf{PathPiece}: PathPiece beschreibt ein Wegstück. Dieses besteht aus einem oder aus mehreren Tiles und wird unteranderem bei den Pfadsuchalgorithmen A* und HPA* verwendet.
+\textbf{PathPiece}: Das PathPiece ist ein Interface für Strukturen, die als Suchknoten in der Pfadsuche verwendet werden können. Es definiert die für die Suche nötigen Methoden, wie getSuccessors(), getCost(), oder getPath(). 
+Implementierende Klassen sind Edge (repäsentiert eine Kante in einem Cluster) und Tile. Erweiterungen dieser Klassen sind DirectedEdge (eine gerichtete Kante) und Vertex (eine Zelle mit zugehörigen Kanten).
 \item
 \textbf{SearchableMap}: Das Interface SearchableMap erweitert das Interface TileMap. Es beschreibt die Methoden zur Pfadsuche.
 \item
 \textbf{SearchableUnitMap}: Dieses Interface dient ausschliesslich zur Zusammenführung der beiden Interfaces UnitMap und SearchableMap.
 \end{itemize}
  
+ \subsubsection{SearchTarget}
+\label{sec:implementation.Entities.SearchTarget}
