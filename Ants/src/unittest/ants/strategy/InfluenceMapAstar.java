@@ -1,7 +1,6 @@
 package unittest.ants.strategy;
 
 import influence.DefaultInfluenceMap;
-import influence.unittest.InfluenceTestMap;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +9,7 @@ import org.junit.Test;
 
 import pathfinder.PathFinder;
 import pathfinder.SimplePathFinder;
+import unittest.influence.InfluenceTestMap;
 import api.entities.Tile;
 import api.strategy.InfluenceMap;
 import api.test.MapOutput;

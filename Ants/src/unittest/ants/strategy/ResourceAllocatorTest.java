@@ -14,7 +14,6 @@ import ants.state.Ants;
 import ants.state.Orders;
 import ants.state.Population;
 import ants.state.World;
-import ants.strategy.BaseResourceAllocator;
 import ants.strategy.ResourceAllocator;
 import ants.tasks.AttackHillsTask;
 import ants.tasks.ExploreTask;
@@ -27,7 +26,7 @@ import static org.junit.Assert.*;
 
 public class ResourceAllocatorTest {
 
-    private BaseResourceAllocator resourceAllocator;
+    private ResourceAllocator resourceAllocator;
     private Map<Task.Type, Task> tasks = new HashMap<Task.Type, Task>();
     private StubInfluenceMap influence = new StubInfluenceMap();
 
