@@ -109,7 +109,7 @@ public class BreadthFirstSearch {
      * @param goalTest
      * @return
      */
-    private List<Tile> findClosestTiles(Tile center, int numberOfHits, int maxNodes, int maxDistance2,
+    public List<Tile> findClosestTiles(Tile center, int numberOfHits, int maxNodes, int maxDistance2,
             GoalTest goalTest, FrontierTest frontierTest) {
         LOGGER.debug("BFS params: origin=%s, numberOfHits=%s, maxNodes=%s, maxDistance=%s", center, numberOfHits,
                 maxNodes, maxDistance2);
