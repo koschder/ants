@@ -1,5 +1,6 @@
 \section{Herausforderungen}
 \label{sec:einleitung.Herausforderungen}
+An dieser Stelle sollen einige Herausforderungen, die wir während der Arbeit angetroffen haben, besonders hervorgehoben werden.
 
 \subsection{Module testen}
 \label{sec:einleitung.Herausforderungen.ModuleTesten}
@@ -8,10 +9,12 @@ Ein neuer Algorithmus oder eine neue Idee ist schnell mal in den Bot integriert,
 
 Um diese Probleme zu bewälitgen haben wir ein ausgeklügeltes Logging auf die Beine gestellt, in welchem wir schnell an die gewünschten Informationen gelangen. (siehe \ref{sec:module.Logging})  Zudem können wir dank der Erweiterung des HTML-Viewer sofort sehen, welches die akutelle Aufgabe jeder einzelen Ameise ist. (siehe \ref{sec:module.Logging.Addon}) Weitergeholfen haben uns auch etliche Unit- und Funktionstests, mit welchen wir neu geschriebenen Code testen und auf dessen Richtigkeit prüfen konnten. (siehe \ref{sec:testCenter.UnitundFunktionstests})
 
-\subsection{TODO}
-\label{sec:einleitung.Herausforderungen.TODO}
-lorem ipsum mehr herausfoderungen ??
+\subsection{Kampfsituationen beurteilen}
+\label{sec:einleitung.Herausforderungen.Kampfsituationen}
+Die Beurteilung von Kampfsituationen stellte sich wie erwartet als Knacknuss heraus. In einem ersten Anlauf versuchten wir eine gegebene Kampfsituation mittels MinMax Algorithmus zu beurteilen. Wir hatten bereits aus einem früheren Projekt im Rahmen des Moduls Spieltheorie (7501) eine Implementation des Algorithmus erstellt und hatten eigentlich auch keine Mühe, diese für unsere Ameisen anzupassen. Aufgrund des hohen Branching-Faktors einer Kampfsituation (eine Ameise hat 5 mögliche Züge, und an einer Kampfsituation sind i.A. 5-10 Ameisen beteiligt) konnten wir die nötigen Berechnungen aber nicht in der zur Verfügung stehenden Zeit durchführen.
+Die aktuelle Implementierung der Kampfsituationen verfolgt jetzt einen weniger rechenintensiven Ansatz; im Gegensatz zum MinMax Algorithmus kann sie aber keine optimale Lösung finden.
+
 
 \subsection{Vergleich mit Bots aus dem Wettbewerb}
 \label{sec:einleitung.Herausforderungen.VergleichBots}
-Nach Ablauf des Wettbewerbs im Januar 2012, haben einige der Teilnehmer ihren Bot zugänglich gemacht. Dadurch war es uns möglich unseren Bot gegen Bots antreten zu lassen die tatsächlich am Wettbewerb teilgenommen haben. So konnten wir auch eine wage Einschätzung machen wir stark unser Bot ist. Mehr dazu unter siehe \ref{sec:testCenter.TestreportProfile}.
+Nach Ablauf des Wettbewerbs im Januar 2012, haben einige der Teilnehmer ihren Bot zugänglich gemacht. Dadurch war es uns möglich unseren Bot gegen Bots antreten zu lassen die tatsächlich am Wettbewerb teilgenommen haben. So konnten wir auch eine vage Einschätzung machen wir stark unser Bot ist. Mehr dazu unter siehe \ref{sec:testCenter.TestreportProfile}.
