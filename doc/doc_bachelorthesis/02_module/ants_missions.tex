@@ -15,7 +15,37 @@ Die FollowMission ist eine spezielle Mission, mit der eine Ameise einfach einer 
 Eine Mission kann auch abgebrochen werden, wenn es keinen Sinn mehr macht, sie weiter zu verfolgen. Je nach spezifischer Mission sind aber die Abbruchbedingungen anders. Zum Beispiel die GatherFoodMission ist nur solange gültig wie das Futter noch nicht von einer anderen Ameise eingesammelt wurde.
 Abbildung \ref{fig:missions} zeigt einen \"Uberblick über die wichtigsten Missionen und ihre Hierarchie.
 
+\section{BaseMission}
+\label{sec:module.Mission.BaseMission}
+
+Mission
+
+\section{PathMission}
+\label{sec:module.Mission.PathMission}
+
+\section{AttackHillMission}
+\label{sec:module.Mission.AttackHillMission}
+
+\section{DefendHillMission}
+\label{sec:module.Mission.DefendHillMission}
+
+\section{ExploreMission}
+\label{sec:module.Mission.ExploreMission}
+
+\section{GatherFoodMission}
+\label{sec:module.Mission.GatherFoodMission}
 
 
+\subsection{Verworfene und nicht verwendete Mission}
+\label{subsec:implementation.Tasks.StupidMission}
+
+Wie bereits im Kapitel Task erwähnt war nicht alles programmierte erfolgreich. Hier sind die Missionen aufgelistet die zu den Tasks gehören welche verworfen wurden oder nicht verwendet werden.
+
+\begin{itemize}
+\item \textbf{SwarmPathMission}
+\item \textbf{AttackHillsInFlockMission}
+\item \textbf{ConcentrateMission}
+\item \textbf{FlockMission}
+\end{itemize}
 
 Für jedes Food-Tile werden in einem definierbaren Radius r die nächsten Ameisen bestimmt. Danach wird nach aufsteigender Luftliniendistanz mit dem Pfadsuchalgorithmus SIMPLE (s. Abschnitt \ref{subsec:implementation.Pfadsuche.Simple}) oder -- falls dieser keinen Pfad gefunden hat -- mit A* eine passierbare Route gesucht. Wenn ein Pfad existiert, kann mit der Ameise und dem Food-Tile eine GatherFoodMission erstellt werden, welche die Ameise zum Food-Tile führt. Zu jedem Food-Tile wird immer nur eine Ameise geschickt.
