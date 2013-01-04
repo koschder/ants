@@ -4,6 +4,12 @@
 
 \section{Influence Map}
 \label{sec:module.InfluenceMap}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{91_bilder/strategyInfluence}
+\caption{Influence Map Klassendiagramm}
+\label{fig.strategyInfluence}
+\end{figure}
 
 Die Influence Map haben wir nach den Beschreibungen im Buch \cite{ARTIFICIALINTELLIGENCEFORGAMES} implementiert. Jede bekannte Spieleinheit auf der Spielkarte 'strahlt' eine gewissen Einfluss aus. In unserer Implementation unterscheiden wir zwischen drei Einflussradien, der Angriffsradius, der erweiterte Angriffsradius und der Sichtradius. Den Radien haben wir folgende Werte zugewiesen. 
 
@@ -19,10 +25,10 @@ Die Influence Map haben wir nach den Beschreibungen im Buch \cite{ARTIFICIALINTE
 
 Wir verenden die Influence Map vorallem für die Bestimmung der Sicherheit. Abgebildet ist eine Sicherheitskarte (Desirability Map) für den orangen Spieler, wobei die Einflusswerte des Gegners von den Einflusswerten des eigenen Spielers je Tile subtrahiert werden. Positive Werte bedeuten sicheres Terrain und negative Werte unsicheres, vom Gegner kontrolliertes Gebiet.
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
-\includegraphics[height=45mm]{91_bilder/influence01.jpg}
-\caption{Infleunce Map, dargestellt ist die Sicherheit je Tile.}
+\includegraphics[width=0.99\textwidth]{91_bilder/influence01.jpg}
+\caption{Influence Map, dargestellt ist die Sicherheit je Tile.}
 \label{fig.InfluenceMap01}
 \end{figure}
 
