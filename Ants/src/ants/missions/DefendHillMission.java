@@ -6,16 +6,21 @@ import java.util.Map;
 
 import logging.Logger;
 import logging.LoggerFactory;
+import pathfinder.PathFinder;
+import search.Barrier;
 import search.BreadthFirstSearch;
+import search.BreadthFirstSearch.FrontierTest;
 import search.BreadthFirstSearch.GoalTest;
 import tactics.combat.CombatPositioning;
 import tactics.combat.DefendingCombatPositioning;
 import ants.LogCategory;
 import ants.entities.Ant;
+import ants.entities.Ilk;
 import ants.search.AntsBreadthFirstSearch;
 import ants.state.Ants;
 import ants.tasks.Task.Type;
 import ants.util.LiveInfo;
+import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
 
@@ -25,11 +30,18 @@ public class DefendHillMission extends BaseMission {
 
     private Tile hill = null;
     private List<Tile> tilesAroundHill = new ArrayList<Tile>();
-    private int controlAreaRadius2 = Math.max((int) Math.sqrt(Ants.getWorld().getViewRadius2() + 4), Ants.getProfile()
-            .getDefendHills_MinControlRadius());
+    private Barrier barrier = null;
+    private int controlAreaRadius2 = Math.max((int) Math.sqrt(Ants.getWorld().getViewRadius2() + 4), 49);
     private int guardHillTurn = Ants.getProfile().getDefendHills_StartTurn();
     private int antsMoreThanEnemy = 1;
     private boolean needsMoreAnts;
+
+    private enum DefendMode {
+        Barrier,
+        Default
+    };
+
+    private DefendMode mode = DefendMode.Default;
 
     public DefendHillMission(Tile myhill) {
         this.hill = myhill;
@@ -45,7 +57,117 @@ public class DefendHillMission extends BaseMission {
 
     @Override
     public void execute() {
+        determineMode();
 
+        if (mode == DefendMode.Barrier) {
+            defendBarrier();
+        } else {
+            defendHill();
+        }
+    }
+
+    private void defendBarrier() {
+        List<Tile> enemyNearBy = getEnemyAntsNearby();
+        boolean hasAttackers = enemyNearBy.size() > 0;
+        gatherAnts(barrier.getBarrier().size() - ants.size(), hasAttackers);
+        if (!hasAttackers)
+            releaseAnts(ants.size() - barrier.getBarrier().size() / 2);
+
+        if (enemyNearBy.size() > ants.size()) {
+            closeBarrier();
+        } else {
+            List<Ant> antswithOder = new ArrayList<Ant>();
+            placeAntOnBarrier(antswithOder, 0);
+            placeAntOnBarrier(antswithOder, 1);
+
+        }
+        LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill,
+                "DefendHillMission attackers are: %s <br/> Defenders are: %s Need help: %s", enemyNearBy, ants,
+                needsMoreAnts);
+    }
+
+    private void closeBarrier() {
+
+        List<Tile> bar = barrier.getBarrier();
+        List<Tile> secondLine = getPlaceTiles(1);
+        List<Tile> inversePlaces = barrier.getBarrier();
+        inversePlaces.removeAll(getPlaceTiles(0));
+
+        for (Ant a : ants) {
+            if (bar.contains(a.getTile())) {
+                for (Tile t : inversePlaces) {
+                    if (Ants.getWorld().manhattanDistance(a.getTile(), a.getTile()) == 1) {
+                        if (putMissionOrder(a, t))
+                            break;
+                    }
+                }
+            } else if (secondLine.contains(a.getTile())) {
+                putMissionOrder(a, barrier.getAimOfBarrier());
+            } else {
+                moveToNextTileOnPath(a);
+            }
+        }
+
+    }
+
+    /**
+     * 
+     * @param antswithOrder
+     * @param barrierLevel
+     *            barrier behind the actual barrier.
+     */
+    private void placeAntOnBarrier(List<Ant> antswithOrder, int barrierLevel) {
+        for (Ant a : ants) {
+            if (antswithOrder.contains(a))
+                continue;
+
+            if (barrier.getBarrier().contains(a.getTile())) {
+                putMissionOrder(a);
+                antswithOrder.add(a);
+                continue;
+            }
+            if (!moveToNextTileOnPath(a)) {
+                a.setPath(null);
+            } else {
+                antswithOrder.add(a);
+                continue;
+            }
+
+            for (Tile t : getPlaceTiles(barrierLevel)) {
+                if (Ants.getWorld().getIlk(t) == Ilk.MY_ANT)
+                    continue;
+
+                List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.AStar, a.getTile(), t);
+                if (path == null)
+                    continue;
+                a.setPath(path);
+                moveToNextTileOnPath(a);
+                antswithOrder.add(a);
+                break;
+            }
+        }
+    }
+
+    public List<Tile> getPlaceTiles(int barrierLevel) {
+        if (barrierLevel == 0)
+            return barrier.getBarrierPlaceTiles();
+
+        List<Tile> offsetBarrier = new ArrayList<Tile>();
+
+        Tile offSet = null;
+        Aim a = barrier.getAimOfBarrier();
+        if (a == Aim.NORTH || a == Aim.SOUTH)
+            offSet = new Tile(a == Aim.SOUTH ? -barrierLevel : barrierLevel, 0);
+        else
+            offSet = new Tile(0, a == Aim.EAST ? -barrierLevel : barrierLevel);
+
+        for (Tile t : barrier.getBarrierPlaceTiles()) {
+            offsetBarrier.add(Ants.getWorld().getTile(t, offSet));
+        }
+        return offsetBarrier;
+    }
+
+    private void defendHill() {
         List<Tile> enemyNearBy = getEnemyAntsNearby();
         boolean hasAttackers = enemyNearBy.size() > 0;
         gatherOrReleaseAnts(enemyNearBy);
@@ -71,6 +193,24 @@ public class DefendHillMission extends BaseMission {
         } else {
             keepAntDoingStuff();
         }
+    }
+
+    private void determineMode() {
+
+        if (Ants.getAnts().getTurn() == 10) {
+            AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
+            barrier = bfs.getBarrier(hill, Ants.getWorld().getViewRadius2(), 5);
+            if (barrier != null) {
+                mode = DefendMode.Barrier;
+            }
+        }
+
+        String msg = "DefendMode is "
+                + mode
+                + (mode == DefendMode.Barrier ? " in direction " + barrier.getAimOfBarrier() + ": " + getPlaceTiles(0)
+                        + ";" + getPlaceTiles(1) : "");
+        LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill, msg);
+
     }
 
     private void resetAnts() {
@@ -154,14 +294,40 @@ public class DefendHillMission extends BaseMission {
 
     }
 
+    /**
+     * if mode is Barrier it returns the enemies near the barrier, else the enemies near the hill
+     * 
+     * @return enemies near defense
+     */
     private List<Tile> getEnemyAntsNearby() {
-        List<Tile> tile = new ArrayList<Tile>();
-        for (Tile around : tilesAroundHill) {
-            if (Ants.getWorld().getIlk(around).hasEnemyAnt()) {
-                tile.add(around);
+        List<Tile> enemies = new ArrayList<Tile>();
+        if (mode == DefendMode.Default) {
+            for (Tile around : tilesAroundHill) {
+                if (Ants.getWorld().getIlk(around).hasEnemyAnt()) {
+                    enemies.add(around);
+                }
             }
+        } else {
+            final List<Tile> bar = barrier.getBarrier();
+            Tile start = Ants.getWorld().getTile(bar.get(bar.size() / 2), barrier.getAimOfBarrier());
+            AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
+            enemies = bfs.findClosestTiles(start, Integer.MAX_VALUE, Integer.MAX_VALUE, Ants.getWorld()
+                    .getViewRadius2(), new GoalTest() {
+
+                @Override
+                public boolean isGoal(Tile tile) {
+                    return Ants.getWorld().getIlk(tile) == Ilk.ENEMY_ANT;
+                }
+            }, new FrontierTest() {
+                @Override
+                public boolean isFrontier(Tile tile) {
+                    return !bar.contains(tile);
+                }
+            });
+            if (enemies == null)
+                enemies = new ArrayList<Tile>();
         }
-        return tile;
+        return enemies;
     }
 
     public boolean needsMoreAnts() {

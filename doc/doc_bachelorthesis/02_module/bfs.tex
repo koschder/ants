@@ -1,6 +1,19 @@
 \section{Breitensuche}
 \label{subsec:module.Suchalgorithmen.Breitensuche}
 
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.7\textwidth]{91_bilder/BFS}
+\caption{Breitensuche Klassendiagramm}
+\label{fig:BFS}
+\end{figure}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{91_bilder/BFSants}
+\caption{Breitensuche Ants-spezifisch}
+\label{fig:BFSants}
+\end{figure}
 Die Breitensuche (engl. breadth-first search (BFS)) war eine der Neuimplementierungen während der Bachelorarbeit. Man könnte die BFS auch für die Pfadsuche verwenden, dies wäre aber sehr ineffizient. Wir verwenden diese Suche vielmehr für die Umgebung einer Ameise oder eines Hügels zu analysieren. Sie wurde generisch implementierte, so dass sie vielseitig einsetzbar ist. So können zum Beispiel mittels 'GoalTest' je nach Anwendungsfall die Tiles beschrieben werden welche gesucht sind. Folgende Breitensuche findet die Ameise welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Sie wird initialisiert indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 entspricht. Falls keien Ameise gefunden wird gibt der Algorithmus NULL zurück.
 
 \begin{verbatim}
