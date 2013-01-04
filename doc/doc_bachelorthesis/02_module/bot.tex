@@ -5,16 +5,16 @@
 \subsection{Klasse Bot}
 \label{sec:module.Bot.Bot}
 
-Als Basis für unsere Bot Implementation haben wir den Beispiel-Bot (Klasse Bot.java) verwendet, der im Java-Starter-Package enthalten ist, das von der AI-Challenge-Website heruntergeladen werden kann. Dieser erbt von den Klassen AbstractSystemInputReader und AbstractSystemInputParser, die die Interaktion mit der Spiele-Engine über die System-Input/Output Streams kapseln. Für eine optimierte Lösung könnte der Bot auch angepasst werden, indem er selber auf die Streams zugreift. Im Rahmen dieser Arbeit erschien uns das aber noch nicht nötig. Die Klasse Bot.java dient als Grundlage für die Klasse BaseBot, welcher wiederum Grundlage ist für die Finale Klasse MyBot.java.
-
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{91_bilder/Vererbung_bots}
+\includegraphics[width=0.7\textwidth]{91_bilder/antsBot}
 \caption{Vererbung der Bots wobei auf Stufe impl (Implementation) nur MyBot verwendet wird.}
-\label{fig:entitiesSearch}
+\label{fig:antsBot}
 \end{figure}
 
-TODO IMAGE 
+Als Basis für unsere Bot Implementation haben wir den Beispiel-Bot (Klasse Bot.java) verwendet, der im Java-Starter-Package enthalten ist, das von der AI-Challenge-Website heruntergeladen werden kann. Dieser erbt von den Klassen AbstractSystemInputReader und AbstractSystemInputParser, die die Interaktion mit der Spiele-Engine über die System-Input/Output Streams kapseln. Für eine optimierte Lösung könnte der Bot auch angepasst werden, indem er selber auf die Streams zugreift. Im Rahmen dieser Arbeit erschien uns das aber noch nicht nötig. Die Klasse Bot.java dient als Grundlage für die Klasse BaseBot, welcher wiederum Grundlage ist für die Finale Klasse MyBot.java.
+
+
 
 \subsection{BaseBot}
 \label{sec:module.Bot.BaseBot}
@@ -24,14 +24,14 @@ Die abstrakte Klasse BaseBot erbt vom Bot. Hier haben wird die Struktur unseres 
 \subsection{Ablauf eines Zugs} 
 \label{sec:implementation.Bot.Turn}
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{91_bilder/FirstTurn}
 \caption{Ablauf des ersten Zugs des Spiels}
 \label{fig:firstTurn}
 \end{figure}
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{91_bilder/Turn}
 \caption{Ablauf der weiteren Züge des Spiels}
