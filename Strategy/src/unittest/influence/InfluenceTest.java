@@ -1,4 +1,4 @@
-package influence.unittest;
+package unittest.influence;
 
 import influence.DefaultInfluenceMap;
 
