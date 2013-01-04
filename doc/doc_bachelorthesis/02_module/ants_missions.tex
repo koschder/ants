@@ -14,13 +14,13 @@ Missionen sind das Herzstück unserer Arbeit. Eine Mission dauert über mehrere Sp
 \subsection{BaseMission}
 \label{subsec:module.Mission.BaseMission}
 
-Diese Klasse hat zwei Aufgaben, erstens Implementiert sie die von Interface Mission vorgegebene Methoden und zweitens stellt sie Funktionen zur Verfügung die von spezifischen Missionen verwendet werden. Die wichtigsten sind hier mit Erklärung aufgelistet.
+Diese Klasse hat zwei Verwendungszwecke, erstens Implementiert sie die von Interface Mission vorgegebene Methoden und zweitens stellt sie Funktionen zur Verfügung die von spezifischen Missionen verwendet werden. Die wichtigsten sind hier mit Erklärung aufgelistet.
 
 \begin{itemize}
 	\item  \textbf{abandonMission():} Abbrechen der Mission
 	\item  \textbf{addAnt():} Ameise der Mission hinzufügen, in der Population als beschäftigt markieren.
 	\item  \textbf{doAnyMove(Ant a):} Für die mitgegebene Ameise irgendein Zug in eine der vier Richtung bestimmen.
-	\item  \textbf{doMoveInDirection(Ant ant, Tile target): Ein Zug in eine bestimmte Richtung bestimmen.}
+	\item  \textbf{doMoveInDirection(Ant ant, Tile target):} Ein Zug in eine bestimmte Richtung bestimmen.}
 	\item  \textbf{gatherAnts(...):} Ameisen für die Mission rekrutieren. Anzahl Ameisen wird als Parameter mitgegeben. }
 	\item  \textbf{moveToNextTileOnPath(Ant a):} Bewegt die Ameise ein Pfadstück weiter auf dem, der Ameisen zugewiesen, Pfad.}
 	\item  \textbf{putMissionOrder(...):} Wurde ein Befehl für die Ameise gefunden wird er der Klasse Orders (Verwaltung der Befehle) mitgeteilt.}
@@ -43,7 +43,8 @@ Max. Missionen: unbegrenzt\\
 Valid (Gültigkeit): siehe ExploreMission bzw. CombatTask\\
 Gather Ants (Ameisen rektrutieren): Nicht möglich\\
 Release Ants (Ameisen entlassen): Nicht möglich\\
-
+\\
+Die Pathmission ist eine abstrakte Klasse die von ExploreMission und als anonyme Klasse im CombatTask implementiert wird. Die einzige Funktionalität die angeboten wird ist, eine Ameise die der Initialisierung mit Pfad mitgegeben wird, auf diesem definierten Pfad zu bewegen.
 
 \subsection{AttackHillMission}
 \label{subsec:module.Mission.AttackHillMission}
@@ -56,6 +57,34 @@ Max. Missionen: Je gegnerischen Hügel eine Mission\\
 Valid: solange gegnerischer Hügel nicht zerstört ist.\\
 Gather Ants: pro Zug max. 5 Ameisen, die im Umkreis von 25 Tiles des gegnerischen Hügel sind.\\
 Release Ants: Sicheres Food Tile in der Nähe. Eigener Hügel in der Nähe der Unterstüztung braucht. Wenn Mission im Status ControlHill ist werden alle Ameisen entlassen ausser zwei. Diese kontrollieren den Hügel.\\
+\\
+Diese Mission unterscheidet zwischen drei verschiedenen Modi. Der Modus wird zu Beginn jeder Runde durch die Methode determineState() definiert.\\
+\\
+\textbf{ControlEnemyHill}\\
+Status ist aktiv wenn, 2 oder mehr eigene Ameise in der Nähe des gegnerischen Hügel sind. Der Gegner aber nur eine Amesise zur Verteidigung hat.\\
+Hier werden alle Ameisen ausser die zwei zum gegnerischen Hügel am nächsten liegenden Ameisen aus der Mission entlassen. Die übrigen zwei Ameisen positionieren sich auf einer der vier diagonal gelegenen Zellen. Soblad die Ameisen positioniert sind, fressen Sie alle gegnersichen Ameisen die neu aus dem Hügel schlüpfen. Der Gegner kann sich so nur durch Ameisen vermehren die aus einem anderen Hügel schlüpfen. (Die Ameisen schlüpfen zufällig aus einem Hügel) Der Hügel wird erst zerstört wenn das Spiel endet, oder sich der Gegner mit anderen Ameisen dem Hügel nähert.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=40mm]{91_bilder/ControlEnemyHill}
+\caption{Ein gegnerischer Hügel wird durch unsere Ameisen (orange) kontrolliert.}
+\label{fig:ControlEnemyHill}
+\end{figure}
+
+\textbf{DestroyHill}\\
+Status ist aktiv wenn, Spiel 5 Züge vor Spielende ist\\
+Wenn dieser Modus eintrifft ist das Spiel fast zu Ende. Deshalb wird versucht mit der Brechstange den Hügel zu erobern indem die Ameisen auf dem kürzesten Weg Richtung gegnerischen Hügel geschickt werden.\\
+\\
+\textbf{AttackEnemyHill}\\
+Status ist aktiv in allen anderen Fällen\\
+Alle Angreifer werden nach ihrer Lage in Gruppen zusammen gefasst. Für diese Gruppe wird ein Pfad zum gegnerischen Hügel berechnet. Falls der Pfad länger ist als 5 Tiles wird ein Meilenstein (Milestone) definiert. Nun werden mittels Breitensuche die Gegner zwischen dem Meilenstein und der Gruppe ermittelt. Mit dieser Ausgangslage wird eine AttackingCombatPositioning Klasse initialisert und die Gruppe, die gegnerischen Ameisen sowie der Meilenstein als Ziel mitgegeben. Die Klasse berechnet die Züge für die Gruppe. (Details siehe \ref{sec:module.CombatSituation}
+       
+\begin{figure}[H]
+\centering
+\includegraphics[height=40mm]{91_bilder/AttackHill}
+\caption{Die erste zweier Gruppe ist in Kampfstellung. 4 weitere Ameisen rücken zur Front auf.}
+\label{fig:AttackHill}
+\end{figure}
 
 \subsection{DefendHillMission}
 \label{subsec:module.Mission.DefendHillMission}
@@ -68,7 +97,8 @@ Max. Missionen: Je eigener Hügel eine Mission\\
 Valid: solange eigener Hügel nicht erobert ist.\\
 Gather Ants: Mission soll immer mehr Verteidiger haben als Angreifer sich dem Hügel nähern.\\
 Release Ants: Keine Angreifer in Sicht, werden die Ameisen (nicht alle) entlassen.\\
-
+\\
+TODO
 
 \subsection{ExploreMission}
 \label{subsec:module.Mission.ExploreMission}
@@ -81,6 +111,15 @@ Max. Missionen: unbegrenzt\\
 Valid: Solange Ameise ein gültiger Pfad hat.\\
 Gather Ants: nicht möglich\\
 Release Ants: nicht möglich\\
+\\
+Die Ameise läuft den vom ExploreTask vorgegebenen Pfad ab. Die Mission wird abgebrochen, wenn Futter in der Nähe ist, wenn ein gegnerischer Hügel oder gegnerische Ameisen auftauchen oder wenn ein eigener Hügel in der Nähe Hilfe braucht.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=40mm]{91_bilder/exploreMission}
+\caption{Eine Ameise auf einer ExploreMission bewegt sich in Richtung Fog Of War}
+\label{fig:exploreMission}
+\end{figure}
 
 \subsection{GatherFoodMission}
 \label{subsec:module.Mission.GatherFoodMission}
@@ -93,6 +132,10 @@ Max. Missionen: 1\\
 Valid: immer\\
 Gather Ants: siehe Beschreibung\\
 Release Ants: siehe Beschreibung\\
+
+Es wird nur eine GatherFoodMission zu Begin des Spiels erstellt, diese Mission erstellt und kontrolliert die Pfade der Ameisen, welche auf Futtersuche sind.
+
+
 
 \subsection{Verworfene und nicht verwendete Mission}
 \label{subsec:implementation.Tasks.StupidMission}
