@@ -6,6 +6,7 @@ import java.util.List;
 
 import logging.Logger;
 import logging.LoggerFactory;
+import api.entities.Aim;
 import api.entities.Tile;
 import api.search.PathPiece;
 import api.search.SearchableMap;
@@ -147,6 +148,81 @@ public class BreadthFirstSearch {
         }
         LOGGER.debug("Searched from %s, found %s, explored %s", center, found, explored.size());
         return found;
+    }
+
+    public Barrier getBarrier(final Tile hill, int viewRadiusSquared, int maximumBarrierSize) {
+        List<Tile> barrierVerticalInvalid = new ArrayList<Tile>();
+        List<Tile> barrierHorizontalInvalid = new ArrayList<Tile>();
+        final int fillUpVariance = 15;
+        final int additionalTiles = 30;
+
+        List<Tile> smallestBar = null;
+        Aim aimOfBarrier = null;
+        BreadthFirstSearch bfs = new BreadthFirstSearch(map);
+        List<Tile> defaultFlood = bfs.findClosestTiles(hill, Integer.MAX_VALUE, Integer.MAX_VALUE, viewRadiusSquared,
+                new AlwaysTrueGoalTest());
+
+        int defaultFloodSize = defaultFlood.size();
+        List<Tile> exendedFlood = bfs.findClosestTiles(hill, defaultFloodSize + additionalTiles, Integer.MAX_VALUE,
+                Integer.MAX_VALUE, new AlwaysTrueGoalTest());
+
+        for (int i = 0; i < additionalTiles; i++) {
+            int tileCount = defaultFloodSize + i;
+            Tile barrier = exendedFlood.get(tileCount);
+
+            List<Tile> vert = new ArrayList<Tile>();
+            if (!barrierVerticalInvalid.contains(barrier)) {
+                vert.add(barrier);
+                vert.addAll(map.getTilesToNextImpassableTile(barrier, Aim.SOUTH, maximumBarrierSize));
+                vert.addAll(map.getTilesToNextImpassableTile(barrier, Aim.NORTH, maximumBarrierSize));
+                if (vert.size() > maximumBarrierSize) {
+                    barrierVerticalInvalid.addAll(vert);
+                    vert = new ArrayList<Tile>();
+                }
+            }
+            List<Tile> hor = new ArrayList<Tile>();
+            if (!barrierHorizontalInvalid.contains(barrier)) {
+                hor.add(barrier);
+                hor.addAll(map.getTilesToNextImpassableTile(barrier, Aim.EAST, maximumBarrierSize));
+                hor.addAll(map.getTilesToNextImpassableTile(barrier, Aim.WEST, maximumBarrierSize));
+                if (hor.size() > maximumBarrierSize) {
+                    barrierHorizontalInvalid.addAll(hor);
+                    hor = new ArrayList<Tile>();
+                }
+            }
+
+            if (hor.size() == 0 && vert.size() == 0)
+                continue;
+
+            boolean useVertical = true;
+            if (hor.size() > 0 && hor.size() < vert.size())
+                useVertical = false;
+
+            final List<Tile> bar = useVertical ? vert : hor;
+
+            if (smallestBar != null && bar.size() >= smallestBar.size())
+                continue;
+
+            List<Tile> flood = bfs.findClosestTiles(hill, tileCount + fillUpVariance, Integer.MAX_VALUE,
+                    Integer.MAX_VALUE, new AlwaysTrueGoalTest(), new FrontierTest() {
+                        @Override
+                        public boolean isFrontier(Tile tile) {
+                            return !bar.contains(tile);
+                        }
+
+                    });
+
+            if (flood.size() < tileCount + fillUpVariance) {
+                smallestBar = bar;
+                Tile middle = bar.get(bar.size() / 2);
+                if (useVertical)
+                    aimOfBarrier = flood.contains(map.getTile(middle, Aim.EAST)) ? Aim.WEST : Aim.EAST;
+                else
+                    aimOfBarrier = flood.contains(map.getTile(middle, Aim.NORTH)) ? Aim.SOUTH : Aim.NORTH;
+
+            }
+        }
+        return smallestBar == null ? null : new Barrier(smallestBar, aimOfBarrier);
     }
 
     /**

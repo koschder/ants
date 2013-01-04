@@ -7,36 +7,58 @@
 \caption{Tasks}
 \label{fig:tasks}
 \end{figure}
-Zu Beginn des Projekts haben wir die wichtigsten Aufgaben einer Ameise identifiziert. Diese Aufgaben wurden als Tasks in eigenen Klassen implementiert. Das Interface Task\footnote{Das Interface ist im Code unter ants.tasks.Bot.Java auffindbar.} definiert eine setup()-Methode welche den Task initiiert, sowie eine perform()-Methode welche den Task ausführt. Im Programm werden die Tasks nach deren Wichtigkeit ausgeführt, was auch der nachfolgenden Reihenfolge entspricht. Jedem Task stehen nur die unbeschäftigten Ameisen zur Verfügung, d.h. jene welchen noch keine Aufgabe zugeteilt wurde.
+Zu Beginn des Projekts haben wir die wichtigsten Aufgaben der Ameisen identifiziert. Diese Aufgaben wurden als Tasks in eigenen Klassen implementiert. Das Interface Task\footnote{Das Interface ist im Code unter ants.tasks.Task.Java auffindbar.} definiert eine setup()-Methode welche den Task initiiert, sowie eine perform()-Methode welche den Task ausführt. Im Programm werden die Tasks nach deren Wichtigkeit ausgeführt, was auch der nachfolgenden Reihenfolge entspricht. Jedem Task stehen nur die unbeschäftigten Ameisen zur Verfügung, d.h. jene welchen noch keine Aufgabe zugeteilt wurde. Die Tasks erstellen die Missionen  (s. Abschnitt \ref{sec:module.Missionen}), welche über mehrere Züge definierte Ziele verfolgen.
 
 \subsection{MissionTask}
 \label{subsec:implementation.Tasks.MissionTask}
-Dieser Task prüft alle aktuellen Missionen auf deren Gültigkeit, beispielsweise ob die Ameise der Mission den letzten Zug überlebt hat und die Mission weiterführen kann. Falls gültig, wird der nächste Schritt der Mission ausgeführt.
+
+\subsubsection{setup()}
+\label{subsec:implementation.Tasks.MissionTask.setup}
+
+Dieser Task führt alle bestehenden Missionen aus. In der setup()-Methode des Tasks werden die bestehenden Missionen initialisiert indem  die setup()-Methoden der Missionen aufgerufen werden. Diese löscht alle Ameisen aus der Mission welche den letzten Zug nicht überlebt haben. Die überlebenden Ameisen werden als 'beschäftigt' markiert, damit Sie nicht von anderen Missionen verwendet werden. Zudem werden die Ameisen, abhängig vom letzten Zug, auf die neue Spielfeldzelle gesetzt.
+
+\subsubsection{execute()}
+\label{subsec:implementation.Tasks.MissionTask.execute}
+Nun, da alle Missionen inklusive Ameisen initialisiert wurde, kännen diese ausgeführt werden. Für die Ausführugen haben wir die Missionen nach Typ in der Reihenfolge EXPLORE, COMBAT, DEFENDHILL, GATHERFOOD, ATTACKHILLS sortiert. Zuerst sollen die Missionen EXPLORE und COMBAT ausgeführt werden, aus dem Grund, dass diese Missionen keine neue Ameisen verlangen. Sie kommen mit den Ameisen aus die zu Beginn der Mission zugeteilt wurden. Falls nun das Missionsziel von EXPLORE oder COMBAT erreicht wurde (mission.isComplete()), die Mission nicht mehr gültig ist (!mission.isVaild()) oder keine Züge für die Mission errechnet werden konnten (mission.isAbandoned()), so wird die Mission aufgelöst und die Ameisen werden für die nachfolgenden Missionen DEFENDHILL, GATHERFOOD, ATTACKHILLS freigegeben.
+\newline\newline
+Die Missionen DEFENDHILL, GATHERFOOD, ATTACKHILLS sind auch überlegt angeordnet. Falls die DEFENDHILL-Missionen Verstärkung bei der Verteidigung brauchen, sind sie darauf angewiesen, dass Sie Ameisen rekrutieren können die möglichst schnell zum Hügel gelangen. Es wäre ungünstig, wenn die nahegelegenen Ameisen einer ATTACKHILLS- oder einer GATHERFOOD-Mission beitreten und so die DEFENDHILL-Mission Ameisen von weiter weg herbeirufen müsste. GATHERFOOD wird vor ATTACKHILLS aufgerufen, da Ameisen die nahe bei einer Futterzelle sind das Futter einsammeln sollen und nicht, oder erst später, am Angriff teilnehmen.
 
 \subsection{GatherFoodTask}
 \label{subsec:implementation.Tasks.GatherFoodTask}
-Für jedes Food-Tile werden in einem definierbaren Radius r die nächsten Ameisen bestimmt. Danach wird nach aufsteigender Luftliniendistanz mit dem Pfadsuchalgorithmus SIMPLE (s. Abschnitt \ref{subsec:implementation.Pfadsuche.Simple}) oder -- falls dieser keinen Pfad gefunden hat -- mit A* eine passierbare Route gesucht. Wenn ein Pfad existiert, kann mit der Ameise und dem Food-Tile eine GatherFoodMission erstellt werden, welche die Ameise zum Food-Tile führt. Zu jedem Food-Tile wird immer nur eine Ameise geschickt.
+Im ersten Zug wird genau eine GatherFoodMission erstellt, diese Mission verwaltet und koordiert die Ameisen welche auf Futtersuche sind.
+
+\subsection{DefendHillTask}
+\label{subsec:implementation.Tasks.DefendHillTask}
+Für jeden eigenen Hügel wird eine Verteidigungsmission erstellt. Ab wann und wie viele Ameisen zur Verteidigung eingesetzt werden, ist in der Mission konfiguriert.
 
 \subsection{AttackHillsTask}
 \label{subsec:implementation.Tasks.AttackHillsTask}
-Sobald gegnerische Ameisenhaufen sichtbar sind, sollen diese angegriffen werden. Das Zerstören eines gegnerischen Haufens ist wie erwähnt 2 Punkte wert. Die Kriterien, nach denen eine Pfad zum gegnerischen Haufen gesucht wird, sind die selben wie beim GatherFoodTask, ausser dass mehrere Ameisen das Ziel angreifen können. Es wird eine AttackHillMission erstellt.
+Sobald gegnerische Ameisenhaufen sichtbar sind, sollen diese angegriffen werden. Je gegnerischen Ameisenhaufen wird eine AttackHillMission erstellt. Die Mission ist für das rekrutieren der Ameisen zuständig, die Mission kann also zu Begin keine Ameisen enthalten.
 
 \subsection{CombatTask}
 \label{subsec:implementation.Tasks.CombatTask}
-Beim Angriffstask wird berechnet ob wir in einem Kampfgebiet (definiert über den Sichtradius einer Ameise) die Überhand, d.h. mehr Ameisen platziert haben. Falls ja, wird die gegnerische Ameise angegriffen.
+Dieser Task macht was?
 
 \subsection{ExploreTask}
 \label{subsec:implementation.Tasks.ExploreTask}
-Für alle noch unbeschäftigten Ameisen wird mittels ManhattanDistance der nächste Ort gesucht, der noch nicht sichtbar, also unerforscht ist. Falls ein Pfad mittels Pfadsuchalgorithmus gefunden wird, wird eine ExploreMission (s. Abschnitt \ref{sec:implementation.Missionen}) erstellt. Die Ameise wird den gefundenen Pfad in den nächsten Spielzügen ablaufen.
-
-\subsection{FollowTask}
-\label{subsec:implementation.Tasks.FollowTask}
-Der FollowTask ist für Ameisen angedacht welche aktuell keine Aufgabe haben. Diese Ameisen sollen einer nahe gelegenen, beschäftigten Ameise folgen, damit diese nicht alleine unterwegs ist.
+Für alle noch unbeschäftigten Ameisen wird mittels ManhattanDistance der nächste Ort gesucht, der noch nicht sichtbar, also unerforscht ist. Falls ein Pfad mittels Pfadsuchalgorithmus gefunden wird, wird eine ExploreMission erstellt. Die Ameise wird den gefundenen Pfad in den nächsten Spielzügen ablaufen.
 
 \subsection{ClearHillTask}
 \label{subsec:implementation.Tasks.ClearHillTask}
-Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel ''schlüpfen``, vom Hügel weg. So werden nachfolgende Ameisen nicht durch diese blockiert.
+Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel 'schlüpfen', vom Hügel weg. So werden nachfolgende Ameisen nicht durch diese blockiert. Es wird keine Mission erstellt, der Task bewegt die Ameise nur eine Zelle vom Hügel weg.
 
 \subsection{ClusteringTask}
 \label{subsec:implementation.Tasks.ClusteringTask}
-Der ClusteringTask wird als Vorbereitung für den HPA* Algorithmus verwendet. Hier wird für alle sichtbaren Kartenregionen ein Clustering vorgenommen. Das Clustering wird im Kapitel \ref{subsec:implementation.Pfadsuche.HPAstar} im Detail beschreiben.
+Der ClusteringTask wird als Vorbereitung für den HPA* Algorithmus verwendet. Hier wird für alle sichtbaren Kartenregionen das Clustering vorgenommen. Das Clustering wird im Kapitel \ref{subsec:module.Suchalgorithmen.Pfadsuche.HPAstar} im Detail beschreiben.
+
+\subsection{Verworfene und nicht verwendete Tasks}
+\label{subsec:implementation.Tasks.StupidTasks}
+
+Leider waren nicht alle Task-Implementation von Nutzen. Sie halfen nicht den Bot zu verbessern hier eine kleine Auflistung welche Tasks wir verworfen haben.
+
+\begin{itemize}
+	\item \textbf{FollowTask:} Der FollowTask ist für Ameisen angedacht welche aktuell keine Aufgabe haben. Diese Ameisen sollen einer 			 nahegelegenen, beschäftigten Ameise folgen. Er wurde verworfen, da wir das Problem der unbeschäftigten Ameisen minimieren konnten.
+	\item \textbf{SwarmTask:} Hier war die Idee, dass bei einem Angriff auf einen gegnerischen Hügel die Ameisen sich in Weghälfte zu 			einem Schwarm vereinen und danach den Hügel angreifen. Leider war diese Idee erfolglos, da zu viel Zeit verstrich bis sich die Ameisen 		gesammelt haben. Zudem war der Sammelpunkt manchmal ungünstig gelegen. (Schwer erreichbar, in gegnerischen Gebiet).
+		\item \textbf{FlockTask:} Geordnete Fortbewegung der Ameisen, verworfen bzw. in CombatSituation übernommen.
+		\item \textbf{ConcentrateTask:} Ameisen an einem bestimmten Ort auf der Karte sammeln. Der Task wird beim aktuellsten Bot nicht verwendet.
+\end{itemize}

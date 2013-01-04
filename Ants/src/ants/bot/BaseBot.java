@@ -51,22 +51,30 @@ public abstract class BaseBot extends Bot {
 
     @Override
     public void doTurn() {
-        addTurnSummaryToLogfiles();
-        LOGGER.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
-
-        LOGGER.info("enemy_hills visible: %s", Ants.getWorld().getEnemyHills(), Ants.getWorld());
-        calculateInfluence();
-        initTasks();
-        doStatistics();
         /*
          * This is the main loop of the bot. All the actual work is done in the tasks that are executed in the order
          * they are defined.
          */
+        // write current turn number, ants amount into the log file.
+        addTurnSummaryToLogfiles();
+        // new calculation of the influence map
+        calculateInfluence();
+        // write some statistics about our population
+        doStatistics();
+        // initialize the task (abstract method) must be implemented by the inherited class
+        initTasks();
+        // execute all task (main work to do here)
         executeTask();
+        // write all orders to the output stream
+        Ants.getOrders().issueOrders();
+        // log all ants which didn't get a job.
+        logUnemployedAnts();
+    }
+
+    private void logUnemployedAnts() {
         final Collection<Ant> myUnemployedAnts = Ants.getPopulation().getMyUnemployedAnts();
         LOGGER_RESOURCES.info("Unemployed Ants (%s of %s): %s", myUnemployedAnts.size(), Ants.getPopulation()
                 .getMyAnts().size(), myUnemployedAnts);
-        Ants.getOrders().issueOrders();
         for (Ant unemployed : myUnemployedAnts) {
             LiveInfo.liveInfo(Ants.getAnts().getTurn(), unemployed.getTile(), "Unemployed ant: %s",
                     unemployed.getTile());
@@ -81,24 +89,20 @@ public abstract class BaseBot extends Bot {
     }
 
     private void addTurnSummaryToLogfiles() {
-        for (LogCategory logCat : LogCategory.values()) {
-            addTurnSummary(logCat);
-        }
-        for (strategy.LogCategory logCat : strategy.LogCategory.values()) {
-            addTurnSummary(logCat);
-        }
-        for (influence.LogCategory logCat : influence.LogCategory.values()) {
-            addTurnSummary(logCat);
-        }
-        for (pathfinder.LogCategory logCat : pathfinder.LogCategory.values()) {
-            addTurnSummary(logCat);
-        }
+        addTurnSummary(LogCategory.values());
+        addTurnSummary(strategy.LogCategory.values());
+        addTurnSummary(influence.LogCategory.values());
+        addTurnSummary(pathfinder.LogCategory.values());
+        // default log file:
+        LOGGER.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
     }
 
-    private void addTurnSummary(logging.LogCategory logCat) {
-        if (logCat.useCustomLogFile()) {
-            Logger customFileLogger = LoggerFactory.getLogger(logCat);
-            customFileLogger.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
+    private void addTurnSummary(logging.LogCategory[] categories) {
+        for (logging.LogCategory logCat : categories) {
+            if (logCat.useCustomLogFile()) {
+                Logger customFileLogger = LoggerFactory.getLogger(logCat);
+                customFileLogger.info(Ants.getAnts().getTurnSummaryString(), Ants.getAnts().getTurnSummaryParams());
+            }
         }
     }
 
