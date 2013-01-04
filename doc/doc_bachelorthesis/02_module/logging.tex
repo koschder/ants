@@ -1,6 +1,17 @@
 \chapter{Logging}
 \label{sec:module.Logging}
-
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.8\textwidth]{91_bilder/Logging}
+\caption{Logging Klassen}
+\label{fig:Logging}
+\end{figure}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{91_bilder/LoggingConfig}
+\caption{Logging Konfiguration}
+\label{fig:LoggingConfig}
+\end{figure}
 Nach einem absolvierten Spiel analysierten wir jeweils die Spielsituationen, welche sich ergeben haben. Dazu gehörte das Analysieren des geschriebenen Logs. Dabei bedienten wir uns den nachfolgenden Mechanismen.
 
 \section{Logkategorien und Loglevel}
@@ -11,6 +22,7 @@ Jeder Logeintrag gehört einer Logkategorie an. Je Logkategorie kann der Loglevel
 
 \section{JavaScript Addon für HMTL-Gameviewer}
 \label{sec:module.Logging.Addon}
+TODO Der Aufruf ist jetzt LiveInfo.live...
 Das Codepaket welches von den Challenge-Organisatoren mitgeliefert wird, bietet bereits eine hilfreiche 2D-Visualisierung des Spiels, mit welchem das Spielgeschehen mitverfolgt werden kann. Die Visualisierung wurde mit HMTL und Javascript implementiert. Leider ist es nicht möglich zusätzliche Informationen auf die Seite zu projizieren. Deshalb haben wir den Viewer bereits im Projekt 2 mit einer solchen Funktion erweitert. Mit der Codezeile Logger.liveInfo(...) kann eine Zusatzinformation geschrieben werden, welche auf dem Viewer später sichtbar ist. Es muss definiert werden mit welchem Zug und wo auf dem Spielfeld die Infomation angezeigt werden soll. Im Beispiel wird an der Position der Ameise (ant.getTile()) ausgegeben welchen Task die Ameise hat.
 \begin{verbatim}
 Logger.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), 
