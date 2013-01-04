@@ -4,7 +4,7 @@
 \section{Enities für die Pfadsuche}
 \label{sec:module.Suchalgorithmen.Enities}
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{91_bilder/Entities_Search}
 \caption{Spiel-Elemente für die Suche (vereinfacht)}
@@ -25,7 +25,7 @@ Wir haben drei mögliche Pfadalgorithmen in unserem Code eingebaut. Via PathFinde
 
 Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, dann die andere Achse abläuft. Sobald ein Hindernis in den Weg kommt, bricht der Algorithmus ab. In der Abbildung \ref{fig:SimplePath} sucht der Algorithmus zuerst den Vertikal-Horizontal Pfad. Da dieser Pfad wegen dem Wasserhindernis (blau) nicht ans Ziel führt, wird via Horizontal-Vertikal Pfad gesucht. Hier wird ein Pfad gefunden. Dieser Algorithmus ist, wie der Name bereits aussagt, sehr einfach aufgebaut und kostet wenig Rechenzeit. Dafür kann er keinen Hindernissen ausweichen.
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
 
 \includegraphics[height=50mm]{91_bilder/simplepath}
@@ -53,7 +53,7 @@ SimplePathFinder pf = new SimplePathFinder(map);
 List<Tile> path = pf.search(PathFinder.Strategy.AStar, ant.getTile(), foodTile,16);
 \end{verbatim}
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
 \includegraphics[height=50mm]{91_bilder/heuristicAstar.png}
 \caption[A* Pfadsuche]{Heuristische Kosten (blau), Effektive Kosten (grau)}
@@ -70,7 +70,7 @@ Eine Pfadsuche A* über alle Pixel ist sehr teuer, da es viel Pfade gibt, die zum
 \subsubsection{Clustering}
 Das Clustering wird während dem ClusteringTask ausgeführt, Dabei wird die Landkarte in sogenannte Clusters unterteilt. Auf dem Bild \ref{fig.clusteredMap} wurde die Karte in 16 Clusters aufgeteilt. 
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
 \includegraphics[height=50mm]{91_bilder/clusteredMap.png}
 \caption[Clustereinteilung auf der Landkarte.]{Clustereinteilung auf der Landkarte. Clustergrösse 4x4, Landkarte 16x16}
@@ -79,7 +79,7 @@ Das Clustering wird während dem ClusteringTask ausgeführt, Dabei wird die Landka
 
 Danach werden für jeden Cluster und einen Nachbar-Cluster aus der Vierer-Nachbarschaft die Verbindungskanten berechnet. Dies kann natürlich nur für Clusters gemacht werden die auf einem sichtbaren Teil der Landkarte liegen, was zu Begin des Spiel nicht gegeben ist. Deshalb wird der ClusteringTask in jedem Spielzug aufgerufen, in der Hoffnung ein Cluster komplett verbinden zu können. Sobald eine beliebige Seite eines Clusters berechnet ist, wird diese Aussenkante im Cluster und dem anliegenden Nachbar gespeichert und nicht mehr neu berechnet.
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
 \includegraphics[height=50mm]{91_bilder/clusteredMap2.png}
 \caption[Cluster mit berechneten Kanten]{Die Kanten jedes Clusters wurden berechnet}
@@ -88,7 +88,7 @@ Danach werden für jeden Cluster und einen Nachbar-Cluster aus der Vierer-Nachbar
 
 Sobald ein Cluster zwei oder mehrere Aussenkanten kennt berechnet er die Innenkanten mit A* welche die Knoten der Aussenkanten verbinden. Dies ergibt nun ein Pfadnetz über die Gesamtkarte. Im nachfolgenden Bild sind die Innenkanten (gelb) ersichtlich, die bei den ersten 8 Cluster berechnet wurden.
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
 \includegraphics[height=50mm]{91_bilder/clusteredMap3.png}
 \caption[Cluster mit Innenkanten]{Darstellung der Innenkanten}
@@ -97,7 +97,7 @@ Sobald ein Cluster zwei oder mehrere Aussenkanten kennt berechnet er die Innenka
 
 In der Abbildung \ref{fig.clusteredMap4} wird ein Pfad vom Pixel (3,9) nach (13,9) mittels HPA* gesucht (grüne Punkte). Zuerst wird eruiert in welchem Cluster sich das Start- bzw Zielpixel befindet. Danach wird in dem gefundenen Cluster ein Weg zu einem beliebigen Knoten auf der Clusterseite gesucht. Sind diese Knoten erreicht (blaue Pfade), wird nun das vorberechnete Pfadnetz mittels bereits beschrieben A* Algorithmus verwendet um die beiden Knoten auf dem kürzesten möglichen Pfad (gelb) zu verbinden.\footnote{Der resultierende Pfad könnte mittels Pathsmoothing verkürzt werden. Dies wurde aber in unserer Arbeit nicht implementiert.}
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
 \includegraphics[height=50mm]{91_bilder/clusteredMap4.png}
 \caption{Errechneter Weg mittels HPA*}
@@ -130,18 +130,18 @@ protected final int getActualCost(Node current, PathPiece piece) {
 
 Dadurch resultiert ein Pfad der durch sicheres Gebiet führt. Folgende Ausgabe, welche durch einen UnitTest generiert wurde, bezeugt die korrekte Funktionalität. Der rote Punkt soll mit dem schwarzen Punkt durch einen Pfad verbunden werden. Auf der Karte sind zudem die eigenen, orangen Einheiten sowie die gengerischen Einheiten (blau) abgebildet. Jede Einheit trägt zur Berechnung der Influence Map bei. Pro Tile wird die Sicherheit ausgegeben, negativ für Gebiete die vom Gegner kontrolliert werden und positiv in unserem Hoheitsgebiet.
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
-\includegraphics[height=50mm]{91_bilder/influenceAStar01.jpg}
+\includegraphics[width=0.99\textwidth]{91_bilder/influenceAStar01.jpg}
 \caption{Ausgangslage Pfadsuche mit A* und InfluenceMap}
 \label{fig.InfluenceAndPathfinding01}
 \end{figure}
 
 Ohne Berücksichtigung der InfluenceMap würde der A* Algorithmus einen Pfad finden der auf direktem Weg waagrecht zum Zielpunkt führt. Sobald aber die InfluenceMap berücksichtigt wird, führt der Pfad nicht mehr auf dem direktestem Weg zum Ziel, sondern nimmt einen Umweg über sicheres Gebiet. Unten abgebildet ist der kürzeste Pfad mit Berücksichtigung der Influence Map (blau) und ohne Influence Map-Berücksichtigung (orange). 
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
-\includegraphics[height=50mm]{91_bilder/influenceAStar02.jpg}
+\includegraphics[width=0.99\textwidth]{91_bilder/influenceAStar02.jpg}
 \caption{Resultierende Pfade mit und ohne Berücksichtigung der Influence Map}
 \label{fig.InfluenceAndPathfinding02}
 \end{figure}

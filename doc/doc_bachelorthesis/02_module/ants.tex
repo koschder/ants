@@ -1,10 +1,11 @@
 \chapter{Ants}
 \label{sec:module.Ants}
 
+
 \section{State-Klassen}
 \label{sec:module.Ants.State}
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{91_bilder/State}
 \caption{State-Klassen (vereinfacht)}
@@ -33,19 +34,19 @@ Die Population Klasse dient der Verwaltung der eigenen und der gegnerischen Amei
 \label{sec:module.Ants.State.Clustering}
 Die Clustering Klasse dient dem Aufteilen des Spielfeldes in Clusters für die HPA*-Suche (s. Abschnitt \ref{subsec:module.Suchalgorithmen.Pfadsuche.HPAstar}). Hier werden die berechneten Clusters abgelegt, damit diese nicht bei jeder Verwendung neu berechnet werden müssen. Der Zugriff auf sie erfolgt ebenfalls über die Clustering Klasse.
 
-\section{Spiel-Elemente (Welt)}
-\label{sec:module.Ants.State.Entities.World}
+\section{Spiel-Elemente (Ants-Spezifisch)}
+\label{sec:module.Ants.State.Entities.Ants}
 
-\begin{figure}[bth]
+\begin{figure}[H]
 \centering
-\includegraphics[width=0.7\textwidth]{91_bilder/Entities_World}
-\caption{Spiel-Elemente der Spielwelt (vereinfacht)}
-\label{fig:entitiesWorld}
+\includegraphics[width=0.5\textwidth]{91_bilder/antsEntities}
+\caption{Ants-spezifische Elemente der Spielwelt (vereinfacht)}
+\label{fig:antsEntities}
 \end{figure}
 
 TODO NEW
 
-Abbildung \ref{fig:entitiesWorld} zeigt die wichtigsten Klassen, die die Elemente des Spiels repräsentieren. Der \"Ubersichtlichkeit wegen wurden nur die wichtigsten Attribute und Operationen in das Diagramm aufgenommen.
+Abbildung \ref{fig:antsEntities} zeigt die wichtigsten Klassen, die die Elemente des Spiels repräsentieren. Der \"Ubersichtlichkeit wegen wurden nur die wichtigsten Attribute und Operationen in das Diagramm aufgenommen.
 
 \subsection{Ant}
 \label{sec:implementation.Entities.Ant}
@@ -60,3 +61,13 @@ Eine Route repräsentiert eine einfache Start-Ziel Verbindung. Sie hält für eine 
 \subsection{Ilk}
 \label{sec:implementation.Entities.Ilk}
 Ilk ist der Typ einer Zelle. Der Ilk einer Tile-Instanz gibt an, was sich gerade in der Zelle befindet. Dies kann ein Gelände-Typ sein, wenn die Zelle ansonsten leer ist, oder es kann eine Ameise, Nahrung, oder ein Hügel sein. Die Ilk-Enumeration bietet Hilfsmethoden, um festzustellen, ob eine Zelle passierbar oder besetzt ist.
+
+\section{Spiel-Elemente (Ants-Spezifisch)}
+\label{sec:module.Ants.State.Entities.Ants}
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{91_bilder/antsEntities}
+\caption{Ants-spezifische Elemente der Spielwelt (vereinfacht)}
+\label{fig:antsEntities}
+\end{figure}
