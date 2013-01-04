@@ -1,40 +1,98 @@
 \section{Missionen}
 \label{sec:module.Missionen}
+
+Missionen sind das Herzstück unserer Arbeit. Eine Mission dauert über mehrere Spielzüge und berechnet für jede teilnehmende Ameise welches ihr nächster Move ist. Nachfolgende Darstellung zeigt, dass alle Missionen von der abstrakten BaseMission abstammen und die BaseMission das Interface Mission implementiert. Die Lebensdauer einer Mission hängt davon ab, ob sie ihr Ziel erreicht oder ob sie schon führer abgebrochen werden muss. Ziel und Abbruchbedingungen sind je nach Mission unterschiedlich und werden im jeweiligen Abschnitt erklärt.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{91_bilder/Missions}
-\caption{Missionen}
+\caption{Missionen und ihre Hierarchie}
 \label{fig:missions}
 \end{figure}
 
-TODO NEW
 
-Eine Mission dauert über mehrere Spielzüge. Die meisten Missionen (GatherFoodMission, ExploreMission, AttackHillMission, AttackAntMission) sind Pfadmissionen\footnote{Die abstrakte Klasse PathMission ist im Code unter ants.missions.PathMission.java auffindbar.}, bei welchen die Ameise einem vorgegebenen Pfad, der bereits beim Erstellen der Mission berechnet wurde, folgt. 
-Die FollowMission ist eine spezielle Mission, mit der eine Ameise einfach einer anderen Ameise hinterherläuft.
+\subsection{BaseMission}
+\label{subsec:module.Mission.BaseMission}
 
-Eine Mission kann auch abgebrochen werden, wenn es keinen Sinn mehr macht, sie weiter zu verfolgen. Je nach spezifischer Mission sind aber die Abbruchbedingungen anders. Zum Beispiel die GatherFoodMission ist nur solange gültig wie das Futter noch nicht von einer anderen Ameise eingesammelt wurde.
-Abbildung \ref{fig:missions} zeigt einen \"Uberblick über die wichtigsten Missionen und ihre Hierarchie.
+Diese Klasse hat zwei Aufgaben, erstens Implementiert sie die von Interface Mission vorgegebene Methoden und zweitens stellt sie Funktionen zur Verfügung die von spezifischen Missionen verwendet werden. Die wichtigsten sind hier mit Erklärung aufgelistet.
 
-\section{BaseMission}
-\label{sec:module.Mission.BaseMission}
+\begin{itemize}
+	\item  \textbf{abandonMission():} Abbrechen der Mission
+	\item  \textbf{addAnt():} Ameise der Mission hinzufügen, in der Population als beschäftigt markieren.
+	\item  \textbf{doAnyMove(Ant a):} Für die mitgegebene Ameise irgendein Zug in eine der vier Richtung bestimmen.
+	\item  \textbf{doMoveInDirection(Ant ant, Tile target): Ein Zug in eine bestimmte Richtung bestimmen.}
+	\item  \textbf{gatherAnts(...):} Ameisen für die Mission rekrutieren. Anzahl Ameisen wird als Parameter mitgegeben. }
+	\item  \textbf{moveToNextTileOnPath(Ant a):} Bewegt die Ameise ein Pfadstück weiter auf dem, der Ameisen zugewiesen, Pfad.}
+	\item  \textbf{putMissionOrder(...):} Wurde ein Befehl für die Ameise gefunden wird er der Klasse Orders (Verwaltung der Befehle) mitgeteilt.}
+	\item  \textbf{releaseAnts(int amount):} Ameisen vo der Mission entlassen. 
+	\item  \textbf{checkEnviroment(...):} Mittels Breitensuche wird die Umgebung der Ameise nach eigenen Hügel, gegnerischen Hügel, gegnerischen Ameisen und Futterzellen gescannt. Je nach Mission wird beim Fund eines solchen Objekt die Mission abgebrochen, oder die Ameise von der Mission entlassen.
+\end{itemize}
+\\
+\\
+Nachfolgend werden die spezifischen Missionen erläutert. Tabellearisch werden die Eigenschaften der Missionen aufgelistet, danach folgen detailiierte Infomationen zur Mission.
 
-Mission
 
-\section{PathMission}
-\label{sec:module.Mission.PathMission}
+\subsection{PathMission}
+\label{subsec:module.Mission.PathMission}
 
-\section{AttackHillMission}
-\label{sec:module.Mission.AttackHillMission}
+Precondition: -\\
+Creator: (Ersteller): CombatTask, oder ExploreMission\\
+Postcondition: Pfad vollständig abgelaufen\\
+Max. Ants (Maximale Anzahl Ameisen): 1\\
+Max. Missionen: unbegrenzt\\
+Valid (Gültigkeit): siehe ExploreMission bzw. CombatTask\\
+Gather Ants (Ameisen rektrutieren): Nicht möglich\\
+Release Ants (Ameisen entlassen): Nicht möglich\\
 
-\section{DefendHillMission}
-\label{sec:module.Mission.DefendHillMission}
 
-\section{ExploreMission}
-\label{sec:module.Mission.ExploreMission}
+\subsection{AttackHillMission}
+\label{subsec:module.Mission.AttackHillMission}
 
-\section{GatherFoodMission}
-\label{sec:module.Mission.GatherFoodMission}
+Precondition: Gegnerischer Hügel sichtbar\\
+Creator: AttackHillsTask\\
+Postcondition: Gegnerischer Hügel erobert\\
+Max. Ants: unbegrenzt\\
+Max. Missionen: Je gegnerischen Hügel eine Mission\\
+Valid: solange gegnerischer Hügel nicht zerstört ist.\\
+Gather Ants: pro Zug max. 5 Ameisen, die im Umkreis von 25 Tiles des gegnerischen Hügel sind.\\
+Release Ants: Sicheres Food Tile in der Nähe. Eigener Hügel in der Nähe der Unterstüztung braucht. Wenn Mission im Status ControlHill ist werden alle Ameisen entlassen ausser zwei. Diese kontrollieren den Hügel.\\
 
+\subsection{DefendHillMission}
+\label{subsec:module.Mission.DefendHillMission}
+
+Precondition: Keine, Mission wird zu Beginn des Spiels erstellt.\\
+Creator: DefendHillTask\\
+Postcondition: Gegnerischer Hügel ist erobert.\\
+Max. Ants: unbegrenzt\\
+Max. Missionen: Je eigener Hügel eine Mission\\
+Valid: solange eigener Hügel nicht erobert ist.\\
+Gather Ants: Mission soll immer mehr Verteidiger haben als Angreifer sich dem Hügel nähern.\\
+Release Ants: Keine Angreifer in Sicht, werden die Ameisen (nicht alle) entlassen.\\
+
+
+\subsection{ExploreMission}
+\label{subsec:module.Mission.ExploreMission}
+
+Precondition: - \\
+Creator: ExploreTask\\
+Postcondition: Definerter Pfad zum Erkunden ist abgelaufen.\\
+Max. Ants: 1\\
+Max. Missionen: unbegrenzt\\
+Valid: Solange Ameise ein gültiger Pfad hat.\\
+Gather Ants: nicht möglich\\
+Release Ants: nicht möglich\\
+
+\subsection{GatherFoodMission}
+\label{subsec:module.Mission.GatherFoodMission}
+
+Precondition: Keine, Mission wird zu Beginn des Spiels erstellt.\\
+Creator: GatherFoodTask\\
+Postcondition: diese Mission besteht während dem ganzen Spiel \\
+Max. Ants: unbegrenzt\\
+Max. Missionen: 1\\
+Valid: immer\\
+Gather Ants: siehe Beschreibung\\
+Release Ants: siehe Beschreibung\\
 
 \subsection{Verworfene und nicht verwendete Mission}
 \label{subsec:implementation.Tasks.StupidMission}
