@@ -1,24 +1,14 @@
-\section{Ziele}
+\section{Zielerreichung}
 \label{sec:einleitung.Ziele}
 
-Nachfolgend sind die Ziele aufgelistet welche wir uns vor der Arbeit gestellt und im Pflichtenheft niedergeschrieben haben. Die farbigen Pfeile zeigt den Erfüllungsgrad an. Ist ein Ziel nicht vollständig erreicht wird in \textit{kursiver} Schrift ein Grund angegeben.
-\newline
-\newline
-\includegraphics[height=3mm]{91_bilder/pfeil-gruen.png}  Vollständig Erfüllt
-\newline
-\includegraphics[height=3mm]{91_bilder/pfeil-orange.png} Teilweise Erfüllt
-\newline
-\includegraphics[height=3mm]{91_bilder/pfeil-red.png}  Nicht Erfüllt
-\newline
-\newline
-Der im Rahmen von Projekt 2 entwickelte Bot soll um Logik für taktische und strategische Entscheidungen und koordinierte Bewegung erweitert werden.
+An dieser Stelle soll anhand des Anforderungskatalogs aus dem Pflichtenheft die Zielerreichung differenziert beurteilt werden.
 
 \subsection{Funktionale Anforderungen}
 \label{sec:einleitung.Ziele.FunktionaleAnforderungen}
 \subsubsection{Musskriterien}
 \label{sec:einleitung.Ziele.FunktionaleAnforderungen.Musskriterien}
 
-\includegraphics[height=3mm]{91_bilder/pfeil-gruen.png}
+\paragraph{Ziel:}
 Der Bot unterscheidet zwischen diversen Aufgaben:
 	\begin{itemize}
 	\item Nahrungsbeschaffung
@@ -26,57 +16,102 @@ Der Bot unterscheidet zwischen diversen Aufgaben:
 	\item Verteidigung
 	\item Erkundung
 	\end{itemize}
+	
+\subparagraph{Implementiert durch:}
+Die Kategorisierung der Aufgaben erfolgt duch die Enumeration Task.Type. Sie unterscheidet bspw. zwischen GATHER\_FOOD, ATTACK\_HILLS, EXPLORE, DEFEND\_HILL und weiteren. Alle Tasks (Kapitel \ref{sec:module.Tasks}) und Missionen (Kapitel \ref{sec:module.Missionen}) werden jeweils einem Aufgabentyp zugeordnet; auch die Ressourcenverwaltung funktioniert über diese Aufgabentypen.
 
+\subparagraph{Bewertung:}
+Dieses Ziel wurde klar erfüllt; die Aufteilung auf Aufgaben ist ein zentraler Bestandteil des Bots.
+
+\rule{1cm}{0.4pt}
+\paragraph{Ziel:}
 Der Bot identifiziert zur Erfüllung dieser Aufgaben konkrete Ziele, wie z.B.:
 	\begin{itemize}
-	\item 
-	\includegraphics[height=3mm]{91_bilder/pfeil-gruen.png}
-	 Gegnerische Hügel angreifen, was bei Erfolg den Score erhöht und das eigentliche Ziel des Spiels ist.
-	\item
-	\includegraphics[height=3mm]{91_bilder/pfeil-gruen.png}
-	Isolierte gegnerische Ameisen angreifen.
-	\newline
-	\textit{Grund: Keine Zeit für blabal...}
-	\item 
-	\includegraphics[height=3mm]{91_bilder/pfeil-orange.png}
-	Schwachstellen in der gegnerischen Verteidigung ausnutzen.
-	\item
-	\includegraphics[height=3mm]{91_bilder/pfeil-red.png} 
-	Engpässe im Terrain sichern bzw. versperren.
+	\item Gegnerische Hügel angreifen, was bei Erfolg den Score erhöht und das eigentliche Ziel des Spiels ist.
+	\item Isolierte gegnerische Ameisen angreifen.
+	\item Schwachstellen in der gegnerischen Verteidigung ausnutzen.
+	\item Engpässe im Terrain sichern bzw. versperren.
 	\item Konfliktzonen, d.h. viele Ameisen auf einem engen Raum, erkennen und entsprechend reagieren.
 	\end{itemize}
+	
+\subparagraph{Implementiert durch:}
+Da die Logik zum Identifizieren von Zielen je nach Aufgabe unterschiedlich ausfällt, sind Methoden zur Zielidentifikation an verschiedenen Stellen im Code implementiert. Bspw. wird im AttackHillsTask eine Liste der gegnerischen Hügel geführt, damit diese angegriffen werden können; oder es wird in der DefendHillMission berechnet, wie bedroht unsere eigenen Hügel sind und entsprechend werden zusätzliche Ressourcen angefordert.
 
+\subparagraph{Bewertung:}
+Dieses Ziel wurde erfüllt; Ein ''Ziel`` ist zwar nicht als explizites Konzept in den Code eingeflossen (es gibt keine Klasse \texttt{Goal}), die identifizierten Ziele werden aber klar gekennzeichnet und können über unsere Visualizer-Erweiterungen (s. Kapitel \ref{sec:module.Logging.Addon}) auch grafisch dargestellt werden.
+
+\rule{1cm}{0.4pt}
+\paragraph{Ziel:}
 Die Auswahl von Taktik und Strategie basiert auf der Bewertung der Situation auf dem Spielfeld, z.B. anhand folgender Kriterien:
 	\begin{itemize}
 	\item Dominante/unterlegene Position
 	\item Sicherheit verschiedener Gebiete des Spielfelds (eigener/gegnerischer Einfluss)
 	\item Konfliktpotenzial in verschiedenen Gebieten des Spielfelds
 	\end{itemize}
-		
-Anhand der Situationsbeurteilung werden die unterschiedlichen Aufgaben entsprechend gewichtet. Stark gewichtete Aufgaben erhalten mehr Ressourcen (Ameisen) zur Durchführung.
+	
+\subparagraph{Implementiert durch:}
+Die Bewertung der Situation auf dem Spielfeld wurde hauptsächlich mit Influence Mapping realisiert (s. Kapitel \ref{sec:module.InfluenceMap}). Die Influence Map kann mit geringem Rechenaufwand zu Beginn jedes Zugs aktualisiert werden und liefert eine Vielzahl von Informationen, die aus den unterschiedlichen Einflüssen der Spieler auf das Spielfeld gewonnen werden können.
 
+\subparagraph{Bewertung:}
+Dieses Ziel wurde erreicht; die Entscheidung, Influence Mapping einzusetzen, wurde aufgrund der Recherchen zum Thema von Lukas Kuster im Rahmen des Informatik-Seminars an der BFH getroffen und die Technik hat sich bewährt.
+
+\rule{1cm}{0.4pt}
+\paragraph{Ziel:}		
+Anhand der Situationsberteilung werden die unterschiedlichen Aufgaben entsprechend gewichtet. Stark gewichtete Aufgaben erhalten mehr Ressourcen (Ameisen) zur Durchführung.
+\subparagraph{Implementiert durch:}
+Basierend auf den verschiedenen Aufgabentypen und den Informationen aus der Influence Map haben wir ein Ressourcen-Managementsystem implementiert, das auf Regeln basiert (s. Kapitel \ref{sec:module.resourceMgmt}). Verschiedene Regeln werten die Situation aus und erhöhen resp. verringern anhand der gewonnenen Informationen die Zuweisung von Ressourcen auf die einzelnen Aufgabentypen. Tasks und Missionen können jeweils nur so viel Ameisen beschäftigen, wie der zugehörigen Aufgabe zugewiesen sind.
+\subparagraph{Bewertung:}
+Das Ziel wurde erreicht; Das Regelsystem zur Situationsbeurteilung ist modular aufgebaut, so dass mit minimalem Aufwand weitere Regeln erstellt werden können, um das Gesamtverhalten noch raffinierter zu gestalten.
+
+\rule{1cm}{0.4pt}
+\paragraph{Ziel:}
 Die Situationsbeurteilung fliesst auch in die taktische Logik ein, wie folgende Beispiele illustrieren:
 	\begin{itemize}
 	\item Bei der Pfadsuche wird die Sicherheit der zu durchquerenden Gebiete berücksichtigt
 	\item In Kampfsituationen kann der Bot die Ameisen in Formationen gliedern, die geeignet sind, eine lokale Überzahl eigener gegenüber gegnerischen Ameisen zu erzeugen
 	\item Beim Aufeinandertreffen mit gegnerischen Ameisen wird entschieden, ob angegriffen, die Stellung gehalten oder geflüchtet wird.
 	\end{itemize}
-
+\subparagraph{Implementiert durch:}
+Unser Pathfinder kann für die Pfadsuche auf die Influence Map zugreifen und die Sicherheit der Pfade in die Kostenberechnung einfliessen lassen. Für Kampfsituationen haben wir das CombatPositioning entwickelt, das für verschiedene Kampfsituationen (Angriff auf Hügel, Verteidigung eines eigenen Hügels, Kampf im offenen Feld) jeweils eine sinnvolle Formation der Ameisen errechnet.
+\subparagraph{Bewertung:}
+Dieses Ziel wurde grösstenteils erreicht, weist aber noch Verbesserungspotenzial auf. Nachdem unser erster spieltheoretischer Ansatz mit einem MinMax Algorithmus nicht geklappt hatte, mussten wir uns mit einer relativ groben Näherung an eine optimale Positionierung der Ameisen begnügen. In vielen Fällen reicht diese völlig aus, im Duell mit kampftaktisch versierteren Gegnern zeigen sich allerdings Schwächen.
+		
 \subsubsection{Kannkriterien}
 \label{sec:einleitung.Ziele.FunktionaleAnforderungen.Kannkriterien}
+
+\paragraph{Ziel:}
 Das Verhalten des Bots ist konfigurierbar, so dass zum Beispiel ein “agressiver” Bot gegen einen defensiven Bot antreten kann.
+\subparagraph{Implementiert durch:}
+Das Verhalten des Bots kann durch Profile beeinflusst werden (s. Kapitel  \ref{sec:module.Profile}). 
+\subparagraph{Bewertung:}
+Das Ziel wurde erreicht. Da wir die Profile erst gegen Schluss der Arbeit eingebaut haben, beschränken sie sich aktuell auf Parameter für die Ressourcenverteilung. Weitere Parameter können aber mit geringem Aufwand eingebaut werden.
 
 \subsection{Nicht funktionale Anforderungen}
 \label{sec:einleitung.Ziele.NichtFunktionaleAnforderungen}
 
 \subsubsection{Musskriterien}
 \label{sec:einleitung.Ziele.NichtFunktionaleAnforderungen.Musskriterien}
+\paragraph{Ziel:}
 Modularer Aufbau für eine gute Testbarkeit der Komponenten.
 
-Wichtige Funktionen wie die Pfadsuche und die Berechnung von Influence Maps sollen in separaten Modulen implementiert werden, damit sie auch von anderen Projekten verwendet werden könnten.
+\subparagraph{Bewertung:}
+Das Ziel wurde erreicht. Das Herauslösen von separaten Modulen für Suche, Strategie, Logging usw. führte zu einer verbesserten Testbarkeit der einzelnen Komponenten und einem sauberen Design für den gesamten Bot
 
+\rule{1cm}{0.4pt}
+\paragraph{Ziel:}
+Wichtige Funktionen wie die Pfadsuche und die Berechnung von Influence Maps sollen in separaten Modulen implementiert werden, damit sie auch von anderen Projekten verwendet werden könnten.
+\subparagraph{Bewertung:}
+Das Ziel wurde erreicht; Alle Module bis auf das ''Ants`` Modul sind so generisch implementiert, dass sie in jedem Spiel, das pixelbasierte Karten verwendet, eingesetzt werden können.
+
+\rule{1cm}{0.4pt}
+\paragraph{Ziel:}
 Die Codedokumentation ist vollständig und dient der Verständlichkeit.
+\subparagraph{Bewertung:}
+Dieses Ziel wurde erreicht. Der Code ist wo sinnvoll mit Kommentaren versehen; die HTML-Ausgabe der Javadoc-Kommentare sind in einem separaten Archiv dieser Arbeit beigelegt. Ausserdem achteten wir während der Realisierung auf das Schreiben von les- und wartbarem Code.
 
 \subsubsection{Kannkriterien}
 \label{sec:einleitung.Ziele.NichtFunktionaleAnforderungen.Kannkriterien}
+\paragraph{Ziel:}
 Für die wiederverwendbaren Module wird jeweils ein kleines Tutorial geschrieben, wie die Module verwendbar sind.
+\subparagraph{Bewertung:}
+Die einzelnen Module sind im Rahmen dieser Dokumentation beschrieben; die entsprechenden Kapitel beinhalten auch Verwendungsbeispiele.
