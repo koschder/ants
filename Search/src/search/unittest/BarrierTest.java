@@ -93,6 +93,37 @@ public class BarrierTest {
         Assert.assertEquals(23, flood.size());
     }
 
+    @Test
+    public void testBarrierTest2() {
+
+        MapOutput put = new MapOutput();
+        final UnitTestMap map = createMap2();
+        put.setMap(map);
+
+        int viewRadiusSquared = 36;
+        int maximumBarrierSize = 5;
+        Tile hill = new Tile(2, 2);
+        BreadthFirstSearch bfs = new BreadthFirstSearch(map);
+        Barrier bar = bfs.getBarrier(hill, viewRadiusSquared, maximumBarrierSize);
+
+        List<Tile> smallestBar = null;
+        if (bar != null) {
+            smallestBar = bar.getBarrier();
+            put.cleanUp(true, null);
+            put.addComment("smallestBarrier found: " + smallestBar);
+            put.addObject(smallestBar, "Barrier");
+            put.addObject(bar.getBarrierPlaceTiles(), "tiles place");
+            put.addObject(bar.getBarrierPlaceTiles(), "tiles place");
+            put.addObject(bar.getBarrierPlaceTiles(), "tiles place");
+        }
+        put.addObject(Arrays.asList(new Tile[] { hill }), "Hill");
+
+        Assert.assertNotNull(smallestBar);
+        Assert.assertEquals(Aim.EAST, bar.getAimOfBarrier());
+
+        put.saveHtmlMap("BarrierTest_findBarrierTest_" + hill.getRow() + "_" + hill.getCol());
+    }
+
     private UnitTestMap createMap() {
         String sMap = "";
         sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
@@ -110,4 +141,17 @@ public class BarrierTest {
         return map;
     }
 
+    private UnitTestMap createMap2() {
+        String sMap = "";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+        sMap += "wooooooooooooooooooooooooowwwooooooow";
+        sMap += "wooooooooooooooooooooooooowwwooooooow";
+        sMap += "wooooooooooooooooooooooooowwwooooooow";
+        sMap += "wooooooooooooooooooooooooowwwooooooow";
+        sMap += "wooooooooooooooooooooooooowwwooooooow";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
+
+        final UnitTestMap map = new UnitTestMap(37, sMap);
+        return map;
+    }
 }
