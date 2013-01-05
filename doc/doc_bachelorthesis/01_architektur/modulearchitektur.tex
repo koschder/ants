@@ -1,15 +1,33 @@
 \chapter{Architektur}
 \label{chap:Architektur}
 
-\section{Modulabhängigkeiten}
-\label{sec:architektur.Modulabhängigkeiten}
+\section{Module}
+\label{sec:architektur.Module}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.8\textwidth]{91_bilder/modulesOverview}
+\includegraphics[width=0.9\textwidth]{91_bilder/modulesOverview}
 \caption{Module}
 \label{fig:modulesOverview}
 \end{figure}
+
+Abbildung \ref{fig:modulesOverview} zeigt die Gliederung des Bots in die verschiedenene Untermodule. Wir unterscheiden dabei zwischen den AI Modulen, welche die eigentliche AI-Logik enthalten, und den Utility Modulen, die Basisfunktionen wie Logging implementieren.
+
+\paragraph{Ants:} Das Ants Modul enthält das Grundgerüst des Bots und fügt die anderen Module zu einem Ganzen zusammen. Es ist das einzige Modul, in dem Ants-spezifische Funktionalitäten implementiert sind; die anderen sind generisch gehalten um die Wiederverwendbarkeit sicherzustellen.
+
+\paragraph{AITools-API:} Im API-Modul sind alle gemeinsamen Interfaces definiert, auf die die anderen Module zugreifen. Zum Teil ist hier auch Basis-Funktionalität implementiert, wie z.B. Distanzberechnungen auf einer Karte.
+
+\paragraph{Search:} Dieses Modul enthält unsere Implementationen zur Pfad- und Breitensuche.
+
+\paragraph{Strategy:} Das Strategy-Module enthält strategische und taktische Algorithmen, insbesondere die Influence Map und das CombatPositioning.
+
+\paragraph{Logging:} Das Logging-Modul definiert ein flexibles Logging-Framework.
+
+\paragraph{TestReader:} Das TestReader-Modul besteht aus einer einzelnen Klasse, die aus den Log-Files der Ants-Spielengine Auswertungen lesen kann.
+
+\section{Modulabhängigkeiten}
+\label{sec:architektur.Modulabhängigkeiten}
+
 
 \begin{figure}[H]
 \centering
@@ -17,3 +35,18 @@
 \caption{Modulabhängigkeiten}
 \label{fig:modulesDependencies}
 \end{figure}
+Abbildung \ref{fig:modulesDependencies} zeigt die Abhängikeiten zwischen den Modulen. Die Module API und Logging sind unabhängig, während die beiden grösseren Module Abhängigkeiten auf API und Logging haben.
+Die Abhängigkeit von Strategy auf Search rührt daher, dass die Influence Map mittels FloodFil Algorithmus aufgebaut wird, der im Search Modul implementiert ist.
+
+\section{Externe Abhängigkeiten}
+\label{sec:architektur.externeAbhängigkeiten}
+Der Bot selber (also der Code, der von der Spielengine aufgerufen wird) hat keine externen Abhängigkeiten - dies wäre von den Regeln des Wettbewerbs auch gar nicht erlaubt gewesen. Für ein paar andere Zwecke haben wir aber trotzdem auf externe Programmbibliotheken zurückgegriffen.
+
+\begin{itemize}
+\item
+\textbf{JUnit \url{http://junit.org}:} Für unsere zahlreichen Unit- und Funktions-Tests verwendeten wir Junit.
+\item
+\textbf{ClasspathSuite \url{http://johanneslink.net/projects/cpsuite.jsp}:} Da JUnit keine bequemen Weg bietet, alle Tests aus verschiedenen Projekten auf einmal auszuführen, verwendeten wir die ClasspathSuite, um die Tests direkt in Eclipse auszuführen.
+\item
+\textbf{Json-simple \url{http://code.google.com/p/json-simple/}:} Json-simple ist eine einfache Json-Parsing Bibliothek, die wir im TestReader verwenden, um die Json-Logs der Spielengine auszuwerten.
+\end{itemize}
