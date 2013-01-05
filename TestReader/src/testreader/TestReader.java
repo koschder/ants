@@ -46,7 +46,8 @@ public class TestReader {
 			if (myRes.rank.equals("0")) {
 				if (oppRes.rank.equals("0"))
 					summary.draws++;
-				summary.wins++;
+				else
+					summary.wins++;
 			} else
 				summary.losses++;
 			summary.totalPointsWon += Integer.valueOf(myRes.score);

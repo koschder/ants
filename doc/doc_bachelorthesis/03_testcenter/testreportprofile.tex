@@ -1,2 +1,115 @@
 \section{Testreport Profile}
 \label{sec:testCenter.TestreportProfile}
+ 
+Um die verschiedenen Profile unseres Bots zu testen, führten wir diverse Testläufe durch, in denen wir die verschieden konfigurierten Bots jeweils 100 Mal gegen verschiedene Gegner und gegeneinander antreten liessen. Für diese Testläufe wurden die in Tabelle \ref{tab:definierteProfile} aufgeführten Profile verwendet.
+
+Während der Entwicklung führten wir die meisten Tests gegen den Bot von Evan Greavette (Username egreavette) durch. Er hatte seinen Bot über GitHub veröffentlicht: \url{https://github.com/egreavette/Ants-AI}. Daher führten wir auch die ersten Testläufe gegen diesen Gegner durch:
+
+\renewcommand{\arraystretch}{1.5}
+\begin{table}[H]
+	\centering
+		\begin{tabular}{ l | r | r | r | r }
+			Profil & Siege & Unentschieden & Niederlagen & Total Punkte \\
+			\hline
+			Default & 62 & 13 & 25 & 957:579\\
+			Aggressive & 61 & 18 & 21 & 1005:642\\
+			Defensive & 53 & 15 & 32 & 915:726\\
+			Expansive & 59 & 16 & 25 & 955:673
+		\end{tabular}
+	\caption{Bilanz der Testläufe gegen egreavette}
+	\label{tab:testAgainstEgreavette}
+\end{table}
+
+Wie man unschwer erkennen kann, sind gegen diesen Gegner drei der Profile ungefähr gleichwertig; lediglich der Defensive Bot fällt etwas ab.
+
+Als nächstes führten wir einen Testlauf gegen den Sieger des Wettbewerbs durch. Mathis Lichtenberger (Username xathis) hatte seinen Bot ebenfalls über GitHub zur Verfügung gestellt: \url{https://github.com/xathis/AI-Challenge-2011-bot}. 
+
+\begin{table}[H]
+	\centering
+		\begin{tabular}{ l | r | r | r | r }
+			Profil & Siege & Unentschieden & Niederlagen & Total Punkte \\
+			\hline
+			Default & 17 & 7 & 76 & 521:1094\\
+			Aggressive & 23 & 11 & 66 & 593:1010\\
+			Defensive & 11 & 8 & 81 & 479:1106\\
+			Expansive & 24 & 6 & 70 & 610:988
+		\end{tabular}
+	\caption{Bilanz der Testläufe gegen xathis}
+	\label{tab:testAgainstXathis}
+\end{table}
+
+Gegen diesen starken Gegner zeigen sich bereits deutlichere Unterschiede zwischen den Profilen. Man sieht, dass die beiden offensiver ausgerichteten Profile (Aggressive und Expansive) sich deutlich besser schlagen, während das Defensive Profil deutlich abfällt. Dies entspricht in etwa unseren Erwartungen. Die Stärken von xathis' Bot liegen eindeutig in der Offensive, während die Defensive nicht das Prunkstück unseres Bots ist. Deshalb können wir in der Verteidigung gegen xathis fast nur verlieren und haben eine grössere Chance, wenn wir selber in die Offensive gehen.
+
+Als nächstes liessen wir unsere 4 Profile gegeneinander antreten:
+
+\begin{table}[H]
+	\centering
+		\begin{tabular}{ l | r | r | r | r }
+			Profil & Siege & Unentschieden & Niederlagen & Total Punkte \\
+			\hline
+			Default & 22 & 7 & 71 & 332:891\\
+			Aggressive & 23 & 10 & 67 & 314:909\\
+			Defensive & 23 & 8 & 69 & 300:923\\
+			Expansive & 16 & 7 & 77 & 277:946
+		\end{tabular}
+	\caption{Bilanz der Testläufe gegeneinander}
+	\label{tab:test4Profile}
+\end{table}
+
+Hier zeigt sich, dass die Profile im Kampf gegeneinander relativ ausgeglichen sind. Es zeigt sich auch, dass das expansive Verhalten sich gegen mehrere Gegner weniger lohnt, da sich dabei die Ameisen eher auf dem Spielfeld verzetteln und man Gefahr läuft, isolierte Ameisen zu verlieren.
+
+Alles in allem waren aber diese Standard-Profile noch mehr oder weniger gleichwertig. Wir erstellten daher neue, stärker vom Standard abweichende Profile und führten noch einmal Testläufe gegen xathis und gegeineinander durch.
+
+\renewcommand{\arraystretch}{1.5}
+\begin{table}[H]
+	\centering
+		\begin{tabular}{ l | r | r | r | r }
+			Parameter & Default & Aggressive 2 & Defensive 2 & Expansive 2\\
+			\hline
+			defaultAllocation.gatherFood & 25 & 15 & 25 & 35\\
+			defaultAllocation.explore & 25 & 15 & 25 & 35\\
+			defaultAllocation.attackHills & 25 & 60 & 10 & 20\\
+			defaultAllocation.defendHills & 25 & 10 & 40 & 10\\
+			defendHills.startTurn & 30 & 30 & 20 & 50\\
+			defendHills.minControlRadius & 8 & 8 & 20 & 8\\
+			explore.forceThresholdPercent & 80 & 80 & 80 & 90\\
+			explore.forceGain & 0.25 & 0.1 & 0.25 & 0.4\\
+			explore.dominantPositionBoost & 5 & 3 & 5 & 10\\
+			attackHills.dominantPositionBoost & 2 & 10 & 2 & 2\\
+			attackHills.halfTimeBoost & 20 & 40 & 15 & 20\\
+		\end{tabular}
+		\caption{Die Profile für den 2. Testlauf}
+		\label{tab:definierteProfile2}
+\end{table}
+
+\begin{table}[H]
+	\centering
+		\begin{tabular}{ l | r | r | r | r }
+			Profil & Siege & Unentschieden & Niederlagen & Total Punkte \\
+			\hline
+			Default & 17 & 7 & 76 & 521:1094\footnote{Da sich an diesem Profil nichts geändert hatte, wurde der Testlauf nicht noch einmal durchgeführt; die Werte stammen aus dem 1. Lauf}\\
+			Aggressive & 20 & 4 & 76 & 545:1040\\
+			Defensive & 13 & 4 & 83 & 385:1186\\
+			Expansive & 19 & 12 & 69 & 578:1010
+		\end{tabular}
+	\caption{Bilanz der 2. Testläufe gegen xathis}
+	\label{tab:testAgainstXathis2}
+\end{table}
+
+Aus Tabelle \ref{tab:testAgainstXathis2} sieht man, dass die neuen Profile gegen xathis eher schlechter abschnitten, aber die Unterschiede zum 1. Testlauf sind nur gering.
+
+\begin{table}[H]
+	\centering
+		\begin{tabular}{ l | r | r | r | r }
+			Profil & Siege & Unentschieden & Niederlagen & Total Punkte \\
+			\hline
+			Default & 41 & 9 & 50 & 428:788\\
+			Aggressive & 12 & 7 & 81 & 276:940\\
+			Defensive & 22 & 6 & 72 & 256:960\\
+			Expansive & 11 & 10 & 79 & 256:960
+		\end{tabular}
+	\caption{Bilanz der 2. Testläufe gegeneinander}
+	\label{tab:test4Profile2}
+\end{table}
+
+Wie Tabelle \ref{tab:test4Profile2} zeigt, waren die Unterschiede zwischen den neuen Profilen im Kampf gegeneinander schon deutlich sichtbarer. Die extremeren Profile weisen alle eine deutlich schlechtere Bilanz auf, wobei die Defensive Konfiguration noch am besten fährt. Gegen diese Profile ist unsere ausgewogene Standardkonfiguration aber bereits ein deutlicher Sieger.

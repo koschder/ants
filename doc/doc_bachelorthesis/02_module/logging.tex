@@ -12,7 +12,7 @@ Für eine gründliche Analyse der Spiele sind ausführliche und konfigurierbare Log
 Abbildung \ref{fig:Logging} zeigt die wichtigsten Klassen des Logging-Frameworks. 
 \begin{itemize}
 \item
-\textbf{Logger:} Das Logger Interface definiert die Methoden, die aus dem Applikations-Code heraus zum Logging verwendet werden können. Die Methodennamen bezeichnen den LogLevel, als Argumente übergeben werden ein String mit der Logmeldung sowie eine Liste von zusätzlichen Parametern, die in die Logmeldung eingefügt werden soll. Die Methoden unterstützen alle die Java String Formatter Syntax. \footnote{\url{http://docs.oracle.com/javase/6/docs/api/java/util/Formatter.html#syntax}}
+\textbf{Logger:} Das Logger Interface definiert die Methoden, die aus dem Applikations-Code heraus zum Logging verwendet werden können. Die Methodennamen bezeichnen den LogLevel, als Argumente übergeben werden ein String mit der Logmeldung sowie eine Liste von zusätzlichen Parametern, die in die Logmeldung eingefügt werden soll. Die Methoden unterstützen alle die Java String Formatter Syntax. \footnote{\url{http://docs.oracle.com/javase/6/docs/api/java/util/Formatter.html\#syntax}}
 \item
 \textbf{DefaultLogger:} Unsere Standardimplementierung des Logger Interfaces. Der DefaultLogger hat jeweils eine LogCategory und ein LogFile, in das er seine Meldungen schreibt.
 \item

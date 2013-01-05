@@ -20,15 +20,14 @@ Diese Klasse hat zwei Verwendungszwecke, erstens Implementiert sie die von Inter
 	\item  \textbf{abandonMission():} Abbrechen der Mission
 	\item  \textbf{addAnt():} Ameise der Mission hinzufügen, in der Population als beschäftigt markieren.
 	\item  \textbf{doAnyMove(Ant a):} Für die mitgegebene Ameise irgendein Zug in eine der vier Richtung bestimmen.
-	\item  \textbf{doMoveInDirection(Ant ant, Tile target):} Ein Zug in eine bestimmte Richtung bestimmen.}
-	\item  \textbf{gatherAnts(...):} Ameisen für die Mission rekrutieren. Anzahl Ameisen wird als Parameter mitgegeben. }
-	\item  \textbf{moveToNextTileOnPath(Ant a):} Bewegt die Ameise ein Pfadstück weiter auf dem, der Ameisen zugewiesen, Pfad.}
-	\item  \textbf{putMissionOrder(...):} Wurde ein Befehl für die Ameise gefunden wird er der Klasse Orders (Verwaltung der Befehle) mitgeteilt.}
+	\item  \textbf{doMoveInDirection(Ant ant, Tile target):} Ein Zug in eine bestimmte Richtung bestimmen.
+	\item  \textbf{gatherAnts(...):} Ameisen für die Mission rekrutieren. Anzahl Ameisen wird als Parameter mitgegeben. 
+	\item  \textbf{moveToNextTileOnPath(Ant a):} Bewegt die Ameise ein Pfadstück weiter auf dem, der Ameisen zugewiesen, Pfad.
+	\item  \textbf{putMissionOrder(...):} Wurde ein Befehl für die Ameise gefunden wird er der Klasse Orders (Verwaltung der Befehle) mitgeteilt.
 	\item  \textbf{releaseAnts(int amount):} Ameisen vo der Mission entlassen. 
 	\item  \textbf{checkEnviroment(...):} Mittels Breitensuche wird die Umgebung der Ameise nach eigenen Hügel, gegnerischen Hügel, gegnerischen Ameisen und Futterzellen gescannt. Je nach Mission wird beim Fund eines solchen Objekt die Mission abgebrochen, oder die Ameise von der Mission entlassen.
 \end{itemize}
-\\
-\\
+
 Nachfolgend werden die spezifischen Missionen erläutert. Tabellearisch werden die Eigenschaften der Missionen aufgelistet, danach folgen detailiierte Infomationen zur Mission.
 
 
