@@ -36,6 +36,11 @@
 \usepackage{caption}													% for captions of figures and tables
 \usepackage{booktabs}													% package for nicer tables
 \usepackage{tocvsec2}													% provides means of controlling the sectional numbering
+\usepackage{color}
+\usepackage{fancyvrb}
+\usepackage{listings}
+ 
+
 %---------------------------------------------------------------------------
 
 % Load Math Packages
@@ -63,6 +68,7 @@
 %\definecolor{linkcolor}{rgb}{0,0,0.8}     			% Blue for the web- and cd-version!
 \definecolor{linkcolor}{rgb}{0,0,0}        			% Black for the print-version!
 \definecolor{bfhred}{rgb}{0.776,0,0.066}  			% Red
+\definecolor{commentgreen}{rgb}{0,0.5,0}  % Green for java comments
 %---------------------------------------------------------------------------
 
 % Hyperref Package (Create links in a pdf)
@@ -82,7 +88,20 @@
 	urlcolor = {linkcolor},               % Color of URLs
 ]{hyperref}
 %---------------------------------------------------------------------------
-
+ 
+\lstset{fancyvrb=true}
+\lstset{
+basicstyle=\small\tt,
+keywordstyle=\color{blue},
+identifierstyle=,
+commentstyle=\color{commentgreen},
+stringstyle=\color{red},
+showstringspaces=false,
+tabsize=3,
+captionpos=b,
+numberstyle=\tiny
+%stepnumber=4
+}
 % Set up page dimension
 %---------------------------------------------------------------------------
 \usepackage{geometry}
