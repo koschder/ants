@@ -8,8 +8,8 @@ Während der Entwicklung führten wir die meisten Tests gegen den Bot von Evan Gre
 \renewcommand{\arraystretch}{1.5}
 \begin{table}[H]
 	\centering
-		\begin{tabular}{ l | r | r | r | r }
-			Profil & Siege & Unentschieden & Niederlagen & Total Punkte \\
+		\begin{tabular}{ l | r  r  r  r }
+			\textbf{Profil} & \textbf{Siege} & \textbf{Unentschieden} & \textbf{Niederlagen} & \textbf{Total Punkte} \\
 			\hline
 			Default & 62 & 13 & 25 & 957:579\\
 			Aggressive & 61 & 18 & 21 & 1005:642\\
@@ -26,8 +26,8 @@ Als nächstes führten wir einen Testlauf gegen den Sieger des Wettbewerbs durch. 
 
 \begin{table}[H]
 	\centering
-		\begin{tabular}{ l | r | r | r | r }
-			Profil & Siege & Unentschieden & Niederlagen & Total Punkte \\
+		\begin{tabular}{ l | r  r  r  r }
+			\textbf{Profil} & \textbf{Siege} & \textbf{Unentschieden} & \textbf{Niederlagen} & \textbf{Total Punkte} \\
 			\hline
 			Default & 17 & 7 & 76 & 521:1094\\
 			Aggressive & 23 & 11 & 66 & 593:1010\\
@@ -44,8 +44,8 @@ Als nächstes liessen wir unsere 4 Profile gegeneinander antreten:
 
 \begin{table}[H]
 	\centering
-		\begin{tabular}{ l | r | r | r | r }
-			Profil & Siege & Unentschieden & Niederlagen & Total Punkte \\
+		\begin{tabular}{ l | r  r  r  r }
+			\textbf{Profil} & \textbf{Siege} & \textbf{Unentschieden} & \textbf{Niederlagen} & \textbf{Total Punkte} \\
 			\hline
 			Default & 22 & 7 & 71 & 332:891\\
 			Aggressive & 23 & 10 & 67 & 314:909\\
@@ -63,8 +63,8 @@ Alles in allem waren aber diese Standard-Profile noch mehr oder weniger gleichwe
 \renewcommand{\arraystretch}{1.5}
 \begin{table}[H]
 	\centering
-		\begin{tabular}{ l | r | r | r | r }
-			Parameter & Default & Aggressive 2 & Defensive 2 & Expansive 2\\
+		\begin{tabular}{ l | r  r  r  r }
+			\textbf{Parameter} & \textbf{Default} & \textbf{Aggressive 2} & \textbf{Defensive 2} & \textbf{Expansive 2}\\
 			\hline
 			defaultAllocation.gatherFood & 25 & 15 & 25 & 35\\
 			defaultAllocation.explore & 25 & 15 & 25 & 35\\
@@ -84,14 +84,20 @@ Alles in allem waren aber diese Standard-Profile noch mehr oder weniger gleichwe
 
 \begin{table}[H]
 	\centering
-		\begin{tabular}{ l | r | r | r | r }
-			Profil & Siege & Unentschieden & Niederlagen & Total Punkte \\
+	%weird hack to enable footnotes in the table
+	\begin{minipage}{11cm}
+    \centering
+		\begin{tabular}{ l | r  r  r  r }
+			\textbf{Profil} & \textbf{Siege} & \textbf{Unentschieden} & \textbf{Niederlagen} & \textbf{Total Punkte} \\
 			\hline
 			Default & 17 & 7 & 76 & 521:1094\footnote{Da sich an diesem Profil nichts geändert hatte, wurde der Testlauf nicht noch einmal durchgeführt; die Werte stammen aus dem 1. Lauf}\\
 			Aggressive & 20 & 4 & 76 & 545:1040\\
 			Defensive & 13 & 4 & 83 & 385:1186\\
 			Expansive & 19 & 12 & 69 & 578:1010
-		\end{tabular}
+		\end{tabular}\par
+		\vspace{-0.75\skip\footins}
+   \renewcommand{\footnoterule}{}
+  \end{minipage}
 	\caption{Bilanz der 2. Testläufe gegen xathis}
 	\label{tab:testAgainstXathis2}
 \end{table}
@@ -100,8 +106,8 @@ Aus Tabelle \ref{tab:testAgainstXathis2} sieht man, dass die neuen Profile gegen
 
 \begin{table}[H]
 	\centering
-		\begin{tabular}{ l | r | r | r | r }
-			Profil & Siege & Unentschieden & Niederlagen & Total Punkte \\
+		\begin{tabular}{ l | r  r  r  r }
+			\textbf{Profil} & \textbf{Siege} & \textbf{Unentschieden} & \textbf{Niederlagen} & \textbf{Total Punkte} \\
 			\hline
 			Default & 41 & 9 & 50 & 428:788\\
 			Aggressive & 12 & 7 & 81 & 276:940\\

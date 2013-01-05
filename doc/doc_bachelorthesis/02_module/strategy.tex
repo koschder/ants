@@ -13,13 +13,18 @@
 
 Die Influence Map haben wir nach den Beschreibungen im Buch \cite{ARTIFICIALINTELLIGENCEFORGAMES} implementiert. Jede bekannte Spieleinheit auf der Spielkarte 'strahlt' eine gewissen Einfluss aus. In unserer Implementation unterscheiden wir zwischen drei Einflussradien, der Angriffsradius, der erweiterte Angriffsradius und der Sichtradius. Den Radien haben wir folgende Werte zugewiesen. 
 
-
-\begin{tabular}{p{5cm}|p{3cm}|p{3cm}}
+\renewcommand{\arraystretch}{1.5}
+\begin{table}[H]
+	\centering
+\begin{tabular}{l | r r}
  Radius & Wert & Radius in Tiles* \\
+\hline
  Angriffsradius & 50 & 2.2 \\
  Erweiterter Angriffsradius & 30 & 5  \\
  Sichtradius & 10 & 8.8 \\
  \end{tabular}
+\caption{Einfluss einer Spieleinheit}
+\end{table}
  
  * Die Radiuslänge kann je nach Spieleinstellung ändern. Angegeben sind die Defaultwerte.
 

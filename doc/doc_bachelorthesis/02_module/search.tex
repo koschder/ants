@@ -162,8 +162,14 @@ Ohne Berücksichtigung der InfluenceMap würde der A* Algorithmus einen Pfad finde
 
 Die Pfadkosten für beide Pfade verglichen, legt offen, dass je nach Berücksichtigung der Influence Map nicht der gleiche Pfad als der 'Kürzeste' von A* gefunden wird.
 
-\begin{tabular}{p{3cm}|p{5cm}|p{5cm}}
+\renewcommand{\arraystretch}{1.5}
+\begin{table}[H]
+	\centering
+\begin{tabular}{l | r r}
  & Kosten ohne Influence Map &Kosten mit Influence Map \\
+\hline
  Oranger Pfad & \textbf{34} & 110 \\
  BlauerPfad & 46 & \textbf{106} \\
  \end{tabular}
+\caption{Pfadkosten mit und ohne Berücksichtigung der Influence Map}
+\end{table}
