@@ -1,2 +1,60 @@
 \section{Profile}
 \label{sec:module.Profile}
+\"Uber die Profile lässt sich das Verhalten unseres Bots konfigurativ beeinflussen. Folgende Parameter stehen dazu zur Verfügung:
+\begin{itemize}
+\item
+\textbf{defaultAllocation.gatherFood}: Standard Ressourcenzuteilung in Prozent für die Nahrungssuche. Dieser Wert dient als Startwert für den ResourceAllocator.
+\item
+\textbf{defaultAllocation.explore}:Standard Ressourcenzuteilung in Prozent für die Erkundung der Spielwelt. Dieser Wert dient als Startwert für den ResourceAllocator.
+\item
+\textbf{defaultAllocation.attackHills}:Standard Ressourcenzuteilung in Prozent für den Angriff auf gegnerische Hügel. Dieser Wert dient als Startwert für den ResourceAllocator.
+\item
+\textbf{defaultAllocation.defendHills}:Standard Ressourcenzuteilung in Prozent für die Verteidigung der eigenen Hügel. Dieser Wert dient als Startwert für den ResourceAllocator.
+\item
+\textbf{defendHills.startTurn}: In der Anfangsphase des Spiels macht es nicht viel Sinn, Verteidiger zurückzubehalten obwohl kein Angreifer in der Nähe ist. Mit diesem Parameter kann eingestellt werden, ab welchem Zug wir pro Hügel mindestens einen Verteidiger abkommandieren.
+\item
+\textbf{defendHills.minControlRadius}: Dieser Parameter legt fest, wie gross das Gebiet um unsere Hügel ist, das wir verteidigen.
+\item
+\textbf{explore.forceThresholdPercent}: Schwellenwert für das Verhältnis von nie gesehenen Zellen zu allen Zellen auf der Karte. Wenn der Wert unter diesem Schwellenwert liegt, werden zusätzliche Ressourcen für die Erkundung bereitgestellt.
+\item
+\textbf{explore.forceGain}: Dieser Wert bestimmt, um wie viel die Ressourcen für die Erkundung erhöht werden, falls obiger Schwellenwert unterboten wird. Mögliche Werte liegen zwischen 0 und 1.
+\item
+\textbf{explore.dominantPositionBoost}: Wenn wir eine dominante Position auf dem Spielfeld haben, wird die Erkundung gestärkt, um die Karte zu kontrollieren. Dieser Parameter bestimmt, wie viel zusätzliche Ressourcen zugeteilt werden.
+\item
+\textbf{attackHills.dominantPositionBoost}: Wenn wir eine dominante Position auf dem Spielfeld haben, wird der Angriff auf gegnerische Hügel forciert, um Punkte zu sammeln. Dieser Parameter bestimmt, wie viel zusätzliche Ressourcen zugeteilt werden.
+\item
+\textbf{attackHills.halfTimeBoost}: Nach Ablauf der Hälfte der Spielzeit erhöhen wir die Aggressivität unseres Bots. Dieser Parameter bestimmt, wie stark der Angriff auf gegnerische Hügel in der 2. Halbzeit forciert wird.
+\end{itemize}
+
+\subsection{Validierung}
+\label{sec:module.Profile.Validierung}
+Die Parameter \texttt{defaultAllocation.*} müssen in der Summe 100 ergeben. Dies wird beim Start des Bots, wenn das Profil geladen wird, überprüft. Auch für die anderen Parameter sind Validierungen vorhanden (z.B. Prüfung, ob ein Prozentwert zwischen 0 und 100 liegt.)
+
+Fehlt ein Parameter in einem Profil, so wird für diesen Parameter der Standardwert genommen.
+
+\subsection{Definierte Profile}
+\label{sec:module.Profile.DefinierteProfile}
+Folgende Profile sind im Bot definiert und können beim Start ausgewählt werden:
+
+\renewcommand{\arraystretch}{1.5}
+		\begin{tabular}{ l | r | r | r | r }
+			Parameter & Default & Aggressive & Defensive & Expansive \\
+			\hline
+			defaultAllocation.gatherFood & 25 & 20 & 25 & 30\\
+			defaultAllocation.explore & 25 & 20 & 25 & 30\\
+			defaultAllocation.attackHills & 25 & 45 & 15 & 20\\
+			defaultAllocation.defendHills & 25 & 15 & 35 & 20\\
+			defendHills.startTurn & 30 & 30 & 20 & 30\\
+			defendHills.minControlRadius & 8 & 8 & 12 & 8\\
+			explore.forceThresholdPercent & 80 & 80 & 80 & 90\\
+			explore.forceGain & 0.25 & 0.25 & 0.25 & 0.4\\
+			explore.dominantPositionBoost & 5 & 5 & 5 & 8\\
+			attackHills.dominantPositionBoost & 2 & 5 & 2 & 2\\
+			attackHills.halfTimeBoost & 20 & 25 & 15 & 20\\
+		\end{tabular}
+
+
+
+\subsection{Weiterentwicklungs-Potenzial}
+\label{sec:module.Profile.Weiterentwicklung}
+Aktuell können 11 Parameter via Profil angepasst werden, wovon die meisten einen Einfluss auf das Ressourcen-Management haben. Weitere Parameter für beliebige Teile der Logik könnten problemlos eingefügt werden und müssten sich auch nicht auf numerische Werte beschränken. Denkbar wären bspw. ganze Strategien, die per Profil einfach ausgetauscht werden könnten.
