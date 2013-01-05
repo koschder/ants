@@ -66,9 +66,12 @@ public class GatherFoodMission extends BaseMission {
 
         }
 
-        checkAntsRoutes();
-        gatherAnts();
-        moveAnts();
+        // check the existing routes, if they are still valid.
+    checkAntsRoutes();
+    // gather new ants
+    gatherAnts();
+    // move the ants
+    moveAnts();
 
         if (Ants.getOrders().getAntsOnFood().size() != ants.size())
             throw new IllegalArgumentException("Ants.getOrders().getAntsOnFood()s is not vaild");

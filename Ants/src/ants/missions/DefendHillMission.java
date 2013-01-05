@@ -31,9 +31,11 @@ public class DefendHillMission extends BaseMission {
     private Tile hill = null;
     private List<Tile> tilesAroundHill = new ArrayList<Tile>();
     private Barrier barrier = null;
-    private int controlAreaRadius2 = Math.max((int) Math.sqrt(Ants.getWorld().getViewRadius2() + 4), 49);
-    private int guardHillTurn = Ants.getProfile().getDefendHills_StartTurn();
-    private int antsMoreThanEnemy = 1;
+    final private int CONTROL_AREA_RADIUS2 = Math.max((int) Math.sqrt(Ants.getWorld().getViewRadius2() + 4), 49);
+    final private int START_DEFENDHILL_TURN = Ants.getProfile().getDefendHills_StartTurn();
+    final private int DEFENDER_MORETHAN_ATTACKERS = 1;
+    final private int GATHERANTS_MANHATTAN_DISTANCE = 20;
+    final private boolean USEBARRIER = true;
     private boolean needsMoreAnts;
 
     private enum DefendMode {
@@ -46,7 +48,7 @@ public class DefendHillMission extends BaseMission {
     public DefendHillMission(Tile myhill) {
         this.hill = myhill;
         BreadthFirstSearch bfs = new BreadthFirstSearch(Ants.getWorld());
-        tilesAroundHill = bfs.floodFill(myhill, controlAreaRadius2);
+        tilesAroundHill = bfs.floodFill(myhill, CONTROL_AREA_RADIUS2);
         LiveInfo.liveInfo(Ants.getAnts().getTurn(), myhill, "DefendArea: %s", tilesAroundHill);
     }
 
@@ -57,13 +59,17 @@ public class DefendHillMission extends BaseMission {
 
     @Override
     public void execute() {
+        LOGGER.trace("determineMode %s", hill);
         determineMode();
 
         if (mode == DefendMode.Barrier) {
+            LOGGER.trace("defendBarrier %s", hill);
             defendBarrier();
         } else {
+            LOGGER.trace("defendHill %s", hill);
             defendHill();
         }
+        LOGGER.trace("end execute() defendHillMission %s", hill);
     }
 
     private void defendBarrier() {
@@ -197,11 +203,23 @@ public class DefendHillMission extends BaseMission {
 
     private void determineMode() {
 
+        if (!USEBARRIER)
+            return;
+
         if (Ants.getAnts().getTurn() == 10) {
             AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
             barrier = bfs.getBarrier(hill, Ants.getWorld().getViewRadius2(), 5);
             if (barrier != null) {
                 mode = DefendMode.Barrier;
+            }
+        } else if (Ants.getAnts().getTurn() > 10 && mode == DefendMode.Barrier) {
+            // if we switched to barrier defend-mode we have to check if we aren't overrun.
+            // if we are so we switch back to the default mode.
+            for (Tile t : barrier.getBarrier()) {
+                if (Ants.getWorld().getIlk(t) == Ilk.ENEMY_ANT) {
+                    mode = DefendMode.Default;
+                    break;
+                }
             }
         }
 
@@ -250,7 +268,7 @@ public class DefendHillMission extends BaseMission {
         }
         removeAnts(antsToRelease);
         LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill, "DefendHillMission no attackers near by -+ "
-                + controlAreaRadius2 + " tiles");
+                + CONTROL_AREA_RADIUS2 + " tiles");
 
     }
 
@@ -269,22 +287,22 @@ public class DefendHillMission extends BaseMission {
     private void gatherOrReleaseAnts(List<Tile> attackers) {
         int gatherAntsAmount = 0;
 
-        if (attackers.size() == 0 && Ants.getAnts().getTurn() > guardHillTurn) {
+        if (attackers.size() == 0 && Ants.getAnts().getTurn() > START_DEFENDHILL_TURN) {
             // if there are no attackers but late in game (guardHillTurn) we gather 1 ant for protection
             gatherAntsAmount = 1 - ants.size();
         } else if (attackers.size() > 0) {
-            gatherAntsAmount = attackers.size() - ants.size() + antsMoreThanEnemy;
+            gatherAntsAmount = attackers.size() - ants.size() + DEFENDER_MORETHAN_ATTACKERS;
         }
-        if (gatherAntsAmount > 0)
+        if (gatherAntsAmount > 0) {
             gatherAnts(gatherAntsAmount, attackers.size() > 0);
-        else {
+        } else {
             needsMoreAnts = false;
             releaseAnts(Math.abs(gatherAntsAmount));
         }
     }
 
     private void gatherAnts(int amount, boolean hasAttackers) {
-        Map<Ant, List<Tile>> antsNearBy = gatherAnts(hill, amount, controlAreaRadius2);
+        Map<Ant, List<Tile>> antsNearBy = gatherAnts(hill, amount, GATHERANTS_MANHATTAN_DISTANCE);
         LOGGER.debug("gatherAnts: New ants %s for mission: %s (needed: %s)", antsNearBy.keySet(), this, amount);
         if (antsNearBy.keySet().size() < amount)
             needsMoreAnts = hasAttackers;

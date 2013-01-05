@@ -211,7 +211,7 @@ public abstract class BaseMission implements Mission {
         return true;
     }
 
-    protected Map<Ant, List<Tile>> gatherAnts(Tile tile, int amount, int attractionDistance) {
+    protected Map<Ant, List<Tile>> gatherAnts(Tile tile, int amount, int manhattanAttractionDistance) {
 
         Map<Ant, List<Tile>> newAnts = new HashMap<Ant, List<Tile>>();
         if (amount < 1)
@@ -220,7 +220,7 @@ public abstract class BaseMission implements Mission {
         // don't search more ants than we are allowed to recruit
         int maxAnts = Math.min(amount, Ants.getPopulation().getMaxAnts(getTaskType()));
         AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
-        final List<Ant> unemployed = bfs.findUnemployedAntsInRadius(tile, maxAnts, attractionDistance);
+        final List<Ant> unemployed = bfs.findUnemployedAntsInRadius(tile, maxAnts, manhattanAttractionDistance);
         if (new AntsBreadthFirstSearch.UnemployedAntGoalTest().isGoal(tile))
             unemployed.add(Ants.getPopulation().getMyAntAt(tile, true));
         // create a path for all available ants within distance

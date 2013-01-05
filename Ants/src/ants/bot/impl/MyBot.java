@@ -12,11 +12,11 @@ import ants.strategy.ResourceAllocator;
 import ants.tasks.AttackHillsTask;
 import ants.tasks.ClearHillTask;
 import ants.tasks.ClusteringTask;
+import ants.tasks.CombatTask;
 import ants.tasks.DefendHillTask;
 import ants.tasks.ExploreTask;
 import ants.tasks.GatherFoodTask;
 import ants.tasks.MissionTask;
-import ants.tasks.CombatTask;
 import ants.tasks.Task;
 import ants.tasks.Task.Type;
 
@@ -53,11 +53,11 @@ public class MyBot extends BaseBot {
         LoggingConfig.configure(LogCategory.ATTACK_HILLS, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.CLEAR_HILL, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.COMBAT, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.DEFEND, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.DEFEND_HILL, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.DEFEND, LogLevel.TRACE);
+        LoggingConfig.configure(LogCategory.DEFEND_HILL, LogLevel.TRACE);
         LoggingConfig.configure(LogCategory.EXCEPTION, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.EXECUTE_TASKS, LogLevel.INFO);
-        LoggingConfig.configure(LogCategory.EXECUTE_MISSIONS, LogLevel.INFO);
+        LoggingConfig.configure(LogCategory.EXECUTE_MISSIONS, LogLevel.DEBUG);
         LoggingConfig.configure(LogCategory.EXPLORE, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.FOLLOW, LogLevel.INFO);
         LoggingConfig.configure(LogCategory.FOOD, LogLevel.DEBUG);
