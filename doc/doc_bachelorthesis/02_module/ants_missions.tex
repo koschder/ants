@@ -133,14 +133,64 @@ Valid: immer\\
 Gather Ants: siehe Beschreibung\\
 Release Ants: siehe Beschreibung\\
 
-Es wird nur eine GatherFoodMission zu Begin des Spiels erstellt, diese Mission erstellt und kontrolliert die Pfade der Ameisen, welche auf Futtersuche sind.
+Es wird nur eine GatherFoodMission zu Begin des Spiels erstellt, diese Mission erstellt und kontrolliert die Pfade der Ameisen, welche auf Futtersuche sind. Die execute()-Methode der GatherFoodMission sieht wie folgt aus:
 
+\begin{verbatim}
+@Override
+public void execute() {
+		// check the existing routes, if they are still valid.
+    checkAntsRoutes();
+    // gather new ants
+    gatherAnts();
+    // move the ants
+    moveAnts();
+}
+\end{verbatim}
 
+Bei \textit{checkAntsRoutes()} wird geprüft ob die Pfadrouten aller Ameisen in der Mission noch gültig sind. Ungültige Pfade sind, wenn die Futterzelle von der eigenen Ameise oder einer gegnerischen Ameise gefressen wurde. Ameisen mit einem unültigen Pfad werden von der Mission entlassen, können aber in der nächsten Methode \textit{gatherAnts()}, falls sinnvoll, der Mission wieder beitreten. Die Logik der gatherAnts() Method ist in folgenden Codebeispiel vereinfacht dargestellt.
+
+\begin{verbatim}
+foreach(foodTile on map){
+	if(there is an ant in food mission, which is gathering this food tile with a path smaller than 5)
+		continue;
+	Ant a = getNearestAntWithBreadthFirstSearch();
+	if(no Ant found)
+		continue;
+	else
+		possibleRoutes.add(new Route(Ant,Food));
+}
+foreach(Route r in possibleRoutes){
+	Path path = getPathWithAStar(r);
+	if(foodIsTargetedbyOtherAnt()){
+			compareDistances()
+			if(new path is shorter){
+					newGatherFoodRoute(r.ant,r.food,path);
+					releaseAnt(otherAnt);
+			}
+			continue;
+	}
+	if(hasAlreadyGatherFoodRoute(r.ant)
+			takeSmallerRoute();
+	else
+			newGatherFoodRoute(r.ant,r.food,path);
+}
+\end{verbatim}
+
+Zum Schluss folgt die \textit{moveAnts()}-Methode. Hier werden die Ameisen auf ihrem Pfad zur Futterzelle ein Zug weiter bewegt. Die Züge werden der Orders-Klasse (Befehlsverwaltung) übergeben.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=40mm]{91_bilder/gatherfood}
+\caption{Ameisen am Futter einsammeln.}
+\label{fig:gatherfood}
+\end{figure}
+
+Links ist zu sehen wie für zwei Ameisen eine Futterpfad definiert ist, die Ameisen folgen dem Pfad. Zwei Züge später (rechtes Bild) hat die Ameise unten links ihr Futter eingesammelt und steht für eine neue Aufgabe zur Verfügung. Der beschriebene Algorithmus merkt, dass die Ameise näher an der Futterzelle oben im Bild ist und löst die Ameise, welche bis dahin auf das Futter zu steuerte, von der Aufgabe ab. Die rechte Ameise wird von der GahterFoodMission entlassen und geht einer anderen Beschäftigung (hier ExploreMission) nach.
 
 \subsection{Verworfene und nicht verwendete Mission}
 \label{subsec:implementation.Tasks.StupidMission}
 
-Wie bereits im Kapitel Task erwähnt war nicht alles programmierte erfolgreich. Hier sind die Missionen aufgelistet die zu den Tasks gehören welche verworfen wurden oder nicht verwendet werden.
+Wie bereits im Kapitel Task erwähnt war nicht alles programmierte erfolgreich. Hier sind die Missionen aufgelistet die zu den verworfen oder nicht verwendeten Tasks gehören. (Begründungen siehe Tasks)
 
 \begin{itemize}
 \item \textbf{SwarmPathMission}
@@ -148,5 +198,3 @@ Wie bereits im Kapitel Task erwähnt war nicht alles programmierte erfolgreich. H
 \item \textbf{ConcentrateMission}
 \item \textbf{FlockMission}
 \end{itemize}
-
-Für jedes Food-Tile werden in einem definierbaren Radius r die nächsten Ameisen bestimmt. Danach wird nach aufsteigender Luftliniendistanz mit dem Pfadsuchalgorithmus SIMPLE (s. Abschnitt \ref{subsec:implementation.Pfadsuche.Simple}) oder -- falls dieser keinen Pfad gefunden hat -- mit A* eine passierbare Route gesucht. Wenn ein Pfad existiert, kann mit der Ameise und dem Food-Tile eine GatherFoodMission erstellt werden, welche die Ameise zum Food-Tile führt. Zu jedem Food-Tile wird immer nur eine Ameise geschickt.
