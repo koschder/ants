@@ -82,7 +82,7 @@ Dieser A*-Algorithmus wird in unserem Code für eine Pfadsuche über alle Pixel (j
 Eine Pfadsuche A* über alle Pixel ist sehr teuer, da es viel Pfade gibt, die zum Teil nur ein Pixel nebeneinander liegen. Es werden bis zum Schluss verschiedenen Pfaden nachgegangen. Abhilfe zu dieser sehr feinmaschigen Pfadsuche bietet der Hierarchical Pathfinding A* bei welchem im sogenanten Clustering über mehrere Pixel verlaufende Kanten und Knoten berechnet werden.
 
 \subsubsection{Clustering}
-Das Clustering wird während dem ClusteringTask ausgeführt, Dabei wird die Landkarte in sogenannte Clusters unterteilt. Auf dem Bild \ref{fig.clusteredMap} wurde die Karte in 16 Clusters aufgeteilt. 
+Das Clustering wird während dem ClusteringTask ausgeführt, Dabei wird die Landkarte in sogenannte Clusters unterteilt. Auf dem Bild \ref{fig.clusteredMap} wurde die Karte in 16 Clusters aufgeteilt.
 
 \begin{figure}[H]
 \centering
@@ -91,7 +91,17 @@ Das Clustering wird während dem ClusteringTask ausgeführt, Dabei wird die Landka
 \label{fig.clusteredMap}
 \end{figure}
 
-Danach werden für jeden Cluster und einen Nachbar-Cluster aus der Vierer-Nachbarschaft die Verbindungskanten berechnet. Dies kann natürlich nur für Clusters gemacht werden die auf einem sichtbaren Teil der Landkarte liegen, was zu Begin des Spiel nicht gegeben ist. Deshalb wird der ClusteringTask in jedem Spielzug aufgerufen, in der Hoffnung ein Cluster komplett verbinden zu können. Sobald eine beliebige Seite eines Clusters berechnet ist, wird diese Aussenkante im Cluster und dem anliegenden Nachbar gespeichert und nicht mehr neu berechnet.
+Wir unterschieden zwischen den zwei Clusterarten Centered und Corner. Die Variante Corner wurde bereits im Vormodule 'Projekt 2' implementiert während die Variante Corner im Laufe dieser Arbeit dazu kam. Folgendes Bild zeigt den Unterschied der Varianten. Corner generiert zwei Übergangspunkte plus eine Verbindung auf der Kante zwischen zwei Clusters während Centered nur einen Übergangspunkt in der Mitte des Übergangs generiert. Die Variante Centered hat den Vorteil, dass es weniger Pfade zum durchlaufen gibt. Aber sie hat auch den Nachteil, dass der gefunden Pfad, nicht in jedem Fall der Kürzeste ist und ein Pathsmoothing gemacht werden muss.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=50mm]{91_bilder/clusterArten.png}
+\caption[Clustereinteilung auf der Landkarte.]{Links der Typ Corner, Rechts der Typ Centered}
+\label{fig.clusteredMap}
+\end{figure}
+
+Nachfolgend wir erläutert wie das Clustering vonstatten geht, verwendet wird die Custeringart Corner.\\
+Nach dem Einteilen der Cluster werden für jeden Cluster und einen Nachbar-Cluster aus der Vierer-Nachbarschaft die Verbindungskanten berechnet. Dies kann natürlich nur für Clusters gemacht werden die auf einem sichtbaren Teil der Landkarte liegen, was zu Begin des Spiel nicht gegeben ist. Deshalb wird der ClusteringTask in jedem Spielzug aufgerufen, in der Hoffnung ein Cluster komplett verbinden zu können. Sobald eine beliebige Seite eines Clusters berechnet ist, wird diese Aussenkante im Cluster und dem anliegenden Nachbar gespeichert und nicht mehr neu berechnet.
 
 \begin{figure}[H]
 \centering
@@ -167,3 +177,7 @@ Die Pfadkosten für beide Pfade verglichen, legt offen, dass je nach Berücksichti
  Oranger Pfad & \textbf{34} & 110 \\
  BlauerPfad & 46 & \textbf{106} \\
  \end{tabular}
+ 
+ 
+\subsection{Pathsmoothing}
+\label{subsec:module.Suchalgorithmen.Pfadsuche.Pathsmoothing}
