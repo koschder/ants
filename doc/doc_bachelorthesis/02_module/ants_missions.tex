@@ -97,7 +97,63 @@ Valid: solange eigener Hügel nicht erobert ist.\\
 Gather Ants: Mission soll immer mehr Verteidiger haben als Angreifer sich dem Hügel nähern.\\
 Release Ants: Keine Angreifer in Sicht, werden die Ameisen (nicht alle) entlassen.\\
 \\
-TODO
+Beim Entwicklen dieser Mission sind wir auf folgende Fragen gestossen: Ab welchem Spielzug soll der Hügel bewacht werden? Wieviel Ameisen sollen für die Verteidigung eingesetzt werden? Was wenn der Hügel von mehreren Seiten angegriffen wird? Sollen alle Hügel bewacht werden? Aus diesen Frage ergab sich folgende Implementation: \\
+\\
+Die DefendHillMission bietet zwei Modi zur Verteidigung an. Die Default-Verteidigung und der Barrier-Modus. Bei der Default-Verteidigung werden die Ameise nahe um den eigenen Hügel zur Verteidigung aufgestellt. Der Barrier-Modus ist nur bei Hügelmöglich die in einer Sackgasse sind, den in diesem Modus wird eine Sperre an der engsten Stelle erstellt. Nachfolgende Abbildung veranschaulicht die beiden Modi.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=40mm]{91_bilder/DefendHillModi}
+\caption{Links die Default-Verteidigung, rechts mit einer Sperre.}
+\label{fig:DefendHillModi}
+\end{figure}
+
+Der Modus wird wie folgt definiert. Während dem 10 Spielzug wird versucht mittels spezieller Breitensuche eine Sperre für den Hügel zu finden. Falls dies glingt läuft die Mission im Barrier-Mode. Dies solange bis eine gegnerische Ameise auf die Höhe der Barriere tritt, dann gehen wir davon aus, dass die Sperre vom Gegner eingenommen wurde, wir gehen in den Default-Modus zurück.
+\begin{verbatim}
+private void determineMode() {
+  if (Ants.getAnts().getTurn() == 10) {
+      AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
+      barrier = bfs.getBarrier(hill, Ants.getWorld().getViewRadius2(), 5);
+      if (barrier != null) {
+          mode = DefendMode.Barrier;
+      }
+  } else if (Ants.getAnts().getTurn() > 10 && mode == DefendMode.Barrier) {
+      // if we switched to barrier defend-mode we have to check if we aren't overrun. (enemy ant on barrier)
+      // if we are so we switch back to the default mode.
+      for (Tile t : barrier.getBarrier()) {
+          if (Ants.getWorld().getIlk(t) == Ilk.ENEMY_ANT) {
+              mode = DefendMode.Default;
+              break;
+          }
+    }
+}
+\end{verbatim}
+
+\subsection{Default-Modus}
+\label{subsec:module.Mission.DefendHillMission.DefaultModus}
+
+Hier wird jegentlich berechnet, wieviele Ameisen den Hügel angreifen. Die Angreifer und die Verteidiger werden dem DefendingCombatPositioning übergeben, dieses berechnet die Positionen der Ameisen. Es ist einstellbar ab welchem Zug die DefendMission Ameisen für die Verteidigung rekrutiert. Zudem kann mit dem Parameter textif{DEFENDER_MORETHAN_ATTACKERS} definiert werden wieviel Ameisen mehr als die Anzahl Angreifer rekrutiert werden. Ameisen werden von der Mission entlassen wenn weniger Angreifer als Veteidiger unter der Berücksichtigung des erwähnten Parameter gezählt werden.
+
+\subsection{Barrier-Modus}
+\label{subsec:module.Mission.DefendHillMission.BarrierModus}
+
+Wie schon erwähnt, kann dieser Modus nur eintreffen wenn die Geländegegebenheiten stimmen. Ziel war es das Engpässe auszunutzen um mit möglichst wenigen Ameisen zu verteidigen. Eine weitere Idee war, dass durch die Sperre der Gegners die Umgebung dahinter nicht erkunden kann, so unseren Hügel nie zu Gesicht bekommt und kein Angriff auf unseren Hügel startet. Leider verbesserte diese Method die Fähigkeiten nur gering, den die Ameisen welche für die Sperre benötigt werden, müssen entsprechend platziert werden und können nicht für andere Aufgaben verwendet werden. Zudem hat die Sperre bei starken Gegnern, wie Xathis oder Greentea, nut gerning Wirkung. Diese Bot warten vor der Sperre bis sie in Überzahl sind und überrumpeln dann unsere Verteidigung.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=40mm]{91_bilder/BarrierOverTaken}
+\caption{Eine Ameise auf einer ExploreMission bewegt sich in Richtung Fog Of War}
+\label{fig:BarrierOverTaken}
+\end{figure}
+
+Die Funktionswiese ist wie folgt. Es werden je nach Grösse der Sperre entsprechend viele Ameisen zur Position geschickt wo die Sperre aufgebaut ist. Die Ameisen stellen sich paarweise hintereinander auf, solange keine Gegner in der Nähe sind. So können Ameisen die einer anderen Aufgabe nachgehen die Sperre passieren. Wenn der Gegner sich in Überzahl nähert, wird die Sperre geschlossen. Danach wird das Kampfverhalten dem AttackingCombatPositioning überlassen, welches die Positionierung übernimmt.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=40mm]{91_bilder/CloseBarrier}
+\caption{Eine Ameise auf einer ExploreMission bewegt sich in Richtung Fog Of War}
+\label{fig:CloseBarrier}
+\end{figure}
 
 \subsection{ExploreMission}
 \label{subsec:module.Mission.ExploreMission}
