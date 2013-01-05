@@ -1,23 +1,53 @@
 \chapter{Logging}
 \label{sec:module.Logging}
+Für eine gründliche Analyse der Spiele sind ausführliche und konfigurierbare Logfiles unabdingbar. Zu diesem Zweck haben wir bereits im Rahmen des ''Projekts 2 `` ein flexibles Logging-Framework geschrieben. Dieses Framework haben wir im Rahmen der Bachelorarbeit noch einmal verbessert und erweitert. Auch die Auslagerung in eine separates, unabhängiges Modul geschah im Rahmen der Bachelorarbeit.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.8\textwidth]{91_bilder/Logging}
 \caption{Logging Klassen}
 \label{fig:Logging}
 \end{figure}
+
+Abbildung \ref{fig:Logging} zeigt die wichtigsten Klassen des Logging-Frameworks. 
+\begin{itemize}
+\item
+\textbf{Logger:} Das Logger Interface definiert die Methoden, die aus dem Applikations-Code heraus zum Logging verwendet werden können. Die Methodennamen bezeichnen den LogLevel, als Argumente übergeben werden ein String mit der Logmeldung sowie eine Liste von zusätzlichen Parametern, die in die Logmeldung eingefügt werden soll. Die Methoden unterstützen alle die Java String Formatter Syntax. \footnote{\url{http://docs.oracle.com/javase/6/docs/api/java/util/Formatter.html#syntax}}
+\item
+\textbf{DefaultLogger:} Unsere Standardimplementierung des Logger Interfaces. Der DefaultLogger hat jeweils eine LogCategory und ein LogFile, in das er seine Meldungen schreibt.
+\item
+\textbf{LogFile:} Das LogFile ist für eine einzelne Log-Datei zuständig; alle Logger, die in eine bestimmte Log-Datei schreiben wollen, greifen auf dieselbe LogFile Instanz zu. Die ''physische`` Datei auf dem Dateisystem wird von der LogFile Instanz erst erstellt, wenn die erste Log-Meldung geschrieben werden soll.
+\item
+\textbf{LogCategory:} Jede Log-Meldung gehört zu einer Kategorie. Dieses Interface bietet den verwendenden Modulen die Möglichkeit, eigene Kategorien zu definieren; das Logging-Framework selber definiert keine Kategorien. Mit der Methode useCustomLogFile() kann für eine Kategorie bestimmt werden, ob sie in das globale LogFile oder ein eigenes loggen soll. Dadurch kann die \"Ubersichtlichkeit in den Log-Dateien gesteigert werden.
+\item
+\textbf{LoggerFactory:} Sämtliches Erstellen von Logger-Instanzen läuft über die LoggerFactory. Sie stellt sicher, dass LogFile-Instanzen wiederverwendet werden und erstellt jeweils einen passenden Logger.
+\end{itemize}
+
+\section{Konfiguration}
+\label{sec:module.Logging.Konfiguration}
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.5\textwidth]{91_bilder/LoggingConfig}
 \caption{Logging Konfiguration}
 \label{fig:LoggingConfig}
 \end{figure}
-Nach einem absolvierten Spiel analysierten wir jeweils die Spielsituationen, welche sich ergeben haben. Dazu gehörte das Analysieren des geschriebenen Logs. Dabei bedienten wir uns den nachfolgenden Mechanismen.
 
-\section{Logkategorien und Loglevel}
-\label{sec:module.Logging.LogkategorienundLoglevel}
+Abbildung \ref{fig:LoggingConfig} zeigt die Konfigurations-Klassen des Logging-Frameworks. Mit der Methode \texttt{configure()} der Klasse LoggingConfig kann der LogLevel für eine bestimmte Kategorie eingestellt werden. Mit der Methode \texttt{isEnabled()} kann abgefragt werden, ob ein bestimmter LogLevel für eine bestimmte Kategorie aktiv ist.
 
-Jeder Logeintrag gehört einer Logkategorie an. Je Logkategorie kann der Loglevel defniert werden. Die Loglevel lauten TRACE, DEBUG, INFO und ERROR. Wenn also zum Beispiel bei der Logkategorie ATTACKHILLMISSION der Loglevel auf INFO gestellt ist, werden nur die Fehler auf Stufe INFO und ERROR in das Logfile geschieben. Zudem kann, falls erwünscht, jede Logkategorie in ein eigenes Logfile geschrieben werden. Die meisten Module habe ihre eigene Logkategorie, so kann durch korrekte Logeinstellung erzwungen werden dass nur die Logs, welche für das Analysieren eines bestimmten Spielmoduls von Bedeutung sind, ins Logfile geschrieben werden. Dadurch müssen nicht riesige Mengen an Logs druchwälzt werden um an die Informationen heran zu kommen.
+Der LogLevel bestimmt, ob eine Meldung überhaupt ins Log geschrieben wird. Die LogLevel haben eine implizite Hierarchie, wie man das von verbreiteteren Logging-Frameworks (z.B. Log4j, SLF4J) her kennt: TRACE > DEBUG > INFO > ERROR. Das heisst, wenn für eine Kategorie der LogLevel INFO definiert ist, werden Meldungen mit Level INFO und ERROR geloggt, DEBUG und TRACE aber nicht. Auf diese Weise ist eine feingranulare Kontrollo darüber möglich, was genau geloggt wird und was nicht.
+
+\section{Anwendungsbeispiele}
+\label{sec:module.Logging.Beispiele}
+
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}
+public class HelloWorld {
+  public static void main(String[] args) {
+    /* ... more code ... */
+  }
+}
+\end{lstlisting}
 
 
 \section{JavaScript Addon für HMTL-Gameviewer}
@@ -45,3 +75,9 @@ Das angezeigte Popup zeigt welchen Task (GatherFoodTask) die Ameise hat, wo sie 
 \label{fig.javascriptAddon2}
 \caption[Erweiterung des Live-Info Popupfenster]{Mit der erweiterten Version wird der Pfad (orange) der Ameise von <r:48 c:21> nach <r:47 c:16> auf der Karte abgebildet.}
 \end{figure}
+
+\section{Profile und Logging}
+\label{sec:module.Logging.Profile}
+Mit der Einführung der Profile gewannen wir die Möglicheit, mehrere Kopien unseres Bots mit unterschiedlichen Konfigurationen gegeneinander antreten zu lassen. Dazu mussten wir aber die Logfiles so voneinander trennen, dass die Logs der verschiedenen Bots isoliert sind. Die Logfiles werden daher jetzt in ein Unterverzeichnis mit dem Namen des konfigurierten Profils geschrieben.
+
+Für das LiveInfo Log, das für das Javascript Addon geschrieben wird, verzichteten wir auf eine solche Erweiterung, da so viel Information für mehrere Bots nur schwer übersichtlich darzustellen wäre. Stattdessen bauten wir einen Schalter in den Code ein, mit dem das LiveInfo vorübergehend deaktiviert werden kann, um Konflikte zwischen den Bots zu vermeiden.
