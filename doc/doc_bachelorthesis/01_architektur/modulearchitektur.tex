@@ -13,17 +13,17 @@
 
 Abbildung \ref{fig:modulesOverview} zeigt die Gliederung des Bots in die verschiedenene Untermodule. Wir unterscheiden dabei zwischen den AI Modulen, welche die eigentliche AI-Logik enthalten, und den Utility Modulen, die Basisfunktionen wie Logging implementieren.
 
-\paragraph{Ants:} Das Ants Modul enthält das Grundgerüst des Bots und fügt die anderen Module zu einem Ganzen zusammen. Es ist das einzige Modul, in dem Ants-spezifische Funktionalitäten implementiert sind; die anderen sind generisch gehalten um die Wiederverwendbarkeit sicherzustellen.
+\paragraph{Ants:} Das Ants Modul enthält das Grundgerüst des Bots und fügt die anderen Module zu einem Ganzen zusammen. Es ist das einzige Modul, in dem Ants-spezifische Funktionalitäten implementiert sind; die anderen sind generisch gehalten um die Wiederverwendbarkeit sicherzustellen. Das Ants Modul ist genauer dokumentiert im Kapitel \ref{sec:module.Ants}.
 
-\paragraph{AITools-API:} Im API-Modul sind alle gemeinsamen Interfaces definiert, auf die die anderen Module zugreifen. Zum Teil ist hier auch Basis-Funktionalität implementiert, wie z.B. Distanzberechnungen auf einer Karte.
+\paragraph{AITools-API:} Im API-Modul sind alle gemeinsamen Interfaces definiert, auf die die anderen Module zugreifen. Zum Teil ist hier auch Basis-Funktionalität implementiert, wie z.B. Distanzberechnungen auf einer Karte. Das API Modul ist genauer dokumentiert im Kapitel \ref{sec:module.API}.
 
-\paragraph{Search:} Dieses Modul enthält unsere Implementationen zur Pfad- und Breitensuche.
+\paragraph{Search:} Dieses Modul enthält unsere Implementationen zur Pfad- und Breitensuche. Ausführliche Dokumentation dazu findet sich im Kapitel \ref{sec:module.Suchalgorithmen}.
 
-\paragraph{Strategy:} Das Strategy-Module enthält strategische und taktische Algorithmen, insbesondere die Influence Map und das CombatPositioning.
+\paragraph{Strategy:} Das Strategy-Module enthält strategische und taktische Algorithmen, insbesondere die Influence Map und das CombatPositioning. Ausführliche Dokumentation dazu findet sich im Kapitel \ref{sec:module.StrategieTaktik}.
 
-\paragraph{Logging:} Das Logging-Modul definiert ein flexibles Logging-Framework.
+\paragraph{Logging:} Das Logging-Modul definiert ein flexibles Logging-Framework.Weitere Informationen dazu finden sich im Kapitel \ref{sec:module.Logging}.
 
-\paragraph{TestReader:} Das TestReader-Modul besteht aus einer einzelnen Klasse, die aus den Log-Files der Ants-Spielengine Auswertungen lesen kann.
+\paragraph{TestReader:} Das TestReader-Modul besteht aus einer einzelnen Klasse, die aus den Log-Files der Ants-Spielengine Auswertungen lesen kann. Es ist genauer beschrieben im Kapitel \ref{sec:module.Testreader}.
 
 \section{Modulabhängigkeiten}
 \label{sec:architektur.Modulabhängigkeiten}
