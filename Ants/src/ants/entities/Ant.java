@@ -4,12 +4,19 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 
-import ants.state.Ants;
-import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
 
+/**
+ * This class represents an ant on the map
+ * 
+ * @author kases1, kustl1
+ * 
+ */
 public class Ant implements Comparable<Ant>, Unit {
+    /**
+     * This constant denotes the value for getPlayer() that means the ant is ours.
+     */
     public static final int MINE = 0;
     private Tile tile;
     private Tile nextTile;
@@ -17,6 +24,12 @@ public class Ant implements Comparable<Ant>, Unit {
     private List<Tile> path;
     private int turnsWaited;
 
+    /**
+     * Default constructor for the Ant
+     * 
+     * @param tile
+     * @param owner
+     */
     public Ant(Tile tile, int owner) {
         this.tile = tile;
         this.player = owner;
@@ -37,10 +50,11 @@ public class Ant implements Comparable<Ant>, Unit {
         return tile;
     }
 
-    public void setTile(Tile tile) {
-        this.tile = tile;
-    }
-
+    /**
+     * Sets the tile the ant will be standing on next turn, barring unforeseen circumstances.
+     * 
+     * @param nextTile
+     */
     public void setNextTile(Tile nextTile) {
         this.nextTile = nextTile;
     }
@@ -58,10 +72,22 @@ public class Ant implements Comparable<Ant>, Unit {
 
     }
 
+    /**
+     * This Class compares two ants according to their distance from a given tile.
+     * 
+     * @author kases1, kustl1
+     * 
+     */
     public static class DistanceComparator implements Comparator<Ant> {
 
         Map<Ant, Integer> base;
 
+        /**
+         * Default Constructor for {@link DistanceComparator}
+         * 
+         * @param base
+         *            a map of Ants and their distances from the reference Tile
+         */
         public DistanceComparator(Map<Ant, Integer> base) {
             this.base = base;
         }
@@ -99,10 +125,19 @@ public class Ant implements Comparable<Ant>, Unit {
         return tile.toString() + ", Player=" + player;
     }
 
+    /**
+     * 
+     * @return the path the ant is currently following
+     */
     public List<Tile> getPath() {
         return path;
     }
 
+    /**
+     * Set a path for the ant to follow
+     * 
+     * @param p
+     */
     public void setPath(List<Tile> p) {
         if (p != null && p.size() > 0 && p.get(0).equals(getTile())) {
             p.remove(0);
@@ -110,38 +145,54 @@ public class Ant implements Comparable<Ant>, Unit {
         this.path = p;
     }
 
+    /**
+     * reset turnsWaited to 0
+     */
     public void resetTurnsWaited() {
         this.turnsWaited = 0;
     }
 
+    /**
+     * increment turnsWaited
+     */
     public void incrementTurnsWaited() {
         this.turnsWaited++;
     }
 
+    /**
+     * 
+     * @return how many turns this ant has spent waiting
+     */
     public int getTurnsWaited() {
         return this.turnsWaited;
     }
 
+    /**
+     * 
+     * @return true if the ant has a path set
+     */
     public boolean hasPath() {
         return path != null && path.size() > 0;
     }
 
+    /**
+     * 
+     * @return the end of the path the ant is following, null if the ant has no path
+     */
     public Tile getPathEnd() {
         if (hasPath())
             return path.get(path.size() - 1);
         return null;
     }
 
+    /**
+     * 
+     * @return information for the visualizer
+     */
     public String visualizeInfo() {
         if (hasPath())
             return tile + " path: " + getPath();
         return tile.toString();
     }
 
-    public Aim currentDirection() {
-        if (!hasPath())
-            return null;
-        Tile tile = getPath().get(0);
-        return Ants.getWorld().getDirections(getTile(), tile).get(0);
-    }
 }

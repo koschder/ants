@@ -4,6 +4,8 @@ import java.io.IOException;
 
 /**
  * Handles system input stream reading.
+ * 
+ * @author adapted from the starter package from aichallenge.org
  */
 public abstract class AbstractSystemInputReader {
     protected boolean finished = false;

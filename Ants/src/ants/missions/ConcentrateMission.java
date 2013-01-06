@@ -17,6 +17,11 @@ import ants.tasks.Task.Type;
 import api.entities.Aim;
 import api.entities.Tile;
 
+/**
+ * 
+ * @author kases1, kustl1
+ * @deprecated Did not work as hoped, was abandoned
+ */
 public class ConcentrateMission extends BaseMission {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.CONCENTRATE);

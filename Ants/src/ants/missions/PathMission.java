@@ -6,18 +6,28 @@ import ants.entities.Ant;
 import api.entities.Tile;
 
 /**
- * this mission is implemented to follow a path defined while creating the class
+ * This mission is implemented to follow a path defined while creating the class
  * 
  * @author kases1, kustl1
  * 
  */
 public abstract class PathMission extends BaseMission {
 
+    /**
+     * Default constructor
+     * 
+     * @param ant
+     * @param path
+     */
     public PathMission(Ant ant, List<Tile> path) {
         super(ant);
         ant.setPath(path);
     }
 
+    /**
+     * 
+     * @return the ant on this mission
+     */
     protected Ant getAnt() {
         return ants.size() > 0 ? ants.get(0) : null;
     }
@@ -44,12 +54,6 @@ public abstract class PathMission extends BaseMission {
         if (!moveToNextTileOnPath(getAnt()))
             abandonMission();
     }
-
-    /**
-     * puts the order in the order list where the ant has to go and remove this path piece.
-     * 
-     * @return true if order is put successful.
-     */
 
     @Override
     protected String getVisualizeInfos() {

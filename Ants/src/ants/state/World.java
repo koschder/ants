@@ -57,12 +57,21 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
     private Set<Tile> foodTiles = new HashSet<Tile>();
 
     /**
-     * default constructor for testing only
+     * dummy constructor for testing only
      */
     public World() {
         super(-1, -1);
     }
 
+    /**
+     * Default constructor
+     * 
+     * @param rows
+     * @param cols
+     * @param viewRadius2
+     * @param attackRadius2
+     * @param spawnRadius2
+     */
     public World(int rows, int cols, int viewRadius2, int attackRadius2, int spawnRadius2) {
         super(rows, cols);
         this.viewRadius2 = viewRadius2;
@@ -147,39 +156,6 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
                 }
             }
         }
-    }
-
-    public int getRows() {
-        return rows;
-    }
-
-    public int getCols() {
-        return cols;
-    }
-
-    public int getViewRadius2() {
-        return viewRadius2;
-    }
-
-    public int getAttackRadius2() {
-        return attackRadius2;
-    }
-
-    public int getSpawnRadius2() {
-        return spawnRadius2;
-    }
-
-    public Ilk getIlk(Tile tile) {
-        return map[tile.getRow()][tile.getCol()];
-    }
-
-    public Ilk getIlk(Tile tile, Aim direction) {
-        Tile newTile = getTile(tile, direction);
-        return getIlk(newTile);
-    }
-
-    public void setIlk(Tile tile, Ilk ilk) {
-        map[tile.getRow()][tile.getCol()] = ilk;
     }
 
     /**
@@ -332,10 +308,20 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
         return visible[tile.getRow()][tile.getCol()];
     }
 
+    /**
+     * 
+     * @param ant
+     * @return all tiles visible for this ant
+     */
     public List<Tile> getVisibleTiles(Ant ant) {
         return getVisibleTiles(ant.getTile());
     }
 
+    /**
+     * 
+     * @param center
+     * @return all tiles visible from the center
+     */
     public List<Tile> getVisibleTiles(Tile center) {
         List<Tile> visibleTiles = new ArrayList<Tile>();
         for (Tile offset : visionOffsets) {
@@ -344,6 +330,11 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
         return visibleTiles;
     }
 
+    /**
+     * How many tiles are visible compared to all tiles?
+     * 
+     * @return the percentage of visible tiles
+     */
     public int getVisibleTilesPercent() {
         int totalTiles = rows * cols;
         int visibleTiles = 0;
@@ -375,19 +366,24 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
         return Ants.getPopulation().getPlayers();
     }
 
-    public void printIlk() {
-        for (int i = 0; i < map.length; i++) {
-            for (int j = 0; j < map[i].length; j++) {
-                System.out.print(map[i][j]);
-            }
-            System.out.println();
-        }
-    }
-
+    /**
+     * Is the given tile in the attack distance from the given enemy tile?
+     * 
+     * @param myTile
+     * @param enemyTile
+     * @return true if the tile is within attack distance
+     */
     public boolean isInAttackZone(Tile myTile, Tile enemyTile) {
         return getSquaredDistance(myTile, enemyTile) <= getAttackRadius2();
     }
 
+    /**
+     * Is the given to-tile easily reachable from the from-tile?
+     * 
+     * @param from
+     * @param to
+     * @return true if it is easily reachable
+     */
     public boolean isEasilyReachable(Tile from, Tile to) {
         return Ants.getPathFinder().search(Strategy.Simple, from, to) != null;
     }
@@ -409,5 +405,40 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
         }
         LOGGER.debug(log);
         return safestTile;
+    }/*
+      * Accessors
+      */
+
+    public int getRows() {
+        return rows;
+    }
+
+    public int getCols() {
+        return cols;
+    }
+
+    public int getViewRadius2() {
+        return viewRadius2;
+    }
+
+    public int getAttackRadius2() {
+        return attackRadius2;
+    }
+
+    public int getSpawnRadius2() {
+        return spawnRadius2;
+    }
+
+    public Ilk getIlk(Tile tile) {
+        return map[tile.getRow()][tile.getCol()];
+    }
+
+    public Ilk getIlk(Tile tile, Aim direction) {
+        Tile newTile = getTile(tile, direction);
+        return getIlk(newTile);
+    }
+
+    public void setIlk(Tile tile, Ilk ilk) {
+        map[tile.getRow()][tile.getCol()] = ilk;
     }
 }

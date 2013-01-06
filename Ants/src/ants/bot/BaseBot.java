@@ -20,8 +20,8 @@ import ants.util.LiveInfo;
 import api.entities.Tile;
 
 /**
- * Bot implementation. This was originally based on the sample bot from the starter package, but the implementation is
- * completely different, although the hierarchy is still the same.
+ * Base Bot implementation. This serves as the base class for both our default implementation and the various test bots
+ * we implemented during development.
  * 
  * @author kases1, kustl1
  */

@@ -16,6 +16,11 @@ import ants.state.Ants;
 import ants.tasks.Task.Type;
 import api.entities.Tile;
 
+/**
+ * 
+ * @author kases1, kustl1
+ * @deprecated Did not work as hoped, was abandoned
+ */
 public class FlockMission extends BaseMission {
     private Logger LOGGER = LoggerFactory.getLogger(LogCategory.FLOCKING);
     private Tile target;

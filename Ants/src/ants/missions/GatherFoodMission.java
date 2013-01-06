@@ -27,9 +27,11 @@ public class GatherFoodMission extends BaseMission {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.FOOD);
 
+    /**
+     * Default constructor
+     */
     public GatherFoodMission() {
         super();
-
     }
 
     /**
@@ -67,11 +69,11 @@ public class GatherFoodMission extends BaseMission {
         }
 
         // check the existing routes, if they are still valid.
-    checkAntsRoutes();
-    // gather new ants
-    gatherAnts();
-    // move the ants
-    moveAnts();
+        checkAntsRoutes();
+        // gather new ants
+        gatherAnts();
+        // move the ants
+        moveAnts();
 
         if (Ants.getOrders().getAntsOnFood().size() != ants.size())
             throw new IllegalArgumentException("Ants.getOrders().getAntsOnFood()s is not vaild");
@@ -97,7 +99,7 @@ public class GatherFoodMission extends BaseMission {
         removeAnts(antsFoodFound, true);
     }
 
-    public void removeAnts(List<Ant> antsToRelease, boolean removeOfKeySet) {
+    private void removeAnts(List<Ant> antsToRelease, boolean removeOfKeySet) {
         for (Ant a : antsToRelease) {
             if (removeOfKeySet)
                 Ants.getOrders().getAntsOnFood().remove(a.getPathEnd());
@@ -117,7 +119,7 @@ public class GatherFoodMission extends BaseMission {
         removeAnts(antsToRelease, true);
     }
 
-    protected boolean moveToNextTile(Ant a) {
+    private boolean moveToNextTile(Ant a) {
         if (moveToNextTileOnPath(a)) {
             return true;
         } else if (a.hasPath()) {
@@ -136,7 +138,7 @@ public class GatherFoodMission extends BaseMission {
         return false;
     }
 
-    public void gatherAnts() {
+    private void gatherAnts() {
         // Map<Tile, Tile> foodTargets;
         List<Ant> releasedAnts = new ArrayList<Ant>();
         // find close food
@@ -212,6 +214,7 @@ public class GatherFoodMission extends BaseMission {
 
     @Override
     public boolean isComplete() {
+        // gathering food is never complete
         return false;
     }
 

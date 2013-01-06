@@ -16,6 +16,12 @@ import ants.tasks.MissionTask;
 import ants.tasks.Task;
 import ants.tasks.Task.Type;
 
+/**
+ * Debug implementation of an Ants bot.
+ * 
+ * @author kases1, kustl1
+ * @deprecated only used for development
+ */
 public class AttackHillsBot extends BaseBot {
 
     public static void main(String[] args) throws IOException {

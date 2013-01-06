@@ -1,5 +1,11 @@
 package ants;
 
+/**
+ * Enumeration of log categories for the Ants project
+ * 
+ * @author kases1, kustl1
+ * 
+ */
 public enum LogCategory implements logging.LogCategory {
     ATTACK_HILLS(true),
     CLEAR_HILL(false),

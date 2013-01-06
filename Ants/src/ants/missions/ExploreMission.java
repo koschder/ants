@@ -16,6 +16,12 @@ import api.entities.Tile;
  */
 public class ExploreMission extends PathMission {
 
+    /**
+     * Default constructor
+     * 
+     * @param ant
+     * @param path
+     */
     public ExploreMission(Ant ant, List<Tile> path) {
         super(ant, path);
     }

@@ -51,14 +51,33 @@ public class Population {
             usedResourcesPerTask.put(taskType, 0);
     }
 
+    /**
+     * Sets the maximum resources the given taskType can use this turn.
+     * 
+     * @param taskType
+     * @param maxResources
+     */
     public void setMaxResources(Type taskType, Integer maxResources) {
         this.maxResourcesPerTask.put(taskType, maxResources);
     }
 
+    /**
+     * 
+     * @param taskType
+     * @return how many ants the given taskType can use this turn
+     */
     public Integer getMaxResources(Type taskType) {
         return this.maxResourcesPerTask.get(taskType);
     }
 
+    /**
+     * Mark the given number of ants as used, deducting them from the available resource pool
+     * 
+     * @param taskType
+     * @param numberOfAnts
+     * @throws InsufficientResourcesException
+     *             if not enough ants are available
+     */
     public void incrementUsedResources(Type taskType, int numberOfAnts) {
         final Integer usedResources = usedResourcesPerTask.get(taskType);
         final Integer availableResources = getMaxAnts(taskType);
@@ -69,12 +88,24 @@ public class Population {
         usedResourcesPerTask.put(taskType, usedResources + numberOfAnts);
     }
 
+    /**
+     * Are that many ants available for the given taskType?
+     * 
+     * @param taskType
+     * @param numberOfAnts
+     * @return true if enough ants are available
+     */
     public boolean isNumberOfAntsAvailable(Type taskType, int numberOfAnts) {
         final Integer usedResources = usedResourcesPerTask.get(taskType);
         final Integer availableResources = getMaxAnts(taskType);
         return numberOfAnts <= (availableResources - usedResources);
     }
 
+    /**
+     * 
+     * @param taskType
+     * @return the maximum available ants for the given taskType
+     */
     public Integer getMaxAnts(Type taskType) {
         return (int) Math.ceil(getMyAnts().size() * (getMaxResources(taskType) / 100.0));
     }
@@ -92,27 +123,6 @@ public class Population {
             enemyAnts.add(new Ant(tile, owner));
             players.add(owner);
         }
-    }
-
-    public Set<Integer> getPlayers() {
-        return players;
-    }
-
-    public Set<Ant> getMyAnts() {
-        return myAnts;
-    }
-
-    public Set<Ant> getEnemyAnts() {
-        return enemyAnts;
-    }
-
-    public Ant getMyAntAt(Tile tile, boolean unemployedOnly) {
-        Collection<Ant> ants = unemployedOnly ? getMyUnemployedAnts() : myAnts;
-        for (Ant ant : ants) {
-            if (ant.getTile().equals(tile))
-                return ant;
-        }
-        return null;
     }
 
     /**
@@ -144,13 +154,43 @@ public class Population {
         employedAnts.add(ant);
     }
 
+    /**
+     * Marks the given Ant as unemployed
+     * 
+     * @param a
+     */
     public void removeEmployedAnt(Ant a) {
         employedAnts.remove(a);
         myUnemployedAnts.add(a);
     }
 
+    /*
+     * Accessors
+     */
+
     public Set<Ant> getEmployedAnts() {
         return employedAnts;
+    }
+
+    public Set<Integer> getPlayers() {
+        return players;
+    }
+
+    public Set<Ant> getMyAnts() {
+        return myAnts;
+    }
+
+    public Set<Ant> getEnemyAnts() {
+        return enemyAnts;
+    }
+
+    public Ant getMyAntAt(Tile tile, boolean unemployedOnly) {
+        Collection<Ant> ants = unemployedOnly ? getMyUnemployedAnts() : myAnts;
+        for (Ant ant : ants) {
+            if (ant.getTile().equals(tile))
+                return ant;
+        }
+        return null;
     }
 
 }

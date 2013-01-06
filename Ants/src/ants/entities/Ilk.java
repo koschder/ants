@@ -2,6 +2,9 @@ package ants.entities;
 
 /**
  * Represents type of tile on the game map.
+ * 
+ * @author kases1, kustl1
+ * @author adapted from the starter package from aichallenge.org
  */
 public enum Ilk {
     /** Water tile. */

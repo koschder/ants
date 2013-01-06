@@ -138,6 +138,14 @@ public class Profile {
         return getInteger(Key.ATTACK_HILLS_DOMINANT_POSITION_BOOST);
     }
 
+    /**
+     * Default constructor. Tries to load the profile from the file %lt;profile>.properties, falling back on defaults if
+     * is not successful.
+     * 
+     * @param profile
+     * @throws InvalidProfileConfigurationException
+     *             if the profile contains invalid values
+     */
     public Profile(String profile) {
         properties = new Properties(defaultProperties);
         if (profile != null) {
@@ -205,7 +213,13 @@ public class Profile {
         return sb.toString();
     }
 
-    private class InvalidProfileConfigurationException extends RuntimeException {
+    /**
+     * This exception is thrown when trying to load a profile with invalid configuration.
+     * 
+     * @author kases1, kustl1
+     * 
+     */
+    public static class InvalidProfileConfigurationException extends RuntimeException {
         private static final long serialVersionUID = 1L;
 
         public InvalidProfileConfigurationException(String message) {

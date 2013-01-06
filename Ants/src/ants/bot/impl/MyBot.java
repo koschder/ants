@@ -28,6 +28,11 @@ import ants.tasks.Task.Type;
  */
 public class MyBot extends BaseBot {
 
+    /**
+     * Default constructor for MyBot. Takes a profile name as argument and tries to load that profile.
+     * 
+     * @param profile
+     */
     public MyBot(String profile) {
         this.profile = profile;
     }

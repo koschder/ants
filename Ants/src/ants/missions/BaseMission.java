@@ -37,6 +37,11 @@ public abstract class BaseMission implements Mission {
         return abandon;
     }
 
+    /**
+     * Default constructor for a mission with 0 to many ants
+     * 
+     * @param ants
+     */
     public BaseMission(Ant... ants) {
         this.ants = new ArrayList<Ant>();
         for (Ant ant : ants) {
@@ -44,11 +49,21 @@ public abstract class BaseMission implements Mission {
         }
     }
 
+    /**
+     * Adds the ant to the mission and marks it as employed
+     * 
+     * @param ant
+     */
     protected void addAnt(Ant ant) {
         this.ants.add(ant);
         Ants.getPopulation().addEmployedAnt(ant);
     }
 
+    /**
+     * 
+     * @param ants
+     * @deprecated use BaseMission(Ant... ants) instead
+     */
     public BaseMission(Collection<Ant> ants) {
         this.ants = new ArrayList<Ant>();
         for (Ant ant : ants) {
@@ -95,7 +110,7 @@ public abstract class BaseMission implements Mission {
     }
 
     /**
-     * Abort mission if something disturbs the mission
+     * Allows us to abort the mission if something disturbs the mission
      * 
      * @param ant
      *            to check
@@ -107,7 +122,7 @@ public abstract class BaseMission implements Mission {
      *            are enemies nearby?
      * @param checkEnemyHill
      *            is an enemy hill nearby?
-     * @return
+     * @return a String with everything interesting nearby, an empty String if nothing was found
      */
     protected String checkEnviroment(Ant ant, boolean checkFood, boolean checkEnemyAnts, boolean checkEnemyHill,
             boolean checkDefendHill) {
@@ -211,6 +226,17 @@ public abstract class BaseMission implements Mission {
         return true;
     }
 
+    /**
+     * Gather additional ants for the mission
+     * 
+     * @param tile
+     *            the center of interest (where should the ants gather to?)
+     * @param amount
+     *            how many ants we need
+     * @param manhattanAttractionDistance
+     *            how far away should we search?
+     * @return a map of gathered ants along with their path to the destination
+     */
     protected Map<Ant, List<Tile>> gatherAnts(Tile tile, int amount, int manhattanAttractionDistance) {
 
         Map<Ant, List<Tile>> newAnts = new HashMap<Ant, List<Tile>>();
@@ -257,6 +283,12 @@ public abstract class BaseMission implements Mission {
         return Ants.getOrders().issueOrder(ant, aim, getVisualizeInfos());
     }
 
+    /**
+     * puts a null order in the orders set, indicating the ant will not move this turn.
+     * 
+     * @param ant
+     * @return true if the move is stored and will be executed.
+     */
     protected boolean putMissionOrder(Ant ant) {
         return Ants.getOrders().issueOrder(ant, null, getVisualizeInfos());
     }
@@ -276,6 +308,13 @@ public abstract class BaseMission implements Mission {
      */
     protected abstract String isSpecificMissionValid();
 
+    /**
+     * puts the next move of the ant in the orders set.
+     * 
+     * @param a
+     * @param to
+     * @return true if the move is stored and will be executed.
+     */
     protected boolean putMissionOrder(Ant a, Tile to) {
         if (a.getTile().equals(to)) {
             return putMissionOrder(a);
@@ -306,14 +345,31 @@ public abstract class BaseMission implements Mission {
         return ants;
     }
 
+    /**
+     * Should this mission check if it has any ants when determining if it is valid?
+     * 
+     * @return true if isValid() should check for ants
+     */
     protected boolean checkAnts() {
         return true;
     }
 
+    /**
+     * Can this ant be relased from the mission?
+     * 
+     * @param a
+     * @return true if the ant can be released
+     */
     protected boolean isAntReleaseable(Ant a) {
         return true;
     }
 
+    /**
+     * Release ants from the mission
+     * 
+     * @param amount
+     *            how many ants should be released
+     */
     protected void releaseAnts(int amount) {
         if (amount <= 0)
             return;
@@ -327,6 +383,11 @@ public abstract class BaseMission implements Mission {
         removeAnts(antsToRelease);
     }
 
+    /**
+     * Remove the given ants from this mission
+     * 
+     * @param antsToRelease
+     */
     public void removeAnts(List<Ant> antsToRelease) {
         LOGGER.debug("Mission %s is releasing ants %s", getClass().getSimpleName(), antsToRelease);
         for (Ant a : antsToRelease) {
@@ -336,6 +397,13 @@ public abstract class BaseMission implements Mission {
         }
     }
 
+    /**
+     * Performs a move in the direction of the target tile
+     * 
+     * @param ant
+     * @param target
+     * @return true if successful
+     */
     protected boolean doMoveInDirection(Ant ant, Tile target) {
         List<Aim> aims = Ants.getWorld().getDirections(ant.getTile(), target);
         for (Aim a : aims) {
@@ -345,6 +413,12 @@ public abstract class BaseMission implements Mission {
         return false;
     }
 
+    /**
+     * Issues a random move for the ant
+     * 
+     * @param ant
+     * @return true if successful
+     */
     protected boolean doAnyMove(Ant ant) {
         for (Aim aim : Aim.values()) {
             if (Ants.getOrders().issueOrder(ant, aim, getClass().getSimpleName()))

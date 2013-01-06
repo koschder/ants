@@ -6,6 +6,9 @@ import api.entities.Tile;
 /**
  * Represents a route from one tile to another. stores the selected ant for the route. the distance of the route is
  * represented by distance.
+ * 
+ * @author kases1, kustl1
+ * @author adapted from the starter package from aichallenge.org
  */
 public class Route implements Comparable<Route> {
     private Ant ant;

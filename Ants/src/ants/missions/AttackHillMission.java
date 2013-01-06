@@ -25,7 +25,7 @@ import api.entities.Tile;
 import api.entities.Unit;
 
 /**
- * This mission used for attacking the enemies hills
+ * This mission is used for attacking the enemies hills
  * 
  * @author kases1, kustl1
  * 
@@ -43,6 +43,10 @@ public class AttackHillMission extends BaseMission {
     int gatherAntsRadius = 30;
     State missionState = State.AttackEnemyHill;
 
+    /**
+     * Enumeration of the different supported states for this mission.
+     * 
+     */
     enum State {
         AttackEnemyHill,
         ControlEnemyHill,

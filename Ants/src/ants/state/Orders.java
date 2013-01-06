@@ -80,6 +80,10 @@ public class Orders {
         return false;
     }
 
+    /**
+     * @param newLoc
+     * @return if we can move to newLoc
+     */
     public boolean isMovePossible(Tile newLoc) {
         if (isSurroundedByWater(newLoc))
             return false; // it's a trap!
@@ -150,6 +154,11 @@ public class Orders {
         }
     }
 
+    /**
+     * Execute the given missions
+     * 
+     * @param missions
+     */
     public void executeMissions(List<Mission> missions) {
         for (Iterator<Mission> it = missions.iterator(); it.hasNext();) {
             Mission mission = it.next();

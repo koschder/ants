@@ -26,6 +26,12 @@ import api.entities.Aim;
 import api.entities.Tile;
 import api.entities.Unit;
 
+/**
+ * This mission is responsible for defending a hill.
+ * 
+ * @author kases1, kustl1
+ * 
+ */
 public class DefendHillMission extends BaseMission {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.DEFEND_HILL);
@@ -41,6 +47,10 @@ public class DefendHillMission extends BaseMission {
     private boolean barrierClosed = false;
     private boolean needsMoreAnts;
 
+    /**
+     * Enumeration of the different states supported by this mission
+     * 
+     */
     private enum DefendMode {
         Barrier,
         Default
@@ -48,6 +58,11 @@ public class DefendHillMission extends BaseMission {
 
     private DefendMode mode = DefendMode.Default;
 
+    /**
+     * Default constructor
+     * 
+     * @param myhill
+     */
     public DefendHillMission(Tile myhill) {
         this.hill = myhill;
         BreadthFirstSearch bfs = new BreadthFirstSearch(Ants.getWorld());
@@ -215,7 +230,7 @@ public class DefendHillMission extends BaseMission {
         }
     }
 
-    public List<Tile> getPlaceTiles(int barrierLevel) {
+    private List<Tile> getPlaceTiles(int barrierLevel) {
         if (barrierLevel == 0)
             return barrier.getBarrierPlaceTiles();
 
@@ -409,6 +424,11 @@ public class DefendHillMission extends BaseMission {
         return enemies;
     }
 
+    /**
+     * Does this mission need additional ants?
+     * 
+     * @return true if more ants are needed
+     */
     public boolean needsMoreAnts() {
         return needsMoreAnts;
     }
@@ -425,6 +445,10 @@ public class DefendHillMission extends BaseMission {
         return false;
     }
 
+    /**
+     * 
+     * @return the hill this mission is defending
+     */
     public Tile getHill() {
         return this.hill;
     }

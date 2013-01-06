@@ -137,6 +137,10 @@ public enum Ants {
      * Accessors
      */
 
+    /**
+     * 
+     * @return the turn
+     */
     public int getTurn() {
         return turn;
     }
@@ -218,10 +222,17 @@ public enum Ants {
         return INSTANCE.orders;
     }
 
+    /**
+     * For testing only: set a Profile instance
+     */
     public static void setOrders(Orders orders) {
         INSTANCE.orders = orders;
     }
 
+    /**
+     * 
+     * @return the singleton instance of the PathFinder
+     */
     public static PathFinder getPathFinder() {
         return INSTANCE.pathFinder;
     }
@@ -266,10 +277,18 @@ public enum Ants {
         return turnTime - (int) (System.currentTimeMillis() - turnStartTime);
     }
 
+    /**
+     * 
+     * @return a turn summary for logging
+     */
     public String getTurnSummaryString() {
         return "-------------- Turn %s ------------ Ants: %s ----------- Missions: %s ----------------";
     }
 
+    /**
+     * 
+     * @return turn summary parameters for logging
+     */
     public Object[] getTurnSummaryParams() {
         return new Object[] { Ants.getAnts().getTurn(), Ants.getPopulation().getMyAnts().size(),
                 Ants.getOrders().getMissions().size() };
