@@ -39,26 +39,31 @@
 	<target name="jarConcentrateBot">
 		<antcall target="jar">
 			<param name="bot.name" value="ConcentrateBot" />
+            <param name="profile" value="default" />
 		</antcall>
 	</target>
 	<target name="jarDefendHillBot">
 		<antcall target="jar">
 			<param name="bot.name" value="DefendHillBot" />
+            <param name="profile" value="default" />
 		</antcall>
 	</target>
 	<target name="jarAttackHills">
 			<antcall target="jar">
 				<param name="bot.name" value="AttackHillsBot" />
+	            <param name="profile" value="default" />
 			</antcall>
 		</target>
 	<target name="jarSwarmBot">
 		<antcall target="jar">
 			<param name="bot.name" value="SwarmBot" />
+            <param name="profile" value="default" />
 		</antcall>
 	</target>
 	<target name="jarFlockBot">
 		<antcall target="jar">
 			<param name="bot.name" value="FlockBot" />
+            <param name="profile" value="default" />
 		</antcall>
 	</target>
 </project>
