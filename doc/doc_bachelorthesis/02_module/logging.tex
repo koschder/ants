@@ -64,7 +64,7 @@ LOGGER.info("AttackHillMission:new ants gathered for hill %s amount %s Ants: %s"
 
 \section{JavaScript Addon für HMTL-Gameviewer}
 \label{sec:module.Logging.Addon}
-Das Codepaket welches von den Challenge-Organisatoren mitgeliefert wird, bietet bereits eine hilfreiche 2D-Visualisierung des Spiels, mit welchem das Spielgeschehen mitverfolgt werden kann. Die Visualisierung wurde mit HMTL und Javascript implementiert. Leider ist es nicht möglich zusätzliche Informationen auf die Seite zu projizieren. Deshalb haben wir den Viewer bereits im Projekt 2 mit einer solchen Funktion erweitert. Mit der Codezeile LiveInfo.liveInfo(...) kann eine Zusatzinformation geschrieben werden, welche auf dem Viewer später sichtbar ist. Es muss definiert werden mit welchem Zug und wo auf dem Spielfeld die Infomation angezeigt werden soll. Im Beispiel wird an der Position der Ameise (ant.getTile()) ausgegeben welchen Task die Ameise hat.
+Das Codepaket welches von den Challenge-Organisatoren mitgeliefert wird, bietet bereits eine hilfreiche 2D-Visualisierung des Spiels, mit welchem das Spielgeschehen mitverfolgt werden kann. Die Visualisierung wurde mit HMTL und Javascript implementiert. Leider ist es nicht möglich zusätzliche Informationen auf die Seite zu projizieren. Deshalb haben wir den Viewer bereits im Projekt 2 mit einer solchen Funktion erweitert. Mit der Codezeile LiveInfo.liveInfo(...) kann eine Zusatzinformation geschrieben werden, welche auf dem Viewer später sichtbar ist. Es muss definiert werden mit welchem Zug und wo auf dem Spielfeld die Information angezeigt werden soll. Im Beispiel wird an der Position der Ameise (ant.getTile()) ausgegeben welchen Task die Ameise hat.
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}
 LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), 
@@ -80,7 +80,7 @@ Auf der Karte wird ein einfaches aber praktisches Popup mit den geschriebenen In
 \end{figure}
 
 
-Das angezeigte Popup zeigt welchen Task (GatherFoodTask) die Ameise hat, wo sie sich befindet <r:28 c:14>, welches Futterpixel angesteuert wird <r:35 c:13> und welchen Pfad dazu berechnet wurde. Im Rahmen der Bachelorarbeit wurde dieses Addon erweitert. Nun werden alle Pixel welche in dem Popup ausgegeben werden auf der Karte markiert. (Siehe Abb \ref{fig:javascriptAddonPath})
+Das angezeigte Popup zeigt welchen Task (GatherFoodTask) die Ameise hat, wo sie sich befindet <r:28 c:14>, welches Futterzelle angesteuert wird <r:35 c:13> und welchen Pfad dazu berechnet wurde.\\Im Rahmen der Bachelorarbeit wurde dieses Addon erweitert. Nun werden alle Pixel welche in dem Popup ausgegeben werden auf der Karte markiert. (Siehe Abb \ref{fig:javascriptAddonPath})
 
 \begin{figure}[H]
 \centering
@@ -92,6 +92,6 @@ Das angezeigte Popup zeigt welchen Task (GatherFoodTask) die Ameise hat, wo sie 
 
 \section{Profile und Logging}
 \label{sec:module.Logging.Profile}
-Mit der Einführung der Profile gewannen wir die Möglicheit, mehrere Kopien unseres Bots mit unterschiedlichen Konfigurationen gegeneinander antreten zu lassen. Dazu mussten wir aber die Logfiles so voneinander trennen, dass die Logs der verschiedenen Bots isoliert sind. Die Logfiles werden daher jetzt in ein Unterverzeichnis mit dem Namen des konfigurierten Profils geschrieben.
+Mit der Einführung der Profile gewannen wir die Möglichkeit, mehrere Kopien unseres Bots mit unterschiedlichen Konfigurationen gegeneinander antreten zu lassen. Dazu mussten wir aber die Logfiles so voneinander trennen, dass die Logs der verschiedenen Bots isoliert sind. Die Logfiles werden daher jetzt in ein Unterverzeichnis mit dem Namen des konfigurierten Profils geschrieben.
 
 Für das LiveInfo Log, das für das Javascript Addon geschrieben wird, verzichteten wir auf eine solche Erweiterung, da so viel Information für mehrere Bots nur schwer übersichtlich darzustellen wäre. Stattdessen bauten wir einen Schalter in den Code ein, mit dem das LiveInfo vorübergehend deaktiviert werden kann, um Konflikte zwischen den Bots zu vermeiden.

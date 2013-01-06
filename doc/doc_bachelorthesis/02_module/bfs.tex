@@ -14,7 +14,7 @@
 \caption{Breitensuche Ants-spezifisch}
 \label{fig:BFSants}
 \end{figure}
-Die Breitensuche (engl. breadth-first search (BFS)) war eine der Neuimplementierungen während der Bachelorarbeit. Man könnte die BFS auch für die Pfadsuche verwenden, dies wäre aber sehr ineffizient. Wir verwenden diese Suche vielmehr für die Umgebung einer Ameise oder eines Hügels zu analysieren. Sie wurde generisch implementierte, so dass sie vielseitig einsetzbar ist. So können zum Beispiel mittels 'GoalTest' je nach Anwendungsfall die Tiles beschrieben werden welche gesucht sind. Folgende Breitensuche findet die Ameise welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Sie wird initialisiert indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 entspricht. Falls keien Ameise gefunden wird gibt der Algorithmus NULL zurück.
+Die Breitensuche (engl. breadth-first search (BFS)) war eine der Neuimplementierungen während der Bachelorarbeit. Man könnte die BFS auch für die Pfadsuche verwenden, dies wäre aber sehr ineffizient. Wir verwenden diese Suche vielmehr für die Umgebung einer Ameise oder eines Hügels zu analysieren. Sie wurde generisch implementierte, so dass sie vielseitig einsetzbar ist. So können zum Beispiel mittels 'GoalTest' je nach Anwendungsfall die Tiles beschrieben werden welche gesucht sind. Folgende Breitensuche findet die Ameise welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Sie wird initialisiert indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 entspricht. Falls keine Ameise gefunden wird gibt der Algorithmus NULL zurück.
 
 \begin{verbatim}
 AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
@@ -27,11 +27,11 @@ Tile antClosestToFood = bfs.findSingleClosestTile(food, 40, new GoalTest() {
   });
 \end{verbatim}
 
-Es ist auch möglich mehrere Tiles zurück zu bekommen. Dazu wird die Methode findClosestTiles(...) aufgerufen.
+Es ist auch möglich mehrere Tiles zurück zu bekommen. Dazu wird die Methode \textit{findClosestTiles(...)} aufgerufen.
 \newline
 \newline
 
-Der gleiche Alogrithmus kann aber auch alle passierbaren Tiles in einem gewissen Umkreis zurückgeben. Dies haben wir unteranderem beim Initialisieren der DefendHillMission verwendet. Wir berechnen beim Erstellen der Mission die passierbaren Tiles rundum den Hügel. Runde für Runde prüfen wir diese Tiles auf gegnerische Ameisen um die entsprechenden Verteidigungsmassnahmen zu ergreifen. Der Parameter controlAreaRadius2 definiert den Radius des 'Radars' und kann je nach Profile unterschiedlich eingestellt werden.
+Der gleiche Algorithmus kann aber auch alle passierbaren Tiles in einem gewissen Umkreis zurückgeben. Dies haben wir unter anderem beim Initialisieren der DefendHillMission verwendet. Wir berechnen beim Erstellen der Mission die passierbaren Tiles rundum den Hügel. Runde für Runde prüfen wir diese Tiles auf gegnerische Ameisen um die entsprechenden Verteidigungsmassnahmen zu ergreifen. Der Parameter controlAreaRadius2 definiert den Radius des 'Radars' und kann je nach Profile unterschiedlich eingestellt werden.
 
 \begin{verbatim}
 public DefendHillMission(Tile myhill) {
@@ -40,3 +40,50 @@ public DefendHillMission(Tile myhill) {
     tilesAroundHill = bfs.floodFill(myhill, controlAreaRadius2);
 }
 \end{verbatim}
+
+\subsection{Barrier}
+\label{subsec:module.Suchalgorithmen.Breitensuche.Barrier}
+
+Eine Erweiterung der Breitensuche ermöglicht uns eine Sperre in der Umgebung eines Ortes zu finden. Diese Verwenden wir in der DefendHillMission zum Verteidigen des eigenen Hügels. Es kann nur eine Sperre (engl. Barrier) gefunden werden wenn das Gelände dazu passt. Der Algorithmus verbirgt sich in der Methode \textit{getBarrier(...)}. Diese wird mit den Parametern tileToProtect: Ort für den eine Sperre berechnet werden soll, viewRadiusSquared: den Sicht Radius der Einheiten, den die Sperre soll weiter entfernt sein als der Sichtradius, damit die gegnerischen Einheiten nicht sehen was sich dahinter verbirgt. Der dritte Parameter maximumBarrierSize definiert wie breit die Sperre maximal sein darf.
+
+\begin{verbatim}
+public Barrier getBarrier(final Tile tileToProtect, int viewRadiusSquared, int maximumBarrierSize) {
+	int amount = BFS for getting the amount of tiles in view radius around the location to defend.
+	Barrier smallestBarrier = null;
+	List<Tile> tiles = get (amount + 30) tiles around the location to defend.
+	
+	for(int i = amount;i<tiles.size(); i++){       
+		Tile t = tiles.get(i);
+		
+		//vertical check
+		if(!barrierVerticalInvalid.contains(t)){
+			Barrier b = get vertical barrier on position of Tile t
+			if(b is smaller than 5 Tiles && smaller than smallestBarrier){
+				if(is barrier the only exit out of the location to defend){
+						smallestBarrier = b;
+				}else{
+						barrierVerticalInvalid.add(b.getTiles());
+				}    					      		
+			}else{
+				barrierVerticalInvalid.add(b.getTiles());
+			}
+		}
+		
+		//horizontal check
+		if(!barrierHorizontalInvalid.contains(t)){
+			Barrier b = get horiontal barrier on position of Tile t
+			if(b is smaller than 5 Tiles && smaller than smallestBarrier){
+				if(is barrier the only exit out of the location to defend){
+						smallestBarrier = b;
+				}else{
+						barrierHorizontalInvalid.add(b.getTiles());
+				}    					      		
+			}else{
+				barrierHorizontalInvalid.add(b.getTiles());
+			}
+		}	
+	}
+}
+\end{verbatim}
+
+Dank dem Abspeichern der ungültigen Tiles aller zu breiten Sperren in \textit{barrierHorizontalInvalid} und \textit{barrierVerticalInvalid} konnte der Algorithmus markant schneller gemacht werden. Für diese Tiles muss nicht nochmals eine Sperre berechnet werden. Auch die if-Abfrage \textit{barrier is the only exit out of the location to defend} muss nicht mehr so oft aufgerufen werden. Hinter dieser Abfrage steht nämlich wiederum ein Test mit der Breitensuche. Dieser ist viel teurer als das zwischenspeichern der Tiles aus welchen keine gültige Sperre gemacht werden konnte.

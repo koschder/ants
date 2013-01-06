@@ -77,8 +77,8 @@ public void doTurn() {
 \subsection{MyBot}
 \label{sec:module.Bot.MyBot}
 
-Wie bereits erwähnt ist die Methode initTasks() in BaseBot abkstrakt und muss von MyBot implementiert werden. InitTasks() definiert welche Tasks, oder besser gesagt Fähigkeiten der Bot hat. Dies wurde ausgelagert, da nicht nur MyBot von BaseBot erbt, sondern auch weiter Bots die wir zu Testzwecken erstellt haben um nur gewisse Funktionalitäten zu testen. (Siehe dazu \ref{sec:testCenter.Testbots}) Weiter wird in MyBot initLogging(...) aufgerufen. Hier definieren wir welche Logkategorien mit welchem Loglevel ins Logfile geschrieben werden. Mehr zum Thema Logging ist im Kapitel Logging zu finden. Je nach Modul das gerade getestet wird können die Anzahllogeinträge justiert werden.\newline
-MyBot initialisiert folgende Tasks; es sind die Tasks die sich während der Arbeit bewährt haben. Die detailierte Beschreibung der Tasks ist im Kapitel \ref{sec:module.Tasks} zu finden.
+Wie bereits erwähnt ist die Methode initTasks() in BaseBot abstrakt und muss von MyBot implementiert werden. InitTasks() definiert welche Tasks, oder besser gesagt Fähigkeiten der Bot hat. Dies wurde ausgelagert, da nicht nur MyBot von BaseBot erbt, sondern auch weiter Bots die wir zu Testzwecken erstellt haben um nur gewisse Funktionalitäten zu testen. (Siehe dazu \ref{sec:testCenter.Testbots}) Weiter wird in MyBot initLogging(...) aufgerufen. Hier definieren wir welche Logkategorien mit welchem Loglevel ins Logfile geschrieben werden. Mehr zum Thema Logging ist im Kapitel Logging zu finden. Je nach Modul das gerade getestet wird können die Anzahl Logeinträge justiert werden.\newline
+MyBot initialisiert folgende Tasks; es sind die Tasks die sich während der Arbeit bewährt haben. Die detaillierte Beschreibung der Tasks ist im Kapitel \ref{sec:module.Tasks} zu finden.
 
 \begin{itemize}
 		\item GatherFoodTask

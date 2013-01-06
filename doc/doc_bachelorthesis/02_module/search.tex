@@ -47,7 +47,7 @@ Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, 
 \label{fig:SimplePath}
 \end{figure}
 
-Folgendes Codesnippet zeigt auf wie ein Pfad mittels Pfadsuche Simple gefunden wird. Ein SimplePathFinder wird mit der Karte initialisiert. Danach kann die Suche mit pf.search(...) gestartet werden. Als Parameter wird der Suchalgormithmus Strategy.Simple, der Startpunkt (Position der Ameise) und Endpunkt (Position des Futters), sowie die maximalen Pfadkosten (hier: 16) mitgegeben.
+Folgendes Codesnippet zeigt auf wie ein Pfad mittels Pfadsuche Simple gefunden wird. Ein SimplePathFinder wird mit der Karte initialisiert. Danach kann die Suche mit pf.search(...) gestartet werden. Als Parameter wird der Suchalgorithmus Strategy.Simple, der Startpunkt (Position der Ameise) und Endpunkt (Position des Futters), sowie die maximalen Pfadkosten (hier: 16) mitgegeben.
 
 \begin{verbatim}
 SimplePathFinder pf = new SimplePathFinder(map);
@@ -60,7 +60,7 @@ Beim A* Algorithmus werden für jeden expandierten Knoten die geschätzten Kosten 
 
 Die Abbildung \ref{fig:heuristicAstar} zeigt den effektiven Pfad (grau) vom zu expandierenden roten Knoten mit den minimalen Kosten von 10 Pixel. Die Luftlinie (blau) als heuristischer Wert hat aber nur eine Länge von 7.6 Pixel. Damit erfüllt unsere Heuristik die Anforderungen des Algorithmus.
 
-Eine Pfadsuche mit A* wird gleich ausgelöst wie die Suche mit dem Simple-Alogirthmus, ausser dass als Parameter die Strategy AStar gewählt wird.
+Eine Pfadsuche mit A* wird gleich ausgelöst wie die Suche mit dem Simple-Algorithmus, ausser dass als Parameter die Strategy AStar gewählt wird.
 
 \begin{verbatim}
 SimplePathFinder pf = new SimplePathFinder(map);
@@ -79,7 +79,7 @@ Dieser A*-Algorithmus wird in unserem Code für eine Pfadsuche über alle Pixel (j
 \subsection{HPA* Algorthmus}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.HPAstar}
 
-Eine Pfadsuche A* über alle Pixel ist sehr teuer, da es viel Pfade gibt, die zum Teil nur ein Pixel nebeneinander liegen. Es werden bis zum Schluss verschiedenen Pfaden nachgegangen. Abhilfe zu dieser sehr feinmaschigen Pfadsuche bietet der Hierarchical Pathfinding A* bei welchem im sogenanten Clustering über mehrere Pixel verlaufende Kanten und Knoten berechnet werden.
+Eine Pfadsuche A* über alle Pixel ist sehr teuer, da es viel Pfade gibt, die zum Teil nur ein Pixel nebeneinander liegen. Es werden bis zum Schluss verschiedenen Pfaden nachgegangen. Abhilfe zu dieser sehr feinmaschigen Pfadsuche bietet der Hierarchical Pathfinding A* bei welchem im sogenannten Clustering über mehrere Pixel verlaufende Kanten und Knoten berechnet werden.
 
 \subsubsection{Clustering}
 Das Clustering wird während dem ClusteringTask ausgeführt, Dabei wird die Landkarte in sogenannte Clusters unterteilt. Auf dem Bild \ref{fig.clusteredMap} wurde die Karte in 16 Clusters aufgeteilt.
@@ -139,7 +139,7 @@ List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, start, end, -1);
 \subsection{Pfadsuche mittels Influence Map}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.WithInfluenceMap}
 
-Die Influence Map, welche wir während der Bachelorarbeit neu implementiert haben, kann auch für die Pfadsuche verwendet werden. Dabei sind die Pfadkosten für Gebiete in die vom Gegner kontrolliert sind höher als für neutrale Gebiete und tiefer für solche Gebiete die von unseren Ameisen kontrolliert werden. (Details zur Implementierung der Influence Map sieh Kapitel TODO) Die Methode getActualCost(...) in der Klasse SearchStrategy wurde erweitert. Falls die Suche mit einer InfluenceMap initialisiert wurde, sind die Kosten nicht eine Einheit pro Pfadtile, sondern können zwischen 1 (sicheres Gebiet) - 4 (gefährliches Gebiet) Einheiten varieren. (Die Pfadkosten dürfen nicht negativ sein, sonst würde der A* Algorithmus nicht mehr korrekt funktionieren.) Die Kosten für jeden Pfadabschnitt werden durch die Methode getPathCosts(...) der InfluenceMap berechnet.
+Die Influence Map, welche wir während der Bachelorarbeit neu implementiert haben, kann auch für die Pfadsuche verwendet werden. Dabei sind die Pfadkosten für Gebiete in die vom Gegner kontrolliert sind höher als für neutrale Gebiete und tiefer für solche Gebiete die von unseren Ameisen kontrolliert werden. (Details zur Implementierung der InfluenceMap sieh Kapitel TODO) Die Methode getActualCost(...) in der Klasse SearchStrategy wurde erweitert. Falls die Suche mit einer InfluenceMap initialisiert wurde, sind die Kosten nicht eine Einheit pro Pfadtile, sondern können zwischen 1 (sicheres Gebiet) - 4 (gefährliches Gebiet) Einheiten variieren. (Die Pfadkosten dürfen nicht negativ sein, sonst würde der A* Algorithmus nicht mehr korrekt funktionieren.) Die Kosten für jeden Pfadabschnitt werden durch die Methode getPathCosts(...) der InfluenceMap berechnet.
 
 \begin{verbatim}
 protected final int getActualCost(Node current, PathPiece piece) {
@@ -152,7 +152,7 @@ protected final int getActualCost(Node current, PathPiece piece) {
 }
 \end{verbatim}
 
-Dadurch resultiert ein Pfad der durch sicheres Gebiet führt. Folgende Ausgabe, welche durch einen UnitTest generiert wurde, bezeugt die korrekte Funktionalität. Der rote Punkt soll mit dem schwarzen Punkt durch einen Pfad verbunden werden. Auf der Karte sind zudem die eigenen, orangen Einheiten sowie die gengerischen Einheiten (blau) abgebildet. Jede Einheit trägt zur Berechnung der Influence Map bei. Pro Tile wird die Sicherheit ausgegeben, negativ für Gebiete die vom Gegner kontrolliert werden und positiv in unserem Hoheitsgebiet.
+Dadurch resultiert ein Pfad der durch sicheres Gebiet führt. Folgende Ausgabe, welche durch einen UnitTest generiert wurde, bezeugt die korrekte Funktionalität. Der rote Punkt soll mit dem schwarzen Punkt durch einen Pfad verbunden werden. Auf der Karte sind zudem die eigenen, orangen Einheiten sowie die gegnerischen Einheiten (blau) abgebildet. Jede Einheit trägt zur Berechnung der InfluenceMap bei. Pro Tile wird die Sicherheit ausgegeben, negativ für Gebiete die vom Gegner kontrolliert werden und positiv in unserem Hoheitsgebiet.
 
 \begin{figure}[H]
 \centering
@@ -161,33 +161,33 @@ Dadurch resultiert ein Pfad der durch sicheres Gebiet führt. Folgende Ausgabe, w
 \label{fig.InfluenceAndPathfinding01}
 \end{figure}
 
-Ohne Berücksichtigung der InfluenceMap würde der A* Algorithmus einen Pfad finden der auf direktem Weg waagrecht zum Zielpunkt führt. Sobald aber die InfluenceMap berücksichtigt wird, führt der Pfad nicht mehr auf dem direktestem Weg zum Ziel, sondern nimmt einen Umweg über sicheres Gebiet. Unten abgebildet ist der kürzeste Pfad mit Berücksichtigung der Influence Map (blau) und ohne Influence Map-Berücksichtigung (orange). 
+Ohne Berücksichtigung der InfluenceMap würde der A* Algorithmus einen Pfad finden der auf direktem Weg waagrecht zum Zielpunkt führt. Sobald aber die InfluenceMap berücksichtigt wird, führt der Pfad nicht mehr auf dem direktesten Weg zum Ziel, sondern nimmt einen Umweg über sicheres Gebiet. Unten abgebildet ist der kürzeste Pfad mit Berücksichtigung der InfluenceMap (blau) und ohne InfluenceMap-Berücksichtigung (orange). 
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.99\textwidth]{91_bilder/influenceAStar02.jpg}
-\caption{Resultierende Pfade mit und ohne Berücksichtigung der Influence Map}
+\caption{Resultierende Pfade mit und ohne Berücksichtigung der InfluenceMap}
 \label{fig.InfluenceAndPathfinding02}
 \end{figure}
 
-Die Pfadkosten für beide Pfade verglichen, legt offen, dass je nach Berücksichtigung der Influence Map nicht der gleiche Pfad als der 'Kürzeste' von A* gefunden wird.
+Die Pfadkosten für beide Pfade verglichen, legt offen, dass je nach Berücksichtigung der InfluenceMap nicht der gleiche Pfad als der 'Kürzeste' von A* gefunden wird.
 
 \renewcommand{\arraystretch}{1.5}
 \begin{table}[H]
 	\centering
 \begin{tabular}{l | r r}
- & Kosten ohne Influence Map &Kosten mit Influence Map \\
+ & Kosten ohne InfluenceMap &Kosten mit InfluenceMap \\
 \hline
  Oranger Pfad & \textbf{34} & 110 \\
- BlauerPfad & 46 & \textbf{106} \\
+ Blauer Pfad & 46 & \textbf{106} \\
  \end{tabular}
- \caption{Pfadkosten mit und ohne Berücksichtigung der Influence Map}
+ \caption{Pfadkosten mit und ohne Berücksichtigung der InfluenceMap}
 \end{table}
  
 \subsection{Pathsmoothing}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.Pathsmoothing}
 
-Um unseres Search-Framework zu komplettieren bietet die Pfadsuche auch ein PathSmoothing, das 'Glätten' eines Pfades an. Wie im Clustering schon erwäht, kann es sein, dass ein Pfad, der von dem HPA* Algorithmus gefunden wurde, nicht zwingend der Kürzeste ist. Die folgende Abbildung veranschaulicht wie der gefundene Pfad von Cluster zu Cluster (weisse Markierung), stehts über die vorberechneten Verbindungspunkte (blau) verläuft. Dies ist nicht der optimale Pfad, er kann mit PathSmoothing verkürzt werden.
+Um unseres Search-Framework zu komplettieren bietet die Pfadsuche auch ein PathSmoothing, das 'Glätten' eines Pfades an. Wie im Clustering schon erwähnt, kann es sein, dass ein Pfad, der von dem HPA* Algorithmus gefunden wurde, nicht zwingend der Kürzeste ist. Die folgende Abbildung veranschaulicht wie der gefundene Pfad von Cluster zu Cluster (weisse Markierung), stets über die vorberechneten Verbindungspunkte (blau) verläuft. Dies ist nicht der optimale Pfad, er kann mit PathSmoothing verkürzt werden.
 
 \begin{figure}[H]
 \centering
@@ -196,9 +196,9 @@ Um unseres Search-Framework zu komplettieren bietet die Pfadsuche auch ein PathS
 \label{fig.pathsmoothingOne}
 \end{figure}
 
-Der Algorithmus des Pathsmoothing ist (vereinfacht) wie folgt defniert. Vom Pfad der gekürzt werden soll wird ein erster Abschnitt mit der Länge \textit{size} genommen. Mittels manhattanDistance wird geprüft ob eine kürzere Weg für diesen Abschnitt möglich wäre. Falls ja wird mittels A* ein neuer Pfad gesucht, sonst wird der alte Pfad (\textit{subPath} übernommen. Dieses Verfahren wird für alle nachfolgenden Pfadabschnitte gemacht, bis der ganze Pfad durchlaufen ist.\\
+Der Algorithmus des Pathsmoothing ist (vereinfacht) wie folgt definiert. Vom Pfad der gekürzt werden soll wird ein erster Abschnitt mit der Länge \textit{size} genommen. Mittels manhattanDistance wird geprüft ob eine kürzere Weg für diesen Abschnitt möglich wäre. Falls ja wird mittels A* ein neuer Pfad gesucht, sonst wird der alte Pfad (\textit{subPath} übernommen. Dieses Verfahren wird für alle nachfolgenden Pfadabschnitte gemacht, bis der ganze Pfad durchlaufen ist.\\
 \\
-\textbf{Rekursion:} Der beschriebene Algorithmus, hat nicht in jedem Fall den kürzesten Pfad als Output. So sind zwar alle Pfadabschnitte optimal gekürzt, es kann aber sein, dass wenn zwei Abschnitte zusammen gefügt werden, der Pfad nicht mehr der kürzeste ist. Als Beispiel: Die Wegabschnitt Zürich-Thun und Thun-Genf mögen optimal gekürzt sein. Zusammengefügt zur Strecke Zürich-Genf, braucht es den Umweg über Thun nicht. Um Umweg zu entfernen wird der Alogrihmus rekursiv aufgerufen, indem smoothPath(...) mit einer grösseren \textit{size} als Parameter für die zusammengesetzen Abschnitte nochmals aufgerufen wird.
+\textbf{Rekursion:} Der beschriebene Algorithmus, hat nicht in jedem Fall den kürzesten Pfad als Output. So sind zwar alle Pfadabschnitte optimal gekürzt, es kann aber sein, dass wenn zwei Abschnitte zusammen gefügt werden, der Pfad nicht mehr der kürzeste ist. Als Beispiel: Die Wegabschnitt Zürich-Thun und Thun-Genf mögen optimal gekürzt sein. Zusammengefügt zur Strecke Zürich-Genf, braucht es den Umweg über Thun nicht. Um Umweg zu entfernen wird der Algorithmus rekursiv aufgerufen, indem smoothPath(...) mit einer grösseren \textit{size} als Parameter für die zusammengesetzten Abschnitte nochmals aufgerufen wird.
 
 \begin{verbatim}
 public List<Tile> smoothPath(List<Tile> path, int size, boolean recursive) {

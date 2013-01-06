@@ -1,7 +1,7 @@
 \section{Missionen}
 \label{sec:module.Missionen}
 
-Missionen sind das Herzstück unserer Arbeit. Eine Mission dauert über mehrere Spielzüge und berechnet für jede teilnehmende Ameise welches ihr nächster Move ist. Nachfolgende Darstellung zeigt, dass alle Missionen von der abstrakten BaseMission abstammen und die BaseMission das Interface Mission implementiert. Die Lebensdauer einer Mission hängt davon ab, ob sie ihr Ziel erreicht oder ob sie schon führer abgebrochen werden muss. Ziel und Abbruchbedingungen sind je nach Mission unterschiedlich und werden im jeweiligen Abschnitt erklärt.
+Missionen sind das Herzstück unserer Arbeit. Eine Mission dauert über mehrere Spielzüge und berechnet für jede teilnehmende Ameise welches ihr nächster Move ist. Nachfolgende Darstellung zeigt, dass alle Missionen von der abstrakten BaseMission abstammen und die BaseMission das Interface Mission implementiert. Die Lebensdauer einer Mission hängt davon ab, ob sie ihr Ziel erreicht oder ob sie schon früher abgebrochen werden muss. Ziel und Abbruchbedingungen sind je nach Mission unterschiedlich und werden im jeweiligen Abschnitt erklärt.
 
 \begin{figure}[H]
 \centering
@@ -24,11 +24,11 @@ Diese Klasse hat zwei Verwendungszwecke, erstens Implementiert sie die von Inter
 	\item  \textbf{gatherAnts(...):} Ameisen für die Mission rekrutieren. Anzahl Ameisen wird als Parameter mitgegeben. 
 	\item  \textbf{moveToNextTileOnPath(Ant a):} Bewegt die Ameise ein Pfadstück weiter auf dem, der Ameisen zugewiesen, Pfad.
 	\item  \textbf{putMissionOrder(...):} Wurde ein Befehl für die Ameise gefunden wird er der Klasse Orders (Verwaltung der Befehle) mitgeteilt.
-	\item  \textbf{releaseAnts(int amount):} Ameisen vo der Mission entlassen. 
+	\item  \textbf{releaseAnts(int amount):} Ameisen von der Mission entlassen. 
 	\item  \textbf{checkEnviroment(...):} Mittels Breitensuche wird die Umgebung der Ameise nach eigenen Hügel, gegnerischen Hügel, gegnerischen Ameisen und Futterzellen gescannt. Je nach Mission wird beim Fund eines solchen Objekt die Mission abgebrochen, oder die Ameise von der Mission entlassen.
 \end{itemize}
 
-Nachfolgend werden die spezifischen Missionen erläutert. Tabellearisch werden die Eigenschaften der Missionen aufgelistet, danach folgen detailiierte Infomationen zur Mission.
+Nachfolgend werden die spezifischen Missionen erläutert. Tabellarisch werden die Eigenschaften der Missionen aufgelistet, danach folgen detaillierte Informationen zur Mission.
 
 
 \subsection{PathMission}
@@ -40,7 +40,7 @@ Postcondition: Pfad vollständig abgelaufen\\
 Max. Ants (Maximale Anzahl Ameisen): 1\\
 Max. Missionen: unbegrenzt\\
 Valid (Gültigkeit): siehe ExploreMission bzw. CombatTask\\
-Gather Ants (Ameisen rektrutieren): Nicht möglich\\
+Gather Ants (Ameisen rekrutieren): Nicht möglich\\
 Release Ants (Ameisen entlassen): Nicht möglich\\
 \\
 Die Pathmission ist eine abstrakte Klasse die von ExploreMission und als anonyme Klasse im CombatTask implementiert wird. Die einzige Funktionalität die angeboten wird ist, eine Ameise die der Initialisierung mit Pfad mitgegeben wird, auf diesem definierten Pfad zu bewegen.
@@ -55,13 +55,13 @@ Max. Ants: unbegrenzt\\
 Max. Missionen: Je gegnerischen Hügel eine Mission\\
 Valid: solange gegnerischer Hügel nicht zerstört ist.\\
 Gather Ants: pro Zug max. 5 Ameisen, die im Umkreis von 25 Tiles des gegnerischen Hügel sind.\\
-Release Ants: Sicheres Food Tile in der Nähe. Eigener Hügel in der Nähe der Unterstüztung braucht. Wenn Mission im Status ControlHill ist werden alle Ameisen entlassen ausser zwei. Diese kontrollieren den Hügel.\\
+Release Ants: Sicheres Food-Tile in der Nähe. Eigener Hügel in der Nähe der Unterstüztung braucht. Wenn Mission im Status ControlHill ist werden alle Ameisen entlassen ausser zwei. Diese kontrollieren den Hügel.\\
 \\
 Diese Mission unterscheidet zwischen drei verschiedenen Modi. Der Modus wird zu Beginn jeder Runde durch die Methode determineState() definiert.\\
 \\
 \textbf{ControlEnemyHill}\\
-Status ist aktiv wenn, 2 oder mehr eigene Ameise in der Nähe des gegnerischen Hügel sind. Der Gegner aber nur eine Amesise zur Verteidigung hat.\\
-Hier werden alle Ameisen ausser die zwei zum gegnerischen Hügel am nächsten liegenden Ameisen aus der Mission entlassen. Die übrigen zwei Ameisen positionieren sich auf einer der vier diagonal gelegenen Zellen. Soblad die Ameisen positioniert sind, fressen Sie alle gegnersichen Ameisen die neu aus dem Hügel schlüpfen. Der Gegner kann sich so nur durch Ameisen vermehren die aus einem anderen Hügel schlüpfen. (Die Ameisen schlüpfen zufällig aus einem Hügel) Der Hügel wird erst zerstört wenn das Spiel endet, oder sich der Gegner mit anderen Ameisen dem Hügel nähert.
+Status ist aktiv wenn, 2 oder mehr eigene Ameise in der Nähe des gegnerischen Hügel sind. Der Gegner aber nur eine Ameise zur Verteidigung hat.\\
+Hier werden alle Ameisen ausser die zwei zum gegnerischen Hügel am nächsten liegenden Ameisen aus der Mission entlassen. Die übrigen zwei Ameisen positionieren sich auf einer der vier diagonal gelegenen Zellen. Soblad die Ameisen positioniert sind, fressen Sie alle gegnerischen Ameisen die neu aus dem Hügel schlüpfen. Der Gegner kann sich so nur durch Ameisen vermehren die aus einem anderen Hügel schlüpfen. (Die Ameisen schlüpfen zufällig aus einem Hügel) Der Hügel wird erst zerstört wenn das Spiel endet, oder sich der Gegner mit anderen Ameisen dem Hügel nähert.
 
 \begin{figure}[H]
 \centering
@@ -76,7 +76,7 @@ Wenn dieser Modus eintrifft ist das Spiel fast zu Ende. Deshalb wird versucht mi
 \\
 \textbf{AttackEnemyHill}\\
 Status ist aktiv in allen anderen Fällen\\
-Alle Angreifer werden nach ihrer Lage in Gruppen zusammen gefasst. Für diese Gruppe wird ein Pfad zum gegnerischen Hügel berechnet. Falls der Pfad länger ist als 5 Tiles wird ein Meilenstein (Milestone) definiert. Nun werden mittels Breitensuche die Gegner zwischen dem Meilenstein und der Gruppe ermittelt. Mit dieser Ausgangslage wird eine AttackingCombatPositioning Klasse initialisert und die Gruppe, die gegnerischen Ameisen sowie der Meilenstein als Ziel mitgegeben. Die Klasse berechnet die Züge für die Gruppe. (Details siehe \ref{sec:module.CombatSituation}
+Alle Angreifer werden nach ihrer Lage in Gruppen zusammen gefasst. Für diese Gruppe wird ein Pfad zum gegnerischen Hügel berechnet. Falls der Pfad länger ist als 5 Tiles wird ein Meilenstein (Milestone) definiert. Nun werden mittels Breitensuche die Gegner zwischen dem Meilenstein und der Gruppe ermittelt. Mit dieser Ausgangslage wird eine AttackingCombatPositioning Klasse initialisiert und die Gruppe, die gegnerischen Ameisen sowie der Meilenstein als Ziel mitgegeben. Die Klasse berechnet die Züge für die Gruppe. (Details siehe \ref{sec:module.CombatSituation}
        
 \begin{figure}[H]
 \centering
@@ -97,9 +97,9 @@ Valid: solange eigener Hügel nicht erobert ist.\\
 Gather Ants: Mission soll immer mehr Verteidiger haben als Angreifer sich dem Hügel nähern.\\
 Release Ants: Keine Angreifer in Sicht, werden die Ameisen (nicht alle) entlassen.\\
 \\
-Beim Entwicklen dieser Mission sind wir auf folgende Fragen gestossen: Ab welchem Spielzug soll der Hügel bewacht werden? Wieviel Ameisen sollen für die Verteidigung eingesetzt werden? Was wenn der Hügel von mehreren Seiten angegriffen wird? Sollen alle Hügel bewacht werden? Aus diesen Frage ergab sich folgende Implementation: \\
+Beim Entwickeln dieser Mission sind wir auf folgende Fragen gestossen: Ab welchem Spielzug soll der Hügel bewacht werden? Wie viel Ameisen sollen für die Verteidigung eingesetzt werden? Was wenn der Hügel von mehreren Seiten angegriffen wird? Sollen alle Hügel bewacht werden? Aus diesen Frage ergab sich folgende Implementation: \\
 \\
-Die DefendHillMission bietet zwei Modi zur Verteidigung an. Die Default-Verteidigung und der Barrier-Modus. Bei der Default-Verteidigung werden die Ameise nahe um den eigenen Hügel zur Verteidigung aufgestellt. Der Barrier-Modus ist nur bei Hügelmöglich die in einer Sackgasse sind, den in diesem Modus wird eine Sperre an der engsten Stelle erstellt. Nachfolgende Abbildung veranschaulicht die beiden Modi.
+Die DefendHillMission bietet zwei Modi zur Verteidigung an. Die Default-Verteidigung und der Barrier-Modus. Bei der Default-Verteidigung werden die Ameise nahe um den eigenen Hügel zur Verteidigung aufgestellt. Der Barrier-Modus ist nur bei Hügel möglich die in einer Sackgasse sind, den in diesem Modus wird eine Sperre an der engsten Stelle erstellt. Nachfolgende Abbildung veranschaulicht die beiden Modi.
 
 \begin{figure}[H]
 \centering
@@ -108,7 +108,7 @@ Die DefendHillMission bietet zwei Modi zur Verteidigung an. Die Default-Verteidi
 \label{fig:DefendHillModi}
 \end{figure}
 
-Der Modus wird wie folgt definiert. Während dem 10 Spielzug wird versucht mittels spezieller Breitensuche eine Sperre für den Hügel zu finden. Falls dies glingt läuft die Mission im Barrier-Mode. Dies solange bis eine gegnerische Ameise auf die Höhe der Barriere tritt, dann gehen wir davon aus, dass die Sperre vom Gegner eingenommen wurde, wir gehen in den Default-Modus zurück.
+Der Modus wird wie folgt definiert. Während dem 10 Spielzug wird versucht mittels spezieller Breitensuche eine Sperre für den Hügel zu finden. Falls dies gelingt läuft die Mission im Barrier-Mode. Dies solange bis eine gegnerische Ameise auf die Höhe der Barriere tritt, dann gehen wir davon aus, dass die Sperre vom Gegner eingenommen wurde, wir gehen in den Default-Modus zurück.
 \begin{verbatim}
 private void determineMode() {
   if (Ants.getAnts().getTurn() == 10) {
@@ -132,15 +132,15 @@ private void determineMode() {
 \subsection{Default-Modus}
 \label{subsec:module.Mission.DefendHillMission.DefaultModus}
 
-Hier wird jegentlich berechnet, wieviele Ameisen den Hügel angreifen. Die Angreifer und die Verteidiger werden dem DefendingCombatPositioning übergeben, dieses berechnet die Positionen der Ameisen. Es ist einstellbar ab welchem Zug die DefendMission Ameisen für die Verteidigung rekrutiert. Zudem kann mit dem Parameter textif{DEFENDER_MORETHAN_ATTACKERS} definiert werden wieviel Ameisen mehr als die Anzahl Angreifer rekrutiert werden. Ameisen werden von der Mission entlassen wenn weniger Angreifer als Veteidiger unter der Berücksichtigung des erwähnten Parameter gezählt werden.
+Hier wird jegentlich berechnet, wie viele Ameisen den Hügel angreifen. Die Angreifer und die Verteidiger werden dem DefendingCombatPositioning übergeben, dieses berechnet die Positionen der Ameisen. Es ist einstellbar ab welchem Zug die DefendHillMission Ameisen für die Verteidigung rekrutiert. Zudem kann mit dem Parameter textif{DEFENDER_MORETHAN_ATTACKERS} definiert werden wie viel Ameisen mehr als die Anzahl Angreifer rekrutiert werden. Ameisen werden von der Mission entlassen wenn weniger Angreifer als Verteidiger unter der Berücksichtigung des erwähnten Parameter gezählt werden.
 
 \subsection{Barrier-Modus}
 \label{subsec:module.Mission.DefendHillMission.BarrierModus}
 
-Wie schon erwähnt, kann dieser Modus nur eintreffen wenn die Geländegegebenheiten stimmen. Ziel ist Engpässe auszunutzen um mit möglichst wenigen Ameisen zu verteidigen. Eine weitere Idee der Verwenung von Sperren ist, dass durch die Sperre der Gegners die Umgebung dahinter nicht erkunden kann, so unseren Hügel nie zu Gesicht bekommt und dadurch kein Angriff auf unseren Hügel startet. Die Methode hat den Nachteil, dass die Ameisen welche für die Sperre benötigt werden, entsprechend statisch platziert werden. Diese können dann nicht für andere Aufgaben verwendet werden.\\
+Wie schon erwähnt, kann dieser Modus nur eintreffen wenn die Geländegegebenheiten stimmen. Ziel ist Engpässe auszunutzen um mit möglichst wenigen Ameisen zu verteidigen. Eine weitere Idee der Verwendung von Sperren ist, dass durch die Sperre der Gegners die Umgebung dahinter nicht erkunden kann, so unseren Hügel nie zu Gesicht bekommt und dadurch kein Angriff auf unseren Hügel startet. Die Methode hat den Nachteil, dass die Ameisen welche für die Sperre benötigt werden, entsprechend statisch platziert werden. Diese können dann nicht für andere Aufgaben verwendet werden.\\
 Die Sperre wurde gegen Xathis getestet und sie zeigte nur eine geringe Wirkung. Der Bot von Xathis wartet vor der Sperre bis er in Überzahl ist und überrumpeln dann unsere Verteidigung. Erstaunlicher Weise wird die Sperre von Greentea (zweitbester Bot), auch wenn er in Überzahl ist, nicht angegriffen. Gegen diesen Gegner war die Sperre also gutes Mittel zur Verteidigung.\\
 \\
-Die Funktionswiese ist wie folgt. Es werden je nach Breite der Sperre entsprechend viele Ameisen zur Position der Sperre geschickt um diese aufzubauen. Die Ameisen stellen sich paarweise hintereinander auf, solange keine Gegner in der Nähe sind. So können eigene Ameisen die einer anderen Aufgabe nachgehen die Sperre passieren. Wenn der Gegner sich in Überzahl nähert, wird die Sperre geschlossen. Danach wird das Kampfverhalten dem AttackingCombatPositioning überlassen, welches die Positionierung übernimmt.
+Die Funktionsweise ist wie folgt. Es werden je nach Breite der Sperre entsprechend viele Ameisen zur Position der Sperre geschickt um diese aufzubauen. Die Ameisen stellen sich paarweise hintereinander auf, solange keine Gegner in der Nähe sind. So können eigene Ameisen die einer anderen Aufgabe nachgehen die Sperre passieren. Wenn der Gegner sich in Überzahl nähert, wird die Sperre geschlossen. Danach wird das Kampfverhalten dem AttackingCombatPositioning überlassen, welches die Positionierung übernimmt.
 
 \begin{figure}[H]
 \centering
@@ -154,7 +154,7 @@ Die Funktionswiese ist wie folgt. Es werden je nach Breite der Sperre entspreche
 
 Precondition: - \\
 Creator: ExploreTask\\
-Postcondition: Definerter Pfad zum Erkunden ist abgelaufen.\\
+Postcondition: Definierter Pfad zum Erkunden ist abgelaufen.\\
 Max. Ants: 1\\
 Max. Missionen: unbegrenzt\\
 Valid: Solange Ameise ein gültiger Pfad hat.\\
@@ -182,7 +182,7 @@ Valid: immer\\
 Gather Ants: siehe Beschreibung\\
 Release Ants: siehe Beschreibung\\
 
-Es wird nur eine GatherFoodMission zu Begin des Spiels erstellt, diese Mission erstellt und kontrolliert die Pfade der Ameisen, welche auf Futtersuche sind. Die execute()-Methode der GatherFoodMission sieht wie folgt aus:
+Es wird nur eine GatherFoodMission zu Beginn des Spiels erstellt, diese Mission erstellt und kontrolliert die Pfade der Ameisen, welche auf Futtersuche sind. Die execute()-Methode der GatherFoodMission sieht wie folgt aus:
 
 \begin{verbatim}
 @Override
@@ -196,7 +196,7 @@ public void execute() {
 }
 \end{verbatim}
 
-Bei \textit{checkAntsRoutes()} wird geprüft ob die Pfadrouten aller Ameisen in der Mission noch gültig sind. Ungültige Pfade sind, wenn die Futterzelle von der eigenen Ameise oder einer gegnerischen Ameise gefressen wurde. Ameisen mit einem unültigen Pfad werden von der Mission entlassen, können aber in der nächsten Methode \textit{gatherAnts()}, falls sinnvoll, der Mission wieder beitreten. Die Logik der gatherAnts() Method ist in folgenden Codebeispiel vereinfacht dargestellt.
+Bei \textit{checkAntsRoutes()} wird geprüft ob die Pfadrouten aller Ameisen in der Mission noch gültig sind. Ungültige Pfade sind, wenn die Futterzelle von der eigenen Ameise oder einer gegnerischen Ameise gefressen wurde. Ameisen mit einem ungültigen Pfad werden von der Mission entlassen, können aber in der nächsten Methode \textit{gatherAnts()}, falls sinnvoll, der Mission wieder beitreten. Die Logik der gatherAnts() Methode ist in folgenden Codebeispiel vereinfacht dargestellt.
 
 \begin{verbatim}
 foreach(foodTile on map){
