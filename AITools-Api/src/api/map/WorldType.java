@@ -7,6 +7,12 @@ package api.map;
  * 
  */
 public enum WorldType {
+    /**
+     * World type without wraparound
+     */
     Pizza,
+    /**
+     * World type with wraparound
+     */
     Globe
 }

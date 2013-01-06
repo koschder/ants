@@ -8,7 +8,7 @@ import api.entities.Tile;
 import api.search.SearchableMap;
 
 /**
- * AbstractWraparoundMap provide function for character of the map, and function to move on the map
+ * AbstractWraparoundMap provides basic map functionality that can be used in any tile-based wraparound map.
  * 
  * @author kases1, kustl1
  * 
@@ -99,16 +99,6 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return new Tile(row, col);
     }
 
-    /**
-     * Returns location with the specified offset from the specified location.
-     * 
-     * @param tile
-     *            location on the game map
-     * @param offset
-     *            offset to look up
-     * 
-     * @return location with <code>offset</code> from <cod>tile</code>
-     */
     @Override
     public Tile getTile(Tile tile, Tile offset) {
         int row = (tile.getRow() + offset.getRow()) % getRows();
@@ -163,7 +153,13 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return rowDistance;
     }
 
-    public List<Tile> get4Neighbours(Tile center) {
+    /**
+     * returns the 4 tiles directly adjacent to the center
+     * 
+     * @param center
+     * @return the neighbor tiles
+     */
+    protected List<Tile> get4Neighbours(Tile center) {
         List<Tile> neighbours = new ArrayList<Tile>();
         for (Aim aim : Aim.values()) {
             neighbours.add(getTile(center, aim));
@@ -198,16 +194,6 @@ public abstract class AbstractWraparoundMap implements SearchableMap {
         return Math.sqrt(r * r + c * c);
     }
 
-    /**
-     * Calculates squared distance between two locations on the game map.
-     * 
-     * @param t1
-     *            one location on the game map
-     * @param t2
-     *            another location on the game map
-     * 
-     * @return the squared distance between <code>t1</code> and <code>t2</code>
-     */
     @Override
     public int getSquaredDistance(Tile t1, Tile t2) {
         int rowDelta = Math.abs(t1.getRow() - t2.getRow());

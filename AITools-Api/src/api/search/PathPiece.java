@@ -4,7 +4,6 @@ import java.util.List;
 
 import api.entities.Tile;
 
-
 /**
  * This interface provides Tiles or Edges to be used in A* and HPA*
  * 
@@ -14,17 +13,14 @@ import api.entities.Tile;
 public interface PathPiece {
 
     /**
-     * Returns the path by which this PathPiece can be reached
      * 
-     * @return
+     * @return the path by which this PathPiece can be reached
      */
     List<Tile> getPath();
 
-
     /**
-     * returns the tile this SearchTarget leads to.
      * 
-     * @return
+     * @return the tile this SearchTarget leads to.
      */
     Tile getTargetTile();
 

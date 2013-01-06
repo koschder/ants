@@ -6,7 +6,10 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Represents a direction in which to move a unit. The directions are NORTH,EAST,SOUTH and WEST
+ * Represents a direction in which to move a unit. The directions are NORTH,EAST,SOUTH and WEST.
+ * 
+ * @author kases
+ * @author adapted from the starter package from aichallenge.org
  */
 public enum Aim {
     /** North direction, or up. */
@@ -81,6 +84,12 @@ public enum Aim {
         return symbolLookup.get(symbol);
     }
 
+    /**
+     * Returns a list of aims that are orthogonal to the given aim.
+     * 
+     * @param aim
+     * @return a list of orthogonal aims
+     */
     public static List<Aim> getOrthogonalAims(Aim aim) {
         switch (aim) {
         case NORTH:
@@ -91,6 +100,12 @@ public enum Aim {
         }
     }
 
+    /**
+     * Returns the opposite aim for the given aim.
+     * 
+     * @param aim
+     * @return the opposite aim
+     */
     public static Aim getOpposite(Aim aim) {
         switch (aim) {
         case NORTH:

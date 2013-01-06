@@ -8,7 +8,7 @@ import api.map.TileMap;
 import api.strategy.InfluenceMap;
 
 /**
- * the interface SearchableMap defines the method used doing path searching on the map.
+ * The interface SearchableMap defines the methods used for doing path searching on the map.
  * 
  * @author kases1, kustl1
  * 
@@ -103,6 +103,6 @@ public interface SearchableMap extends TileMap {
      * @param maxDistnace
      * @return tiles in one direction
      */
-    List<Tile> getTilesToNextImpassableTile(Tile origin, Aim direction, int maxDistnace);
+    public List<Tile> getTilesToNextImpassableTile(Tile origin, Aim direction, int maxDistnace);
 
 }

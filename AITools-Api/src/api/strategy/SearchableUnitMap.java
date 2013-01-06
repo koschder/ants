@@ -4,7 +4,7 @@ import api.map.UnitMap;
 import api.search.SearchableMap;
 
 /**
- * this interface brings together UnitMap SearchableMap
+ * This interface brings together UnitMap SearchableMap
  * 
  * @author kases1, kustl1
  * 

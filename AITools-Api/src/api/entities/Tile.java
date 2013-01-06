@@ -10,6 +10,9 @@ import api.search.PathPiece;
 
 /**
  * Represents a tile of the game map.
+ * 
+ * @author kases1, kustl1
+ * @author adapted from the starter package from aichallenge.org
  */
 public class Tile implements Comparable<Tile>, PathPiece {
     private final int row;
@@ -47,18 +50,27 @@ public class Tile implements Comparable<Tile>, PathPiece {
         return col;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int compareTo(Tile o) {
         return hashCode() - o.hashCode();
     }
 
+    /**
+     * This Class compares two tiles according to their distance from a given third tile.
+     * 
+     * @author kases1, kustl1
+     * 
+     */
     public static class DistanceComparator implements Comparator<Tile> {
 
         Map<Tile, Integer> base;
 
+        /**
+         * Default Constructor for {@link DistanceComparator}
+         * 
+         * @param base
+         *            a map of Tiles and their distances from the reference Tile
+         */
         public DistanceComparator(Map<Tile, Integer> base) {
             this.base = base;
         }
@@ -68,17 +80,11 @@ public class Tile implements Comparable<Tile>, PathPiece {
         }
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public int hashCode() {
         return row * 2000 + col;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public boolean equals(Object o) {
         boolean result = false;
@@ -89,9 +95,6 @@ public class Tile implements Comparable<Tile>, PathPiece {
         return result;
     }
 
-    /**
-     * {@inheritDoc}
-     */
     @Override
     public String toString() {
         return "<r:" + row + " c:" + col + ">";

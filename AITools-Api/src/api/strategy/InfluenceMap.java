@@ -4,7 +4,7 @@ import api.entities.Tile;
 import api.search.PathPiece;
 
 /**
- * this interface defines the methods a InfuenceMap must provide
+ * This interface defines the methods an InfluenceMap must provide
  * 
  * @author kases1, kustl1
  * 
