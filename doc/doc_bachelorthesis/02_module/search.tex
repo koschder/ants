@@ -186,3 +186,54 @@ Die Pfadkosten für beide Pfade verglichen, legt offen, dass je nach Berücksichti
  
 \subsection{Pathsmoothing}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.Pathsmoothing}
+
+Um unseres Search-Framework zu komplettieren bietet die Pfadsuche auch ein PathSmoothing, das 'Glätten' eines Pfades an. Wie im Clustering schon erwäht, kann es sein, dass ein Pfad, der von dem HPA* Algorithmus gefunden wurde, nicht zwingend der Kürzeste ist. Die folgende Abbildung veranschaulicht wie der gefundene Pfad von Cluster zu Cluster (weisse Markierung), stehts über die vorberechneten Verbindungspunkte (blau) verläuft. Dies ist nicht der optimale Pfad, er kann mit PathSmoothing verkürzt werden.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.99\textwidth]{91_bilder/pathsmoothingOne}
+\caption{Der gefundene Pfad mit HPA* Clusteringart Centered, ist nicht der kürzeste.}
+\label{fig.pathsmoothingOne}
+\end{figure}
+
+Der Algorithmus des Pathsmoothing ist (vereinfacht) wie folgt defniert. Vom Pfad der gekürzt werden soll wird ein erster Abschnitt mit der Länge \textit{size} genommen. Mittels manhattanDistance wird geprüft ob eine kürzere Weg für diesen Abschnitt möglich wäre. Falls ja wird mittels A* ein neuer Pfad gesucht, sonst wird der alte Pfad (\textit{subPath} übernommen. Dieses Verfahren wird für alle nachfolgenden Pfadabschnitte gemacht, bis der ganze Pfad durchlaufen ist.\\
+\\
+\textbf{Rekursion:} Der beschriebene Algorithmus, hat nicht in jedem Fall den kürzesten Pfad als Output. So sind zwar alle Pfadabschnitte optimal gekürzt, es kann aber sein, dass wenn zwei Abschnitte zusammen gefügt werden, der Pfad nicht mehr der kürzeste ist. Als Beispiel: Die Wegabschnitt Zürich-Thun und Thun-Genf mögen optimal gekürzt sein. Zusammengefügt zur Strecke Zürich-Genf, braucht es den Umweg über Thun nicht. Um Umweg zu entfernen wird der Alogrihmus rekursiv aufgerufen, indem smoothPath(...) mit einer grösseren \textit{size} als Parameter für die zusammengesetzen Abschnitte nochmals aufgerufen wird.
+
+\begin{verbatim}
+public List<Tile> smoothPath(List<Tile> path, int size, boolean recursive) {
+	int start = 0;
+	int current = size;
+	List<Tile> smoothedPath = new ArrayList<Tile>();
+	// do while the last tile of the smoothed path is the same as in path
+	do {
+	    List<Tile> subPath = path.subList(start, current);
+	    int manDist = map.manhattanDistance(subPath.get(0), subPath.get(subPath.size() - 1)) + 1;	
+	    List<Tile> newSubPath = null;
+	    if (manDist < subPath.size()) {
+	        newSubPath = search(Strategy.AStar, subPath.get(0), subPath.get(subPath.size() - 1), subPath.size() - 1);
+	    }
+	    if (newSubPath != null) {
+	        smoothedPath.addAll(newSubPath);
+	        if (recursive && newSubPath.size() < subPath.size()) {
+	            smoothedPath = smoothPath(smoothedPath, smoothedPath.size(), true);
+	        }
+	    } else {
+	        smoothedPath.addAll(subPath);
+	    }
+	    start = current;
+	    current = Math.min(current + size, path.size());
+} while (!path.get(path.size() - 1).equals(smoothedPath.get(smoothedPath.size() - 1)));
+
+return smoothedPath;
+}
+\end{verbatim}
+
+In der nächsten Abbildung wurde der beschriebene PathSmoothing Algorithmus angewendet, der Pfad konnte einer ursprünglichen Pfadlänge   von 50 Tiles (siehe \ref{fig.pathsmoothingOne}) auf eine Pfadlänge von 40 Tiles reduziert werden.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.99\textwidth]{91_bilder/pathsmoothingTwo}
+\caption{Der geglättete Pfad, nach Anwendung des PathSmoothing-Algorithmus}
+\label{fig.pathsmoothingOne}
+\end{figure}

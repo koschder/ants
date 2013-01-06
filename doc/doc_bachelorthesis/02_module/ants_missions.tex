@@ -137,21 +137,15 @@ Hier wird jegentlich berechnet, wieviele Ameisen den Hügel angreifen. Die Angrei
 \subsection{Barrier-Modus}
 \label{subsec:module.Mission.DefendHillMission.BarrierModus}
 
-Wie schon erwähnt, kann dieser Modus nur eintreffen wenn die Geländegegebenheiten stimmen. Ziel war es das Engpässe auszunutzen um mit möglichst wenigen Ameisen zu verteidigen. Eine weitere Idee war, dass durch die Sperre der Gegners die Umgebung dahinter nicht erkunden kann, so unseren Hügel nie zu Gesicht bekommt und kein Angriff auf unseren Hügel startet. Leider verbesserte diese Method die Fähigkeiten nur gering, den die Ameisen welche für die Sperre benötigt werden, müssen entsprechend platziert werden und können nicht für andere Aufgaben verwendet werden. Zudem hat die Sperre bei starken Gegnern, wie Xathis oder Greentea, nut gerning Wirkung. Diese Bot warten vor der Sperre bis sie in Überzahl sind und überrumpeln dann unsere Verteidigung.
+Wie schon erwähnt, kann dieser Modus nur eintreffen wenn die Geländegegebenheiten stimmen. Ziel ist Engpässe auszunutzen um mit möglichst wenigen Ameisen zu verteidigen. Eine weitere Idee der Verwenung von Sperren ist, dass durch die Sperre der Gegners die Umgebung dahinter nicht erkunden kann, so unseren Hügel nie zu Gesicht bekommt und dadurch kein Angriff auf unseren Hügel startet. Die Methode hat den Nachteil, dass die Ameisen welche für die Sperre benötigt werden, entsprechend statisch platziert werden. Diese können dann nicht für andere Aufgaben verwendet werden.\\
+Die Sperre wurde gegen Xathis getestet und sie zeigte nur eine geringe Wirkung. Der Bot von Xathis wartet vor der Sperre bis er in Überzahl ist und überrumpeln dann unsere Verteidigung. Erstaunlicher Weise wird die Sperre von Greentea (zweitbester Bot), auch wenn er in Überzahl ist, nicht angegriffen. Gegen diesen Gegner war die Sperre also gutes Mittel zur Verteidigung.\\
+\\
+Die Funktionswiese ist wie folgt. Es werden je nach Breite der Sperre entsprechend viele Ameisen zur Position der Sperre geschickt um diese aufzubauen. Die Ameisen stellen sich paarweise hintereinander auf, solange keine Gegner in der Nähe sind. So können eigene Ameisen die einer anderen Aufgabe nachgehen die Sperre passieren. Wenn der Gegner sich in Überzahl nähert, wird die Sperre geschlossen. Danach wird das Kampfverhalten dem AttackingCombatPositioning überlassen, welches die Positionierung übernimmt.
 
 \begin{figure}[H]
 \centering
-\includegraphics[height=40mm]{91_bilder/BarrierOverTaken}
-\caption{Eine Ameise auf einer ExploreMission bewegt sich in Richtung \gls{FogofWar}}
-\label{fig:BarrierOverTaken}
-\end{figure}
-
-Die Funktionswiese ist wie folgt. Es werden je nach Grösse der Sperre entsprechend viele Ameisen zur Position geschickt wo die Sperre aufgebaut ist. Die Ameisen stellen sich paarweise hintereinander auf, solange keine Gegner in der Nähe sind. So können Ameisen die einer anderen Aufgabe nachgehen die Sperre passieren. Wenn der Gegner sich in Überzahl nähert, wird die Sperre geschlossen. Danach wird das Kampfverhalten dem AttackingCombatPositioning überlassen, welches die Positionierung übernimmt.
-
-\begin{figure}[H]
-\centering
-\includegraphics[height=40mm]{91_bilder/CloseBarrier}
-\caption{Eine Ameise auf einer ExploreMission bewegt sich in Richtung \gls{FogofWar}}
+\includegraphics[height=40mm]{91_bilder/barrierCloseExample}
+\caption{Die Sperre wird geschlossen und trotz gegnerischer Überzahl nicht angegriffen. (Gegner: Greentea)}
 \label{fig:CloseBarrier}
 \end{figure}
 
