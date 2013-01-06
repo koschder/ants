@@ -60,8 +60,8 @@ public class SimplePathFinder implements PathFinder {
     }
 
     @Override
-    public List<Tile> search(Strategy strategy, PathPiece start, PathPiece end, Tile searchSpace0,
-            Tile searchSpace1, int maxCost) {
+    public List<Tile> search(Strategy strategy, PathPiece start, PathPiece end, Tile searchSpace0, Tile searchSpace1,
+            int maxCost) {
         SearchStrategy searchStrat = getStrategy(strategy);
         searchStrat.setMaxCost(maxCost);
         searchStrat.setSearchSpace(searchSpace0, searchSpace1);
@@ -164,7 +164,7 @@ public class SimplePathFinder implements PathFinder {
             }
             if (newSubPath != null) {
                 newPath.addAll(newSubPath);
-                if (recursive) {
+                if (recursive && newSubPath.size() < subPath.size()) {
                     newPath = smoothPath(newPath, newPath.size(), true);
                 }
             } else {

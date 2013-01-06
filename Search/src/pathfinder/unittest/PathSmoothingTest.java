@@ -37,15 +37,13 @@ public class PathSmoothingTest {
         String name = "PathSmoothingTest_smoothThePathMenTest_" + type;
         System.out.println(name);
         String sMap = "";
-        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
-        sMap += "wooooooooooowwooooooooooooooooooooow";
-        sMap += "oooooooooooowwoooowwooooooooooooooow";
-        sMap += "oooooooooooowwoooowwooooooooooooooow";
-        sMap += "oooowwwooooowwoooowwwwwwwwooooooooow";
-        sMap += "oooowwwooooowwoooowwwwwwwwooooooooow";
+        sMap += "wwwwwwwwwwwwwwwwwwwwwwwwwwwwwooowwww";
+        sMap += "woooooooowoowwooooooooooooooooooooow";
+        sMap += "ooooooooowoowwooooooooooooooooooooow";
+        sMap += "ooooooooowooooooooooowooooooooooooow";
+        sMap += "oooowwwooooooooooowwwwwwwwooooooooow";
+        sMap += "oooowwwooooooooooowwwwwwwwooooooooow";
         sMap += "wooowwwooooooooooowwooooooooooooooow";
-        sMap += "wooowwwoooooooooooowooooooooooooooow";
-        sMap += "wooowwwoooooooooooowooooooooooooooow";
         sMap += "wooowwwwwwwwwwwwwwwwwwwwwwwwwwwwwwww";
 
         UnitTestMap map = new UnitTestMap(36, sMap);
@@ -55,11 +53,11 @@ public class PathSmoothingTest {
         pf.update();
 
         Tile start = new Tile(7, 3);
-        Tile end = new Tile(8, 20);
+        Tile end = new Tile(3, 34);
 
         List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, start, end, -1);
 
-        List<Tile> pathSmoothed = pf.smoothPath(path, 9, false);
+        List<Tile> pathSmoothed = pf.smoothPath(path, 8, true);
         // List<Tile> pathSmoothed = pf.smoothPath(pathSmoothed_, 12, 1);
         // pathSmoothed = pf.smoothPath(pathSmoothed, 12, 1);
 

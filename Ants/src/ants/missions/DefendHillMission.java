@@ -37,7 +37,7 @@ public class DefendHillMission extends BaseMission {
     final private int START_DEFENDHILL_TURN = Ants.getProfile().getDefendHills_StartTurn();
     final private int DEFENDER_MORETHAN_ATTACKERS = 1;
     final private int GATHERANTS_MANHATTAN_DISTANCE = 20;
-    final private boolean USEBARRIER = false;
+    final private boolean USEBARRIER = true;
     private boolean barrierClosed = false;
     private boolean needsMoreAnts;
 
@@ -86,6 +86,7 @@ public class DefendHillMission extends BaseMission {
         }
         if (enemyNearBy.size() > barrier.getBarrierPlaceTiles().size()) {
             if (!barrierClosed) {
+                barrierClosed = true;
                 LOGGER.trace("closeBarrier %s", hill);
                 closeBarrier();
             } else {
@@ -101,7 +102,10 @@ public class DefendHillMission extends BaseMission {
             }
             barrierClosed = true;
         } else {
-            placeAntAtBarrier(ants);
+            List<Ant> antWithOrder = new ArrayList<Ant>();
+            // call it twice, to be sure, that the ants on the second line can move to the front
+            placeAntAtBarrier(ants, antWithOrder);
+            placeAntAtBarrier(ants, antWithOrder);
             barrierClosed = false;
         }
         LiveInfo.liveInfo(Ants.getAnts().getTurn(), hill,
@@ -146,7 +150,7 @@ public class DefendHillMission extends BaseMission {
                     LOGGER.trace("cannot move ant from secondLine to front: %s", a);
                 }
             } else {
-                placeAntAtBarrier(Arrays.asList(new Ant[] { a }));
+                placeAntAtBarrier(Arrays.asList(new Ant[] { a }), new ArrayList<Ant>());
             }
 
         }
@@ -155,11 +159,12 @@ public class DefendHillMission extends BaseMission {
 
     /**
      * 
+     * @param antWithOrder
      * @param antswithOrder
      * @param barrierLevel
      *            barrier behind the actual barrier.
      */
-    private void placeAntAtBarrier(List<Ant> antsToPlace) {
+    private void placeAntAtBarrier(List<Ant> antsToPlace, List<Ant> antWithOrder) {
         List<Tile> placeTiles = new ArrayList<Tile>();
         if (barrierClosed) {
             placeTiles = barrier.getBarrier();
@@ -182,8 +187,12 @@ public class DefendHillMission extends BaseMission {
         correctPlacedAnts.removeAll(placeTiles);
         int i = 2;
         for (Ant a : antsToPlace) {
+            if (antWithOrder.contains(a))
+                continue;
+
             if (correctPlacedAnts.contains(a.getTile())) {
                 putMissionOrder(a);
+                antWithOrder.add(a);
                 continue;
             }
             if (placeTiles.size() > 0) {
@@ -194,11 +203,14 @@ public class DefendHillMission extends BaseMission {
                 List<Tile> path = Ants.getPathFinder().search(PathFinder.Strategy.AStar, a.getTile(), t);
                 if (path != null && path.size() > 1) {
                     LOGGER.trace("path for ant %s shrinked: %s", a, path);
-                    putMissionOrder(a, path.get(1));
+                    if (putMissionOrder(a, path.get(1)))
+                        antWithOrder.add(a);
                 }
                 continue;
             }
-            doMoveInDirection(a, getPlaceTiles(i).get(0));
+            if (doMoveInDirection(a, getPlaceTiles(i).get(0))) {
+                antWithOrder.add(a);
+            }
 
         }
     }
@@ -379,7 +391,7 @@ public class DefendHillMission extends BaseMission {
             Tile start = Ants.getWorld().getTile(bar.get(bar.size() / 2), barrier.getAimOfBarrier());
             AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
             enemies = bfs.findClosestTiles(start, Integer.MAX_VALUE, Integer.MAX_VALUE, Ants.getWorld()
-                    .getViewRadius2(), new GoalTest() {
+                    .getViewRadius2() / 2, new GoalTest() {
 
                 @Override
                 public boolean isGoal(Tile tile) {

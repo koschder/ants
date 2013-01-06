@@ -96,7 +96,7 @@ Wir unterschieden zwischen den zwei Clusterarten Centered und Corner. Die Varian
 \begin{figure}[H]
 \centering
 \includegraphics[height=50mm]{91_bilder/clusterArten.png}
-\caption[Clustereinteilung auf der Landkarte.]{Links der Typ Corner, Rechts der Typ Centered}
+\caption[Clustereinteilung auf der Landkarte.]{Vergleich der Clusterarten: Links der Typ Corner, Rechts der Typ Centered}
 \label{fig.clusteredMap}
 \end{figure}
 
@@ -119,7 +119,7 @@ Sobald ein Cluster zwei oder mehrere Aussenkanten kennt berechnet er die Innenka
 \label{fig.clusteredMap3}
 \end{figure}
 
-In der Abbildung \ref{fig.clusteredMap4} wird ein Pfad vom Pixel (3,9) nach (13,9) mittels HPA* gesucht (grüne Punkte). Zuerst wird eruiert in welchem Cluster sich das Start- bzw Zielpixel befindet. Danach wird in dem gefundenen Cluster ein Weg zu einem beliebigen Knoten auf der Clusterseite gesucht. Sind diese Knoten erreicht (blaue Pfade), wird nun das vorberechnete Pfadnetz mittels bereits beschrieben A* Algorithmus verwendet um die beiden Knoten auf dem kürzesten möglichen Pfad (gelb) zu verbinden.\footnote{Der resultierende Pfad könnte mittels Pathsmoothing verkürzt werden. Dies wurde aber in unserer Arbeit nicht implementiert.}
+In der Abbildung \ref{fig.clusteredMap4} wird ein Pfad vom Pixel (3,9) nach (13,9) mittels HPA* gesucht (grüne Punkte). Zuerst wird eruiert in welchem Cluster sich das Start- bzw Zielpixel befindet. Danach wird in dem gefundenen Cluster ein Weg zu einem beliebigen Knoten auf der Clusterseite gesucht. Sind diese Knoten erreicht (blaue Pfade), wird nun das vorberechnete Pfadnetz mittels bereits beschrieben A* Algorithmus verwendet um die beiden Knoten auf dem kürzesten möglichen Pfad (gelb) zu verbinden. Der resultierende Pfad könnte kann nun via Pathsmoothing verkürzt werden.
 
 \begin{figure}[H]
 \centering

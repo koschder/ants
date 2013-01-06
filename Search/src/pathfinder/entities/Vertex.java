@@ -17,7 +17,8 @@ public class Vertex extends Tile {
 
     public Vertex(Tile t, Edge e) {
         super(t.getRow(), t.getCol());
-        edges.add(e);
+        if (e != null)
+            edges.add(e);
     }
 
     public void addEdge(Edge e) {
