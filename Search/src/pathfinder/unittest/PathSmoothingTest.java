@@ -70,13 +70,16 @@ public class PathSmoothingTest {
         put.addObject(path, "HpaStar Path");
         put.setClusterSize(clusterSize);
         put.addObject(pf.getClustering().getAllVertices(), "Cluster Points");
+        put.addObject(startEnd, "Start and End Points");
+        boolean vaildPath = pf.validatePath(path);
+        put.addComment("Path: " + path.toString() + " Size: " + path.size() + " Is path valid ? " + vaildPath);
+
+        put.cleanUp(true, null);
         put.addObject(pathSmoothed, "Smoothed Path");
         put.addObject(startEnd, "Start and End Points");
 
-        boolean vaildPath = pf.validatePath(path);
-        System.out.println("smooth vaildated");
+        // System.out.println("smooth vaildated");
         boolean vaildSmoothedPath = pf.validatePath(pathSmoothed);
-        put.addComment("Path: " + path.toString() + " Size: " + path.size() + " Is path valid ? " + vaildPath);
         put.addComment("Smoothed Path: " + pathSmoothed.toString() + " Size: " + pathSmoothed.size()
                 + " Is path valid ? " + vaildSmoothedPath);
 

@@ -151,8 +151,8 @@ public class SimplePathFinder implements PathFinder {
             return path;
         int start = 0;
         int current = size;
-        List<Tile> newPath = new ArrayList<Tile>();
-        // do while the last tile of path is new path
+        List<Tile> smoothedPath = new ArrayList<Tile>();
+        // do while the last tile of the smoothed path is the same as in path
         do {
 
             List<Tile> subPath = path.subList(start, current);
@@ -163,18 +163,18 @@ public class SimplePathFinder implements PathFinder {
                 newSubPath = search(Strategy.AStar, subPath.get(0), subPath.get(subPath.size() - 1), subPath.size() - 1);
             }
             if (newSubPath != null) {
-                newPath.addAll(newSubPath);
+                smoothedPath.addAll(newSubPath);
                 if (recursive && newSubPath.size() < subPath.size()) {
-                    newPath = smoothPath(newPath, newPath.size(), true);
+                    smoothedPath = smoothPath(smoothedPath, smoothedPath.size(), true);
                 }
             } else {
-                newPath.addAll(subPath);
+                smoothedPath.addAll(subPath);
             }
             start = current;
             current = Math.min(current + size, path.size());
-        } while (!path.get(path.size() - 1).equals(newPath.get(newPath.size() - 1)));
+        } while (!path.get(path.size() - 1).equals(smoothedPath.get(smoothedPath.size() - 1)));
 
-        return newPath;
+        return smoothedPath;
     }
 
     @Override
