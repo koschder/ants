@@ -5,7 +5,8 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 /**
- * this class represents a log file, logs are written with the append(..) function
+ * This class represents a log file. It uses lazy initialization for the actual file, so the file stream is not opened
+ * until the first call to append().
  * 
  * @author kases1, kustl1
  * 
@@ -17,10 +18,9 @@ public class LogFile {
     private LogCategory category;
 
     /**
-     * constructor, creating file if not exists.
+     * Default constructor
      * 
-     * @param filePath
-     *            name an path of the file.
+     * @param category
      */
     public LogFile(LogCategory category) {
         this.category = category;
@@ -40,7 +40,7 @@ public class LogFile {
     }
 
     /**
-     * append a log line to the file
+     * append a log line to the file, creating the file if it doesn't exist.
      * 
      * @param message
      * @param parameters

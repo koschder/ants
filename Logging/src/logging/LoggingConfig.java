@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * with this class we determine if we have to write a log according to its category and log level.
+ * With this class we determine if we have to write a log according to its category and log level.
  * 
  * @author kases1, kustl1
  * 
