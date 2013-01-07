@@ -13,6 +13,13 @@ import ants.state.Ants;
 import api.entities.Tile;
 import api.entities.Unit;
 
+/**
+ * This class takes ants that could not be issued more attractive missions because they were too close to one or more
+ * enemy ants, groups and positions them in suitable combat formations.
+ * 
+ * @author kases1, kustl1
+ * 
+ */
 public class CombatTask extends BaseTask {
 
     @Override

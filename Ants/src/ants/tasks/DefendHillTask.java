@@ -5,6 +5,12 @@ import ants.missions.Mission;
 import ants.state.Ants;
 import api.entities.Tile;
 
+/**
+ * This task is responsible for creating DefendHillMissions for our hills.
+ * 
+ * @author kases1, kustl1
+ * 
+ */
 public class DefendHillTask extends BaseTask {
 
     @Override

@@ -8,7 +8,7 @@ import java.io.RandomAccessFile;
 import api.entities.Tile;
 
 /**
- * Logger class that writes application logs to a separate log file.
+ * Logger class that writes extra info for the visualizer to a separate log file.
  * 
  * @author kases1, kustl1
  * 

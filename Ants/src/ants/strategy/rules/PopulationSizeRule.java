@@ -3,6 +3,12 @@ package ants.strategy.rules;
 import ants.state.Ants;
 import ants.tasks.Task.Type;
 
+/**
+ * This rule increments the resources for gathering food depending on the size of our population.
+ * 
+ * @author kases1, kustl1
+ * 
+ */
 public class PopulationSizeRule extends BaseResourceAllocationRule {
 
     @Override

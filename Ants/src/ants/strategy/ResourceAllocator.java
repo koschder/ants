@@ -18,10 +18,22 @@ import ants.strategy.rules.ResourceAllocationRule;
 import ants.tasks.Task.Type;
 import api.strategy.InfluenceMap;
 
+/**
+ * The ResourceAllocator class is responsible for dividing up the available resources between the different tasks
+ * 
+ * @author kases1, kustl1
+ * 
+ */
 public class ResourceAllocator {
     Logger LOGGER = LoggerFactory.getLogger(LogCategory.RESOURCE_ALLOCATION);
-    protected List<ResourceAllocationRule> rules = new ArrayList<ResourceAllocationRule>();
 
+    private List<ResourceAllocationRule> rules = new ArrayList<ResourceAllocationRule>();
+
+    /**
+     * Default constructor
+     * 
+     * @param influence
+     */
     public ResourceAllocator(InfluenceMap influence) {
         // init for all task types
         for (Type type : Type.values()) {
@@ -39,7 +51,10 @@ public class ResourceAllocator {
         rules.add(new PercentExploredRule());
         rules.add(new HalfTimeReachedRule());
     }
-    
+
+    /**
+     * This method allocates the available resources to the tasks according to the configured rules.
+     */
     public void allocateResources() {
         Map<Type, Integer> antsOnMission = new HashMap<Type, Integer>();
         for (Mission mission : Ants.getOrders().getMissions()) {

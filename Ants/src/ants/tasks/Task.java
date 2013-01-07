@@ -8,16 +8,21 @@ package ants.tasks;
  */
 public interface Task {
 
+    /**
+     * Enumeration for the different types of tasks. This is used when deciding how many ants to assign to specific
+     * tasks.
+     * 
+     * @author kases1, kustl1
+     * 
+     */
     public enum Type {
         ATTACK_HILLS,
         CLEAR_HILL,
         CLUSTERING,
         COMBAT,
-        DEFEND_AREA,
         EXPLORE,
         GATHER_FOOD,
         MISSION,
-        VALIDATE_ORDERS,
         CONCENTRATE_ANTS,
         FLOCK,
         SWARMPATH,
@@ -35,5 +40,9 @@ public interface Task {
      */
     public void setup();
 
+    /**
+     * 
+     * @return the type of this task
+     */
     public Type getType();
 }
