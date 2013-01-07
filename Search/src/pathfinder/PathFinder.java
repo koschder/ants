@@ -8,7 +8,7 @@ import api.search.SearchableMap;
 import api.strategy.InfluenceMap;
 
 /**
- * the interface for path find algorithm, all needed method for path finding are described.
+ * The interface for path-finding algorithms, all needed methods for path finding are described.
  * 
  * @author kases1, kustl1
  * 
@@ -72,8 +72,8 @@ public interface PathFinder {
      *            maximum Costs for the path, if param is set to -1 no costs are calculated.
      * @return the found path, or null if no path found.
      */
-    public List<Tile> search(Strategy strategy, PathPiece start, PathPiece end, Tile searchSpace0,
-            Tile searchSpace1, int maxCost);
+    public List<Tile> search(Strategy strategy, PathPiece start, PathPiece end, Tile searchSpace0, Tile searchSpace1,
+            int maxCost);
 
     /**
      * 

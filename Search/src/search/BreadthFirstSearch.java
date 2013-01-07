@@ -12,7 +12,7 @@ import api.search.PathPiece;
 import api.search.SearchableMap;
 
 /**
- * this class implements the BFS (BreadthFirstSearch) search
+ * This class implements the BreadthFirstSearch (BFS)
  * 
  * @author kases1, kustl1
  * 
@@ -96,7 +96,7 @@ public class BreadthFirstSearch {
      * @return
      */
     public List<Tile> findClosestTiles(Tile center, int numberOfHits, int maxNodes, int maxDistance2, GoalTest goalTest) {
-        return findClosestTiles(center, numberOfHits, maxNodes, maxDistance2, goalTest, new AlwaysFrontierTrueTest());
+        return findClosestTiles(center, numberOfHits, maxNodes, maxDistance2, goalTest, new AlwaysTrueFrontierTest());
     }
 
     /**
@@ -108,6 +108,7 @@ public class BreadthFirstSearch {
      * @param maxNodes
      * @param maxDistance2
      * @param goalTest
+     * @param frontierTest
      * @return
      */
     public List<Tile> findClosestTiles(Tile center, int numberOfHits, int maxNodes, int maxDistance2,
@@ -150,7 +151,15 @@ public class BreadthFirstSearch {
         return found;
     }
 
-    public Barrier getBarrier(final Tile hill, int viewRadiusSquared, int maximumBarrierSize) {
+    /**
+     * Tries to find a suitable barrier for guarding the Tile toDefend against attackers.
+     * 
+     * @param toDefend
+     * @param viewRadiusSquared
+     * @param maximumBarrierSize
+     * @return the best Barrier or null if no suitable barrier was found
+     */
+    public Barrier getBarrier(final Tile toDefend, int viewRadiusSquared, int maximumBarrierSize) {
         List<Tile> barrierVerticalInvalid = new ArrayList<Tile>();
         List<Tile> barrierHorizontalInvalid = new ArrayList<Tile>();
         final int fillUpVariance = 15;
@@ -158,12 +167,11 @@ public class BreadthFirstSearch {
 
         List<Tile> smallestBar = null;
         Aim aimOfBarrier = null;
-        BreadthFirstSearch bfs = new BreadthFirstSearch(map);
-        List<Tile> defaultFlood = bfs.findClosestTiles(hill, Integer.MAX_VALUE, Integer.MAX_VALUE, viewRadiusSquared,
+        List<Tile> defaultFlood = findClosestTiles(toDefend, Integer.MAX_VALUE, Integer.MAX_VALUE, viewRadiusSquared,
                 new AlwaysTrueGoalTest());
 
         int defaultFloodSize = defaultFlood.size();
-        List<Tile> exendedFlood = bfs.findClosestTiles(hill, defaultFloodSize + additionalTiles, Integer.MAX_VALUE,
+        List<Tile> exendedFlood = findClosestTiles(toDefend, defaultFloodSize + additionalTiles, Integer.MAX_VALUE,
                 Integer.MAX_VALUE, new AlwaysTrueGoalTest());
 
         for (int i = 0; i < additionalTiles; i++) {
@@ -203,7 +211,7 @@ public class BreadthFirstSearch {
             if (smallestBar != null && bar.size() >= smallestBar.size())
                 continue;
 
-            List<Tile> flood = bfs.findClosestTiles(hill, tileCount + fillUpVariance, Integer.MAX_VALUE,
+            List<Tile> flood = findClosestTiles(toDefend, tileCount + fillUpVariance, Integer.MAX_VALUE,
                     Integer.MAX_VALUE, new AlwaysTrueGoalTest(), new FrontierTest() {
                         @Override
                         public boolean isFrontier(Tile tile) {
@@ -235,10 +243,21 @@ public class BreadthFirstSearch {
         return map.getSuccessorsForSearch(next, false);
     }
 
+    /**
+     * This interface is used by the BFS algorithm to check whether a given Tile is a goal.
+     * 
+     * @author kases1, kustl1
+     * 
+     */
     public static interface GoalTest {
         boolean isGoal(Tile tile);
     }
 
+    /**
+     * A FrontierTest can be used to selectively prevent tiles from being added to the frontier.
+     * @author kases1, kustl1
+     *
+     */
     public static interface FrontierTest {
         boolean isFrontier(Tile tile);
     }
@@ -262,7 +281,7 @@ public class BreadthFirstSearch {
      * @author kases1, kustl1
      * 
      */
-    public static class AlwaysFrontierTrueTest implements FrontierTest {
+    public static class AlwaysTrueFrontierTest implements FrontierTest {
         @Override
         public boolean isFrontier(Tile tile) {
             return true;

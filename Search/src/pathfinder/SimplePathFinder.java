@@ -68,10 +68,6 @@ public class SimplePathFinder implements PathFinder {
         return searchStrat.search(start, end);
     }
 
-    /**
-     * 
-     * @return the map on witch the path finder acts.
-     */
     @Override
     public SearchableMap getMap() {
         return this.map;
