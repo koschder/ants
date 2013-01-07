@@ -1,9 +1,24 @@
 \chapter{Spielanleitung}
 \label{chap:spielanleitung}
 
-Dieser Anhang beschreibt kurz, wie ein Spiel mit unserem Bot ausgef\"uhrt werden kann.
+\section{Systemvoraussetzungen}
+\label{chap:spielanleitung.voraussetzungen}
+
+Um ein Spiel ausführen zu können, muss auf dem Computer folgende Software installiert sein:
+\begin{enumerate}
+\item Java SE JDK Version 6 \footnote{\url{http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase6-419409.html}}
+\item Python \footnote{\url{http://www.python.org/download/}}
+\item ANT \footnote{\url{http://ant.apache.org/bindownload.cgi}}
+\end{enumerate}
+
+Falls das Spiel mit anderen als den vorkonfigurierten Gegnern gestartet werden soll, muss evtl. noch andere Software installiert werden, je nachdem in welcher Programmiersprache die entsprechenden Bots geschrieben sind.
+
+\section{Ausführen eines Spiels}
+\label{chap:spielanleitung.Ausfuehrung}
+
   
-Das File \texttt{Ants.zip} enth\"alt das Eclipse-Projekt mit dem gesamten Source-Code unserer Implementation, und der offiziellen Spiel-Engine. Zum einfachen Ausf\"uhren eines Spiels haben wir ein ANT-Buildfile (build.xml) erstellt. Dieses definiert verschiedene Targets, mit denen ein Spiel mit jeweils unterschiedlichen Parametern gestartet werden kann.
+Im Ordner \texttt{Code} befinden sich unsere Eclipse-Projekte mit dem gesamten Source-Code unserer Implementation, und der offiziellen Spiel-Engine. Das Hauptprojekt befindet sich im Unterordner \texttt{Ants}. Zum einfachen Ausf\"uhren eines Spiels haben wir dort ein ANT-Buildfile (build.xml) erstellt. Dieses definiert verschiedene Targets, mit denen ein Spiel mit jeweils unterschiedlichen Parametern gestartet werden kann.
+Falls ANT korrekt installiert ist, können diese Targets aus dem \texttt{Ants}-Verzeichnis heraus einfach mit ''\texttt{ant <targetName>}`` aufgerufen werden. 
 \begin{enumerate}
 \item
 Das Target \texttt{testBot} ist lediglich zum einfachen Testen eines Bots sinnvoll und entspricht dem Spiel, das verwendet wird, um Bots, die auf der Website hochgeladen werden, zu testen.
@@ -24,7 +39,7 @@ Das Target \texttt{testOnline} lässt den Bot über einen privaten TCP-Server gege
 \item
 Die Targets \texttt{repeat*} dienten der Durchführung der Profil-Testläufe und sind ansonsten wenig interessant.
 \item
-Die Target \texttt{debug*} dienten dem Starten unserer Testbots, die wir während der Entwicklung einsetzten (s. Kapitel \ref{sec:testCenter.Testbots}).
+Die Targets \texttt{debug*} dienten dem Starten unserer Testbots, die wir während der Entwicklung einsetzten (s. Kapitel \ref{sec:testCenter.Testbots}).
 \end{enumerate}
 
 Bei den meisten dieser Targets erscheint beim Starten eine Abfrage, welches Profil man gerne starten würde. Hier stehen die in Kapitel \ref{sec:module.Profile.DefinierteProfile} beschriebenen Profile zur Auswahl.
