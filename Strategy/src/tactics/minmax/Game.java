@@ -5,6 +5,12 @@ import java.util.List;
 
 import api.entities.Move;
 
+/**
+ * 
+ * @author kases1, kustl1
+ * @deprecated Did not work as hoped, abandoned.
+ * 
+ */
 public interface Game {
 
     /**

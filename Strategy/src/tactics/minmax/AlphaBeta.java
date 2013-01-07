@@ -6,6 +6,7 @@ import java.util.Iterator;
  * Implementation of Min-Max Algorithm with Alpha-Beta pruning.
  * 
  * @author kases1, kustl1
+ * @deprecated Did not work as hoped, abandoned.
  * 
  */
 public class AlphaBeta extends AbstractAlgorithm {

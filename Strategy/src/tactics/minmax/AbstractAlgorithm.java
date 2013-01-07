@@ -6,7 +6,7 @@ import java.util.Iterator;
  * Abstract base class for an {@link Algorithm} implementation.
  * 
  * @author kases1, kustl1
- * 
+ * @deprecated Did not work as hoped, abandoned.
  */
 public abstract class AbstractAlgorithm implements Algorithm {
 
