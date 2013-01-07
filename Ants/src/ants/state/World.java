@@ -179,7 +179,7 @@ public class World extends AbstractWraparoundMap implements SearchableUnitMap {
      * Is there food within view distance of the given tile?
      * 
      * @param tile
-     * @return
+     * @return true if food is nearby
      */
     public List<Tile> isFoodNearby(Tile tile) {
         List<Tile> food = new ArrayList<Tile>();

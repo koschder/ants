@@ -54,7 +54,7 @@ public interface InfluenceMap {
      * if the pathfinder considers the influence map while search a path, this method is used to get determine the cost
      * of each tile.
      * 
-     * @param pathPice
+     * @param pathPiece
      *            a path piece
      * @return costs
      */

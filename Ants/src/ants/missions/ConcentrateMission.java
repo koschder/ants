@@ -44,12 +44,13 @@ public class ConcentrateMission extends BaseMission {
     public int attractionDistance = 25;
 
     /**
-     * n
+     * Default constructor
      * 
      * @param tP
      *            where to troop the ants
-     * @param amount
+     * @param a
      *            how many ants to troop
+     * @param attractionDistance
      */
     public ConcentrateMission(Tile tP, int a, int attractionDistance) {
         this.troopPoint = tP;

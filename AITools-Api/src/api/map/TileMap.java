@@ -35,10 +35,9 @@ public interface TileMap {
     public boolean isPassable(Tile tile);
 
     /**
-     * do we know the character of this field.
      * 
      * @param tile
-     * @return
+     * @return true if the tile is visible
      */
     public boolean isVisible(Tile tile);
 
@@ -55,18 +54,24 @@ public interface TileMap {
     public Tile getTile(Tile tile, Tile offset);
 
     /**
-     * Returns the beeline distance to destination {@code dest}
+     * Returns the beeline distance to destination
      * 
-     * @param dest
-     * @return
+     * @param t1
+     *            one location on the game map
+     * @param t2
+     *            another location on the game map
+     * @return the beeline distance
      */
     public double beelineTo(Tile t1, Tile t2);
 
     /**
-     * Returns the Manhattan distance to the overgiven destination {@code dest}
+     * Returns the Manhattan distance to the given destination
      * 
-     * @param dest
-     * @return
+     * @param t1
+     *            one location on the game map
+     * @param t2
+     *            another location on the game map
+     * @return the manhattan distance
      */
     public int manhattanDistance(Tile t1, Tile t2);
 

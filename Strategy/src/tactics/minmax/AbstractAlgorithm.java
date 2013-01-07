@@ -86,7 +86,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
      * 
      * @param g
      * @param maxDepth
-     * @return
+     * @return the evaluation value
      */
     protected abstract long eval(Game g, int maxDepth);
 }

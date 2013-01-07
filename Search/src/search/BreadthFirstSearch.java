@@ -35,7 +35,7 @@ public class BreadthFirstSearch {
      * returning all diagonal neighbors of the Tile center
      * 
      * @param center
-     * @return
+     * @return the neighbor tiles
      */
     public List<Tile> getDiagonalNeighbours(final Tile center) {
         return floodFill(center, 4, new GoalTest() {
@@ -51,7 +51,7 @@ public class BreadthFirstSearch {
      * 
      * @param center
      * @param maxDistance2
-     * @return
+     * @return the tiles
      */
     public List<Tile> floodFill(Tile center, int maxDistance2) {
         return floodFill(center, maxDistance2, new AlwaysTrueGoalTest());
@@ -64,20 +64,19 @@ public class BreadthFirstSearch {
      * @param center
      * @param maxDistance2
      * @param goalTest
-     * @return
+     * @return the tiles
      */
     public List<Tile> floodFill(Tile center, int maxDistance2, GoalTest goalTest) {
         return findClosestTiles(center, Integer.MAX_VALUE, Integer.MAX_VALUE, maxDistance2, goalTest);
     }
 
     /**
-     * returns all tiles in a radius of the squared distance maxDistance and the goalTest function and a maximum node
-     * restriction. the bfs is starting at center
+     * returns the closest tile matching the goalTest
      * 
      * @param center
      * @param maxNodes
      * @param goalTest
-     * @return
+     * @return the tile
      */
     public Tile findSingleClosestTile(Tile center, int maxNodes, GoalTest goalTest) {
         List<Tile> found = findClosestTiles(center, 1, maxNodes, Integer.MAX_VALUE, goalTest);
@@ -93,7 +92,7 @@ public class BreadthFirstSearch {
      * @param maxNodes
      * @param maxDistance2
      * @param goalTest
-     * @return
+     * @return the tiles
      */
     public List<Tile> findClosestTiles(Tile center, int numberOfHits, int maxNodes, int maxDistance2, GoalTest goalTest) {
         return findClosestTiles(center, numberOfHits, maxNodes, maxDistance2, goalTest, new AlwaysTrueFrontierTest());
@@ -101,7 +100,8 @@ public class BreadthFirstSearch {
 
     /**
      * returns all tiles in a radius of the squared distance maxDistance and the goalTest function, a maximum node
-     * restriction and a numberOf hits restriction. the bfs is starting at center
+     * restriction and a numberOf hits restriction. the bfs is starting at center. Tiles are only added to the frontier
+     * if they pass the frontierTest
      * 
      * @param center
      * @param numberOfHits
@@ -109,7 +109,7 @@ public class BreadthFirstSearch {
      * @param maxDistance2
      * @param goalTest
      * @param frontierTest
-     * @return
+     * @return the tiles
      */
     public List<Tile> findClosestTiles(Tile center, int numberOfHits, int maxNodes, int maxDistance2,
             GoalTest goalTest, FrontierTest frontierTest) {
@@ -237,7 +237,7 @@ public class BreadthFirstSearch {
      * returns all neighbor tiles of the Tile next
      * 
      * @param next
-     * @return
+     * @return the successors
      */
     private List<PathPiece> getSuccessors(Tile next) {
         return map.getSuccessorsForSearch(next, false);
@@ -255,8 +255,9 @@ public class BreadthFirstSearch {
 
     /**
      * A FrontierTest can be used to selectively prevent tiles from being added to the frontier.
+     * 
      * @author kases1, kustl1
-     *
+     * 
      */
     public static interface FrontierTest {
         boolean isFrontier(Tile tile);

@@ -23,11 +23,11 @@ public class LoggerFactory {
     private static final Map<LogCategory, LogFile> customLogFiles = new HashMap<LogCategory, LogFile>();
 
     /**
-     * returns the logger
+     * Creates a logger for the specified category
      * 
      * @param category
-     *            of the logger to be return
-     * @return
+     *            of the logger to be returned
+     * @return the logger
      */
     public static Logger getLogger(LogCategory category) {
         if (category.useCustomLogFile()) {

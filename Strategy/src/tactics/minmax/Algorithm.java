@@ -14,7 +14,7 @@ public interface Algorithm {
      * 
      * @param g
      * @param maxDepth
-     * @return
+     * @return the best move
      */
     public Game bestMove(Game g, int maxDepth);
 
@@ -23,7 +23,7 @@ public interface Algorithm {
      * 
      * @param g
      * @param timeLimit
-     * @return
+     * @return the best move
      */
     public Game bestMoveTimeLimited(Game g, int timeLimit);
 }
