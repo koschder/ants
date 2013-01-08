@@ -1,6 +1,8 @@
 \section{Breitensuche}
 \label{subsec:module.Suchalgorithmen.Breitensuche}
 
+Die Breitensuche (engl. breadth-first search (BFS)) war eine der Neuimplementierungen während der Bachelorarbeit. Wir verwenden diese Suche um die Umgebung einer Ameise oder eines Hügels nach Futter, Gegnern usw. zu scannen. Man könnte die BFS auch für die Pfadsuche verwenden, dies wäre aber sehr ineffizient. Im Klassendiagramm ist zu sehen auf welchen drei Methoden die Breitensuche aufbaut.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{91_bilder/BFS}
@@ -8,15 +10,13 @@
 \label{fig:BFS}
 \end{figure}
 
-\begin{figure}[H]
-\centering
-\includegraphics[width=0.5\textwidth]{91_bilder/BFSants}
-\caption{Breitensuche Ants-spezifisch}
-\label{fig:BFSants}
-\end{figure}
-Die Breitensuche (engl. breadth-first search (BFS)) war eine der Neuimplementierungen während der Bachelorarbeit. Man könnte die BFS auch für die Pfadsuche verwenden, dies wäre aber sehr ineffizient. Wir verwenden diese Suche vielmehr für die Umgebung einer Ameise oder eines Hügels zu analysieren. Sie wurde generisch implementierte, so dass sie vielseitig einsetzbar ist. So können zum Beispiel mittels 'GoalTest' je nach Anwendungsfall die Tiles beschrieben werden welche gesucht sind. Folgende Breitensuche findet die Ameise welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Sie wird initialisiert indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 entspricht. Falls keine Ameise gefunden wird gibt der Algorithmus NULL zurück.
+TODO FRONTIER TEST fehlt auf dem Bild
 
-\begin{verbatim}
+
+Die Breitensuche wurde generisch implementierte, so dass sie vielseitig einsetzbar ist. So können zum Beispiel mittels 'GoalTest' je nach Anwendungsfall die Tiles beschrieben werden die gesucht sind. Folgende Breitensuche findet die Ameise welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Die Suche wird initialisiert indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 Zellen entspricht. Falls keine Ameise gefunden wird gibt der Algorithmus NULL zurück.
+
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}
 AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
 Tile food = new Tile(20,16);
 Tile antClosestToFood = bfs.findSingleClosestTile(food, 40, new GoalTest() {
@@ -25,33 +25,55 @@ Tile antClosestToFood = bfs.findSingleClosestTile(food, 40, new GoalTest() {
           return isAntOnTile(tile);
       }
   });
-\end{verbatim}
+\end{lstlisting}
 
-Es ist auch möglich mehrere Tiles zurück zu bekommen. Dazu wird die Methode \textit{findClosestTiles(...)} aufgerufen.
-\newline
-\newline
+Es ist auch möglich mehrere Tiles zurück zu bekommen. Dazu wird die Methode \textit{findClosestTiles(...)} aufgerufen.\\
+\\
+Der gleiche Algorithmus kann aber auch alle passierbaren Tiles in einem gewissen Umkreis zurückgeben. Dies haben wir unter anderem beim Initialisieren der DefendHillMission verwendet. Wir berechnen beim Erstellen der Mission die passierbaren Zellen rundum den Hügel. Runde für Runde prüfen wir diese Tiles auf gegnerische Ameisen um die entsprechenden Verteidigungsmassnahmen zu ergreifen. Der Parameter controlAreaRadius2 definiert den Radius des 'Radars' und kann je nach Profile unterschiedlich eingestellt werden.
 
-Der gleiche Algorithmus kann aber auch alle passierbaren Tiles in einem gewissen Umkreis zurückgeben. Dies haben wir unter anderem beim Initialisieren der DefendHillMission verwendet. Wir berechnen beim Erstellen der Mission die passierbaren Tiles rundum den Hügel. Runde für Runde prüfen wir diese Tiles auf gegnerische Ameisen um die entsprechenden Verteidigungsmassnahmen zu ergreifen. Der Parameter controlAreaRadius2 definiert den Radius des 'Radars' und kann je nach Profile unterschiedlich eingestellt werden.
-
-\begin{verbatim}
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}
 public DefendHillMission(Tile myhill) {
     this.hill = myhill;
     BreadthFirstSearch bfs = new BreadthFirstSearch(Ants.getWorld());
     tilesAroundHill = bfs.floodFill(myhill, controlAreaRadius2);
 }
-\end{verbatim}
+\end{lstlisting}
 
-\subsection{Barrier}
+
+Um die Aufrufe der Suche im Ants-Umfeld einfacher zu gestalten haben wir die Breitensuche für unseren Bot mit folgenden selbst-sprechenden Methoden erweitert.
+
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{91_bilder/BFSants}
+\caption{Breitensuche Ants-spezifisch}
+\label{fig:BFSants}
+\end{figure}
+
+
+
+\subsection{Barrier (Sperre)}
 \label{subsec:module.Suchalgorithmen.Breitensuche.Barrier}
 
-Eine Erweiterung der Breitensuche ermöglicht uns eine Sperre in der Umgebung eines Ortes zu finden. Diese Verwenden wir in der DefendHillMission zum Verteidigen des eigenen Hügels. Es kann nur eine Sperre (engl. Barrier) gefunden werden wenn das Gelände dazu passt. Der Algorithmus verbirgt sich in der Methode \textit{getBarrier(...)}. Diese wird mit den Parametern tileToProtect: Ort für den eine Sperre berechnet werden soll, viewRadiusSquared: den Sicht Radius der Einheiten, den die Sperre soll weiter entfernt sein als der Sichtradius, damit die gegnerischen Einheiten nicht sehen was sich dahinter verbirgt. Der dritte Parameter maximumBarrierSize definiert wie breit die Sperre maximal sein darf.
+Eine Erweiterung der Breitensuche ermöglicht uns eine Sperre in der Umgebung eines Ortes zu finden. Diese Verwenden wir in der DefendHillMission zum Verteidigen des eigenen Hügels. Es kann nur eine Sperre (engl. Barrier) gefunden werden wenn das Gelände dazu passt. Die Abbildung zeigt einen gefundene Sperre. Auf dieser Höhe wird der Hügel verteidigt.
 
-\begin{verbatim}
+\begin{figure}[H]
+\centering
+\includegraphics[width=0.5\textwidth]{91_bilder/barrier}
+\caption{Auf der orangen Sperre werden die Ameisen zur Verteidigung des Hügel positioniert.}
+\label{fig:search.barrier}
+\end{figure}
+
+Der Algorithmus verbirgt sich in der Methode \textit{getBarrier(...)}. Diese wird mit den Parametern \textit{tileToProtect}: Ort der durch eine Sperre geschützt werden soll, \textit{viewRadiusSquared}: den Sichtradius der Einheiten, den die Sperre soll weiter entfernt sein als der Sichtradius, damit die gegnerischen Einheiten nicht sehen was sich dahinter verbirgt. Der dritte Parameter \textit{maximumBarrierSize} definiert welche Breite die Sperre maximal haben darf.
+
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}
 public Barrier getBarrier(final Tile tileToProtect, int viewRadiusSquared, int maximumBarrierSize) {
 	int amount = BFS for getting the amount of tiles in view radius around the location to defend.
 	Barrier smallestBarrier = null;
 	List<Tile> tiles = get (amount + 30) tiles around the location to defend.
 	
+	// for loop start at the first tile not in view radius
 	for(int i = amount;i<tiles.size(); i++){       
 		Tile t = tiles.get(i);
 		
@@ -62,9 +84,11 @@ public Barrier getBarrier(final Tile tileToProtect, int viewRadiusSquared, int m
 				if(is barrier the only exit out of the location to defend){
 						smallestBarrier = b;
 				}else{
+						 //add all tiles of the invaild barrier
 						barrierVerticalInvalid.add(b.getTiles());
 				}    					      		
 			}else{
+				 //add all tiles of the invaild barrier
 				barrierVerticalInvalid.add(b.getTiles());
 			}
 		}
@@ -76,14 +100,18 @@ public Barrier getBarrier(final Tile tileToProtect, int viewRadiusSquared, int m
 				if(is barrier the only exit out of the location to defend){
 						smallestBarrier = b;
 				}else{
+						 //add all tiles of the invaild barrier
 						barrierHorizontalInvalid.add(b.getTiles());
 				}    					      		
 			}else{
+				//add all tiles of the invaild barrier
 				barrierHorizontalInvalid.add(b.getTiles());
 			}
 		}	
 	}
 }
-\end{verbatim}
+\end{lstlisting}
 
-Dank dem Abspeichern der ungültigen Tiles aller zu breiten Sperren in \textit{barrierHorizontalInvalid} und \textit{barrierVerticalInvalid} konnte der Algorithmus markant schneller gemacht werden. Für diese Tiles muss nicht nochmals eine Sperre berechnet werden. Auch die if-Abfrage \textit{barrier is the only exit out of the location to defend} muss nicht mehr so oft aufgerufen werden. Hinter dieser Abfrage steht nämlich wiederum ein Test mit der Breitensuche. Dieser ist viel teurer als das zwischenspeichern der Tiles aus welchen keine gültige Sperre gemacht werden konnte.
+Dank dem Abspeichern der ungültigen Tiles aller zu breiten Sperren in die Listen \textit{barrierHorizontalInvalid} und \textit{barrierVerticalInvalid} konnte der Algorithmus markant schneller gemacht werden. Für diese Tiles muss nicht nochmals eine Sperre berechnet werden. Auch die if-Abfrage \textit{barrier is the only exit out of the location to defend} muss nicht mehr oft aufgerufen werden, den hinter dieser Abfrage steht nämlich wiederum ein Test mit der Breitensuche. Dieser zusätzliche Test mit der Breitensuche ist viel teurer als das Zwischenspeichern der Tiles aus welchen keine gültige Sperre gemacht werden konnte.\\
+\\
+Im Nachhinein hat sich ergeben, dass nicht unbedingt die schmalste Sperre die Beste wäre, sondern jede bei welche der Gegner, geländebedingt, weniger Einheiten aufstellen kann. So wäre in Abbildung \ref{fig:search.barrier} eine Sperre zwei Zellen östlicher besser, den der Gegner könnte beim Angriff nur mit vier Einheiten vorrücken, die Verteidigung wäre aber mit sechs Einheiten auf einer Linie deutlich stärker. Die Zeit hat aber hier leider nicht gereicht, den Algorithmus weiter zu verfeinern.

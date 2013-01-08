@@ -49,10 +49,11 @@ Der Simple Algorithmus versucht das Ziel zu erreichen indem er zuerst die eine, 
 
 Folgendes Codesnippet zeigt auf wie ein Pfad mittels Pfadsuche Simple gefunden wird. Ein SimplePathFinder wird mit der Karte initialisiert. Danach kann die Suche mit pf.search(...) gestartet werden. Als Parameter wird der Suchalgorithmus Strategy.Simple, der Startpunkt (Position der Ameise) und Endpunkt (Position des Futters), sowie die maximalen Pfadkosten (hier: 16) mitgegeben.
 
-\begin{verbatim}
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}
 SimplePathFinder pf = new SimplePathFinder(map);
 List<Tile> path = pf.search(PathFinder.Strategy.Simple, ant.getTile(), foodTile,16);
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{A* Algorithmus}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.Astar}
@@ -62,10 +63,11 @@ Die Abbildung \ref{fig:heuristicAstar} zeigt den effektiven Pfad (grau) vom zu e
 
 Eine Pfadsuche mit A* wird gleich ausgelöst wie die Suche mit dem Simple-Algorithmus, ausser dass als Parameter die Strategy AStar gewählt wird.
 
-\begin{verbatim}
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}
 SimplePathFinder pf = new SimplePathFinder(map);
 List<Tile> path = pf.search(PathFinder.Strategy.AStar, ant.getTile(), foodTile,16);
-\end{verbatim}
+\end{lstlisting}
 
 \begin{figure}[H]
 \centering
@@ -130,18 +132,20 @@ In der Abbildung \ref{fig.clusteredMap4} wird ein Pfad vom Pixel (3,9) nach (13,
 
 Um eine Pfadsuche mit HPA* durchzuführen muss ein ClusteringPathFinder instanziert werden. Als Parameter erwartet der Konstruktor die Karte auf welcher das Clustering und die Pfadsuche gemacht wird, sowie die Clustergrösse (hier: 10) und den Clustertyp. Das Clustering wird mit pf.update() durchgeführt. Danach kann die Pfadsuche durchgeführt werden. Falls das Clustering auf dem benötigten Kartenausschnitt nicht komplett durchgeführt werden konnte, weil nicht alle Tiles in einem Cluster sichtbar waren, wird versucht mit A* einen Pfad zu suchen.
 
-\begin{verbatim}
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}
 ClusteringPathFinder pf = new ClusteringPathFinder(map, 10, type);
 pf.update();
 List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, start, end, -1);
-\end{verbatim}
+\end{lstlisting}
 
 \subsection{Pfadsuche mittels Influence Map}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.WithInfluenceMap}
 
 Die Influence Map, welche wir während der Bachelorarbeit neu implementiert haben, kann auch für die Pfadsuche verwendet werden. Dabei sind die Pfadkosten für Gebiete in die vom Gegner kontrolliert sind höher als für neutrale Gebiete und tiefer für solche Gebiete die von unseren Ameisen kontrolliert werden. (Details zur Implementierung der InfluenceMap sieh Kapitel TODO) Die Methode getActualCost(...) in der Klasse SearchStrategy wurde erweitert. Falls die Suche mit einer InfluenceMap initialisiert wurde, sind die Kosten nicht eine Einheit pro Pfadtile, sondern können zwischen 1 (sicheres Gebiet) - 4 (gefährliches Gebiet) Einheiten variieren. (Die Pfadkosten dürfen nicht negativ sein, sonst würde der A* Algorithmus nicht mehr korrekt funktionieren.) Die Kosten für jeden Pfadabschnitt werden durch die Methode getPathCosts(...) der InfluenceMap berechnet.
 
-\begin{verbatim}
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}
 protected final int getActualCost(Node current, PathPiece piece) {
     int costOfPiece = 0;
     if (useInflunceMap)
@@ -150,7 +154,7 @@ protected final int getActualCost(Node current, PathPiece piece) {
         costOfPiece = piece.getCost();
     return current.getActualCost() + costOfPiece;
 }
-\end{verbatim}
+\end{lstlisting}
 
 Dadurch resultiert ein Pfad der durch sicheres Gebiet führt. Folgende Ausgabe, welche durch einen UnitTest generiert wurde, bezeugt die korrekte Funktionalität. Der rote Punkt soll mit dem schwarzen Punkt durch einen Pfad verbunden werden. Auf der Karte sind zudem die eigenen, orangen Einheiten sowie die gegnerischen Einheiten (blau) abgebildet. Jede Einheit trägt zur Berechnung der InfluenceMap bei. Pro Tile wird die Sicherheit ausgegeben, negativ für Gebiete die vom Gegner kontrolliert werden und positiv in unserem Hoheitsgebiet.
 
@@ -200,7 +204,8 @@ Der Algorithmus des Pathsmoothing ist (vereinfacht) wie folgt definiert. Vom Pfa
 \\
 \textbf{Rekursion:} Der beschriebene Algorithmus, hat nicht in jedem Fall den kürzesten Pfad als Output. So sind zwar alle Pfadabschnitte optimal gekürzt, es kann aber sein, dass wenn zwei Abschnitte zusammen gefügt werden, der Pfad nicht mehr der kürzeste ist. Als Beispiel: Die Wegabschnitt Zürich-Thun und Thun-Genf mögen optimal gekürzt sein. Zusammengefügt zur Strecke Zürich-Genf, braucht es den Umweg über Thun nicht. Um Umweg zu entfernen wird der Algorithmus rekursiv aufgerufen, indem smoothPath(...) mit einer grösseren \textit{size} als Parameter für die zusammengesetzten Abschnitte nochmals aufgerufen wird.
 
-\begin{verbatim}
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}
 public List<Tile> smoothPath(List<Tile> path, int size, boolean recursive) {
 	int start = 0;
 	int current = size;
@@ -227,7 +232,7 @@ public List<Tile> smoothPath(List<Tile> path, int size, boolean recursive) {
 
 return smoothedPath;
 }
-\end{verbatim}
+\end{lstlisting}
 
 In der nächsten Abbildung wurde der beschriebene PathSmoothing Algorithmus angewendet, der Pfad konnte einer ursprünglichen Pfadlänge   von 50 Tiles (siehe \ref{fig.pathsmoothingOne}) auf eine Pfadlänge von 40 Tiles reduziert werden.
 
@@ -235,5 +240,5 @@ In der nächsten Abbildung wurde der beschriebene PathSmoothing Algorithmus angew
 \centering
 \includegraphics[width=0.99\textwidth]{91_bilder/pathsmoothingTwo}
 \caption{Der geglättete Pfad, nach Anwendung des PathSmoothing-Algorithmus}
-\label{fig.pathsmoothingOne}
+\label{fig.pathsmoothingTwo}
 \end{figure}
