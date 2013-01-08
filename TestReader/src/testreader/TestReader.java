@@ -18,6 +18,14 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
 
+/**
+ * The TestReader reads in a number of replay files from the Ants engine and
+ * produces a TestReport in CSV format, along with a short summary (also in CSV
+ * format). Searches for the replay files in "../Ants/logs/".
+ * 
+ * @author kases1, kustl1
+ * 
+ */
 public class TestReader {
 
 	public static void main(String[] args) throws Exception {
@@ -252,7 +260,7 @@ public class TestReader {
 		return strings;
 	}
 
-	static class TestResult {
+	private static class TestResult {
 		String rank;
 		String score;
 		String status;
@@ -265,7 +273,7 @@ public class TestReader {
 		}
 	}
 
-	static class TestSummary {
+	private static class TestSummary {
 		static final String SUMMARY_HEADER = "Wins,Losses,Draws,Total Points won, Total Points lost, Times survived, Games\n";
 		int wins = 0;
 		int losses = 0;

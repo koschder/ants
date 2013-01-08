@@ -12,7 +12,7 @@ import api.search.PathPiece;
 import api.search.SearchableMap;
 
 /**
- * this class implements the BFS (BreadthFirstSearch) search
+ * This class implements the BreadthFirstSearch (BFS)
  * 
  * @author kases1, kustl1
  * 
@@ -35,7 +35,7 @@ public class BreadthFirstSearch {
      * returning all diagonal neighbors of the Tile center
      * 
      * @param center
-     * @return
+     * @return the neighbor tiles
      */
     public List<Tile> getDiagonalNeighbours(final Tile center) {
         return floodFill(center, 4, new GoalTest() {
@@ -51,7 +51,7 @@ public class BreadthFirstSearch {
      * 
      * @param center
      * @param maxDistance2
-     * @return
+     * @return the tiles
      */
     public List<Tile> floodFill(Tile center, int maxDistance2) {
         return floodFill(center, maxDistance2, new AlwaysTrueGoalTest());
@@ -64,20 +64,19 @@ public class BreadthFirstSearch {
      * @param center
      * @param maxDistance2
      * @param goalTest
-     * @return
+     * @return the tiles
      */
     public List<Tile> floodFill(Tile center, int maxDistance2, GoalTest goalTest) {
         return findClosestTiles(center, Integer.MAX_VALUE, Integer.MAX_VALUE, maxDistance2, goalTest);
     }
 
     /**
-     * returns all tiles in a radius of the squared distance maxDistance and the goalTest function and a maximum node
-     * restriction. the bfs is starting at center
+     * returns the closest tile matching the goalTest
      * 
      * @param center
      * @param maxNodes
      * @param goalTest
-     * @return
+     * @return the tile
      */
     public Tile findSingleClosestTile(Tile center, int maxNodes, GoalTest goalTest) {
         List<Tile> found = findClosestTiles(center, 1, maxNodes, Integer.MAX_VALUE, goalTest);
@@ -93,22 +92,24 @@ public class BreadthFirstSearch {
      * @param maxNodes
      * @param maxDistance2
      * @param goalTest
-     * @return
+     * @return the tiles
      */
     public List<Tile> findClosestTiles(Tile center, int numberOfHits, int maxNodes, int maxDistance2, GoalTest goalTest) {
-        return findClosestTiles(center, numberOfHits, maxNodes, maxDistance2, goalTest, new AlwaysFrontierTrueTest());
+        return findClosestTiles(center, numberOfHits, maxNodes, maxDistance2, goalTest, new AlwaysTrueFrontierTest());
     }
 
     /**
      * returns all tiles in a radius of the squared distance maxDistance and the goalTest function, a maximum node
-     * restriction and a numberOf hits restriction. the bfs is starting at center
+     * restriction and a numberOf hits restriction. the bfs is starting at center. Tiles are only added to the frontier
+     * if they pass the frontierTest
      * 
      * @param center
      * @param numberOfHits
      * @param maxNodes
      * @param maxDistance2
      * @param goalTest
-     * @return
+     * @param frontierTest
+     * @return the tiles
      */
     public List<Tile> findClosestTiles(Tile center, int numberOfHits, int maxNodes, int maxDistance2,
             GoalTest goalTest, FrontierTest frontierTest) {
@@ -150,7 +151,15 @@ public class BreadthFirstSearch {
         return found;
     }
 
-    public Barrier getBarrier(final Tile tileToProtect, int viewRadiusSquared, int maximumBarrierSize) {
+    /**
+     * Tries to find a suitable barrier for guarding the Tile toDefend against attackers.
+     * 
+     * @param toDefend
+     * @param viewRadiusSquared
+     * @param maximumBarrierSize
+     * @return the best Barrier or null if no suitable barrier was found
+     */
+    public Barrier getBarrier(final Tile toDefend, int viewRadiusSquared, int maximumBarrierSize) {
         List<Tile> barrierVerticalInvalid = new ArrayList<Tile>();
         List<Tile> barrierHorizontalInvalid = new ArrayList<Tile>();
         final int fillUpVariance = 15;
@@ -158,13 +167,12 @@ public class BreadthFirstSearch {
 
         List<Tile> smallestBar = null;
         Aim aimOfBarrier = null;
-        BreadthFirstSearch bfs = new BreadthFirstSearch(map);
-        List<Tile> defaultFlood = bfs.findClosestTiles(tileToProtect, Integer.MAX_VALUE, Integer.MAX_VALUE,
-                viewRadiusSquared, new AlwaysTrueGoalTest());
+        List<Tile> defaultFlood = findClosestTiles(toDefend, Integer.MAX_VALUE, Integer.MAX_VALUE, viewRadiusSquared,
+                new AlwaysTrueGoalTest());
 
         int defaultFloodSize = defaultFlood.size();
-        List<Tile> exendedFlood = bfs.findClosestTiles(tileToProtect, defaultFloodSize + additionalTiles,
-                Integer.MAX_VALUE, Integer.MAX_VALUE, new AlwaysTrueGoalTest());
+        List<Tile> exendedFlood = findClosestTiles(toDefend, defaultFloodSize + additionalTiles, Integer.MAX_VALUE,
+                Integer.MAX_VALUE, new AlwaysTrueGoalTest());
 
         for (int i = 0; i < additionalTiles; i++) {
             int tileCount = defaultFloodSize + i;
@@ -203,7 +211,7 @@ public class BreadthFirstSearch {
             if (smallestBar != null && bar.size() >= smallestBar.size())
                 continue;
 
-            List<Tile> flood = bfs.findClosestTiles(tileToProtect, tileCount + fillUpVariance, Integer.MAX_VALUE,
+            List<Tile> flood = findClosestTiles(toDefend, tileCount + fillUpVariance, Integer.MAX_VALUE,
                     Integer.MAX_VALUE, new AlwaysTrueGoalTest(), new FrontierTest() {
                         @Override
                         public boolean isFrontier(Tile tile) {
@@ -229,16 +237,28 @@ public class BreadthFirstSearch {
      * returns all neighbor tiles of the Tile next
      * 
      * @param next
-     * @return
+     * @return the successors
      */
     private List<PathPiece> getSuccessors(Tile next) {
         return map.getSuccessorsForSearch(next, false);
     }
 
+    /**
+     * This interface is used by the BFS algorithm to check whether a given Tile is a goal.
+     * 
+     * @author kases1, kustl1
+     * 
+     */
     public static interface GoalTest {
         boolean isGoal(Tile tile);
     }
 
+    /**
+     * A FrontierTest can be used to selectively prevent tiles from being added to the frontier.
+     * 
+     * @author kases1, kustl1
+     * 
+     */
     public static interface FrontierTest {
         boolean isFrontier(Tile tile);
     }
@@ -262,7 +282,7 @@ public class BreadthFirstSearch {
      * @author kases1, kustl1
      * 
      */
-    public static class AlwaysFrontierTrueTest implements FrontierTest {
+    public static class AlwaysTrueFrontierTest implements FrontierTest {
         @Override
         public boolean isFrontier(Tile tile) {
             return true;

@@ -25,6 +25,13 @@ import api.entities.Unit;
 import api.strategy.InfluenceMap;
 import api.strategy.SearchableUnitMap;
 
+/**
+ * Default implementation of the {@link CombatPositioning} interface. Use this for free combat (i.e. no target to defend
+ * or attack).
+ * 
+ * @author kases1, kustl1
+ * 
+ */
 public class DefaultCombatPositioning implements CombatPositioning {
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.COMBAT_POSITIONING);
     protected SearchableUnitMap map;
@@ -38,6 +45,10 @@ public class DefaultCombatPositioning implements CombatPositioning {
     protected String log = "";
     protected Map<Tile, Tile> nextMoves = new HashMap<Tile, Tile>();
 
+    /**
+     * Enumeration of the different modes supported by this class.
+     * 
+     */
     protected enum Mode {
         DEFAULT,
         DEFEND,
@@ -45,11 +56,29 @@ public class DefaultCombatPositioning implements CombatPositioning {
         FLEE;
     }
 
+    /**
+     * Constructor for convenient testing
+     * 
+     * @param map
+     * @param influenceMap
+     * @param myUnits
+     * @param enemyUnits
+     * @param ultimateTarget
+     */
     public DefaultCombatPositioning(SearchableUnitMap map, InfluenceMap influenceMap, List<Unit> myUnits,
             List<Unit> enemyUnits, Tile ultimateTarget) {
         this(ultimateTarget, map, influenceMap, myUnits, getTiles(enemyUnits));
     }
 
+    /**
+     * Default constructor
+     * 
+     * @param ultimateTarget
+     * @param map
+     * @param influenceMap
+     * @param myUnits
+     * @param enemyUnits
+     */
     public DefaultCombatPositioning(Tile ultimateTarget, SearchableUnitMap map, InfluenceMap influenceMap,
             List<Unit> myUnits, List<Tile> enemyUnits) {
         this.map = map;
@@ -117,6 +146,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
         this.log += log;
     }
 
+    @Override
     public String getLog() {
         return this.log;
     }
@@ -199,7 +229,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
         return defendersPerSide;
     }
 
-    class ListSizeComparator implements Comparator<Aim> {
+    private class ListSizeComparator implements Comparator<Aim> {
 
         Map<Aim, List<Tile>> base;
 
@@ -208,6 +238,7 @@ public class DefaultCombatPositioning implements CombatPositioning {
         }
 
         // Note: this comparator imposes orderings that are inconsistent with equals.
+        @Override
         public int compare(Aim a, Aim b) {
             if (base.get(a).size() >= base.get(b).size()) {
                 return -1;
@@ -312,6 +343,10 @@ public class DefaultCombatPositioning implements CombatPositioning {
         }
     }
 
+    /**
+     * 
+     * @return true if the target should be stepped on (usually true when attacking)
+     */
     protected boolean shouldStepOnTarget() {
         return true;
     }
@@ -404,14 +439,26 @@ public class DefaultCombatPositioning implements CombatPositioning {
         return nextTile == null ? u.getTile() : nextTile;
     }
 
+    /**
+     * 
+     * @return formationTiles
+     */
     public List<Tile> getFormationTiles() {
         return formationTiles;
     }
 
+    /**
+     * 
+     * @return enemyClusterCenter
+     */
     public Tile getEnemyClusterCenter() {
         return enemyClusterCenter;
     }
 
+    /**
+     * 
+     * @return clusterCenter
+     */
     public Tile getClusterCenter() {
         return clusterCenter;
     }

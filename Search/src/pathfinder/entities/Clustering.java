@@ -330,7 +330,7 @@ public class Clustering extends AbstractWraparoundMap {
     /**
      * returns all vertices of all clusters.
      * 
-     * @return
+     * @return the vertices
      */
     public List<Tile> getAllVertices() {
         List<Tile> verts = new ArrayList<Tile>();

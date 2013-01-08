@@ -6,7 +6,7 @@ import java.util.Iterator;
  * Abstract base class for an {@link Algorithm} implementation.
  * 
  * @author kases1, kustl1
- * 
+ * @deprecated Did not work as hoped, abandoned.
  */
 public abstract class AbstractAlgorithm implements Algorithm {
 
@@ -86,7 +86,7 @@ public abstract class AbstractAlgorithm implements Algorithm {
      * 
      * @param g
      * @param maxDepth
-     * @return
+     * @return the evaluation value
      */
     protected abstract long eval(Game g, int maxDepth);
 }

@@ -1,8 +1,8 @@
 package logging;
 
 /**
- * this class is the default implementation of our logging functionality it is possible to log in different loglevel and
- * categories and even in a different file for each category.
+ * this class is the default implementation of our logging functionality it is possible to log in different
+ * {@link LogLevel} and categories and even in a different file for each category.
  * 
  * @author kases1, kustl1
  * 
@@ -12,6 +12,12 @@ public class DefaultLogger implements Logger {
     private LogCategory category;
     private LogFile logFile;
 
+    /**
+     * Default constructor
+     * 
+     * @param category
+     * @param logFile
+     */
     public DefaultLogger(LogCategory category, LogFile logFile) {
         this.category = category;
         this.logFile = logFile;

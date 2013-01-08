@@ -9,6 +9,11 @@ import tactics.minmax.Game;
 import api.entities.Aim;
 import api.entities.Move;
 
+/**
+ * 
+ * @author kases1, kustl1
+ * @deprecated did not work as hoped, abandoned
+ */
 public class CombatSituationIterator implements Iterator<Game> {
     private CombatSituation combatSituation;
     private List<CombatUnit> ants;

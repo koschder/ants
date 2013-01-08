@@ -14,6 +14,7 @@ import ants.tactics.CombatSituation;
 import api.entities.Tile;
 import api.entities.Unit;
 
+@SuppressWarnings("deprecation")
 public class AlphaBetaTest {
     @Before
     public void setup() {

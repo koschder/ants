@@ -134,6 +134,8 @@ public class Orders {
     /**
      * Adds a mission to the list and executes its first step.
      * 
+     * Never call this method directly, always use BaseTask.addMission()!
+     * 
      * @param newMission
      */
     public void addMission(Mission newMission) {

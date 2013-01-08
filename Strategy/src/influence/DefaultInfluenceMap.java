@@ -18,6 +18,8 @@ import api.test.MapOutput;
 import api.test.PixelDecorator;
 
 /**
+ * Default {@link InfluenceMap} implementation. This assumes all units have the same influence and calculates the units'
+ * exerted influence proportionally to the distance.
  * 
  * @author kases1, kustl1
  * 
@@ -67,6 +69,13 @@ public class DefaultInfluenceMap implements InfluenceMap {
         return totalInfluence;
     }
 
+    /**
+     * Default constructor
+     * 
+     * @param map
+     * @param viewRadius2
+     * @param attackRadius2
+     */
     public DefaultInfluenceMap(SearchableUnitMap map, int viewRadius2, int attackRadius2) {
         this.viewRadius2 = viewRadius2;
         this.attackRadius2 = attackRadius2;
@@ -148,6 +157,14 @@ public class DefaultInfluenceMap implements InfluenceMap {
         return playerInfluence[tile.getRow()][tile.getCol()];
     }
 
+    /**
+     * Prints the influence map to an HTML file for debugging purposes
+     * 
+     * @param turn
+     * @param world
+     * @param myUnits
+     * @param enemyUnits
+     */
     public void printDebugMap(int turn, UnitMap world, List<Tile> myUnits, List<Tile> enemyUnits) {
         MapOutput output = new MapOutput();
         output.setMap(world);

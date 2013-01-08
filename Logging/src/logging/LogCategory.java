@@ -9,7 +9,7 @@ package logging;
 public interface LogCategory {
     /**
      * 
-     * @return true if the logcategory uses its own file.
+     * @return true if the {@link LogCategory} should use a separate file.
      */
     public boolean useCustomLogFile();
 }

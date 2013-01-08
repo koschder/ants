@@ -6,10 +6,25 @@ import ants.LogCategory;
 import ants.state.Ants;
 import ants.tasks.Task.Type;
 
+/**
+ * Abstract base class for {@link ResourceAllocationRule} implementations. Provides common logic for incrementing and
+ * decrementing resources.
+ * 
+ * @author kases1, kustl1
+ * 
+ */
 public abstract class BaseResourceAllocationRule implements ResourceAllocationRule {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LogCategory.RESOURCE_ALLOCATION);
 
+    /**
+     * Increment the available resources for the given taskType by increment. The increment is subtracted in equal parts
+     * from the tasksToDecrement.
+     * 
+     * @param taskType
+     * @param increment
+     * @param tasksToDecrement
+     */
     protected void incrementResources(Type taskType, int increment, Type... tasksToDecrement) {
         // ensure increment is evenly distributable
         increment += increment % tasksToDecrement.length;

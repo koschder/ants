@@ -30,8 +30,17 @@ public abstract class BaseTask implements Task {
         }
     }
 
+    /**
+     * Perform the actual task.
+     */
     protected abstract void doPerform();
 
+    /**
+     * Helper method to add a mission to the central mission control class (Orders), taking in account available
+     * resources. Orders.addMission must never be called directly!
+     * 
+     * @param mission
+     */
     protected void addMission(Mission mission) {
         final int antsOnMission = mission.getAnts().size();
         if (!Ants.getPopulation().isNumberOfAntsAvailable(getType(), antsOnMission))

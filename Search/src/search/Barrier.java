@@ -6,12 +6,26 @@ import java.util.List;
 import api.entities.Aim;
 import api.entities.Tile;
 
+/**
+ * This class describes a barrier on the map.
+ * 
+ * @author kases1, kustl1
+ * 
+ */
 public class Barrier {
 
     private Aim a;
     private List<Tile> barrier;
     private List<Tile> barrierPlaceTiles;
 
+    /**
+     * Default constructor
+     * 
+     * @param bar
+     *            the tiles making up the barrier
+     * @param aimOfBarrier
+     *            which side should the barrier guard against?
+     */
     public Barrier(List<Tile> bar, Aim aimOfBarrier) {
         setBarrier(bar);
         setAimOfBarrier(aimOfBarrier);

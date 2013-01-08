@@ -107,18 +107,18 @@ public abstract class SearchStrategy {
     }
 
     /**
-     * returns the actual calculated cost between for dest, by adding the actual and the new costs.
+     * returns the actual calculated cost for moving from current to dest , by adding the actual and the new costs.
      * 
      * @param current
      * @param dest
      * @return the costs for dest
      */
-    protected final int getActualCost(Node current, PathPiece piece) {
+    protected final int getActualCost(Node current, PathPiece dest) {
         int costOfPiece = 0;
         if (useInflunceMap)
-            costOfPiece = pathFinder.getInfluenceMap().getPathCosts(piece);
+            costOfPiece = pathFinder.getInfluenceMap().getPathCosts(dest);
         else
-            costOfPiece = piece.getCost();
+            costOfPiece = dest.getCost();
         return current.getActualCost() + costOfPiece;
     }
 

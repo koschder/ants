@@ -3,6 +3,12 @@ package ants.strategy.rules;
 import ants.state.Ants;
 import ants.tasks.Task.Type;
 
+/**
+ * This rule increments the resources for exploring as long as not enough parts of the map are explored.
+ * 
+ * @author kases1, kustl1
+ * 
+ */
 public class PercentExploredRule extends BaseResourceAllocationRule {
 
     @Override

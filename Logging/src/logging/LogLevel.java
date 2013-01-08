@@ -1,7 +1,7 @@
 package logging;
 
 /**
- * this enum defines all available log levels
+ * This enum defines all available log levels
  * 
  * @author kases1, kustl1
  * 

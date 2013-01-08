@@ -44,7 +44,7 @@ public interface SearchableMap extends TileMap {
      * 
      * @param t1
      * @param t2
-     * @return
+     * @return the principal direction
      */
     public Aim getPrincipalDirection(Tile t1, Tile t2);
 
@@ -65,7 +65,7 @@ public interface SearchableMap extends TileMap {
      * 
      * @param target
      * @param isNextMove
-     * @return
+     * @return the successors
      */
     public List<PathPiece> getSuccessorsForSearch(PathPiece target, boolean isNextMove);
 
@@ -74,7 +74,7 @@ public interface SearchableMap extends TileMap {
      * 
      * @param position
      * @param influenceMap
-     * @return
+     * @return the safest tile
      */
     public Tile getSafestNeighbour(Tile position, InfluenceMap influenceMap);
 

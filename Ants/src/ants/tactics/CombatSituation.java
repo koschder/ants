@@ -15,6 +15,11 @@ import api.entities.Move;
 import api.entities.Tile;
 import api.entities.Unit;
 
+/**
+ * 
+ * @author kases1, kustl1
+ * @deprecated did not work as hoped, abandoned
+ */
 public class CombatSituation implements Game {
     private Map<Tile, CombatUnit> enemyAnts;
     private Map<Tile, CombatUnit> myAnts;

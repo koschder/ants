@@ -8,7 +8,7 @@ package influence;
  */
 public enum LogCategory implements logging.LogCategory {
 
-    /**
+    /*
      * INFLUENCE is the only log category known in the influence packages
      */
     INFLUENCE(true);

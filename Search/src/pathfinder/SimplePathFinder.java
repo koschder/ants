@@ -68,10 +68,6 @@ public class SimplePathFinder implements PathFinder {
         return searchStrat.search(start, end);
     }
 
-    /**
-     * 
-     * @return the map on witch the path finder acts.
-     */
     @Override
     public SearchableMap getMap() {
         return this.map;
@@ -101,7 +97,7 @@ public class SimplePathFinder implements PathFinder {
      * checks the path, that from tile to tile there is only a Manhattan distance of one.
      * 
      * @param path
-     * @return
+     * @return true if the path is valid
      */
     public boolean validatePath(List<Tile> path) {
         boolean ret = true;
@@ -200,7 +196,7 @@ public class SimplePathFinder implements PathFinder {
      * each cost of tile is comma separated joined to a string.
      * 
      * @param path
-     * @return
+     * @return the cost string
      */
     public String getPathCostsString(List<Tile> path) {
         String costs = "";

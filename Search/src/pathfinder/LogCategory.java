@@ -7,7 +7,7 @@ package pathfinder;
  * 
  */
 public enum LogCategory implements logging.LogCategory {
-    /**
+    /*
      * each search type has its own log category
      */
     BFS(true),
