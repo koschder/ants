@@ -150,7 +150,7 @@ public class BreadthFirstSearch {
         return found;
     }
 
-    public Barrier getBarrier(final Tile hill, int viewRadiusSquared, int maximumBarrierSize) {
+    public Barrier getBarrier(final Tile tileToProtect, int viewRadiusSquared, int maximumBarrierSize) {
         List<Tile> barrierVerticalInvalid = new ArrayList<Tile>();
         List<Tile> barrierHorizontalInvalid = new ArrayList<Tile>();
         final int fillUpVariance = 15;
@@ -159,12 +159,12 @@ public class BreadthFirstSearch {
         List<Tile> smallestBar = null;
         Aim aimOfBarrier = null;
         BreadthFirstSearch bfs = new BreadthFirstSearch(map);
-        List<Tile> defaultFlood = bfs.findClosestTiles(hill, Integer.MAX_VALUE, Integer.MAX_VALUE, viewRadiusSquared,
-                new AlwaysTrueGoalTest());
+        List<Tile> defaultFlood = bfs.findClosestTiles(tileToProtect, Integer.MAX_VALUE, Integer.MAX_VALUE,
+                viewRadiusSquared, new AlwaysTrueGoalTest());
 
         int defaultFloodSize = defaultFlood.size();
-        List<Tile> exendedFlood = bfs.findClosestTiles(hill, defaultFloodSize + additionalTiles, Integer.MAX_VALUE,
-                Integer.MAX_VALUE, new AlwaysTrueGoalTest());
+        List<Tile> exendedFlood = bfs.findClosestTiles(tileToProtect, defaultFloodSize + additionalTiles,
+                Integer.MAX_VALUE, Integer.MAX_VALUE, new AlwaysTrueGoalTest());
 
         for (int i = 0; i < additionalTiles; i++) {
             int tileCount = defaultFloodSize + i;
@@ -203,7 +203,7 @@ public class BreadthFirstSearch {
             if (smallestBar != null && bar.size() >= smallestBar.size())
                 continue;
 
-            List<Tile> flood = bfs.findClosestTiles(hill, tileCount + fillUpVariance, Integer.MAX_VALUE,
+            List<Tile> flood = bfs.findClosestTiles(tileToProtect, tileCount + fillUpVariance, Integer.MAX_VALUE,
                     Integer.MAX_VALUE, new AlwaysTrueGoalTest(), new FrontierTest() {
                         @Override
                         public boolean isFrontier(Tile tile) {

@@ -33,7 +33,7 @@ public class AttackingCombatPositioning extends DefaultCombatPositioning {
                 return enemyUnits.contains(tile);
             }
         });
-        if ((enemiesGuardingTarget.size() * 2) <= myUnits.size())
+        if ((enemiesGuardingTarget.size()) <= myUnits.size())
             return Mode.ATTACK;
 
         // fall back to default
