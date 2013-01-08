@@ -1,14 +1,16 @@
 \chapter{API}
 \label{sec:module.API}
 
-Unsere AITools API dient als Grundbaustein des gesamten Projekt. Sie entkapselt die Interfaces zu unseren Search- und Strategieimpelementierungen. Sie beinhaltet zudem Basisklassen, welche überall verwendet werden. Der Inhalt ist wie folgt:
+Unsere AITools API dient als Grundbaustein aller AI Komponenten und entkapselt die Interfaces zu unseren AI Modulen und bietet den AI Modulen sowie dem Ants Package die Basisklassen an, welche überall verwendet werden. (siehe Abbildung \ref{fig:modulesOverview}) Der Inhalt ist wie folgt:
 
 \section{Entities}
 \label{sec:mocule.API.Entities}
 
+Das Package Entites beinhaltet alle Klassen die im von den Such- und Strategiealgorithmen sowie von Bot verwendet werden.
+
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.5\textwidth]{91_bilder/apiEntities}
+\includegraphics[height=90mm]{91_bilder/apiEntities}
 \caption{Entities}
 \label{fig:apiEntities}
 \end{figure}
@@ -27,6 +29,8 @@ Unsere AITools API dient als Grundbaustein des gesamten Projekt. Sie entkapselt 
 \section{Map}
 \label{sec:mocule.API.Map}
 
+Im Map-Package wird definiert welche Eigenschaften und Funktionen die Spielkarte hat und von welchem Typ (TileMap) sie ist.
+
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{91_bilder/apiMap}
@@ -36,18 +40,18 @@ Unsere AITools API dient als Grundbaustein des gesamten Projekt. Sie entkapselt 
 
 \begin{itemize}
 \item
-\textbf{TileMap}:  Dieses Interface definiert, welche Methoden eine auf Tiles aufbauende Spielkarte anbieten muss. Dazu gehören die Masse der Karte, ob ein Tile auf der Karte sichtbar und passierbar ist, sowie Distanz Messfunktion wie ManhattanDistanz, Luftlinie, quadrierte Distanz.
+\textbf{TileMap}:  Dieses Interface definiert, welche Methoden eine auf Tiles aufbauende Spielkarte anbieten muss. Dazu gehören die Masse der Karte, die Geländebeschaffenheit, also ob eine Zelle für den Spieler sichtbar und passierbar ist, sowie Distanz-Messfunktion wie ManhattanDistance, Luftlinie, quadrierte Distanz.
 \item
-\textbf{UnitMap}: UnitMap ist auch ein Interface welches auf TileMap aufbaut und zusätzlich die Methoden definiert die Einheiten und Spieler zurückzugeben.
+\textbf{AbstractWraparoundMap}: Implementiert das Interface SearchableUnitMap (siehe: Kapitel \titleref{sec:module.Suchalgorithmen}). Hier sind alle Methoden implementiert, welche die Karte anbieten muss, damit sie mit den Suchalgorihmen verwendet werden kann. Zudem sind die vordefinierten Methoden aus TileMap implementiert.
 \item
-\textbf{AbstractWraparoundMap}: Implementiert das Interface SearchableUnitMap (siehe: Abschnitt Search). Hier sind alle Methoden implementiert, welche die Karte anbieten muss, damit sie mit den Suchalgorihmen verwendet werden kann. Zudem sind die Methoden aus TileMap implementiert. Diese geben über die Geländebeschaffenheit und Distanzen Auskunft.
-\item
-\textbf{WorldType}: WorldType ist ein Enum und definiert die Art der Karte. Der Typ Globus hat keine Kartenränder, ist also ringsum begehbar. Von diesem Typ ist auch die Ants Challenge somit auch die Klasse AbstractWraparoundMap. Der zweite Enumtyp ist Pizza und definiert eine Welt so wie unsere Erde vor 500 Jahren noch definiert wurde, eine Scheibe mit Rändern, welche die Welt begrenzen. Dieser zweite Typ wurde provisorisch erstellt. Falls diese API eine Weiterverwendung findet, kann dieser Typ zusätzlich implementiert werden.
+\textbf{WorldType}: WorldType ist ein Enum und definiert die Art der Karte. Der Typ \textit{Globus} hat keine Kartenränder, ist also ringsum begehbar. Von diesem Typ ist auch die AbstractWraparoundMap Klasse, welche die Basiskarte unserer World-Karte\footnote{Die Klasse World ist im Code unter ants.state.World eingegliedert.} ist. Folglich sind auch die Karten  der Ants Challenge 'WrapAround'-Karten. Der zweite Enumtyp ist \textit{Pizza} und definiert eine Welt so wie man sich unsere Erde vor 500 Jahren noch vorstellte, eine Scheibe mit Rändern, welche die Welt begrenzen. Dieser zweite Typ wurde provisorisch erstellt. Falls unsere API eine Weiterverwendung findet, kann dieser Typ zusätzlich implementiert werden.
 \end{itemize}
 
 
 \section{Search}
 \label{sec:mocule.API.Search}
+
+Search beinhaltet alle Basisklassen und -interfaces der Suche.
 
 \begin{figure}[H]
 \centering
@@ -58,16 +62,15 @@ Unsere AITools API dient als Grundbaustein des gesamten Projekt. Sie entkapselt 
 
 \begin{itemize}
 \item
-\textbf{PathPiece}: Das PathPiece ist ein Interface für Strukturen, die als Suchknoten in der Pfadsuche verwendet werden können. Es definiert die für die Suche nötigen Methoden, wie getSuccessors(), getCost(), oder getPath(). 
-Implementierende Klassen sind Edge (repäsentiert eine Kante in einem Cluster) und Tile. Erweiterungen dieser Klassen sind DirectedEdge (eine gerichtete Kante) und Vertex (eine Zelle mit zugehörigen Kanten).
+\textbf{PathPiece}: Das PathPiece ist ein Interface für Strukturen, die als Suchknoten in der Pfadsuche verwendet werden können. Implementierende Klassen sind Edge (repäsentiert eine Kante in einem Cluster) und Tile. Erweiterungen dieser Klassen sind DirectedEdge (gerichtete Kanten) und Vertex (ein Knoten mit anliegenden Kanten).
 \item
-\textbf{SearchableMap}: Das Interface SearchableMap erweitert das Interface TileMap. Es beschreibt die Methoden zur Pfadsuche.
-\item
-\textbf{SearchableUnitMap}: Dieses Interface dient ausschliesslich zur Zusammenführung der beiden Interfaces UnitMap und SearchableMap.
+\textbf{SearchableMap}: Das Interface SearchableMap erweitert das Interface TileMap. Es beschreibt die Methoden zur Pfadsuche, wie getSuccessors(), getCost(), oder getPath().
 \end{itemize}
 
 \section{Strategy}
 \label{sec:mocule.API.Strategy}
+
+In diesem Package befinden sich die Karteninterfaces, welche für das Anwenden von Strategie und Taktikalgorithmen grundlegend sind.
 
 \begin{figure}[H]
 \centering
@@ -75,3 +78,10 @@ Implementierende Klassen sind Edge (repäsentiert eine Kante in einem Cluster) un
 \caption{Strategy API}
 \label{fig:apiStrategy}
 \end{figure}
+
+\begin{itemize}
+\item
+\textbf{UnitMap}: UnitMap ist auch ein Interface welches auf TileMap aufbaut und zusätzlich die Methoden definiert um Einheiten und Spieler zu verwalten.
+\item
+\textbf{SearchableUnitMap}: Dieses Interface dient ausschliesslich zur Zusammenführung der beiden Interfaces UnitMap und SearchableMap.
+\end{itemize}
