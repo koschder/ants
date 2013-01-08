@@ -1,12 +1,12 @@
 \chapter{API}
 \label{sec:module.API}
 
-Unsere AITools API dient als Grundbaustein aller AI Komponenten und entkapselt die Interfaces zu unseren AI Modulen und bietet den AI Modulen sowie dem Ants Package die Basisklassen an, welche überall verwendet werden. (siehe Abbildung \ref{fig:modulesOverview}) Der Inhalt ist wie folgt:
+Unsere AITools \gls{API} dient als Grundbaustein aller \gls{AI} Komponenten und entkapselt die Interfaces zu unseren \gls{AI} Modulen und bietet den \gls{AI} Modulen sowie dem Ants Package die Basisklassen an, welche überall verwendet werden (s.a. Abbildung \ref{fig:modulesOverview}). Der Inhalt ist wie folgt:
 
 \section{Entities}
 \label{sec:mocule.API.Entities}
 
-Das Package Entites beinhaltet alle Klassen die im von den Such- und Strategiealgorithmen sowie von Bot verwendet werden.
+Das Package Entities beinhaltet alle Klassen die im von den Such- und Strategiealgorithmen sowie vom \gls{Bot} verwendet werden.
 
 \begin{figure}[H]
 \centering
@@ -17,19 +17,19 @@ Das Package Entites beinhaltet alle Klassen die im von den Such- und Strategieal
 
 \begin{itemize}
 \item
-\textbf{Aim}: Richtungangabe zum Beschreiben einer Bewegung der Ameise
+\textbf{Aim}: Richtungangabe zum Beschreiben einer Bewegung der Ameise. Da sich die Ameisen nur geradeaus bewegen können, beschränken sich die gültigen Werte auf die vier Himmelsrichtungen.
 \item
-\textbf{Tile}: Repräsentiert eine Zelle auf dem Spielfeld, welche mit Row (Zeile) und Column (Spalte) beschrieben ist.
+\textbf{\gls{Tile}}: Repräsentiert eine Zelle auf dem Spielfeld, welche mit Row (Zeile) und Column (Spalte) definiert ist.
 \item
-\textbf{Move}: Diese Klasse beschreibt einen Spielzug mit den Eigenschaften Tile, von wo aus der Zug statt findet, und Aim, in welche Richtung der Zug ausgeführt wird.
+\textbf{Move}: Diese Klasse beschreibt einen Spielzug mit den Eigenschaften \gls{Tile}, von wo aus der Zug statt findet, und Aim, in welche Richtung der Zug ausgeführt wird.
 \item
-\textbf{Unit}: Unit besteht aus Tile und Spieler und definiert eine Einheit eines Spielers auf der Karte.
+\textbf{Unit}: Unit besteht aus \gls{Tile} und Spieler und definiert eine Einheit eines Spielers auf der Karte.
 \end{itemize}
 
 \section{Map}
 \label{sec:mocule.API.Map}
 
-Im Map-Package wird definiert welche Eigenschaften und Funktionen die Spielkarte hat und von welchem Typ (TileMap) sie ist.
+Im Map-Package sind verschiedene Karten-Typen definiert, die die Interaktion mit der Spielwelt ermöglichen.
 
 \begin{figure}[H]
 \centering
@@ -40,16 +40,18 @@ Im Map-Package wird definiert welche Eigenschaften und Funktionen die Spielkarte
 
 \begin{itemize}
 \item
-\textbf{TileMap}:  Dieses Interface definiert, welche Methoden eine auf Tiles aufbauende Spielkarte anbieten muss. Dazu gehören die Masse der Karte, die Geländebeschaffenheit, also ob eine Zelle für den Spieler sichtbar und passierbar ist, sowie Distanz-Messfunktion wie ManhattanDistance, Luftlinie, quadrierte Distanz.
+\textbf{TileMap}:  Dieses Interface definiert, welche Methoden eine auf \gls{Tile}s aufbauende Spielkarte anbieten muss. Dazu gehören die Masse der Karte, die Geländebeschaffenheit, also ob eine Zelle für den Spieler sichtbar und passierbar ist, sowie Distanz-Messfunktionen wie ManhattanDistance, Luftlinie, quadrierte Distanz.
 \item
-\textbf{AbstractWraparoundMap}: Implementiert das Interface SearchableUnitMap (siehe: Kapitel \titleref{sec:module.Suchalgorithmen}). Hier sind alle Methoden implementiert, welche die Karte anbieten muss, damit sie mit den Suchalgorihmen verwendet werden kann. Zudem sind die vordefinierten Methoden aus TileMap implementiert.
+\textbf{UnitMap}:  Dieses Interface definiert, welche Methoden eine Spielkarte implementieren muss, um Zugriff auf die in der Karte platzieren Einheiten zu bieten. Die Methode getPlayers() gibt eine Liste der Spieler zurück, die Einheiten auf der Karte kontrollieren, die Methode getUnits() gibt alle bekannten Einheiten zurück.
 \item
-\textbf{WorldType}: WorldType ist ein Enum und definiert die Art der Karte. Der Typ \textit{Globus} hat keine Kartenränder, ist also ringsum begehbar. Von diesem Typ ist auch die AbstractWraparoundMap Klasse, welche die Basiskarte unserer World-Karte\footnote{Die Klasse World ist im Code unter ants.state.World eingegliedert.} ist. Folglich sind auch die Karten  der Ants Challenge 'WrapAround'-Karten. Der zweite Enumtyp ist \textit{Pizza} und definiert eine Welt so wie man sich unsere Erde vor 500 Jahren noch vorstellte, eine Scheibe mit Rändern, welche die Welt begrenzen. Dieser zweite Typ wurde provisorisch erstellt. Falls unsere API eine Weiterverwendung findet, kann dieser Typ zusätzlich implementiert werden.
+\textbf{AbstractWraparoundMap}: Implementiert das Interface SearchableMap (s. \ref{sec:module.API.Search}). Hier sind alle Methoden implementiert, welche die Karte anbieten muss, damit sie mit den Suchalgorithmen verwendet werden kann. Zudem sind die vordefinierten Methoden aus TileMap implementiert.
+\item
+\textbf{WorldType}: WorldType ist ein Enum und definiert die Art der Karte. Der Typ \textit{Globus} hat keine Kartenränder, ist also ringsum begehbar. Von diesem Typ ist auch die AbstractWraparoundMap Klasse, welche diverse Methoden des TileMap Interfaces bereits implementiert und als Basisklasse unserer World-Karte\footnote{Die Klasse World ist im Code unter ants.state.World eingegliedert.} dient. Folglich sind auch die Karten  der Ants Challenge 'WrapAround'-Karten. Der zweite Enumtyp ist \textit{Pizza} und definiert eine Welt wie man sich unsere Erde vor 500 Jahren noch vorstellte, eine Scheibe mit Rändern, welche die Welt begrenzen. Dieser zweite Typ wurde provisorisch erstellt. Falls unsere \gls{API} eine Weiterverwendung findet, kann dieser Typ zusätzlich implementiert werden.
 \end{itemize}
 
 
 \section{Search}
-\label{sec:mocule.API.Search}
+\label{sec:module.API.Search}
 
 Search beinhaltet alle Basisklassen und -interfaces der Suche.
 
@@ -62,9 +64,9 @@ Search beinhaltet alle Basisklassen und -interfaces der Suche.
 
 \begin{itemize}
 \item
-\textbf{PathPiece}: Das PathPiece ist ein Interface für Strukturen, die als Suchknoten in der Pfadsuche verwendet werden können. Implementierende Klassen sind Edge (repäsentiert eine Kante in einem Cluster) und Tile. Erweiterungen dieser Klassen sind DirectedEdge (gerichtete Kanten) und Vertex (ein Knoten mit anliegenden Kanten).
+\textbf{PathPiece}: Das PathPiece ist ein Interface für Strukturen, die als Suchknoten in der Pfadsuche verwendet werden können. Implementierende Klassen sind Edge (repäsentiert eine Kante in einem Cluster) und \gls{Tile}. Erweiterungen dieser Klassen sind DirectedEdge (gerichtete Kanten) und Vertex (ein Knoten mit anliegenden Kanten).
 \item
-\textbf{SearchableMap}: Das Interface SearchableMap erweitert das Interface TileMap. Es beschreibt die Methoden zur Pfadsuche, wie getSuccessors(), getCost(), oder getPath().
+\textbf{SearchableMap}: Das Interface SearchableMap erweitert das Interface TileMap. Es beschreibt die Methoden zur Pfadsuche, wie getSuccessors(), getCost(), oder getPath(). Die Unterscheidung zwischen getSuccessorsForPathfinding() und getSuccessorsForSearch haben wir eingeführt, damit bei der Pfadsuche bestimmte \gls{Tile}s von vornherein ausgeschlossen werden können. (Konkret haben wir so verhindert, dass Pfade über unsere eigenen Hügel führen).
 \end{itemize}
 
 \section{Strategy}
@@ -81,7 +83,7 @@ In diesem Package befinden sich die Karteninterfaces, welche für das Anwenden vo
 
 \begin{itemize}
 \item
-\textbf{UnitMap}: UnitMap ist auch ein Interface welches auf TileMap aufbaut und zusätzlich die Methoden definiert um Einheiten und Spieler zu verwalten.
-\item
 \textbf{SearchableUnitMap}: Dieses Interface dient ausschliesslich zur Zusammenführung der beiden Interfaces UnitMap und SearchableMap.
+\item
+\textbf{InfluenceMap}: Dieses Interface definiert Methoden, die eine \gls{InfluenceMap} anbieten muss. So muss sie für ein bestimmtes Tile und einen bestimmten Spieler den Einfluss angeben können, oder sie muss Auskunft über die Sicherheit eines bestimmten \gls{Tile}s geben können. Mit der update() Methode kann die InfluenceMap aktualisiert werden.
 \end{itemize}
