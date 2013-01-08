@@ -34,4 +34,6 @@
 *.tcp
 *.tps
 *.bak
+#seriously?
+*.lol
 *.vpp*~*
