@@ -161,7 +161,7 @@ public class SimplePathFinder implements PathFinder {
             if (newSubPath != null) {
                 smoothedPath.addAll(newSubPath);
                 if (recursive && newSubPath.size() < subPath.size()) {
-                    smoothedPath = smoothPath(smoothedPath, smoothedPath.size(), true);
+                    smoothedPath = smoothPath(smoothedPath, size * 2, true);
                 }
             } else {
                 smoothedPath.addAll(subPath);

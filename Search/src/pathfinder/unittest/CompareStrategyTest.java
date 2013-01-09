@@ -39,8 +39,8 @@ public class CompareStrategyTest {
     @Test
     public void compareThem() {
 
-        Tile start = new Tile(25, 64);
-        Tile end = new Tile(45, 20);
+        Tile start = new Tile(25, 74);
+        Tile end = new Tile(85, 20);
         SearchableMap map = initMap();
         for (SearchTest s : SearchTest.values()) {
 
@@ -70,7 +70,7 @@ public class CompareStrategyTest {
 
         } else {
 
-            int clusterSize = 10;
+            int clusterSize = 14;
             if (s == SearchTest.HpaCent20 || s == SearchTest.HpaCorn20) {
                 clusterSize = 20;
             }
@@ -88,7 +88,7 @@ public class CompareStrategyTest {
             path = cpf.search(PathFinder.Strategy.HpaStar, start, end, -1);
             duration = System.currentTimeMillis() - startTime;
             long startTimeSmooth = System.currentTimeMillis();
-            List<Tile> pathSmoothed = cpf.smoothPath(path, clusterSize + 5, false);
+            List<Tile> pathSmoothed = cpf.smoothPath(path, clusterSize + 5, true);
             put.addComment("Duration smoothPath " + (System.currentTimeMillis() - startTimeSmooth) + " ms.");
             put.addComment("smoothPath length: " + (pathSmoothed == null ? "null" : pathSmoothed.size()));
             put.addObject(pathSmoothed, "smoothPath for " + s);
@@ -105,7 +105,7 @@ public class CompareStrategyTest {
     }
 
     private UnitTestMap initMap() {
-        String sFileName = "../Search/maps/cell_maze_p04_10.map";
+        String sFileName = "../Search/maps/random_walk_10p_01.map";
         try {
             UnitTestMap map = new UnitTestMap(parseFile(sFileName));
             return map;

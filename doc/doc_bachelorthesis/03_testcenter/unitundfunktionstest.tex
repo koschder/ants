@@ -3,20 +3,20 @@
 
 Dieses Kapitel beschreibt wie wir unseren Bot und dessen Komponenten getestet haben. Das Testen beanspruchte ein grosser Teil unserer aufgewendeten Zeit. Die nachfolgenden Methoden zeigen auf wie wir versuchten möglichst effizient zu testen, so dass uns mehr Zeit für das implementieren von Modulen blieb. Es stellte sich heraus, dass das Implementieren und Testen von neuem Code in UnitTests, anstatt direkt im Bot, zeitsparender war und weniger Mühe bereitete Fehler zu finden. 
 
-\section{Unit Tests}
-\label{sec:testCenter.UniTests}
+\section{UnitTests}
+\label{sec:testCenter.UnitTests}
 
-Danke dem modularen Aufbau des Java-Codes war es uns möglich einzelne Module zu testen. Für unsere Unit Tests verwendeten wir die JUnit 4 Library. So hat jedes Java Project ein UnitTest-Package. Der Code im Java Project wird durch diverse Testklassen im UnitTest-Package auf die Richtigkeit geprüft. Die hat den Vorteil, das wir funktionierende Module in den Bot einbauen konnten, und nicht erst nach dem Einbau nach Fehlern suchen mussten.\\
-Um das Modul CombatPositioning (siehe im Code unter Startegy.tactics.combat) zu realisieren haben wir sogar 'Test Driven Development' eingesetzt. Dass heisst wir haben zuerst den Test mit Ausgangslage, Aufruf von CombatPositioning, und das erwartete Resultat geschrieben. Danach wurde solange an CombatPositioning programmiert, bis das erwartete Testresultat eintraf.
+Dank dem modularen Aufbau des Java-Codes war es uns möglich einzelne Module zu testen. Für unsere UnitTests verwendeten wir die JUnit 4 Library. So findet man in jedem Java Project das Code-Package und ein UnitTest-Package, welches den Code auf dessen Richtigkeit prüft. Die Module erst nach den erfolgreichen UnitTests in den Bot eingebaut. Dies hat den Vorteil, dass die Fehlern nicht im laufenden Spiel auftraten und wir die Ursachen  mühsam suchen mussten.\\
+Um das Modul CombatPositioning\footnote{siehe im Code unter Startegy.tactics.combat} zu realisieren haben wir sogar 'Test Driven Development' eingesetzt. Dass heisst, wir haben zuerst den Test mit Ausgangslage, Aufruf von CombatPositioning, und das erwartete Resultat als UnitTest geschrieben. Danach wurde solange an CombatPositioning programmiert, bis das erwartete Testresultat eintraf.
 
 \section{Visuelle Tests}
 \label{sec:testCenter.VisuelleTests}
 
-In Form eines UnitTest haben wir auch unsere visuellen Tests geschrieben. Durch eine visuelle Überprüfung des Resulats ist meistens, vor allem bei der Pfadsuche, einfacher zu kontrollieren. Anstatt aber mit der JUnit Methode \textit{assertEquals()} das Resultat zu prüfen haben die visuellen Test ein HTML-File als Output. In das HTML-File wird die Karte in Tabellenform gespeichert. In jeder Zelle der Tabelle können Objekte (Einheiten, Hügel, Wegpunkte, etc.) mittels farbige Punkte dargestellt werden. Diese Funktionalitäten bietet die extra geschriebene Klasse MapOutput. Nachfolgend ist ein HTML-File abgebildet mit welchem wir die Korrektheit des Clustering und des HPA* Algorithmus visuelle überprüft haben. 
+In Form eines UnitTest haben wir auch unsere visuellen Tests geschrieben. Eine visuelle Überprüfung des Resultats ist meistens, vor allem bei der Pfadsuche, einfacher zu kontrollieren. Im Gegensatz zu JUnit wo das zu erwartende Resultat mit der Methode \texttt{assertEquals()} geprüft wird, haben die visuellen Test ein HTML-File als Output. In das HTML-File wird die Karte in Tabellenform gespeichert. In jeder Zelle der Tabelle können Objekte (Einheiten, Hügel, Wegpunkte etc.) durch farbige Punkte dargestellt werden. Diese Funktionalitäten bietet die extra dafür geschriebene Klasse MapOutput. Nachfolgend ist ein HTML-File abgebildet mit welchem wir die Korrektheit des Clustering und des HPA* Algorithmus visuelle überprüft haben. 
 
 \begin{figure}[H]
 \centering
-\includegraphics[height=50mm]{91_bilder/mapoutput01}
+\includegraphics[height=100mm]{91_bilder/mapoutput01}
 \caption{HTML-Ausgabe zur visuellen Überprüfung von HPA*}
 \label{fig:mapoutput01}
 \end{figure}

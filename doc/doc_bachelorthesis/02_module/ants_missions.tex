@@ -111,7 +111,7 @@ Die DefendHillMission bietet zwei Arten zur Verteidigung an. Die Default-Verteid
 Die Art der Verteidigung wird wie folgt definiert. Während dem zehnten Spielzug wird versucht mittels spezieller Breitensuche eine Sperre für den Hügel zu finden. Falls dies gelingt läuft die Mission wird die Sperre erstellt. Dies solange bis eine gegnerische Ameise auf die Höhe der Barriere tritt, dann gehen wir davon aus, dass die Sperre vom Gegner eingenommen wurde, wir wechseln die Verteidigungsart.
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}[Die Verteidigungsart wird bestimmt.]
+\begin{lstlisting}[caption=Die Verteidigungsart wird bestimmt.]
 private void determineMode() {
   if (Ants.getAnts().getTurn() == 10) {
       AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
@@ -192,7 +192,7 @@ Diese Mission  koordiniert die Futtersuche und verwaltet die Ameisen, welche Fut
 public void execute() {
 	// check the existing routes, if they are still valid.
 	checkAntsRoutes();
-	// gather new ants
+	// gather new ants, relcalculate routes
 	gatherAnts();
 	// move the ants
 	moveAnts();
@@ -203,7 +203,7 @@ Bei \textttt{checkAntsRoutes()} wird geprüft ob die Pfadrouten aller Ameisen in 
 
 TODO CAPTION wird abgeschnitten
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}[caption=Berechnung welche Ameise, welches Futter einsammelt.]
+\begin{lstlisting}[caption=Berechnung welche Ameise welches Futter einsammelt.]
 foreach(food on map){
 	if(there is an ant in food mission, which is gathering this food tile with a path smaller than 5)
 		continue;
