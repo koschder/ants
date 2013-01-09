@@ -34,29 +34,51 @@ Nachfolgend werden die spezifischen Missionen erläutert. Tabellarisch werden die
 \subsection{PathMission}
 \label{subsec:module.Mission.PathMission}
 
-Precondition: -\\
-Creator: (Ersteller): CombatTask, oder ExploreMission\\
-Postcondition: Pfad vollständig abgelaufen\\
-Max. Ants (Maximale Anzahl Ameisen): 1\\
-Max. Missionen: unbegrenzt\\
-Valid (Gültigkeit): siehe ExploreMission bzw. CombatTask\\
-Gather Ants (Ameisen rekrutieren): Nicht möglich\\
-Release Ants (Ameisen entlassen): Nicht möglich\\
-\\
+\begin{table}[H]
+	%weird hack to enable footnotes in the table
+	\begin{minipage}{11cm}
+		\begin{tabular}{l p{13cm}}
+		\textbf{Precondition}& Der Pfad wurde vorgängig berechnet\\
+		\textbf{Creator}\footnote{Ersteller der Mission}& CombatTask, oder ExploreMission\\
+		\textbf{Postcondition}& Der Pfad ist vollständig abgelaufen\\
+		\textbf{Max. Ants}\footnote{Maximale Anzahl der Ameisen in der Mission}& 1\\
+		\textbf{Max. Missionen}& unbegrenzt\\
+		\textbf{Valid}\footnote{Gültigkeit}& siehe ExploreMission bzw. CombatTask\\
+		\textbf{Gather Ants}\footnote{Ameisen für die Mission rekrutieren}& Nicht möglich\\
+		\textbf{Release Ants}\footnote{Ameisen von der Mission entlassen}& Nicht möglich\\
+		\end{tabular}\par
+		\vspace{-0.75\skip\footins}
+   \renewcommand{\footnoterule}{}
+  \end{minipage}
+	\caption{Eigenschaften der PathMission}
+	\label{tab:porpertiesPathMission}
+\end{table}
+
 Die Pathmission ist eine abstrakte Klasse die von ExploreMission und als anonyme Klasse im CombatTask implementiert wird. Die einzige Funktionalität die angeboten wird ist, eine Ameise, die der Initialisierung mit Pfad mitgegeben wird, auf diesem definierten Pfad zu bewegen.
 
 \subsection{AttackHillMission}
 \label{subsec:module.Mission.AttackHillMission}
 
-Precondition: Gegnerischer Hügel sichtbar\\
-Creator: AttackHillsTask\\
-Postcondition: Gegnerischer Hügel erobert\\
-Max. Ants: unbegrenzt\\
-Max. Missionen: Je gegnerischen Hügel eine Mission\\
-Valid: solange gegnerischer Hügel nicht zerstört ist.\\
-Gather Ants: pro Zug max. fünf Ameisen, die im Umkreis von 25 Tiles des gegnerischen Hügel sind.\\
-Release Ants: Sicheres Food-Tile in der Nähe. Eigener Hügel in der Nähe der Unterstützung braucht. Wenn Mission im Status ControlHill ist werden alle Ameisen entlassen ausser zwei, diese kontrollieren den Hügel.\\
-\\
+\begin{table}[H]
+	%weird hack to enable footnotes in the table
+	\begin{minipage}{11cm}
+		\begin{tabular}{l p{13cm}}
+		\textbf{Precondition}& Gegnerischer Hügel ist sichtbar\\
+		\textbf{Creator}& AttackHillsTask\\
+		\textbf{Postcondition}& Gegnerischer Hügel wurde erobert\\
+		\textbf{Max. Ants}& unbegrenzt\\
+		\textbf{Max. Missionen}& Je gegnerischen Hügel eine Mission\\
+		\textbf{Valid}& Solange der gegnerischer Hügel nicht zerstört ist.\\
+		\textbf{Gather Ants}& pro Zug max. fünf Ameisen, die im Umkreis von 25 Tiles des gegnerischen Hügel sind.\\
+		\textbf{Release Ants}&  Sicheres Food-Tile in der Nähe, eigener Hügel in der Nähe der Unterstützung braucht oder wenn die Mission im Status ControlHill ist, dann werden alle Ameisen ausser zwei entlassen, diese kontrollieren den gegnerischen Hügel.\\
+		\end{tabular}\par
+		\vspace{-0.75\skip\footins}
+   \renewcommand{\footnoterule}{}
+  \end{minipage}
+	\caption{Eigenschaften der AttackHillMission}
+	\label{tab:porpertiesAttackHillMission}
+\end{table}
+
 Diese Mission unterscheidet zwischen den drei verschiedenen Modi ControlEnemyHill,DestroyHill udn AttackEnemyHill. Der Modus wird zu Beginn jeder Runde durch die Methode determineState() definiert.\\
 \\
 \textbf{ControlEnemyHill}\\
@@ -88,16 +110,27 @@ Alle Angreifer werden nach ihrer Position in lokalen Gruppen zusammen gefasst. F
 \subsection{DefendHillMission}
 \label{subsec:module.Mission.DefendHillMission}
 
-Precondition: Keine, Mission wird zu Beginn des Spiels erstellt.\\
-Creator: DefendHillTask\\
-Postcondition: Eigener Hügel wurde zerstört.\\
-Max. Ants: unbegrenzt\\
-Max. Missionen: Je eigener Hügel eine Mission\\
-Valid: solange eigener Hügel nicht erobert ist.\\
-Gather Ants: Mission soll immer mehr Verteidiger haben als Angreifer sich dem Hügel nähern.\\
-Release Ants: Keine Angreifer in Sicht, werden die Ameisen (nicht alle) entlassen.\\
-\\
-Beim Entwickeln dieser Mission haben wir uns folgende Fragen gestellt: Ab welchem Spielzug soll der Hügel bewacht werden? Wie viel Ameisen sollen für die Verteidigung eingesetzt werden? Was wenn der Hügel von mehreren Seiten angegriffen wird? Sollen alle Hügel bewacht werden? Aus diesen Frage ergab sich folgende Implementation: \\
+\begin{table}[H]
+	%weird hack to enable footnotes in the table
+	\begin{minipage}{11cm}
+		\begin{tabular}{l p{13cm}}
+		\textbf{Precondition}& - \\
+		\textbf{Creator}& DefendHillTask\\
+		\textbf{Postcondition}& Eigener Hügel wurde zerstört\\
+		\textbf{Max. Ants}& unbegrenzt\\
+		\textbf{Max. Missionen}& Je eigener Hügel eine Mission\\
+		\textbf{Valid}& Solange der eigener Hügel nicht erobert ist.\\
+		\textbf{Gather Ants}& Mission soll immer mehr Verteidiger haben als Angreifer sich dem Hügel nähern.\\
+		\textbf{Release Ants}& Sind keine Angreifer in Sicht, werden die Ameisen (nicht alle) entlassen.\\
+		\end{tabular}\par
+		\vspace{-0.75\skip\footins}
+   \renewcommand{\footnoterule}{}
+  \end{minipage}
+	\caption{Eigenschaften der DefendHillMission}
+	\label{tab:porpertiesDefendHillMission}
+\end{table}
+
+Beim Entwickeln dieser Mission haben wir uns folgende Fragen gestellt: Ab welchem Spielzug soll der Hügel bewacht werden? Wie viel Ameisen sollen für die Verteidigung eingesetzt werden? Was wenn der Hügel von mehreren Seiten angegriffen wird? Sollen alle Hügel bewacht werden? Aus diesen Frage ergab sich folgende Implementation.\\
 \\
 Die DefendHillMission bietet zwei Arten zur Verteidigung an. Die Default-Verteidigung und die Barrier-Verteidigung. Bei der Default-Verteidigung werden die Ameise nahe um den eigenen Hügel zur Verteidigung aufgestellt. Die Barrier-Verteidigung ist nur bei Hügeln möglich die in einer Sackgasse sind, den in diesem Modus wird eine Sperre an der engsten Stelle erstellt. Nachfolgende Abbildung veranschaulicht die beiden Verteidigungsarten.
 
@@ -154,16 +187,27 @@ Die Funktionsweise ist wie folgt. Es werden je nach Breite der Sperre entspreche
 \subsection{ExploreMission}
 \label{subsec:module.Mission.ExploreMission}
 
-Precondition: - \\
-Creator: ExploreTask\\
-Postcondition: Definierter Erkundungspfad wurde zurückgelegt.\\
-Max. Ants: 1\\
-Max. Missionen: unbegrenzt\\
-Valid: Solange die Ameise ein gültiger Pfad hat.\\
-Gather Ants: nicht möglich\\
-Release Ants: nicht möglich\\
-\\
-Die ExploreMission wird verwendet um die Spielkarte zu erkunden. Die Ameise läuft den vom ExploreTask vorgegebenen Pfad ab. Die Mission wird abgebrochen, wenn Futter in der Nähe ist, wenn ein gegnerischer Hügel oder gegnerische Ameisen auftauchen oder wenn ein eigener Hügel in der Nähe Hilfe braucht.
+\begin{table}[H]
+	%weird hack to enable footnotes in the table
+	\begin{minipage}{11cm}
+		\begin{tabular}{l p{13cm}}
+		\textbf{Precondition}& - \\
+		\textbf{Creator}& ExploreTask\\
+		\textbf{Postcondition}& Definierter Erkundungspfad wurde zurückgelegt\\
+		\textbf{Max. Ants}& 1\\
+		\textbf{Max. Missionen}& unbegrenzt\\
+		\textbf{Valid}& oft, siehe Beschreibung\\
+		\textbf{Gather Ants}& nicht möglich \\
+		\textbf{Release Ants}& nicht möglich \\
+		\end{tabular}\par
+		\vspace{-0.75\skip\footins}
+   \renewcommand{\footnoterule}{}
+  \end{minipage}
+	\caption{Eigenschaften der ExploreMission}
+	\label{tab:porpertiesExploreMission}
+\end{table}
+
+Die ExploreMission wird verwendet um die Spielkarte zu erkunden. Die Ameise läuft den vom ExploreTask vorgegebenen Pfad ab. Falls dieser ungültig ist, weil er zum Beispiel durch Wasser führt oder die Ameise sich nicht bewegen kann, da die Ameise durch eine andere Ameise blockiert wird, so wird die Mission abgebrochen. Die Mission wird auch abgebrochen, wenn Futter in der Nähe ist, wenn ein gegnerischer Hügel oder gegnerische Ameisen auftauchen oder wenn ein eigener Hügel in der Nähe Hilfe braucht.
 
 \begin{figure}[H]
 \centering
@@ -175,16 +219,27 @@ Die ExploreMission wird verwendet um die Spielkarte zu erkunden. Die Ameise läuf
 \subsection{GatherFoodMission}
 \label{subsec:module.Mission.GatherFoodMission}
 
-Precondition: Keine, Mission wird zu Beginn des Spiels erstellt.\\
-Creator: GatherFoodTask\\
-Postcondition: diese Mission besteht während dem ganzen Spiel \\
-Max. Ants: unbegrenzt\\
-Max. Missionen: 1\\
-Valid: immer\\
-Gather Ants: siehe Beschreibung\\
-Release Ants: siehe Beschreibung\\
+\begin{table}[H]
+	%weird hack to enable footnotes in the table
+	\begin{minipage}{11cm}
+		\begin{tabular}{l p{13cm}}
+		\textbf{Precondition}& - \\
+		\textbf{Creator}& GatherFoodTask\\
+		\textbf{Postcondition}& Diese Mission besteht während dem ganzen Spiel.\\
+		\textbf{Max. Ants}& unbegrenzt\\
+		\textbf{Max. Missionen}& 1\\
+		\textbf{Valid}& immer\\
+		\textbf{Gather Ants}& siehe Beschreibung \\
+		\textbf{Release Ants}& siehe Beschreibung \\
+		\end{tabular}\par
+		\vspace{-0.75\skip\footins}
+   \renewcommand{\footnoterule}{}
+  \end{minipage}
+	\caption{Eigenschaften der GatherFoodMission}
+	\label{tab:porpertiesGatherFoodMission}
+\end{table}
 
-Diese Mission  koordiniert die Futtersuche und verwaltet die Ameisen, welche Futter einsammeln. Es wird nur eine GatherFoodMission zu Beginn des Spiels erstellt. Sie berechnet welche Ameise am nächsten bei einer Futterzelle ist, berechnet den Pfad und schickt die Ameise Zug um Zug in Richtung Futter. Die \texttt{execute()}-Methode der GatherFoodMission sieht wie folgt aus:
+Diese Mission koordiniert die Futtersuche und verwaltet die Ameisen, welche Futter einsammeln. Es wird nur eine GatherFoodMission zu Beginn des Spiels erstellt. Sie berechnet welche Ameise am nächsten bei einer Futterzelle ist, berechnet den Pfad und schickt die Ameise Zug um Zug in Richtung Futter. Die \texttt{execute()}-Methode der GatherFoodMission sieht wie folgt aus:
 
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}[caption=Ablauf von \texttt{execute()} während der GatherFoodMission]
@@ -199,7 +254,7 @@ public void execute() {
 }
 \end{lstlisting}
 
-Bei \textttt{checkAntsRoutes()} wird geprüft ob die Pfadrouten aller Ameisen in der Mission noch gültig sind. Ungültige Pfade sind, wenn die Futterzelle von der eigenen Ameise oder einer gegnerischen Ameise gefressen wurde. Ameisen mit einem ungültigen Pfad werden von der Mission entlassen, können aber in der nächsten Methode \textttt{gatherAnts()}, falls eine Aufgabe gefunden für die Ameise gefunden wird, der Mission wieder beitreten. Die Logik der \textttt{gatherAnts()} Methode ist in folgenden Codebeispiel vereinfacht dargestellt.
+Bei \texttt{checkAntsRoutes()} wird geprüft ob die Pfadrouten aller Ameisen in der Mission noch gültig sind. Ungültige Pfade sind, wenn die Futterzelle von der eigenen Ameise oder einer gegnerischen Ameise gefressen wurde. Ameisen mit einem ungültigen Pfad werden von der Mission entlassen, können aber in der nächsten Methode \texttt{gatherAnts()}, falls eine Aufgabe gefunden für die Ameise gefunden wird, der Mission wieder beitreten. Die Logik der \texttt{gatherAnts()} Methode ist in folgenden Codebeispiel vereinfacht dargestellt.
 
 TODO CAPTION wird abgeschnitten
 \lstset{language=Java, tabsize=4}
