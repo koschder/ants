@@ -60,7 +60,7 @@ In folgenden Modulen berücksichtigen wir Werte aus InfluenceMap um Entscheide zu
 \textbf{Abbruch Mission}: Falls eine Ameise auf einer andere Mission als die GatherFoodMission ist und ein FoodTile in seiner Nähe antrifft, wird abgewogen ob die Mission zu Gunsten von Futter sammeln abgebrochen werden soll. Dabei ist ein Entscheidungsfaktor auch die 'Sicherheit' des Futters. Falls das Futter nicht auf einem sicheren Weg geholt werden kann, wird die Mission nicht abgebrochen.
 \end{itemize}
 
-Natürlich könnte man die InfluenceMap auch für weitere Entscheidungen verwenden. Auch der Einsatz von Spannungskarte (Tension Map), welche auch auf der InfluenceMap aufbaut, wäre denkbar. Dies wurde während dieser Arbeit nicht angeschaut bzw. implementiert.
+Natürlich könnte man die InfluenceMap auch für weitere Entscheidungen verwenden. Auch der Einsatz von Spannungskarte (Tension Map), welche auch auf den Werten InfluenceMap aufbaut, wäre denkbar. Dies wurde während dieser Arbeit nicht angeschaut bzw. implementiert.
 
 
 \section{Combat Situations}
@@ -73,96 +73,105 @@ Natürlich könnte man die InfluenceMap auch für weitere Entscheidungen verwenden.
 \label{fig.strategyTacticsCombat}
 \end{figure}
 
-Kampfsituationen werden immer dann erstellt wenn gegnerische Ameisen auf unsere Ameisen treffen. Dies ist vor allem der Fall wenn ein gegnerischer Hügel angegriffen wird, oder unserer Hügel verteidigt werden muss. Eine Kampfsituation kann sich aber auch sonst wo auf der Karte ereignen.
+Kampfsituationen treten immer dann auf wenn gegnerische Ameisen auf unsere Ameisen treffen. Zum Beispiel wenn ein gegnerischer Hügel angegriffen wird, oder der eigene Hügel verteidigt werden muss. Eine Kampfsituation kann sich aber auch sonst wo auf der Karte ereignen.
 
 \subsection{DefaultCombatPositioning}
 \label{sec:module.CombatSituation.DefaultCombatPositioning}
 
-DefaultCombatPositioning implementiert das Interface CombatPositioning und führt die Positionierung für die drei Verhalten FLEE, DEFEND, ATTACK an. Das Verhalten wird in der Methode \textit{determineMode(...)} wie folgt bestimmt, wobei das 'DEFAULT' Verhalten dem ATTACK-Verhalten entspricht.
+DefaultCombatPositioning implementiert das Interface CombatPositioning und führt die Positionierung für die drei Verhalten FLEE, DEFEND, ATTACK an. Das Verhalten wird in der Methode \texttt{determineMode(...)} wie folgt bestimmt, wobei das 'DEFAULT' Verhalten dem ATTACK-Verhalten entspricht. (Das Verhalten 'CONTROL' wurde nicht implementiert.
 
-\begin{verbatim}
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}
 protected Mode determineMode() {
     final boolean enemyIsSuperior = enemyUnits.size() > myUnits.size();
     if (enemyIsSuperior)
         return Mode.FLEE;
     return Mode.DEFAULT;
 }
-\end{verbatim}
+\end{lstlisting}
 
-Wird nicht ein DefaultCombatPositioning initialisiert, sondern ein AttackingCombatPositioning (in der AttackHillMission) oder ein DefendingCombatPositioning (in der DefendHillMission) so wird das Verhalten anders bestimmt, indem die \textit{determineMode(...)}  Methode überschrieben ist.\\
+Wenn nicht ein DefaultCombatPositioning initialisiert wird, sondern ein AttackingCombatPositioning (in der AttackHillMission) oder ein DefendingCombatPositioning (in der DefendHillMission) so wird das Verhalten anders bestimmt, indem die \texttt{determineMode(...)}  Methode überschrieben ist.\\
 \\
 \textbf{DefendingCombatPositioning}
 
-Hier wird immer der Modus 'DEFAULT' Verhalten ausgewählt, aus dem Grund, dass die Verteidiger sich nicht zu weit vom Hügel entfernen in dem sie den Gegner attackieren und der Hügel von einer anderen Seite eingenommen wird. Hier könnte man sich Gedanken machen ob die Verteidiger, falls in Überzahl, die Gegner nicht bis zu einem gewissen Punkt angreifen sollen. Diese Möglichkeiten haben wir aber nicht genauer betrachtet.
+Hier wird immer das 'DEFEND' Verhalten ausgewählt, aus dem Grund, dass die Verteidiger sich nicht zu weit vom Hügel entfernen in dem sie den Gegner attackieren und der Hügel von einer anderen Seite eingenommen wird. In Unterzahl sollen die Verteidiger auch nicht flüchten, sondern trotzdem Versuchen den Hügel zu verteidigen. Hier könnte man sich Gedanken machen ob die Verteidiger, falls in Überzahl, die Gegner nicht bis zu einem gewissen Punkt angreifen sollen. Dieser Möglichkeit sind wir aber nicht weiter nach gegangen.
 
-\begin{verbatim}
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}
 protected Mode determineMode() {
     return Mode.DEFEND;
 }
-\end{verbatim}
+\end{lstlisting}
 
 \textbf{AttackingCombatPositioning}
 
-Die Bestimmung des Modus im bei useren Angreifern in der AttackingCombatPositioning-Klasse ist da schon komplexer. Mittels Breitensuche werden die Gegner zwischen uns und dem Ziel ermittelt. Falls der Gegner TODO DISCUSS
-\begin{verbatim}
-  @Override
-    protected Mode determineMode() {
-        Tile clusterCenter = map.getClusterCenter(myUnits);
-        BreadthFirstSearch bfs = new BreadthFirstSearch(map);
-        int distanceToTarget = map.getSquaredDistance(clusterCenter, target);
-        List<Tile> enemiesGuardingTarget = bfs.floodFill(target, distanceToTarget, new GoalTest() {
-            @Override
-            public boolean isGoal(Tile tile) {
-                return enemyUnits.contains(tile);
-            }
-        });
-        if ((enemiesGuardingTarget.size() * 2) <= myUnits.size())
-            return Mode.ATTACK;
+Die Bestimmung des Verhalten unserer Angreifern in der AttackingCombatPositioning-Klasse ist da schon komplexer. Mittels Breitensuche werden die Gegner zwischen uns und dem Ziel ermittelt. Falls der Gegner in Unterzahl ist wird angegriffen, indem der Modus auf ATTACK gesetzt wird. Andernfalls greift die \texttt{determineMode(...)} des DefaultCombatPositioning.
 
-        // fall back to default
-        return super.determineMode();
-    }
-\end{verbatim}
+TODO DISCUSS
+
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}
+@Override
+protected Mode determineMode() {
+    Tile clusterCenter = map.getClusterCenter(myUnits);
+    BreadthFirstSearch bfs = new BreadthFirstSearch(map);
+    int distanceToTarget = map.getSquaredDistance(clusterCenter, target);
+    List<Tile> enemiesGuardingTarget = bfs.floodFill(target, distanceToTarget, new GoalTest() {
+        @Override
+        public boolean isGoal(Tile tile) {
+            return enemyUnits.contains(tile);
+        }
+    });
+    if ((enemiesGuardingTarget.size() * 2) <= myUnits.size())
+        return Mode.ATTACK;
+
+    // fall back to default
+    return super.determineMode();
+}
+\end{lstlisting}
 
 Die bereits erwähnten Verhalten, nehmen folgende Positionierung der Ameisen vor.
 
 \subsubsection{FLEE}
 \label{sec:module.CombatSituation.DefaultCombatPositioning.Flee}
 
-Für jede Unit wird das sicherste Nachbarzelle mittels InfluenceMap bestimmt. Die Unit verschieb sich auf das sicherste Nachbarzelle, welche logischerweise vom Gegner entfernt liegt.
+Für jede Unit wird die sicherste Nachbarzelle mittels InfluenceMap bestimmt. Die Unit verschieb sich auf die sicherste Nachbarzelle, welche logischerweise vom Gegner entfernt liegt.
 
-\begin{verbatim}
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}
 for (Tile myUnit : myUnits) {
     nextMoves.put(myUnit, map.getSafestNeighbour(myUnit, influenceMap));
 }
-\end{verbatim}
+\end{lstlisting}
 
 \subsubsection{DEFEND}
 \label{sec:module.CombatSituation.DefaultCombatPositioning.Defend}
 
-Der Modus DEFEND wird wird verwendet um ein Ort, bei uns unsere eigenen Hügel, zu verteidigen. Der Algorithmus definiert sich wie folgt.
+Der Modus DEFEND wird verwendet um ein Ort, bei uns unsere eigenen Hügel, zu verteidigen. Der Algorithmus definiert sich wie folgt.
 
-\begin{verbatim}
- private void defendTarget() {
-	    // if no opponents are around, just position ourselves in the diagonals
-	    if (enemyUnits.isEmpty()) {
-	        move enemies to the diagonals of of the defend tile
-	    } else {
-	    		// some sides mustn't be defend because they are surrounded by water
-	        calculate sides to defend
-	        	        
-	        foreach(side in sides to defend) {
-	        		calculate attackers on this side
-	        		calculate clustercenter of  enemy
-	        		calculate defenders for this side
-	            calculate defend positions
-	            positioning of the defenders 
-	        }
-	    }
-    }
-\end{verbatim}
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}[caption=Algorithmus zur Verteidigung]
+private void defendTarget() {
+	// if no opponents are around, just position ourselves in the diagonals
+	if (enemyUnits.isEmpty()) {
+	    move enemies to the diagonals of of the defend tile
+	} else {
+		// some sides mustn't be defend because they are surrounded by water
+		calculate sides to defend
+			        
+		foreach(side in sides to defend) {
+				calculate attackers on this side
+				calculate clustercenter of  enemy
+				calculate defenders for this side
+		    calculate defend positions
+		    positioning of the defenders 
+		}
+	}
+}
+\end{lstlisting}
 
-Das ClusterCenter des Gegners ist jeweils der Schwerpunkt der Einheiten. Das Berechnen der Verteidiger je Seite beanspruchte im Code ein bisschen mehr als eine Zeile. Alle Ameisen die bereits in einer Richtung sind wo angegriffen wird, werden dieser Verteidigungsrichtung zugewiesen. Die restlichen Ameisen werden der Richtung zugewiesen von wo sich am meisten Angreifer nähern. So sind nun Verteidiger und Angreifer je Seite ausgemacht und es folgt die Positionierung. Das ClusterCenter des Gegners dient als Kreismittelpunkt. Der Radius ergibt sich zwischen dem ClusterCenter der Verteidiger und dem ClusterCenter des Gegners. Auf diesem Radius werden von unserem ClusterCenter aus mittels Breitensuche so viele Tiles zur Positionierung gesucht wie Verteidiger zur Verfügung stehen. Danach werden die Verteidiger auf den gefundenen Tiles positioniert.
+Das ClusterCenter des Gegners ist jeweils der Schwerpunkt aller Einheiten des Gegners und wir, wie später erklärt, für die Positionierung der eigenen Ameisen verwendet. Das Berechnen der Verteidiger je Seite beanspruchte im Code ein bisschen mehr als eine Zeile: Alle Ameisen die bereits in einer Richtung sind von welcher angegriffen wird, werden dieser Verteidigungsrichtung zugewiesen. Die restlichen Ameisen werden der Richtung zugewiesen von wo sich am meisten Angreifer nähern. So sind nun Verteidiger und Angreifer je Seite ausgemacht und es folgt die Positionierung.\\
+Das ClusterCenter des Gegners dient als Kreismittelpunkt (siehe schwarzer Kreis in Abb. \ref{fig.DefaultCombatPositioning}). Der Radius ergibt sich zwischen dem ClusterCenter der eigenen Verteidiger und dem ClusterCenter des Gegners. Auf diesem Kreisumfang werden, mit Start bei unserem ClusterCenter, mittels Breitensuche so viele Tiles zur Positionierung gesucht wie Verteidiger zur Verfügung stehen. Danach werden die Verteidiger auf den gefundenen Tiles positioniert.
 
 \begin{figure}[H]
 \centering
@@ -171,15 +180,16 @@ Das ClusterCenter des Gegners ist jeweils der Schwerpunkt der Einheiten. Das Ber
 \label{fig.DefaultCombatPositioning}
 \end{figure}
 
-Abbildung \ref{fig.DefaultCombatPositioning} zeigt wie die Tiles zur Positionierung für die südliche und die nördliche Verteidigung definiert werden. Die schwarzen Kreise siginfieren die ClusterCenter der beiden Kontrahenten. Die gefundenen Positionierungstiles für die nördliche Verteidigung liegen auf dem grauen Kreis und werden hellorangen dargestellt. Zu sehen ist auch, dass auf dem eigenen Hügel kein Positionierung möglich ist, hier sollen neue Ameisen schlüpfen können.\\
+Abbildung \ref{fig.DefaultCombatPositioning} zeigt wie die Tiles zur Positionierung für die südliche und die nördliche Verteidigung berechnet werden. Die schwarzen Kreise siginfieren die ClusterCenter der Kontrahenten. Die gefundenen Positionierungstiles für die nördliche Verteidigung liegen auf dem grauen Kreis und werden in der Abbildung hellorangen dargestellt. Zu sehen ist auch, dass auf dem eigenen Hügel kein Positionierung möglich ist, hier sollen neue Ameisen schlüpfen können.\\
 \\
-Die Idee dieser Positionierung ist, dass so eigene Ameisen gleich weit vom Zentrum des Gegners entfernt sind. Sobald der Gegner vorrückt muss er gegen mehrere Ameisen im Kampf antreten. Nachteil dieser Positionierung ist, dass wenn der Gegner nicht kompakt und nicht eine gleichförmige Angriffsformation hat, richten wir uns nur nach dem ClusterCenter aus, die einzelnen Gruppierungen der gegnerischen Ameisen werden nicht berücksichtigt, was ein Nachteil bei der Verteidigung zur Folge hat.\\
+Die Idee dieser Positionierung ist, dass so alle eigene Ameisen gleich weit vom Zentrum des Gegners entfernt sind. Sobald der Gegner vorrückt muss er gegen alle Ameisen gleichzeitig kämpfen. Nachteil dieser Positionierung ist, dass wenn der Gegner nicht kompakt angreift und nicht eine gleichförmige Angriffsformation hat, richten wir uns nur nach dem ClusterCenter aus, die einzelnen Gruppierungen der gegnerischen Ameisen werden nicht berücksichtigt, was ein Nachteil bei der Verteidigung zur Folge hat.\\
 Wir haben uns überlegt, dass eine Positionierung mit Hilfe der InfluenceMap diesen Nachteil beheben würde. Man könnte die neutralen Tiles die sich zwischen den Kontrahenten befindet mittels InfluenceMap herausfinden und als Front anschauen. Nach dieser Frontlinie würden wir uns dann unsere Einheiten ausrichten Leider fehlte uns hier die Zeit dies nachträglich noch zu programmieren und auszuprobieren.
 
 \subsubsection{ATTACK}
 \label{sec:module.CombatSituation.DefaultCombatPositioning.Attack}
 
-\begin{verbatim}
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}[caption=Algorithmus zur Berechnung der Angriffsformation]
  private void attackTarget() {
  		find all enemies in target direction
  		if(no enemies around){
@@ -192,6 +202,6 @@ Wir haben uns überlegt, dass eine Positionierung mit Hilfe der InfluenceMap dies
  			 positioning of the attackers
  		}
  }
-\end{verbatim}
+\end{lstlisting}
 
-Im ATTACK werden die Tiles zur Positionierung genau gleich berechnet wie vorhin im DEFEND-Modus. Nach der Berechnung wird geschaut wie viele unserer Angreifer schon auf diesen Tiles sind. Falls sich ein definierbarer Anteil der Ameisen bereits auf den Tiles befindet wird der Radius verkürzt. So werden Tiles berechnet die um eine Zelle näher beim Gegner sind. Danach folgt die Positionierung auf der Ameisen auf die berechneten Tiles.
+Im Verhalten ATTACK werden die Tiles zur Positionierung genau gleich berechnet wie vorhin im DEFEND-Modus. Nach der Berechnung wird geschaut wie viele unserer Angreifer schon auf diesen Tiles sind. Falls sich ein definierbarer Anteil der Ameisen bereits auf den Tiles befindet, gehen wir davon aus das sich unsere Ameisen formiert haben und wird der Radius verkürzt. Durch den verkürzten Radius werden Tiles berechnet die um eine Zelle näher beim Gegner sind. Danach folgt die Positionierung (Vorrücken) der Ameisen auf die berechneten Tiles.
