@@ -3,33 +3,32 @@
 
 \subsection{Der Wettbewerb}
 \label{sec:einleitung.Spielbeschrieb.wettbewerb}
-Die AI Challenge\footnote{\url{http://www.aichallenge.org}} ist ein internationaler Wettbwerb des University of Waterloo Computer Science Club der im Zeitraum Herbst 2011 bis Januar 2012 zum 3. Mal stattgefunden hat. Das Spiel in dieser 3. Ausführung war ein zugbasiertes Multiplayerspiel in welchem sich Ameisenvölker gegenseitig bekämpfen. Ziel in der AI-Challenge ist es, einen Bot zu schreiben, der die gegebenen Aufgaben mit möglichst intelligenten Algorithmen löst. Die zu lösenden Aufgaben der Ants AI Challenge sind die Futtersuche, das Explorieren der Karten, das Angreifen von gegnerischen Völkern und deren Ameisenhaufen sowie dem Schützen des eigenen Ameisenhaufen.
+Die AI Challenge ist ein internationaler Wettbwerb des University of Waterloo Computer Science Club der im Zeitraum Herbst 2011 bis Januar 2012 zum 3. Mal stattgefunden hat. Das Spiel in dieser 3. Ausführung war ein zugbasiertes Multiplayerspiel in welchem sich Ameisenvölker gegenseitig bekämpfen. Ziel in der AI-Challenge ist es, einen Bot zu schreiben, der die gegebenen Aufgaben mit möglichst intelligenten Algorithmen löst. Die zu lösenden Aufgaben der Ants AI Challenge sind die Futtersuche, das Explorieren der Karten, das Angreifen von gegnerischen Völkern und deren Ameisenhaufen sowie dem Verteidigen des eigenen Ameisenhaufen.
 
 \subsection{Spielregeln}
 \label{sec:einleitung.Spielbeschrieb.spielregeln}
-Nachfolgend sind die wichtigsten Regeln, die während dem Spiel berücksichtigt werden müssen, aufgelistet.
+Nachfolgend sind die wichtigsten Regeln, die während dem Spiel zu berücksichtigen sind, aufgelistet.
 \begin{itemize} 
 \item Pro Zug können alle Ameisen um ein Feld (vertikal oder horizontal) verschoben werden.
 \item Pro Zug steht insgesamt eine Rechenzeit von einer Sekunde zur Verfügung. Es dürfen keine Threads erstellt werden.
-\item Bewegt sich eine Ameise in die 4er Nachbarschaft eines Futterpixels, wird dieses eingesammelt. Beim nächsten Zug entsteht bei einem Ameisenhügel eine neue Ameise.
-\item Die Landkarte besteht aus passierbaren Landpixeln sowie unpassierbaren Wasserstellen.
+\item Nähert sich eine Ameise in die 4er Nachbarschaft einer Futterzelle, wird das Futter eingesammelt. Darauf entsteht im nächsten Zug eine neue Ameise aus dem Ameisenhügel.
+\item Die Landkarte besteht aus passierbaren Landzellen sowie unpassierbaren Wasserstellen.
 \item Ein Gegner wird geschlagen, wenn im Kampfradius der eigenen Ameise mehr eigene Ameisen stehen als gegnerische Ameisen im Kampfradius der Ameise, die angegriffen wird.
-\item Ein Gegner ist ausgeschieden wenn alle seine eigenen Ameisenhügel vom Gegner vernichtet wurden. Pro verlorenem Hügel gib es einen Punkteabzug. Pro feindlichen Hügel, der zerstört wird gibt es zwei Bonuspunkte.
-\item Steht nach einer definierbaren Zeit (Anzahl Züge) kein Sieger fest, wird der Sieger anhand der Punkte ermittelt. 
+\item Ein Gegner ist ausgeschieden wenn alle seine eigenen Ameisenhügel vom Gegner vernichtet wurden. Pro verlorenem Hügel gib es einen Punkteabzug. Pro zerstörten feindlichen Hügel gibt es zwei Bonuspunkte.
+\item Steht nach einer definierbaren Zeit (Anzahl Züge) kein Sieger fest, wird der Sieger anhand der erreichten Punkte ermittelt. 
 \end{itemize}
 Die ausführlichen Regeln können auf der Webseite nachgelesen werden: \url{http://aichallenge.org/specification.php}
 
 \subsection{Schnittstelle}
 \label{sec:einleitung.Spielbeschrieb.schnittstelle}
-Die Spielschnittstelle ist simpel gehalten. Nach jeder Spielrunde erhält der Bot das neue Spielfeld mittels String-InputStream, die Spielzüge gibt der Bot dem Spielcontroller mittels String-OutputStream bekannt. Unser MyBot leitet von der Basis-Klasse Bot\footnote{Die Klasse ist im Code unter ants.bot.Bot.Java auffindbar } ab. Ein Spielzug wird im folgendem Format in den Output-Stream gelegt:
+Die Spielschnittstelle ist simpel gehalten. Nach jeder Spielrunde erhält der Bot das neue Spielfeld mittels String-InputStream. Die Spielzüge gibt der Bot dem Spielcontroller mittels String-OutputStream bekannt. Unser MyBot leitet von der Basis-Klasse Bot\footnote{Die Klasse ist im Code unter ants.bot.Bot.Java auffindbar } ab. Ein Spielzug wird im folgendem Format in den Output-Stream gelegt:
 \newline
 \newline
 o <Zeile> <Spalte> <Richtung>
 \newline
 \newline
 Beispiel:
-\begin{verbatim}
-o 4 7 W
+\begin{verbatim}o 4 7 W
 \end{verbatim}
 Die Ameise wird von der Position Zeile 4 und Spalte 7 nach Westen bewegt.
 \newline

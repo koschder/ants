@@ -12,13 +12,13 @@ Für eine gründliche Analyse der Spiele sind ausführliche und konfigurierbare Log
 Abbildung \ref{fig:Logging} zeigt die wichtigsten Klassen des Logging-Frameworks. 
 \begin{itemize}
 \item
-\textbf{Logger:} Das Logger Interface definiert die Methoden, die aus dem Applikations-Code heraus zum Logging verwendet werden können. Die Methodennamen bezeichnen den LogLevel, als Argumente übergeben werden ein String mit der Logmeldung sowie eine Liste von zusätzlichen Parametern, die in die Logmeldung eingefügt werden soll. Die Methoden unterstützen alle die Java String Formatter Syntax. \footnote{\url{http://docs.oracle.com/javase/6/docs/api/java/util/Formatter.html\#syntax}}
+\textbf{Logger:} Das Logger Interface definiert die Methoden, die aus dem Applikations-Code heraus zum Logging verwendet werden können. Die Methodennamen (\texttt{debug(...)},\texttt{error(...)} etc.) bezeichnen den LogLevel, als Argumente übergeben werden ein String mit der Logmeldung sowie eine Liste von zusätzlichen Parametern, die in die Logmeldung eingefügt werden soll. Die Methoden unterstützen alle die Java String Formatter Syntax. \footnote{\url{http://docs.oracle.com/javase/6/docs/api/java/util/Formatter.html\#syntax}}
 \item
 \textbf{DefaultLogger:} Unsere Standardimplementierung des Logger Interfaces. Der DefaultLogger hat jeweils eine LogCategory und ein LogFile, in das er seine Meldungen schreibt.
 \item
 \textbf{LogFile:} Das LogFile ist für eine einzelne Log-Datei zuständig; alle Logger, die in eine bestimmte Log-Datei schreiben wollen, greifen auf dieselbe LogFile Instanz zu. Die ''physische`` Datei auf dem Dateisystem wird von der LogFile Instanz erst erstellt, wenn die erste Log-Meldung geschrieben werden soll.
 \item
-\textbf{LogCategory:} Jede Log-Meldung gehört zu einer Kategorie. Dieses Interface bietet den verwendenden Modulen die Möglichkeit, eigene Kategorien zu definieren; das Logging-Framework selber definiert keine Kategorien. Mit der Methode useCustomLogFile() kann für eine Kategorie bestimmt werden, ob sie in das globale LogFile oder ein eigenes loggen soll. Dadurch kann die \"Ubersichtlichkeit in den Log-Dateien gesteigert werden.
+\textbf{LogCategory:} Jede Log-Meldung gehört zu einer Kategorie. Dieses Interface bietet den verwendenden Modulen die Möglichkeit, eigene Kategorien zu definieren; das Logging-Framework selber definiert keine Kategorien. Mit der Methode useCustomLogFile() kann für eine Kategorie bestimmt werden, ob sie in das globale LogFile oder ein eigenes loggt. Dadurch kann die \"Ubersichtlichkeit in den Log-Dateien gesteigert werden.
 \item
 \textbf{LoggerFactory:} Sämtliches Erstellen von Logger-Instanzen läuft über die LoggerFactory. Sie stellt sicher, dass LogFile-Instanzen wiederverwendet werden und erstellt jeweils einen passenden Logger.
 \end{itemize}
@@ -92,6 +92,6 @@ Das angezeigte Popup zeigt welchen Task (GatherFoodTask) die Ameise hat, wo sie 
 
 \section{Profile und Logging}
 \label{sec:module.Logging.Profile}
-Mit der Einführung der Profile gewannen wir die Möglichkeit, mehrere Kopien unseres Bots mit unterschiedlichen Konfigurationen gegeneinander antreten zu lassen. Dazu mussten wir aber die Logfiles so voneinander trennen, dass die Logs der verschiedenen Bots isoliert sind. Die Logfiles werden daher jetzt in ein Unterverzeichnis mit dem Namen des konfigurierten Profils geschrieben.
+Mit der Einführung der Profile gewannen wir die Möglichkeit, mehrere Kopien unseres Bots mit unterschiedlichen Konfigurationen gegeneinander antreten zu lassen. Dazu mussten wir aber die Logfiles so voneinander trennen, dass die Logs der verschiedenen Bots isoliert sind. Die Logfiles werden daher neu in ein Unterverzeichnis mit dem Namen des konfigurierten Profils geschrieben.
 
 Für das LiveInfo Log, das für das Javascript Addon geschrieben wird, verzichteten wir auf eine solche Erweiterung, da so viel Information für mehrere Bots nur schwer übersichtlich darzustellen wäre. Stattdessen bauten wir einen Schalter in den Code ein, mit dem das LiveInfo vorübergehend deaktiviert werden kann, um Konflikte zwischen den Bots zu vermeiden.

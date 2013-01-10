@@ -38,7 +38,7 @@ Als nächstes führten wir einen Testlauf gegen den Sieger des Wettbewerbs durch. 
 	\label{tab:testAgainstXathis}
 \end{table}
 
-Gegen diesen starken Gegner zeigen sich bereits deutlichere Unterschiede zwischen den Profilen. Man sieht, dass die beiden offensiver ausgerichteten Profile (Aggressive und Expansive) sich deutlich besser schlagen, während das Defensive Profil deutlich abfällt. Dies entspricht in etwa unseren Erwartungen. Die Stärken von xathis' Bot liegen eindeutig in der Offensive, während die Defensive nicht das Prunkstück unseres Bots ist. Deshalb können wir in der Verteidigung gegen xathis fast nur verlieren und haben eine grössere Chance, wenn wir selber in die Offensive gehen.
+Gegen diesen starken Gegner zeigen sich bereits deutlichere Unterschiede zwischen den Profilen. Man sieht, dass die beiden offensiver ausgerichteten Profile (Aggressive und Expansive) sich deutlich besser schlagen, während das Defensive Profil klar abfällt. Dies entspricht in etwa unseren Erwartungen. Die Stärken von xathis' Bot liegen eindeutig in der Offensive, während die Defensive nicht das Prunkstück unseres Bots ist. Deshalb können wir in der Verteidigung gegen xathis fast nur verlieren und haben eine grössere Chance, wenn wir selber in die Offensive gehen.
 
 Als nächstes liessen wir unsere 4 Profile gegeneinander antreten:
 
@@ -102,7 +102,7 @@ Alles in allem waren aber diese Standard-Profile noch mehr oder weniger gleichwe
 	\label{tab:testAgainstXathis2}
 \end{table}
 
-Aus Tabelle \ref{tab:testAgainstXathis2} sieht man, dass die neuen Profile gegen xathis eher schlechter abschnitten, aber die Unterschiede zum 1. Testlauf sind nur gering.
+Aus Tabelle \ref{tab:testAgainstXathis2} sieht man, dass die neuen Profile gegen xathis eher schlechter abschnitten, die Unterschiede zum 1. Testlauf sind aber nur gering.
 
 \begin{table}[H]
 	\centering
@@ -118,8 +118,8 @@ Aus Tabelle \ref{tab:testAgainstXathis2} sieht man, dass die neuen Profile gegen
 	\label{tab:test4Profile2}
 \end{table}
 
-Wie Tabelle \ref{tab:test4Profile2} zeigt, waren die Unterschiede zwischen den neuen Profilen im Kampf gegeneinander schon deutlich sichtbarer. Die extremeren Profile weisen alle eine deutlich schlechtere Bilanz auf, wobei die Defensive Konfiguration noch am besten fährt. Gegen diese Profile ist unsere ausgewogene Standardkonfiguration aber bereits ein deutlicher Sieger.
+Wie Tabelle \ref{tab:test4Profile2} zeigt, waren die Unterschiede zwischen den neuen Profilen im Kampf gegeneinander schon deutlich sichtbarer. Die extremeren Profile weisen alle eine deutlich schlechtere Bilanz auf, wobei die Defensive Konfiguration noch am besten davon kommt. Gegen diese Profile ist unsere ausgewogene Standardkonfiguration aber bereits ein deutlicher Sieger.
 
 \subsection{TestReader}
 \label{sec:module.Testreader}
-Für die Auswertung der Testläufe haben wir ein kleines Zusatzmodul geschrieben, das aus den Spielberichten der Spielengine die relevanten Informationen auslesen kann. Es besteht lediglich aus einer einzelnen Klasse (\texttt{TestReader} mit einer main() Methode. Es liest aus dem Log-Verzeichnis die *.replay Dateien (Spielberichte im Json-Format) ein, parsed sie mit Hilfe der Simple-Json Bibliothek und erstellt eine CSV-Datei mit den wichtigsten Ergebnissen aus den einzelnen Spielen. Ausserdem wird eine zusätzlich CSV-Datei ausgegeben, die die Ergebnisse aggregiert, und zwar ungefähr in der Form, wie sie in diesem Kapitel in den Tabellen ersichtlich ist.
+Für die Auswertung der Testläufe haben wir ein kleines Zusatzmodul geschrieben, das aus den Spielberichten der Spielengine die relevanten Informationen auslesen kann. Es besteht lediglich aus einer einzelnen Klasse (\texttt{TestReader} mit einer main() Methode. Es liest aus dem Log-Verzeichnis die *.replay Dateien (Spielberichte im Json-Format) ein, parsed sie mit Hilfe der Simple-Json Bibliothek und erstellt eine CSV-Datei mit den Schlussergebnissen aus den einzelnen Spielen. Ausserdem wird eine zusätzlich CSV-Datei ausgegeben, die die Ergebnisse aggregiert, und zwar ungefähr in der Form, wie sie in diesem Kapitel in den Tabellen ersichtlich ist.
