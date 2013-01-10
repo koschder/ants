@@ -14,7 +14,7 @@ Der Algorithmus für die Breitensuche ist in \cite{AIMA} beschrieben und wurde na
 Die Breitensuche wurde generisch implementiert, so dass sie vielseitig einsetzbar ist. So können zum Beispiel mittels 'GoalTest' je nach Anwendungsfall die Tiles beschrieben werden die gesucht sind. Folgende Breitensuche findet die Ameise welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Die Suche wird initialisiert indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 Zellen entspricht. Falls keine Ameise gefunden wird gibt der Algorithmus NULL zurück.
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}
+\begin{lstlisting}[caption={Anwendungsbeispiel Breitensuche}]
 AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
 Tile food = new Tile(20,16);
 Tile antClosestToFood = bfs.findSingleClosestTile(food, 40, new GoalTest() {
@@ -32,7 +32,7 @@ Der gleiche Algorithmus kann aber auch alle passierbaren Tiles in einem gewissen
 Dieser Flood Fill Algorithmus ist praktisch identisch mit der Breitensuche. Eine Beschreibung von Flood Fill befindet sich in \cite{ARTIFICIALINTELLIGENCEFORGAMES}.
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}
+\begin{lstlisting}[caption={Anwendungsbeispiel FloodFill}]
 public DefendHillMission(Tile myhill) {
     this.hill = myhill;
     BreadthFirstSearch bfs = new BreadthFirstSearch(Ants.getWorld());
@@ -75,7 +75,7 @@ Eine Erweiterung der Breitensuche ermöglicht uns eine Sperre in der Umgebung ein
 Der Algorithmus ist in der Methode \texttt{getBarrier(...)} implementiert. Diese wird aufgerufen mit den Parametern \texttt{tileToProtect} (Ort der durch eine Sperre geschützt werden soll), \texttt{viewRadiusSquared} (den Sichtradius der Einheiten), denn die Sperre soll weiter entfernt sein als der Sichtradius, damit die gegnerischen Einheiten nicht sehen was sich dahinter verbirgt. Der dritte Parameter \texttt{maximumBarrierSize} definiert, welche Breite die Sperre maximal haben darf.
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}
+\begin{lstlisting}[caption={Algorithmus für Barrier-Suche}]
 public Barrier getBarrier(final Tile tileToProtect, int viewRadiusSquared, int maximumBarrierSize) {
 
 	//BFS for getting the amount of tiles in view radius around the location to defend.
