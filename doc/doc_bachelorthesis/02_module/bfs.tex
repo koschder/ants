@@ -50,6 +50,15 @@ Um die Aufrufe der Suche im Ants-Umfeld einfacher zu gestalten haben wir die Bre
 \label{fig:BFSants}
 \end{figure}
 
+\subsection{Warum Breitensuche?}
+\label{subsec:module.Suchalgorithmen.Breitensuche.Alternativen}
+Bei der Wahl des Suchalgorithmus orientierten wir uns stark an \cite[S.~64-109]{AIMA}, wo die wichtigsten Suchalgorithmen beschrieben und nach verschiedenen Kriterien beurteilt werden. Für eine detailliere Diskussion über die Eigenschaften der Algorithmen sei auf diese Seiten verwiesen; an dieser Stelle wollen wir nur kurz aufzeigen, nach welchen Kriterien wir uns für die Breitensuche entschieden haben.
+
+Abgesehen von der Pfadsuche, bei der wir auf die heuristischen Algorithmen A* und HPA* setzten, waren unsere Anforderungen bei der Suche meist so geartet, dass eine Heuristik entweder nicht existiert, oder keine Vorteile bringt. Wenn wir beispielsweise für ein Nahrungs-\gls{Tile} die nächste Ameise suchen wollen, ist das Ziel der Suche ja nicht bekannt, und daher kann keine sinnvolle Heuristik definiert werden. Es blieb also nur die Frage, welche der verfügbaren nicht-heuristischen Algorithmen wir einsetzen wollten. 
+
+Die wichtigsten Anforderungen an den Such-Algorithmus waren die Vollständigkeit (Wenn eine Lösung existiert, muss sie gefunden werden), und die Optimalität (Eine gefundene Lösung muss die kleinsten Kosten aller existierenden Lösungen haben). Damit fiel bereits die Tiefensuche weg. Die Uniform-Cost Suche machte im Kontext von Ants keinen Sinn, da in diesem Spiel jeder Schritt immer die Kosten 1 hat. Eine Bidirektionale Suche war ebenfalls nicht praktikabel, da wir ja das Ziel der Suche meist nicht kennen. Daher mussten wir uns lediglich noch zwischen der Iterativen Tiefensuche und der Breitensuche entscheiden; die Entscheidung fiel zugunsten der Breitensuche aus, weil sie einfacher zu implementieren ist, und weil wir damit auch gleich einen geeigneten Flood Fill Algorithmus implementieren konnten.
+
+Was für unsere Entscheidung keine Rolle spielte, waren die Zeit- und Raum-Komplexität der Algorithmen; die konkreten Anwendungsfälle für die Suche waren klein genug, dass die Unterschiede vernachlässigbar waren.
 
 \subsection{Barrier (Sperre)}
 \label{subsec:module.Suchalgorithmen.Breitensuche.Barrier}
