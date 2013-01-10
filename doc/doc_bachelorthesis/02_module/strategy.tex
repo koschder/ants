@@ -1,6 +1,11 @@
 \chapter{Strategie und Taktik}
 \label{sec:module.StrategieTaktik}
 
+Im Strategy-Modul haben wir verschiedene Algorithmen für strategische und taktische Entscheidungen implementiert. 
+
+Auf der strategischen Ebene ist das wichtigste Konzept das der \gls{InfluenceMap}, aus der wir zahlreiche Informationen über die Spielsituation ablesen können. Die \gls{InfluenceMap} wurde von Lukas Kuster bereits im Rahmen des Moduls ''Informatikseminar`` im Frühlings-Semester 2012 behandelt \cite{infoseminar:IM}, weshalb uns die Vorteile dieser Technik bekannt waren.
+
+Auf der taktischen Ebene bildeten wir die Kampfsituationen mit dem Combat Positioning ab, das wir von Grund auf selber entwickelten.
 
 \section{Influence Map}
 \label{sec:module.InfluenceMap}
@@ -11,24 +16,29 @@
 \label{fig.strategyInfluence}
 \end{figure}
 
-Die InfluenceMap haben wir nach den Beschreibungen in \cite{ARTIFICIALINTELLIGENCEFORGAMES} implementiert. Jede bekannte Spieleinheit auf der Spielkarte 'strahlt' eine gewissen Einfluss aus. In unserer Implementation unterscheiden wir zwischen drei Einflussradien, der Angriffsradius, der erweiterte Angriffsradius und der Sichtradius. Den Radien haben wir folgende Werte zugewiesen. 
+Die \gls{InfluenceMap} haben wir grundsätzlich nach den Beschreibungen in \cite{ARTIFICIALINTELLIGENCEFORGAMES} implementiert; zusätzliche Ideen wie das Konzept des Zerfalls (Decay) wurden aus \cite{aigamedev:IM} übernommen. Jede bekannte Spieleinheit auf der Spielkarte ''strahlt`` eine gewissen Einfluss aus. In unserer Implementation unterscheiden wir zwischen drei Einflussradien: Dem Angriffsradius, dem erweiterten Angriffsradius und dem Sichtradius. Entsprechend dem Abstand von der Einheit haben wir den \gls{Tile}s in der Umgebung einer Einheit folgende Werte zugewiesen: 
 
 \renewcommand{\arraystretch}{1.5}
 \begin{table}[H]
 	\centering
+	%weird hack to enable footnotes in the table
+	\begin{minipage}{8cm}
+    \centering
 \begin{tabular}{l | r r}
- Radius & Wert & Radius in Tiles* \\
+ \textbf{Radius} & \textbf{Wert} & \textbf{Radius in Tiles}\footnote{Der Radius kann je nach Spieleinstellungen ändern. Angegeben sind die Standardwerte.} \\
 \hline
  Angriffsradius & 50 & 2.2 \\
  Erweiterter Angriffsradius & 30 & 5  \\
  Sichtradius & 10 & 8.8 \\
- \end{tabular}
+ \end{tabular}\par
+		\vspace{-0.75\skip\footins}
+   \renewcommand{\footnoterule}{}
+  \end{minipage}
 \caption{Einfluss einer Spieleinheit}
 \end{table}
  
- * Der Radius kann je nach Spieleinstellungen ändern. Angegeben sind die Defaultwerte.
 
-Wir verenden die InfluenceMap vorallem für die Bestimmung der Sicherheit. Abgebildet ist eine Sicherheitskarte (Desirability Map) für den orangen Spieler, wobei die Einflusswerte des Gegners von den Einflusswerten des eigenen Spielers je Tile subtrahiert werden. Positive Werte bedeuten sicheres Terrain und negative Werte unsicheres, vom Gegner kontrolliertes Gebiet.
+Wir verwenden die \gls{InfluenceMap} vor allem für die Bestimmung der Sicherheit. Abgebildet ist eine Sicherheitskarte (Desirability Map) für den orangen Spieler, wobei die Einflusswerte des Gegners von den Einflusswerten des eigenen Spielers je \gls{Tile} subtrahiert werden. Positive Werte bedeuten sicheres Terrain und negative Werte unsicheres, vom Gegner kontrolliertes Gebiet.
 
 \begin{figure}[H]
 \centering
@@ -37,51 +47,56 @@ Wir verenden die InfluenceMap vorallem für die Bestimmung der Sicherheit. Abgebi
 \label{fig.InfluenceMap01}
 \end{figure}
 
-\subsection{Update}
+\subsection{Berechnung und Update}
 \label{subsec:module.InfluenceMap.Update}
 
-Die InfluenceMap wird zu Beginn des Spiels initialisiert, danach wird vor jeder Spielrunde ein Update gemacht. Dabei definiert ein Decay-Wert zwischen 0 und 1, wieviel von den alten Werten beibehalten wird. Folgende Formel bestimmt den neuen Wert für jede Zelle:
+Die \gls{InfluenceMap} wird zu Beginn des Spiels initialisiert, danach wird vor jeder Spielrunde ein Update gemacht. Dabei definiert ein Decay\footnote{engl.: Zerfall}-Wert zwischen 0 und 1, wieviel von den alten Werten beibehalten wird. Folgende Formel bestimmt den neuen Wert für jede Zelle:
 
 
 \(val_{(x,y)} = val_{(x,y)} * decay + newval_{(x,y)} * (1-decay)\)
 
+Für die Berechnung der \gls{InfluenceMap} haben wir auf unsere FloodFill-Implementierung (s. Kapitel \ref{subsec:module.Suchalgorithmen.Breitensuche}) zurückgegriffen; dadurch war automatisch sichergestellt, dass Einheiten ihren Einfluss nicht über unpassierbare \gls{Tile}s hinweg ausüben können.
 
 \subsection{Anwendungsfälle}
 \label{subsec:module.InfluenceMap.Anwendungsfälle}
 
-In folgenden Modulen berücksichtigen wir Werte aus InfluenceMap um Entscheide zu fällen.
+In folgenden Modulen berücksichtigen wir Werte aus der \gls{InfluenceMap}, um Entscheide zu fällen.
 
 \begin{itemize}
 \item
-\textbf{Pfadsuche mit InfluenceMap Berücksichtigung}: Siehe Kapitel \ref{subsec:module.Suchalgorithmen.Pfadsuche.WithInfluenceMap}
+\textbf{Ressourcenverwaltung}: Die Ressourcenverwaltung greift z.T. auf Informationen aus der \gls{InfluenceMap} zurück (s. Kapitel \ref{sec:module.resourceMgmt}).
 \item
-\textbf{CombatSituation: Flucht}: Müssen wir die Flucht ergreifen, bewegen wir unsere Ameise auf das nächste sicherste Tile.
+\textbf{Pfadsuche mit \gls{InfluenceMap} Berücksichtigung}: Siehe Kapitel \ref{subsec:module.Suchalgorithmen.Pfadsuche.WithInfluenceMap}
 \item
-\textbf{Abbruch Mission}: Falls eine Ameise auf einer andere Mission als die GatherFoodMission ist und ein FoodTile in seiner Nähe antrifft, wird abgewogen ob die Mission zu Gunsten von Futter sammeln abgebrochen werden soll. Dabei ist ein Entscheidungsfaktor auch die 'Sicherheit' des Futters. Falls das Futter nicht auf einem sicheren Weg geholt werden kann, wird die Mission nicht abgebrochen.
+\textbf{Combat Positioning}: Müssen wir die Flucht ergreifen, bewegen wir unsere Ameise auf das sicherste \gls{Tile} in der Nachbarschaft.
+\item
+\textbf{Abbruch Mission}: Falls eine Ameise auf einer andere Mission als einer GatherFoodMission ist und ein Nahrungs-\gls{Tile} in seiner Nähe antrifft, wird abgewogen ob die Mission zu Gunsten von Futter sammeln abgebrochen werden soll. Dabei ist ein Entscheidungsfaktor auch die 'Sicherheit' des Futters. Falls das Futter nicht auf einem sicheren Weg geholt werden kann, wird die Mission nicht abgebrochen.
 \end{itemize}
 
-Natürlich könnte man die InfluenceMap auch für weitere Entscheidungen verwenden. Auch der Einsatz von Spannungskarte (Tension Map), welche auch auf den Werten InfluenceMap aufbaut, wäre denkbar. Dies wurde während dieser Arbeit nicht angeschaut bzw. implementiert.
+Natürlich könnte man die \gls{InfluenceMap} noch für diverse weitere Entscheidungen verwenden. Auch der Einsatz einer Spannungskarte (Tension Map), welche auch auf den Werten \gls{InfluenceMap} aufbaut, wäre denkbar. Dies wurde während dieser Arbeit nicht angeschaut bzw. implementiert.
 
 
-\section{Combat Situations}
+\section{Combat Positioning}
 \label{sec:module.CombatSituation}
 
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{91_bilder/strategyTacticsCombat}
-\caption{CombatPositioning Klassendiagramm}
+\caption{Combat Positioning Klassendiagramm}
 \label{fig.strategyTacticsCombat}
 \end{figure}
 
-Kampfsituationen treten immer dann auf wenn gegnerische Ameisen auf unsere Ameisen treffen. Zum Beispiel wenn ein gegnerischer Hügel angegriffen wird, oder der eigene Hügel verteidigt werden muss. Eine Kampfsituation kann sich aber auch sonst wo auf der Karte ereignen.
+Kampfsituationen treten immer dann auf wenn gegnerische Ameisen auf unsere Ameisen treffen. Die entscheidendsten Kämpfe ereignen sich, wenn ein gegnerischer Hügel angegriffen wird oder der eigene Hügel verteidigt werden muss. Eine Kampfsituation kann sich aber auch sonst irgendwo auf der Karte ereignen.
 
-\subsection{DefaultCombatPositioning}
+\subsection{Klassen des Combat Positioning}
 \label{sec:module.CombatSituation.DefaultCombatPositioning}
 
-DefaultCombatPositioning implementiert das Interface CombatPositioning und führt die Positionierung für die drei Verhalten FLEE, DEFEND, ATTACK an. Das Verhalten wird in der Methode \texttt{determineMode(...)} wie folgt bestimmt, wobei das 'DEFAULT' Verhalten dem ATTACK-Verhalten entspricht. (Das Verhalten 'CONTROL' wurde nicht implementiert.
+\subsubsection{DefaultCombatPositioning} 
+
+DefaultCombatPositioning implementiert das Interface CombatPositioning, was bedeutet, dass über die Methode \texttt{getNextTile(Unit)} für alle Einheiten, die in die Berechnung einbezogen werden, jeweils der nächste Spielzug zurückgegeben werden muss. Das DefaultCombatPositioning unterstützt die verschiedenen Positionierungs-Verhalten (\texttt{Mode}); welches Verhalten jeweils zum Einsatz kommt, wird durch die Methode \texttt{determineMode()} bestimmt.
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}
+\begin{lstlisting}[caption={Standard-Implementierung von determineMode()}]
 protected Mode determineMode() {
     final boolean enemyIsSuperior = enemyUnits.size() > myUnits.size();
     if (enemyIsSuperior)
@@ -90,27 +105,25 @@ protected Mode determineMode() {
 }
 \end{lstlisting}
 
-Wenn nicht ein DefaultCombatPositioning initialisiert wird, sondern ein AttackingCombatPositioning (in der AttackHillMission) oder ein DefendingCombatPositioning (in der DefendHillMission) so wird das Verhalten anders bestimmt, indem die \texttt{determineMode(...)}  Methode überschrieben ist.\\
-\\
-\textbf{DefendingCombatPositioning}
+Die \texttt{determineMode()}-Methode ist jeweils in den Unterklassen von DefaultCombatPositioning überschrieben.
 
-Hier wird immer das 'DEFEND' Verhalten ausgewählt, aus dem Grund, dass die Verteidiger sich nicht zu weit vom Hügel entfernen in dem sie den Gegner attackieren und der Hügel von einer anderen Seite eingenommen wird. In Unterzahl sollen die Verteidiger auch nicht flüchten, sondern trotzdem Versuchen den Hügel zu verteidigen. Hier könnte man sich Gedanken machen ob die Verteidiger, falls in Überzahl, die Gegner nicht bis zu einem gewissen Punkt angreifen sollen. Dieser Möglichkeit sind wir aber nicht weiter nach gegangen.
+\subsubsection{DefendingCombatPositioning}
+
+Hier wird immer das ''DEFEND`` Verhalten ausgewählt, aus dem Grund, dass die Verteidiger sich nicht zu weit vom Hügel entfernen dürfen, indem sie den Gegner attackieren, da sonst der Hügel von einer anderen Seite eingenommen werden kann. In Unterzahl sollen die Verteidiger auch nicht flüchten, sondern trotzdem versuchen den Hügel zu verteidigen. Hier könnte man sich Gedanken machen ob die Verteidiger, falls in Überzahl, die Gegner nicht bis zu einem gewissen Punkt angreifen sollen. Dieser Möglichkeit sind wir aber nicht weiter nach gegangen.
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}
+\begin{lstlisting}[caption={determineMode() im DefendingCombatPositioning}]
 protected Mode determineMode() {
     return Mode.DEFEND;
 }
 \end{lstlisting}
 
-\textbf{AttackingCombatPositioning}
+\subsubsection{AttackingCombatPositioning}
 
-Die Bestimmung des Verhalten unserer Angreifern in der AttackingCombatPositioning-Klasse ist da schon komplexer. Mittels Breitensuche werden die Gegner zwischen uns und dem Ziel ermittelt. Falls der Gegner in Unterzahl ist wird angegriffen, indem der Modus auf ATTACK gesetzt wird. Andernfalls greift die \texttt{determineMode(...)} des DefaultCombatPositioning.
-
-TODO DISCUSS
+Die Bestimmung des Verhaltens unserer Angreifer in der AttackingCombatPositioning-Klasse ist da schon komplexer. Mittels Breitensuche werden die Gegner zwischen uns und dem Ziel ermittelt. Falls der Gegner in Unterzahl ist, wird angegriffen, indem der Modus auf ATTACK gesetzt wird. Andernfalls greift die \texttt{determineMode()} des DefaultCombatPositioning.
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}
+\begin{lstlisting}[caption={determineMode() im AttackingCombatPositioning}]
 @Override
 protected Mode determineMode() {
     Tile clusterCenter = map.getClusterCenter(myUnits);
@@ -130,15 +143,17 @@ protected Mode determineMode() {
 }
 \end{lstlisting}
 
-Die bereits erwähnten Verhalten, nehmen folgende Positionierung der Ameisen vor.
+\subsection{Verhalten des Combat Positioning}
+\label{sec:module.CombatSituation.Verhalten}
+Die bereits erwähnten Verhalten (Modi) nehmen folgende Positionierung der Ameisen vor.
 
 \subsubsection{FLEE}
 \label{sec:module.CombatSituation.DefaultCombatPositioning.Flee}
 
-Für jede Unit wird die sicherste Nachbarzelle mittels InfluenceMap bestimmt. Die Unit verschieb sich auf die sicherste Nachbarzelle, welche logischerweise vom Gegner entfernt liegt.
+Für jede Einheit wird die sicherste Nachbarzelle mittels \gls{InfluenceMap} bestimmt. Die Einheit verschieb sich auf die sicherste Nachbarzelle, welche logischerweise vom Gegner entfernt liegt.
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}
+\begin{lstlisting}[caption=Algorithmus zur Flucht]
 for (Tile myUnit : myUnits) {
     nextMoves.put(myUnit, map.getSafestNeighbour(myUnit, influenceMap));
 }
@@ -147,7 +162,7 @@ for (Tile myUnit : myUnits) {
 \subsubsection{DEFEND}
 \label{sec:module.CombatSituation.DefaultCombatPositioning.Defend}
 
-Der Modus DEFEND wird verwendet um ein Ort, bei uns unsere eigenen Hügel, zu verteidigen. Der Algorithmus definiert sich wie folgt.
+Der Modus DEFEND wird verwendet, um einen Ort (bei uns einen eigenen Hügel) zu verteidigen. Der Algorithmus funktioniert wie folgt:
 
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}[caption=Algorithmus zur Verteidigung]
@@ -156,7 +171,7 @@ private void defendTarget() {
 	if (enemyUnits.isEmpty()) {
 	    move enemies to the diagonals of of the defend tile
 	} else {
-		// some sides mustn't be defend because they are surrounded by water
+		// some sides needn't be defend because they are surrounded by water
 		calculate sides to defend
 			        
 		foreach(side in sides to defend) {
@@ -170,20 +185,22 @@ private void defendTarget() {
 }
 \end{lstlisting}
 
-Das ClusterCenter des Gegners ist jeweils der Schwerpunkt aller Einheiten des Gegners und wir, wie später erklärt, für die Positionierung der eigenen Ameisen verwendet. Das Berechnen der Verteidiger je Seite beanspruchte im Code ein bisschen mehr als eine Zeile: Alle Ameisen die bereits in einer Richtung sind von welcher angegriffen wird, werden dieser Verteidigungsrichtung zugewiesen. Die restlichen Ameisen werden der Richtung zugewiesen von wo sich am meisten Angreifer nähern. So sind nun Verteidiger und Angreifer je Seite ausgemacht und es folgt die Positionierung.\\
-Das ClusterCenter des Gegners dient als Kreismittelpunkt (siehe schwarzer Kreis in Abb. \ref{fig.DefaultCombatPositioning}). Der Radius ergibt sich zwischen dem ClusterCenter der eigenen Verteidiger und dem ClusterCenter des Gegners. Auf diesem Kreisumfang werden, mit Start bei unserem ClusterCenter, mittels Breitensuche so viele Tiles zur Positionierung gesucht wie Verteidiger zur Verfügung stehen. Danach werden die Verteidiger auf den gefundenen Tiles positioniert.
+Das ClusterCenter des Gegners ist jeweils der Schwerpunkt aller Einheiten des Gegners und wird, wie später erklärt, für die Positionierung der eigenen Ameisen verwendet. Das Berechnen der Verteidiger je Seite beanspruchte im Code ein bisschen mehr als eine Zeile: Alle Ameisen die bereits auf der Seite sind, von welcher angegriffen wird, werden dieser Verteidigungsrichtung zugewiesen. Die restlichen Ameisen werden der Richtung zugewiesen von wo sich am meisten Angreifer nähern. So sind nun Verteidiger und Angreifer je Seite ausgemacht und es folgt die Positionierung.
+
+Das ClusterCenter des Gegners dient als Kreismittelpunkt (siehe schwarzer Kreis in Abb. \ref{fig.DefaultCombatPositioning}). Der Radius ergibt sich zwischen dem ClusterCenter der eigenen Verteidiger und dem ClusterCenter des Gegners. Auf diesem Kreisumfang werden, mit Start bei unserem ClusterCenter, mittels Breitensuche so viele \gls{Tile}s zur Positionierung gesucht wie Verteidiger zur Verfügung stehen. Danach werden die Verteidiger auf den gefundenen \gls{Tile}s positioniert.
 
 \begin{figure}[H]
 \centering
 \includegraphics[height=40mm]{91_bilder/DefendingCombatSituation00}
-\caption{DefaultCombatPositioning: Berechnung der Tiles für die Positionierung}
+\caption{Berechnung der Tiles für die Positionierung}
 \label{fig.DefaultCombatPositioning}
 \end{figure}
 
-Abbildung \ref{fig.DefaultCombatPositioning} zeigt wie die Tiles zur Positionierung für die südliche und die nördliche Verteidigung berechnet werden. Die schwarzen Kreise siginfieren die ClusterCenter der Kontrahenten. Die gefundenen Positionierungstiles für die nördliche Verteidigung liegen auf dem grauen Kreis und werden in der Abbildung hellorangen dargestellt. Zu sehen ist auch, dass auf dem eigenen Hügel kein Positionierung möglich ist, hier sollen neue Ameisen schlüpfen können.\\
-\\
-Die Idee dieser Positionierung ist, dass so alle eigene Ameisen gleich weit vom Zentrum des Gegners entfernt sind. Sobald der Gegner vorrückt muss er gegen alle Ameisen gleichzeitig kämpfen. Nachteil dieser Positionierung ist, dass wenn der Gegner nicht kompakt angreift und nicht eine gleichförmige Angriffsformation hat, richten wir uns nur nach dem ClusterCenter aus, die einzelnen Gruppierungen der gegnerischen Ameisen werden nicht berücksichtigt, was ein Nachteil bei der Verteidigung zur Folge hat.\\
-Wir haben uns überlegt, dass eine Positionierung mit Hilfe der InfluenceMap diesen Nachteil beheben würde. Man könnte die neutralen Tiles die sich zwischen den Kontrahenten befindet mittels InfluenceMap herausfinden und als Front anschauen. Nach dieser Frontlinie würden wir uns dann unsere Einheiten ausrichten Leider fehlte uns hier die Zeit dies nachträglich noch zu programmieren und auszuprobieren.
+Abbildung \ref{fig.DefaultCombatPositioning} zeigt wie die \gls{Tile}s zur Positionierung für die südliche und die nördliche Verteidigung berechnet werden. Die schwarzen Kreise bezeichnen jeweils die ClusterCenter der Kontrahenten. Die gefundenen Positionierungstiles für die nördliche Verteidigung liegen auf dem grauen Kreis und werden in der Abbildung hellorange dargestellt. Zu sehen ist auch, dass auf dem eigenen Hügel keine Positionierung möglich ist, hier sollen neue Ameisen schlüpfen können.
+
+Die Idee dieser Positionierung ist, dass so alle eigene Ameisen gleich weit vom Zentrum des Gegners entfernt sind. Sobald der Gegner vorrückt muss er gegen alle Ameisen gleichzeitig kämpfen. Nachteil dieser Positionierung ist, dass wenn der Gegner nicht kompakt angreift und nicht eine gleichförmige Angriffsformation hat, richten wir uns nur nach dem ClusterCenter aus, die einzelnen Gruppierungen der gegnerischen Ameisen werden nicht berücksichtigt, was einen Nachteil bei der Verteidigung darstellt.
+
+Wir haben uns überlegt, dass eine Positionierung mit Hilfe der \gls{InfluenceMap} diesen Nachteil beheben würde. Man könnte die neutralen \gls{Tile}s die sich zwischen den Kontrahenten befindet mittels \gls{InfluenceMap} herausfinden und als Front anschauen. Nach dieser Frontlinie würden wir uns dann unsere Einheiten ausrichten Leider fehlte uns hier die Zeit dies nachträglich noch zu programmieren und auszuprobieren.
 
 \subsubsection{ATTACK}
 \label{sec:module.CombatSituation.DefaultCombatPositioning.Attack}
@@ -204,4 +221,4 @@ Wir haben uns überlegt, dass eine Positionierung mit Hilfe der InfluenceMap dies
  }
 \end{lstlisting}
 
-Im Verhalten ATTACK werden die Tiles zur Positionierung genau gleich berechnet wie vorhin im DEFEND-Modus. Nach der Berechnung wird geschaut wie viele unserer Angreifer schon auf diesen Tiles sind. Falls sich ein definierbarer Anteil der Ameisen bereits auf den Tiles befindet, gehen wir davon aus das sich unsere Ameisen formiert haben und wird der Radius verkürzt. Durch den verkürzten Radius werden Tiles berechnet die um eine Zelle näher beim Gegner sind. Danach folgt die Positionierung (Vorrücken) der Ameisen auf die berechneten Tiles.
+Im Verhalten ATTACK werden die \gls{Tile}s zur Positionierung genau gleich berechnet wie vorhin im DEFEND-Modus. Nach der Berechnung wird geschaut, wie viele unserer Angreifer schon auf diesen \gls{Tile}s sind. Falls sich ein definierter Anteil der Ameisen bereits auf den \gls{Tile}s befindet, gehen wir davon aus das sich unsere Ameisen formiert haben und der Radius wird verkürzt. Durch den verkürzten Radius werden \gls{Tile}s berechnet die um eine Zelle näher beim Gegner sind. Danach folgt die Positionierung (Vorrücken) der Ameisen auf die berechneten \gls{Tile}s.
