@@ -24,9 +24,9 @@ Der MissionTask führt alle bestehenden Missionen aus. In der \texttt{setup()}-Me
 
 Nun, da alle Missionen inklusive Ameisen initialisiert wurde, werden diese ausgeführt. Für die Ausführungen haben wir die Missionen nach Typ in der Reihenfolge EXPLORE, COMBAT, DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS sortiert. Zuerst sollen die Missionen EXPLORE und COMBAT ausgeführt werden, aus dem Grund, dass diese Missionen keine neue Ameisen verlangen. Sie kommen mit den Ameisen aus, die sie zu Beginn der Mission zugeteilt bekamen. Falls nun das Missionsziel von EXPLORE oder COMBAT erreicht wurde (\texttt{mission.isComplete()}), die Mission nicht mehr gültig ist (\texttt{!mission.isValid()}) oder keine Züge für die Mission errechnet werden konnten (\texttt{mission.isAbandoned()}), so wird die Mission aufgelöst und die Ameisen werden für die nachfolgenden Missionen DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS freigegeben.
 
-Die Missionen DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS sind auch überlegt angeordnet. Falls die DEFEND\_HILL Missionen Verstärkung bei der Verteidigung brauchen, sind sie darauf angewiesen, dass sie Ameisen rekrutieren können, die möglichst schnell zum Hügel gelangen. Es wäre ungünstig, wenn die nahe gelegenen Ameisen einer ATTACK\_HILLS- oder einer GATHER\_FOOD-Mission beitreten und so die DEFEND\_HILL-Mission Ameisen von weiter weg herbeirufen müsste. GATHER\_FOOD wird vor ATTACK\_HILLS aufgerufen, da Ameisen die nahe bei einer Futterzelle sind das Futter einsammeln sollen und nicht, oder erst später, am Angriff teilnehmen.
+Die Missionen DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS sind auch überlegt angeordnet. Falls die DEFEND\_HILL Missionen Verstärkung bei der Verteidigung brauchen, sind sie darauf angewiesen, dass sie Ameisen rekrutieren können, die möglichst schnell zum Hügel gelangen. Es wäre ungünstig, wenn die nahe gelegenen Ameisen einer ATTACK\_HILLS- oder einer GATHER\_FOOD-Mission beitreten und so die DEFEND\_HILL-Mission Ameisen von weiter weg herbeirufen müsste. GATHER\_FOOD wird vor ATTACK\_HILLS aufgerufen, da Ameisen, die nahe bei einer Futterzelle sind das Futter einsammeln sollen und nicht, oder erst später, am Angriff teilnehmen.
 
-Je nach Spielsituation oder Profil des Bots, könnte man in Erwägung ziehen, die Reihenfolge vor dem Spiel oder dynamisch zu ändern. Dies wurde aber nicht weiter betrachtet.
+Je nach Spielsituation oder Profil des Bots könnte man in Erwägung ziehen, die Reihenfolge vor dem Spiel oder dynamisch zu ändern. Dies wurde aber nicht näher betrachtet.
 
 \subsection{GatherFoodTask}
 \label{subsec:implementation.Tasks.GatherFoodTask}
@@ -38,20 +38,21 @@ Für jeden eigenen Hügel wird eine Verteidigungsmission erstellt. Ab wann und wie
 
 \subsection{AttackHillsTask}
 \label{subsec:implementation.Tasks.AttackHillsTask}
-Sobald gegnerische Ameisenhaufen sichtbar sind, sollen diese angegriffen werden. Je gegnerischen Ameisenhaufen wird eine AttackHillMission erstellt. Die Mission ist für das Rekrutieren der Ameisen zuständig, die Mission kann also zu Beginn ohne Ameisen erstellt werden.
+Sobald gegnerische Ameisenhaufen sichtbar sind, sollen diese angegriffen werden. Je gegnerischen Ameisenhaufen wird eine AttackHillMission erstellt. Die Mission ist selber für das Rekrutieren der Ameisen zuständig, die Mission kann also zu Beginn ohne Ameisen erstellt werden.
+
+\subsection{ExploreTask}
+\label{subsec:implementation.Tasks.ExploreTask}
+Für alle noch unbeschäftigten Ameisen wird mittels ManhattanDistance der nächste Ort gesucht der unerforscht ist. Mittels Pfadsuchalgorithmus wir der Pfad dorthin berechnet und daraus eine ExploreMission erstellt. Die Ameise wird den Pfad in den nächsten Spielzügen ablaufen. Sobald die ganze Spielkarte erforscht ist, schickt der Task die Ameisen in Gebiete, die momentan nicht sichtbar sind. (\gls{FogofWar})
 
 \subsection{CombatTask}
 \label{subsec:implementation.Tasks.CombatTask}
 
-In diesem Task landen alle Ameisen, bei jenen die vorgängigen Missionen abgebrochen wurden, da eine Überzahl an Gegnern in der Nähe waren. Der Task gruppiert die Ameisen nach deren Örtlichkeit. Die Gruppen werden mit dem AttackingCombatPositioning für den Kampf positioniert. Die Positionierung ist nur für einen Zug, danach werden die Ameisen, falls sich die Lage entschärft hat, wieder einer Mission zugeteilt, oder bleiben "`unbeschäftigt"' (unemployed) und landen wieder in diesem Task.
+In diesem Task landen alle Ameisen, bei jenen die vorgängigen Missionen abgebrochen wurden, da eine Überzahl an Gegnern in der Nähe waren. Der Task gruppiert die Ameisen nach deren Örtlichkeit. Die Gruppen werden mit dem AttackingCombatPositioning für den Kampf positioniert. Die Positionierung ist nur für einen Zug, danach werden die Ameisen, falls sich die Lage entschärft hat, wieder einer Mission zugeteilt, oder bleiben ''unbeschäftigt`` (unemployed) und landen wieder in diesem Task.
 
-\subsection{ExploreTask}
-\label{subsec:implementation.Tasks.ExploreTask}
-Für alle noch unbeschäftigten Ameisen wird mittels ManhattanDistance der nächste Ort gesucht der unerforscht ist. Mittels Pfadsuchalgorithmus wir der Pfad dorthin berechnet und daraus eine ExploreMission erstellt. Die Ameise wird den Pfad in den nächsten Spielzügen ablaufen. Sobald die ganze Spielkarte erforscht ist, schickt der Task die Ameisen in Gebiete die momentan nicht sichtbar sind. (\gls{FogofWar})
 
 \subsection{ClearHillTask}
 \label{subsec:implementation.Tasks.ClearHillTask}
-Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel 'schlüpfen', vom Hügel weg. So werden nachfolgende Ameisen nicht blockiert. Es wird keine Mission erstellt, der Task bewegt die Ameise nur eine Zelle vom Hügel weg.
+Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel ''schlüpfen``, vom Hügel weg. Die meisten dieser Ameisen werden zwar bereits von anderen Tasks mit Arbeit versorgt, aber dieser Task stellt sicher, dass nachfolgende Ameisen nicht blockiert werden. Es wird keine Mission erstellt, der Task bewegt die Ameise nur eine Zelle vom Hügel weg.
 
 \subsection{ClusteringTask}
 \label{subsec:implementation.Tasks.ClusteringTask}
@@ -63,8 +64,8 @@ Der ClusteringTask wird als Vorbereitung für den HPA* Algorithmus verwendet. Hie
 Leider waren nicht alle Task-Implementation von Nutzen. Sie halfen nicht den Bot zu verbessern. Hier eine  Auflistung welche Tasks wir verworfen haben.
 
 \begin{itemize}
-	\item \textbf{FollowTask:} Der FollowTask ist für Ameisen angedacht welche aktuell keine Aufgabe haben. Diese Ameisen sollen einer nahegelegenen, beschäftigten Ameise folgen. Er wurde verworfen, da wir das Problem der unbeschäftigten Ameisen minimieren konnten.
+	\item \textbf{FollowTask:} Der FollowTask ist für Ameisen angedacht welche aktuell keine Aufgabe haben. Diese Ameisen sollen einer nahegelegenen, beschäftigten Ameise folgen. Er wurde verworfen, da wir das Problem der unbeschäftigten Ameisen sinnvoller minimieren konnten.
 	\item \textbf{SwarmTask:} Hier war die Idee, dass bei einem Angriff auf einen gegnerischen Hügel die Ameisen sich auf Weghälfte zu einem Schwarm vereinen und danach den Hügel angreifen. Leider war diese Idee erfolglos, da zu viel Zeit verstrich bis sich die Ameisen gesammelt haben. Zudem war der Sammelpunkt manchmal ungünstig gelegen. (Schwer erreichbar oder in gegnerischen Gebiet).
-		\item \textbf{FlockTask:} Geordnete Fortbewegung der Ameisen, verworfen bzw. in CombatSituation übernommen.
+		\item \textbf{FlockTask:} Geordnete Fortbewegung der Ameisen, verworfen bzw. in Combat Positioning übernommen.
 		\item \textbf{ConcentrateTask:} Ameisen an einem bestimmten Ort auf der Karte sammeln. Der Task wird beim aktuellsten Bot nicht verwendet.
 \end{itemize}
