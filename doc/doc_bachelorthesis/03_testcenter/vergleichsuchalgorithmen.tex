@@ -1,5 +1,64 @@
 \section{Performance Suchalgorithmen}
 \label{sec:testCenter.PerformanceSuchalgorithmen}
 
-Die entwickelten Suchstrategien werden in diesem Kapitel verglichen. Zum Vergleich wird eine Test Karte der Grösse 100 x 110 Tiles verwendet, auf welcher die Pfadsuchalgorithmen angewendet werden. Die Strategie Simple wir nicht in den Vergleich einbezogen, da diese wie beschreiben nur für kurze Pfade einsetzbar ist. Dafür wird der HPA* mit zwei verschiedenen Clustergrössen 10 \& 25 angewendet.
+Die entwickelten Suchstrategien werden in diesem Kapitel verglichen. Zum Vergleich wird eine Testkarte der Grösse 100 x 110 Tiles verwendet, auf dieser werden die Pfadsuchalgorithmen angewendet. Die Suchstrategie SIMPLE wird nicht in den Vergleich einbezogen, diese ist wie beschreiben nur für kurze Pfade einsetzbar. Dafür wird der HPA* mit zwei verschiedenen Clustergrössen 14 \& 20, sowie den unterschiedlichen Typen Corner und Centered angewendet. Der erste Test beinhaltet zwei Durchgänge bei welchen jeweils ein anderer Start- und Zielort definiert wurde.
 
+\begin{table}[H]
+	%weird hack to enable footnotes in the table
+	\begin{minipage}{20cm}
+
+		\begin{tabular}{ l | r  r  | r  r | r r }
+		
+		&  \multicolumn{2}{l|}{\textbf{1. Durchlauf}} & \multicolumn{2}{l|}{\textbf{2. Durchlauf}} &
+		\multicolumn{2}{l}{\textbf{Durchschnitt}} \\
+		
+		\textbf{Suchalgorithmus} & \textbf{Dauer\footnote{Dauer in Millisekunden}} & \textbf{Pfadlänge\footnote{Pfadlänge in Anzahl Tiles}} & \textbf{Dauer} &
+		\textbf{Pfadlänge} & \textbf{Dauer} & \textbf{Pfadlänge}  \\
+		\hline
+		
+		A* & 124.6 & 95 & 101.2 & 95 & 112.9 &	95 \\
+		HPA* (Centered,14)\footnote{Typ: Centered, Clustergrösse: 14} & 167.6 & 99 & 25.2 & 107 & 96.4 & 103\\
+		HPA* (Corner,14) & 2677.4 & 117 & 2394.6 & 117 & 2536 & 117 \\
+		HPA* (Centered,20)  & 6.4 & 106 & 60 & 137 & 33.2 & 121.5 \\
+		HPA* (Corner,20) & 22 & 113 & 231 & 133 & 126.5 & 123 \\
+		\end{tabular}\par
+		\vspace{-0.75\skip\footins}
+   \renewcommand{\footnoterule}{}
+  \end{minipage}
+	\caption{Testresultate: Vergleich der Suchalgorithmen}
+	\label{tab:testSearchAlgorithms}
+\end{table}
+
+
+
+In der Tabelle \ref{tab:testSearchAlgorithms} sind die Testresultate aufgelistet. Zu sehen ist, dass nur A* den optimalsten Pfad von 95 Tiles findet in ca. 120 Millisekunden findet. HPA* mit Typ Corner und mit der kleinerer Clustergrösse von 14 Tiles ist langsamer als A*. Dies ist darauf zurückzuführen, dass mit dieser Einstellung das Pfadnetz von HPA* zu feinmaschig ist. Um den Pfad zu finden müssen viele Kanten und Knoten der geclusterten Karte durchforscht werden. Das dauert länger als bei A*, wo die Nachfolgerknoten einfach aus einem zweidimensionalen Array gelesen werden. Der Typ Centered ist deutlich eher schneller als der Typ Corner, da er in etwa nur halb so viele Pfadknoten. (siehe Kapitel \ref{subsec:module.Suchalgorithmen.Pfadsuche.HPAstar}) Sobald die Clustergrösse auf 20 Tiles gestellt wird, ist HPA* deutlich schneller als A*. Allgemein muss aber gesagt werden, dass es sehr darauf an kommt ob die Geländestruktur dem Clustering entgegenkommt, so dass die Verbindungspunkte günstig gelegen sind und einen Pfad gefunden werden kann der nicht zu viele Umwege macht. Die folgende Abbildung zeigt wie die verschiedene Suchalgorithmen den Pfad zwischen den zwei schwarzen Punkten gefunden haben.
+
+\begin{figure}[H]
+\centering
+\includegraphics[height=100mm]{91_bilder/searchcompare}
+\caption[A* Pfadsuche]{Vergleich der gefundenen Pfade: Viele Wege führen nach Rom.}
+\label{fig:comapreSearchStrategies}
+\end{figure}
+
+Allerdings wurde beim ersten Tests der Pfad nicht gesmoothed, auch die Zeit, welche es brauchte um die Karte in Cluster aufzuteilen, ist nicht berücksichtigt. Nachfolgender Test berücksichtigt nun diese zwei Aspekte.
+
+\begin{table}[H]
+	%weird hack to enable footnotes in the table
+	\begin{minipage}{20cm}
+
+		\begin{tabular}{ l | r r r r r }
+		
+		\textbf{Suchalgorithmus} & \textbf{Clustering} & \textbf{Pfadsuche} & \textbf{PathSmoothing} & 
+		\textbf{Pfadlänge 1}\footnote{ohne Smoothing} & \textbf{Pfadlänge 2}\footnote{mit Smoothing}  \\
+		\hline		
+		A* & - & 95 ms & - & 95 & -  \\
+		HPA* (Centered,20)  & 484 ms & 4 ms & 16 ms & 127 & 119 \\
+		\end{tabular}\par
+		\vspace{-0.75\skip\footins}
+   \renewcommand{\footnoterule}{}
+  \end{minipage}
+	\caption{Testresultate: Dauer, mit Berücksichtigung von Clustering und PathSmoothing}
+	\label{tab:totalDuration}
+\end{table}
+
+Um die ganze Karte zu Clustern braucht es einmalig Total 484 Millisekunden. Während dem Spiel verteilt sich der Aufwand für das Clustering auf mehrere Züge und ist deswegen nicht kritisch. Wenn wir einen geglätteten HPA* wollen brauchen wir ca. 20 ms pro Suche, für den optimalen Pfad mit A* 95 ms. Wenn wir also HPA* verwenden, sparen rund 70 ms pro Pfadsuche. Wenn man berücksichtigt, dass pro Zug für mehrere Ameisen ein Pfad gesucht wird, lohnt sich der Einsatz von HPA* allemal.
