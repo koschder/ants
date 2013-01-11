@@ -99,6 +99,10 @@ List<Tile> path = pf.search(PathFinder.Strategy.AStar, ant.getTile(), foodTile,1
 
 Eine Pfadsuche A* über alle Zellen der Spielkarte ist sehr teuer, da es viel Pfade gibt, die zum Teil nur eine oder wenige Tiles nebeneinander liegen. Es werden bis zum Schluss verschiedenen Pfaden nachgegangen, die sehr ähnlich sind. Abhilfe zu dieser sehr feinmaschigen Pfadsuche bietet der Hierarchical Pathfinding A* bei welchem die Karte in Regionen (Cluster) aufgeteilt wird. Von Cluster zu Cluster werden Verbindungspfade vorberechnet, welche der Algorithmus bei der Pfadsuche verwendet.
 
+\subsubsection{Wieso wir HPA* gewählt haben}
+Die Suche mit A* geht so lange gut, wie wir noch nicht so viele Ameisen haben und uns nur beschränkt auf der Karte bewegen. Sobald aber das Spiel fortgeschritten ist, wir viele Ameisen haben und uns auf der ganzen Karte bewegen, geht zu viel Zeit in der Pfadsuche verloren. Dies wollten wir verbessern und stiessen auf den HPA* Algorithmus. Dieser passt gut in unser Spiel, denn so können wir in den Anfangsphasen des Spiel, wo wir noch Zeit zur Verfügung haben, die Pfade dank dem Clustering vorberechnen und können so später im Spiel diese Zeit sparen.\\
+Die Implementation erfolgte nach Anlehnung an das Paper \cite{nohpa:IM}. Wobei sich im Gegensatz zum Paper unsere Clusters um eine Zelle überschneiden. Zudem wird im Paper nur die Clusterart die wir später 'Corner' nennen beschrieben. Die Clusterart 'Centered' haben wir dazu programmiert.
+
 \subsubsection{Clustering}
 Das Clustering wird während dem ClusteringTask (siehe \ref{sec:module.Tasks}) ausgeführt, Dabei wird die Landkarte, wie bereits erwähnt, in sogenannte Clusters unterteilt. Auf dem Bild \ref{fig.clusteredMap} wurde die Karte in 16 Clusters aufgeteilt.
 
