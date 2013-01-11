@@ -167,21 +167,21 @@ private void determineMode() {
 \subsubsection{Default-Modus}
 \label{subsubsec:module.Mission.DefendHillMission.DefaultModus}
 
-Hier wird jegentlich berechnet, wie viele Ameisen den Hügel angreifen. Die Angreifer und die Verteidiger werden dem DefendingCombatPositioning übergeben, dieses berechnet die Positionen der Ameisen. Es ist einstellbar ab welchem Zug die DefendHillMission Ameisen für die Verteidigung rekrutiert. Zudem kann mit dem Parameter \texttt{DEFENDER\_MORETHAN\_ATTACKERS} definiert werden wie viele Ameisen mehr als die Anzahl Angreifer rekrutiert werden. Ameisen werden von der Mission entlassen wenn weniger Angreifer als Verteidiger, unter der Berücksichtigung des erwähnten Parameter, gezählt werden.
+Hier wird lediglich berechnet, wie viele Ameisen den Hügel angreifen. Die Angreifer und die Verteidiger werden dem DefendingCombatPositioning übergeben, dieses berechnet dann die Züge für die Ameisen. Es ist einstellbar, ab welchem Zug die DefendHillMission auch dann Ameisen für die Verteidigung rekrutiert, wenn gar keine Angreifer in Sichtweite sind. Zudem kann mit dem Parameter \texttt{DEFENDER\_MORETHAN\_ATTACKERS} definiert werden, wie viele Ameisen mehr als die Anzahl Angreifer rekrutiert werden. Ameisen werden von der Mission entlassen, wenn weniger Angreifer als Verteidiger, unter der Berücksichtigung dieses Parameters, gezählt werden.
 
 \subsubsection{Barrier-Modus}
 \label{subsubsec:module.Mission.DefendHillMission.BarrierModus}
 
-Wie schon erwähnt, kann dieser Modus nur eintreffen wenn die Geländegegebenheiten stimmen. Ziel ist Engpässe auszunutzen um mit möglichst wenigen Ameisen zu verteidigen. Eine weitere Idee der Verwendung von einer Sperre ist, dass durch die Sperre der Gegners die Umgebung dahinter nicht erkunden kann. So bekommt er unseren Hügel nie zu Gesicht und dadurch eventuell auch kein Angriff. Diese Art zu Verteidigen hat den Nachteil, dass die Ameisen welche für die Sperre benötigt werden, entsprechend statisch platziert werden. Diese können dann nicht für andere Aufgaben verwendet werden.\\
-\\
-Die Sperre wurde gegen Xathis getestet und sie zeigte nur eine geringe Wirkung. Der Bot von Xathis wartet vor der Sperre bis er in Überzahl ist und überrumpeln dann unsere Verteidigung. Erstaunlicher Weise wird die Sperre von Greentea (zweitbester Bot), auch wenn er in Überzahl ist, nicht angegriffen. Gegen diesen Gegner war die Sperre also gutes Mittel zur Verteidigung.\\
-\\
-Die Funktionsweise ist wie folgt. Es werden je nach Breite der Sperre entsprechend viele Ameisen zur Position der Sperre geschickt um diese aufzubauen. Die Ameisen stellen sich paarweise hintereinander auf, solange keine Gegner in der Nähe sind. So können eigene Ameisen die einer anderen Aufgabe nachgehen die Sperre passieren. Wenn der Gegner sich in Überzahl nähert, wird die Sperre geschlossen. Danach wird das Kampfverhalten dem AttackingCombatPositioning überlassen, welches die Positionierung übernimmt.
+Wie schon erwähnt, kann dieser Modus nur eintreffen, wenn die Geländegegebenheiten stimmen. Ziel ist es, Engpässe auszunutzen um mit möglichst wenigen Ameisen zu verteidigen. Eine weitere Idee der Verwendung einer Sperre ist, dass durch die Sperre der Gegner die Umgebung dahinter nicht erkunden kann. So bekommt er unseren Hügel nie zu Gesicht und wird dadurch eventuell auch keinen Angriff starten. Diese Art zu verteidigen hat den Nachteil, dass die Ameisen welche für die Sperre benötigt werden, entsprechend statisch platziert werden. Diese können dann nicht für andere Aufgaben verwendet werden.
+
+Die Sperre wurde gegen Xathis\footnote{Der Sieger-Bot des Wettbewerbs} getestet und sie zeigte nur eine geringe Wirkung. Der Bot von Xathis wartet vor der Sperre bis er in Überzahl ist und überrumpeln dann unsere Verteidigung. Erstaunlicherweise wird die Sperre von Greentea (zweitbester Bot), auch wenn er in Überzahl ist, nicht angegriffen. Gegen diesen Gegner war die Sperre also gutes Mittel zur Verteidigung.
+
+Die Funktionsweise ist wie folgt: Es werden je nach Breite der Sperre entsprechend viele Ameisen zur Position der Sperre geschickt um diese aufzubauen. Die Ameisen stellen sich paarweise hintereinander auf, solange keine Gegner in der Nähe sind. So können eigene Ameisen, die einer anderen Aufgabe nachgehen, die Sperre passieren. Wenn der Gegner sich in Überzahl nähert, wird die Sperre geschlossen. Danach wird das Kampfverhalten dem AttackingCombatPositioning überlassen, welches die Positionierung übernimmt.
 
 \begin{figure}[H]
 \centering
 \includegraphics[height=40mm]{91_bilder/barrierCloseExample}
-\caption{Die Sperre wird geschlossen und trotz gegnerischer Überzahl nicht angegriffen. (Gegner: Greentea)}
+\caption[Eine geschlossene Sperre zur Verteidigung]{Die Sperre wird geschlossen und trotz gegnerischer Überzahl nicht angegriffen. (Gegner: Greentea)}
 \label{fig:CloseBarrier}
 \end{figure}
 
@@ -197,7 +197,7 @@ Die Funktionsweise ist wie folgt. Es werden je nach Breite der Sperre entspreche
 		\textbf{Postcondition}& Definierter Erkundungspfad wurde zurückgelegt\\
 		\textbf{Max. Ants}& 1\\
 		\textbf{Max. Missionen}& unbegrenzt\\
-		\textbf{Valid}& oft, siehe Beschreibung\\
+		\textbf{Valid}& Wird oft abgebrochen, wenn interessante Objekte in der Umgebung entdeckt werden, siehe Beschreibung\\
 		\textbf{Gather Ants}& nicht möglich \\
 		\textbf{Release Ants}& nicht möglich \\
 		\end{tabular}\par
@@ -208,12 +208,12 @@ Die Funktionsweise ist wie folgt. Es werden je nach Breite der Sperre entspreche
 	\label{tab:porpertiesExploreMission}
 \end{table}
 
-Die ExploreMission wird verwendet um die Spielkarte zu erkunden. Die Ameise läuft den vom ExploreTask vorgegebenen Pfad ab. Falls dieser ungültig ist, weil er zum Beispiel durch Wasser führt oder die Ameise sich nicht bewegen kann, da die Ameise durch eine andere Ameise blockiert wird, so wird die Mission abgebrochen. Die Mission wird auch abgebrochen, wenn Futter in der Nähe ist, wenn ein gegnerischer Hügel oder gegnerische Ameisen auftauchen oder wenn ein eigener Hügel in der Nähe Hilfe braucht.
+Die ExploreMission wird verwendet, um die Spielkarte zu erkunden. Die Ameise läuft den vom ExploreTask vorgegebenen Pfad ab. Falls dieser ungültig ist, weil er zum Beispiel durch Wasser führt oder die Ameise sich nicht bewegen kann, da die Ameise durch eine andere Ameise blockiert wird, so wird die Mission abgebrochen. Die Mission wird auch abgebrochen, wenn Futter in der Nähe ist, wenn ein gegnerischer Hügel oder gegnerische Ameisen auftauchen, oder wenn ein eigener Hügel in der Nähe Hilfe braucht.
 
 \begin{figure}[H]
 \centering
 \includegraphics[height=40mm]{91_bilder/exploreMission}
-\caption{Eine Ameise auf einer ExploreMission bewegt sich in Richtung \gls{FogofWar}}
+\caption[Erkundungsmission]{Eine Ameise auf einer ExploreMission bewegt sich in Richtung \gls{FogofWar}}
 \label{fig:exploreMission}
 \end{figure}
 
@@ -240,10 +240,10 @@ Die ExploreMission wird verwendet um die Spielkarte zu erkunden. Die Ameise läuf
 	\label{tab:porpertiesGatherFoodMission}
 \end{table}
 
-Diese Mission koordiniert die Futtersuche und verwaltet die Ameisen, welche Futter einsammeln. Es wird nur eine GatherFoodMission zu Beginn des Spiels erstellt. Sie berechnet welche Ameise am nächsten bei einer Futterzelle ist, berechnet den Pfad und schickt die Ameise Zug um Zug in Richtung Futter. Die \texttt{execute()}-Methode der GatherFoodMission sieht wie folgt aus:
+Diese Mission koordiniert die Futtersuche und verwaltet die Ameisen, welche Futter einsammeln. Es wird nur eine GatherFoodMission zu Beginn des Spiels erstellt. Sie berechnet, welche Ameise am nächsten bei einer Futterzelle ist, berechnet den Pfad und schickt die Ameise Zug um Zug in Richtung Futter. Die \texttt{execute()}-Methode der GatherFoodMission sieht wie folgt aus:
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}[caption=Ablauf von \texttt{execute()} während der GatherFoodMission]
+\begin{lstlisting}[caption=execute() Methode der GatherFoodMission]
 @Override
 public void execute() {
 	// check the existing routes, if they are still valid.
@@ -255,13 +255,12 @@ public void execute() {
 }
 \end{lstlisting}
 
-Bei \texttt{checkAntsRoutes()} wird geprüft ob die Pfadrouten aller Ameisen in der Mission noch gültig sind. Ungültige Pfade sind, wenn die Futterzelle von der eigenen Ameise oder einer gegnerischen Ameise gefressen wurde. Ameisen mit einem ungültigen Pfad werden von der Mission entlassen, können aber in der nächsten Methode \texttt{gatherAnts()}, falls eine Aufgabe gefunden für die Ameise gefunden wird, der Mission wieder beitreten. Die Logik der \texttt{gatherAnts()} Methode ist in folgenden Codebeispiel vereinfacht dargestellt.
+Bei \texttt{checkAntsRoutes()} wird geprüft, ob die Pfade aller Ameisen in der Mission noch gültig sind. Ungültige Pfade sind, wenn die Futterzelle von der eigenen Ameise oder einer gegnerischen Ameise gefressen wurde. Ameisen mit einem ungültigen Pfad werden von der Mission entlassen, können aber in der nächsten Methode \texttt{gatherAnts()}, falls eine geeignete Aufgabe für die Ameise gefunden wird, der Mission wieder beitreten. Die Logik der \texttt{gatherAnts()} Methode ist in Listing \ref{lst:gatherAnts} vereinfacht dargestellt.
 
-TODO CAPTION wird abgeschnitten
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}[caption=Berechnung welche Ameise welches Futter einsammelt.]
+\begin{lstlisting}[caption=Berechnung, welche Ameise welches Futter einsammelt., label=lst:gatherAnts]
 foreach(food on map){
-	if(there is an ant in food mission, which is gathering this food tile with a path smaller than 5)
+	if(there is an ant gathering this food tile with a path smaller than 5)
 		continue;
 	Ant ant = getNearestAntWithBreadthFirstSearch();
 	if(ant found)
@@ -284,21 +283,21 @@ foreach(Route r in possibleRoutes){
 }
 \end{lstlisting}
 
-Zum Schluss folgt die \texttt{moveAnts()}-Methode. Hier werden die Ameisen auf ihrem Pfad zur Futterzelle ein Zug weiter bewegt. Die Züge werden der Orders-Klasse (Befehlsverwaltung) übergeben.
+Zum Schluss folgt die \texttt{moveAnts()}-Methode. Hier werden die Ameisen auf ihrem Pfad zur Futterzelle einen Zug weiter bewegt. Die Züge werden der Orders-Klasse (Befehlsverwaltung) übergeben.
 
 \begin{figure}[H]
 \centering
 \includegraphics[height=40mm]{91_bilder/gatherfood}
-\caption{Ameisen am Futter einsammeln.}
+\caption{Ameisen beim Futter sammeln.}
 \label{fig:gatherfood}
 \end{figure}
 
-Links ist zu sehen wie für beide Ameisen ein Futterpfad definiert ist, beide Ameisen folgen ihrem Pfad. Zwei Züge später (rechtes Bild) hat die Ameise links ihr Futter eingesammelt und steht für eine neue Aufgabe zur Verfügung. Der beschriebene Algorithmus merkt, dass die Ameise näher an der Futterzelle oben im Bild ist und löst die andere Ameise, welche bis dahin auf das Futter zu steuerte, von der Aufgabe ab. Die rechte Ameise wird von der GahterFoodMission entlassen und geht einer anderen Beschäftigung (hier ExploreMission) nach.
+Links ist zu sehen wie für beide Ameisen ein Futterpfad definiert ist, beide Ameisen folgen ihrem Pfad. Zwei Züge später (rechtes Bild) hat die Ameise links ihr Futter eingesammelt und steht für eine neue Aufgabe zur Verfügung. Der beschriebene Algorithmus merkt, dass die Ameise näher an der Futterzelle oben im Bild ist und löst die andere Ameise, welche bis dahin auf das Futter zu steuerte, von der Aufgabe ab. Die rechte Ameise wird von der GatherFoodMission entlassen und geht einer anderen Beschäftigung nach (hier ExploreMission).
 
 \subsection{Verworfene und nicht verwendete Mission}
 \label{subsec:implementation.Tasks.StupidMission}
 
-Wie bereits im Kapitel Task erwähnt war nicht alles programmierte erfolgreich. Hier sind die Missionen aufgelistet die zu den verworfen oder nicht verwendeten Tasks gehören. (Begründungen siehe Tasks)
+Wie bereits im Kapitel Task erwähnt, war nicht alles Programmierte erfolgreich. Hier sind die Missionen aufgelistet die zu den verworfen oder nicht verwendeten Tasks gehören. (Begründungen siehe Tasks)
 
 \begin{itemize}
 \item \textbf{SwarmPathMission}
