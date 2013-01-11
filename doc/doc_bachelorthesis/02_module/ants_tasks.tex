@@ -40,7 +40,8 @@ Sobald gegnerische Ameisenhaufen sichtbar sind, sollen diese angegriffen werden.
 
 \subsection{CombatTask}
 \label{subsec:implementation.Tasks.CombatTask}
-Dieser Task macht was?
+
+In diesem Task landen alle Ameisen, bei jenen die vorgängigen Missionen abgebrochen wurden, da eine Überzahl an Gegnern in der Nähe waren. Der Task gruppiert die Ameisen nach deren Örtlichkeit. Die Gruppen werden mit dem AttackingCombatPositioning für den Kampf positioniert. Die Positionierung ist nur für einen Zug, danach werden die Ameisen, falls sich die Lage entschärft hat, wieder einer Mission zugeteilt, oder bleiben "`unbeschäftigt"' (unemployed) und landen wieder in diesem Task.
 
 \subsection{ExploreTask}
 \label{subsec:implementation.Tasks.ExploreTask}
