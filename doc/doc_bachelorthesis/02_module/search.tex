@@ -161,7 +161,7 @@ List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, start, end, -1);
 Die Influence Map, welche wir während der Bachelorarbeit neu implementiert haben, kann auch für die Pfadsuche verwendet werden. Dabei sind die Pfadkosten für Gebiete die vom Gegner kontrolliert sind höher als für neutrale Gebiete und tiefer für solche Gebiete die von unseren Ameisen kontrolliert werden. (Details zur Implementierung der InfluenceMap sieh Kapitel \ref{sec:module.InfluenceMap}) Die Methode getActualCost(...) in der Klasse SearchStrategy wurde erweitert. Falls die Suche mit einer InfluenceMap initialisiert wurde, sind die Kosten nicht eine Einheit pro Pfadtile, sondern können zwischen 1 (sicheres Gebiet) - 4 (gefährliches Gebiet) Einheiten variieren. (Die Pfadkosten dürfen nicht negativ sein, sonst würde der A* Algorithmus nicht mehr korrekt funktionieren.) Die Kosten für jedes Pfadtile werden durch die Methode \textit{getPathCosts(...)} der InfluenceMap berechnet.
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}[caption=Die Kosten für das Wegstück (PathPiece) werden von der InflueceMap (falls verwendet) berechnet.]
+\begin{lstlisting}[caption={[Kostenberechnung unter Berücksichtigung des Einflusses] Die Kosten für das Wegstück (PathPiece) werden von der Influence Map (falls verwendet) berechnet.}]
 protected final int getActualCost(Node current, PathPiece piece) {
     int costOfPiece = 0;
     if (useInflunceMap)

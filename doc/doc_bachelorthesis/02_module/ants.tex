@@ -1,7 +1,7 @@
 \chapter{Ants}
 \label{sec:module.Ants}
 
-Alle Klassen im Ants Package sind spezifisch für die Ants AI Challenge und repräsentieren Teile des Spiels. Nachfolgend wir deren Aufbau erläutert.
+Alle Klassen im Ants Package sind spezifisch für die Ants AI Challenge und machen das Gerüst unseres \gls{Bot}s aus. Nachfolgend wird deren Aufbau erläutert.
 
 \section{State-Klassen}
 \label{sec:module.Ants.State}
@@ -21,19 +21,16 @@ Die Ants Klasse ist die zentrale State-Klasse. Sie bietet auch einfachen Zugriff
 
 \subsection{World}
 \label{sec:module.Ants.State.World}
-Die World Klasse enthält Informationen zur Spielwelt und implementiert die AbstractWrapAroundMap aus der AI-Tools API. Hier wird die Karte abgespeichert, in der für jede Zelle die aktuell bekannten Informationen festgehalten werden. Das beinhaltet die Sichtbarkeit der Zelle und was die Zelle aktuell enthält (Ameise, Nahrung, Wasser, ...). Ausserdem werden Listen geführt, wo sich die eigenen und die bekannten gegnerischen Hügel befinden. Die Klasse bietet Methoden zur Distanzberechnung und gibt Auskunft über einzelne Zellen, beispielsweise ob sich Nahrung in der Umgebung einer bestimmten Zelle befindet.
+Die World Klasse enthält Informationen zur Spielwelt und erweitert die AbstractWrapAroundMap aus der AI-Tools API. Hier wird die Karte abgespeichert, in der für jede Zelle die aktuell bekannten Informationen festgehalten werden. Das beinhaltet die Sichtbarkeit der Zelle und was die Zelle aktuell enthält (Ameise, Nahrung, Wasser, ...). Ausserdem werden Listen geführt, wo sich die eigenen und die bekannten gegnerischen Hügel befinden. Die Klasse bietet Methoden zur Distanzberechnung und gibt Auskunft über einzelne Zellen, beispielsweise ob sich Nahrung in der Umgebung einer bestimmten Zelle befindet. Zudem sind die wichtigsten Methoden des SearchableMap Interfaces (\texttt{getSuccessors...()}) hier implementiert.
 
 \subsection{Orders}
 \label{sec:module.Ants.State.Orders}
-In der Orders Klasse wird über Befehle und Missionen der einzelnen Ameisen Buch geführt. In der Liste der Befehle wird zwischengespeichert welche Ameise welche Bewegung im aktuellen Spielzug macht. Zu Beginn des Spielzuges wird diese geleert, dann von den Tasks und Missionen mit Befehlen belegt, und am Schluss des Spielzuges werden die Befehle der Spielschnittstelle übergeben. Die Liste der Missionen ist zugübergreifend geführt, da eine Mission über mehrere Spielzüge verlaufen kann. Das zentrale Verwalten der Befehle und Missionen dient dazu, sicherzustellen, dass keine widersprüchlichen Befehle ausgegeben werden wie: Mehrere Befehle für eine Ameise, gleiche Ziel-Koordinaten für mehrere Ameisen, eine Ameise ist mehreren Missionen zugeteilt etc..
+In der Orders Klasse wird über Befehle und Missionen der einzelnen Ameisen Buch geführt. In der Liste der Befehle wird zwischengespeichert, welche Ameise welche Bewegung im aktuellen Spielzug macht. Zu Beginn des Spielzuges wird diese geleert, dann von den Tasks und Missionen mit Befehlen belegt, und am Schluss des Spielzuges werden die Befehle der Spielschnittstelle übergeben. Die Liste der Missionen ist zugübergreifend geführt, da eine Mission über mehrere Spielzüge verlaufen kann. Das zentrale Verwalten der Befehle und Missionen dient dazu, sicherzustellen, dass keine widersprüchlichen Befehle ausgegeben werden wie: Mehrere Befehle für eine Ameise, gleiche Ziel-Koordinaten für mehrere Ameisen, eine Ameise ist mehreren Missionen zugeteilt etc..
 
 \subsection{Population}
 \label{sec:module.Ants.State.Population}
-Die Population Klasse dient der Verwaltung der eigenen und der gegnerischen Ameisen-Völker. Hier werden die Ameisen mit ihren aktuellen Aufenthaltsorten festgehalten. Wenn für eine Ameise ein Befehl ausgegeben wird, wird die Ameise als beschäftigt markiert. \"{U}ber die Methode \texttt{getMyUnemployedAnts()} kann jederzeit eine Liste der Ameisen abgefragt werden, die für den aktuellen Zug noch keine Befehle erhalten haben und für neue Aufgaben zur Verfügung stehen.
+Die Population Klasse dient der Verwaltung der eigenen und der gegnerischen Ameisen-Völker. Hier werden die Ameisen mit ihren aktuellen Aufenthaltsorten festgehalten. Wenn für eine Ameise ein Befehl ausgegeben wird, wird die Ameise als beschäftigt markiert. \"{U}ber die Methode \texttt{getMyUnemployedAnts()} kann jederzeit eine Liste der Ameisen abgefragt werden, die für den aktuellen Zug noch keine Befehle erhalten haben und für neue Aufgaben zur Verfügung stehen. Die Population Klasse führt zudem Buch über die verfügbaren Ressourcen pro Aufgabentyp und stellt sicher, dass kein Aufgabentyp mehr Ressourcen beansprucht, als ihm zugeteilt sind. (s. Kapitel \ref{sec:module.resourceMgmt})
 
-\subsection{Clustering}
-\label{sec:module.Ants.State.Clustering}
-Die Clustering Klasse dient dem Aufteilen des Spielfeldes in Clusters für die HPA*-Suche (s. Abschnitt \ref{subsec:module.Suchalgorithmen.Pfadsuche.HPAstar}). Hier werden die berechneten Clusters abgelegt, damit diese nicht bei jeder Verwendung neu berechnet werden müssen.
 
 \section{Spiel-Elemente (Ants-Spezifisch)}
 \label{sec:module.Ants.State.Entities.Ants}
@@ -50,17 +47,13 @@ Abbildung \ref{fig:antsEntities} zeigt die wichtigsten Klassen, die die Elemente
 \subsection{Ant}
 \label{sec:implementation.Entities.Ant}
 Eine Ant (Ameise) gehört immer zu einem Spieler; über die Methode \texttt{isMine()} können unsere eigenen Ameisen identifiziert werden. 
-Eine Ameise weiss jeweils in welcher Zelle sie steht. Das Feld \texttt{nextTile} dient der Verfolgung einer Ameise über mehrere Züge. Der Wert des Feld wird jeweils gesetzt, wenn der Ameise ein nächster Zug zugewiesen wird. Im nächsten Spielzug wir die Position der Ameise durch diese Information aktualisiert.
+Die Ant Klasse implementiert das Interface Unit aus der AITools-API, welches eine Abstraktion bietet, die die Verwendung der Ameisen in den generischen Modulen erlaubt.
+Eine Ameise weiss jeweils, in welcher Zelle sie steht. Das Feld \texttt{nextTile} dient der Verfolgung einer Ameise über mehrere Züge. Der Wert des Feld wird jeweils gesetzt, wenn der Ameise ein nächster Zug zugewiesen wird. Im nächsten Spielzug wird die Position der Ameise durch diese Information aktualisiert.
 
 \subsection{Route}
 \label{sec:implementation.Entities.Route}
-Eine Route repräsentiert eine einfache Verbindung zwischen zwei Zellen. Die Distanz wird zwischen den Zellen wird mit der Luftliniendistanz gemessen.
+Eine Route repräsentiert eine einfache Verbindung zwischen zwei \gls{Tile}s. Die Distanz wird zwischen den \gls{Tile}s wird mit der Luftliniendistanz gemessen.
 
 \subsection{Ilk}
 \label{sec:implementation.Entities.Ilk}
-Ilk ist der Typ einer Zelle. Der Ilk einer Tile-Instanz gibt an, was sich gerade in der Zelle befindet. Dies kann ein Gelände-Typ sein, wenn die Zelle nicht besetzt ist, oder es kann eine Ameise, Nahrung, oder ein Hügel sein. Die Ilk-Enumeration bietet Hilfsmethoden, um festzustellen, ob eine Zelle passierbar oder besetzt ist.
-
-\lstset{language=Java, tabsize=4}
-\begin{lstlisting}[caption=Werte der Ilk-Enumeration]
-public enum Ilk {WATER, FOOD, LAND, DEAD, MY_ANT, ENEMY_ANT };
-\end{lstlisting}
+Ilk ist der Typ einer Zelle. Der Ilk einer \gls{Tile}-Instanz gibt an, was sich gerade in der Zelle befindet. Dies kann ein Geländetyp sein, wenn die Zelle nicht besetzt ist, oder es kann eine Ameise, Nahrung, oder ein Hügel sein; in diesem Fall ist der Geländetyp implizit ''Land``, da Wasser-\gls{Tile}s nicht besetzt sein können. Die Ilk-Enumeration bietet Hilfsmethoden, um festzustellen, ob eine Zelle passierbar oder besetzt ist.

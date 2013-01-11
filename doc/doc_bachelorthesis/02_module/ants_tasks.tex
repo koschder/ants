@@ -1,7 +1,7 @@
 \section{Tasks}
 \label{sec:module.Tasks}
 
-Zu Beginn des Projekts haben wir die wichtigsten Aufgaben der Ameisen identifiziert. Diese Aufgaben wurden als Tasks in eigenen Klassen implementiert. Die Abbildung zeigt wie die Tasks aufgebaut sind.
+Bereits zu Beginn der Arbeit an ''Projekt 2`` haben wir die wichtigsten Aufgaben der Ameisen identifiziert. Diese Aufgaben wurden als Tasks in eigenen Klassen implementiert, von denen die meisten während der Bachelorarbeit noch einmal stark überarbeitet wurden. Abbildung \ref{fig:tasks} zeigt die verschiedenen Tasks.
 
 \begin{figure}[H]
 \centering
@@ -9,20 +9,22 @@ Zu Beginn des Projekts haben wir die wichtigsten Aufgaben der Ameisen identifizi
 \caption{Tasks}
 \label{fig:tasks}
 \end{figure}
-Das Interface Task\footnote{Das Interface ist im Code unter ants.tasks.Task.Java auffindbar.} definiert eine \texttt{setup()}-Methode welche den Task initiiert, sowie eine \texttt{perform()}-Methode welche den Task ausführt. Im Programm werden die Tasks nach deren Wichtigkeit ausgeführt, was auch der nachfolgenden Reihenfolge entspricht. Jedem Task stehen nur die unbeschäftigten Ameisen zur Verfügung, d.h. jene welchen noch keine Aufgabe zugeteilt wurde.Die zentrale Aufgabe der Tasks ist es den Ameisen Aufträge zu verteilen. Für Aufträge die länger als ein Spielzug dauern erstellt der Task eine entsprechende Mission. (siehe Abschnitt \ref{sec:module.Missionen})
+Das Interface Task\footnote{Das Interface ist im Code unter ants.tasks.Task.Java auffindbar.} definiert eine \texttt{setup()}-Methode welche den Task initialisiert, sowie eine \texttt{perform()}-Methode welche den Task ausführt. Im Programm werden die Tasks nach deren Wichtigkeit ausgeführt, was auch der nachfolgenden Reihenfolge entspricht. Jedem Task stehen nur die unbeschäftigten Ameisen zur Verfügung, d.h. jene welchen noch keine Aufgabe zugeteilt wurde. Die zentrale Aufgabe der Tasks ist es den Ameisen Aufträge zu verteilen. Für Aufträge, die länger als ein Spielzug dauern erstellt der Task eine entsprechende Mission. (siehe Abschnitt \ref{sec:module.Missionen})
+
+Jedem Task ist jeweils ein Task.Type zugeordnet. Dieser entspricht dem Aufgabentyp und wird für die Ressourcenverwaltung verwendet.
 
 \subsection{MissionTask}
 \label{subsec:implementation.Tasks.MissionTask}
 
 \textbf{setup()}
 
-Dieser Task führt alle bestehenden Missionen aus. In der \texttt{setup()}-Methode des Tasks werden die bestehenden Missionen initialisiert indem die \texttt{setup()}-Methoden der vorhandenen Missionen aufgerufen werden. Diese löscht alle Ameisen aus der Mission welche den letzten Zug nicht überlebt haben. Die überlebenden Ameisen werden als 'beschäftigt' markiert, damit Sie nicht von anderen Missionen verwendet werden. Zudem werden die Ameisen, abhängig vom letzten Zug, auf die neue Spielfeldzelle gesetzt.
+Der MissionTask führt alle bestehenden Missionen aus. In der \texttt{setup()}-Methode werden die bestehenden Missionen initialisiert, indem die \texttt{setup()}-Methoden der vorhandenen Missionen aufgerufen werden. Diese löscht alle Ameisen aus der Mission welche den letzten Zug nicht überlebt haben. Die überlebenden Ameisen werden als ''beschäftigt`` markiert, damit Sie nicht von anderen Missionen verwendet werden. Zudem werden die Ameisen, abhängig vom letzten Zug, auf ihre neue Spielfeldzelle gesetzt.
 
 \textbf{execute()}
 
-Nun, da alle Missionen inklusive Ameisen initialisiert wurde, werden diese ausgeführt. Für die Ausführungen haben wir die Missionen nach Typ in der Reihenfolge EXPLORE, COMBAT, DEFENDHILL, GATHERFOOD, ATTACKHILLS sortiert. Zuerst sollen die Missionen EXPLORE und COMBAT ausgeführt werden, aus dem Grund, dass diese Missionen keine neue Ameisen verlangen. Sie kommen mit den Ameisen aus die sie zu Beginn der Mission zugeteilt bekamen. Falls nun das Missionsziel von EXPLORE oder COMBAT erreicht wurde (\texttt{mission.isComplete()}), die Mission nicht mehr gültig ist (\texttt{!mission.isVaild()}) oder keine Züge für die Mission errechnet werden konnten (\texttt{mission.isAbandoned()}), so wird die Mission aufgelöst und die Ameisen werden für die nachfolgenden Missionen DEFENDHILL, GATHERFOOD, ATTACKHILLS freigegeben.
+Nun, da alle Missionen inklusive Ameisen initialisiert wurde, werden diese ausgeführt. Für die Ausführungen haben wir die Missionen nach Typ in der Reihenfolge EXPLORE, COMBAT, DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS sortiert. Zuerst sollen die Missionen EXPLORE und COMBAT ausgeführt werden, aus dem Grund, dass diese Missionen keine neue Ameisen verlangen. Sie kommen mit den Ameisen aus, die sie zu Beginn der Mission zugeteilt bekamen. Falls nun das Missionsziel von EXPLORE oder COMBAT erreicht wurde (\texttt{mission.isComplete()}), die Mission nicht mehr gültig ist (\texttt{!mission.isValid()}) oder keine Züge für die Mission errechnet werden konnten (\texttt{mission.isAbandoned()}), so wird die Mission aufgelöst und die Ameisen werden für die nachfolgenden Missionen DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS freigegeben.
 
-Die Missionen DEFENDHILL, GATHERFOOD, ATTACKHILLS sind auch überlegt angeordnet. Falls die DEFENDHILL-Missionen Verstärkung bei der Verteidigung brauchen, sind sie darauf angewiesen, dass sie Ameisen rekrutieren können die möglichst schnell zum Hügel gelangen. Es wäre ungünstig, wenn die nahe gelegenen Ameisen einer ATTACKHILLS- oder einer GATHERFOOD-Mission beitreten und so die DEFENDHILL-Mission Ameisen von weiter weg herbeirufen müsste. GATHERFOOD wird vor ATTACKHILLS aufgerufen, da Ameisen die nahe bei einer Futterzelle sind das Futter einsammeln sollen und nicht, oder erst später, am Angriff teilnehmen.
+Die Missionen DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS sind auch überlegt angeordnet. Falls die DEFEND\_HILL Missionen Verstärkung bei der Verteidigung brauchen, sind sie darauf angewiesen, dass sie Ameisen rekrutieren können, die möglichst schnell zum Hügel gelangen. Es wäre ungünstig, wenn die nahe gelegenen Ameisen einer ATTACK\_HILLS- oder einer GATHER\_FOOD-Mission beitreten und so die DEFEND\_HILL-Mission Ameisen von weiter weg herbeirufen müsste. GATHER\_FOOD wird vor ATTACK\_HILLS aufgerufen, da Ameisen die nahe bei einer Futterzelle sind das Futter einsammeln sollen und nicht, oder erst später, am Angriff teilnehmen.
 
 Je nach Spielsituation oder Profil des Bots, könnte man in Erwägung ziehen, die Reihenfolge vor dem Spiel oder dynamisch zu ändern. Dies wurde aber nicht weiter betrachtet.
 

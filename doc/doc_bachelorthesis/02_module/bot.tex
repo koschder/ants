@@ -1,7 +1,7 @@
 \section{Aufbau Bot}
 \label{sec:module.AufbauBot}
 
-Nun folgt der mehrstufige Aufbau des Bots, den wir geschrieben haben.
+Dieses Kapitel beschreibt die Klassenhierarchie unserer Bot Implementation.
 
 \subsection{Klasse Bot}
 \label{sec:module.Bot.Bot}
@@ -9,18 +9,30 @@ Nun folgt der mehrstufige Aufbau des Bots, den wir geschrieben haben.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{91_bilder/antsBot}
-\caption{Vererbung der Bots wobei auf Stufe impl (Implementation) nur MyBot verwendet wird.}
+\caption[Bot Klassenhierarchie]{Vererbung der Bots wobei auf Stufe impl (Implementation) nur MyBot verwendet wird.}
 \label{fig:antsBot}
 \end{figure}
 
-Als Basis für unsere Bot Implementation haben wir den Beispiel-Bot (Klasse Bot.java) verwendet, der im Java-Starter-Package enthalten ist. Das Starter-Package kann von der AI-Challenge Website\footnote{http://aichallenge.org/ants\_tutorial.php} heruntergeladen werden. Der Bot implementiert die Klassen AbstractSystemInputReader und AbstractSystemInputParser, welche die Interaktion mit der Spielengine über die System-Input/Output Streams kapseln. Für eine optimierte Lösung könnte der Bot auch angepasst werden, indem er selber auf die Streams zugreift. Im Rahmen dieser Arbeit erschien uns das nicht nötig. Die Klasse Bot dient als Grundlage für die Klasse BaseBot, welcher wiederum Grundlage ist für die Finale Klasse MyBot. (Siehe Vererbung Abb. \ref{fig:antsBot})
+Als Basis für unsere Bot Implementation haben wir den Beispiel-Bot (Klasse Bot.java) verwendet, der im Java-Starter-Package enthalten ist. Das Starter-Package kann von der AI-Challenge Website\footnote{http://aichallenge.org/ants\_tutorial.php} heruntergeladen werden. Der Bot erweitert die Klassen AbstractSystemInputReader und AbstractSystemInputParser, welche die Interaktion mit der Spielengine über die System-Input/Output Streams kapseln. Für eine optimierte Lösung könnte der Bot auch angepasst werden, indem er selber auf die Streams zugreift. Im Rahmen dieser Arbeit erschien uns das nicht nötig. Die Klasse Bot dient als Grundlage für die Klasse BaseBot, welcher wiederum Grundlage ist für die Klasse MyBot, wie Abb. \ref{fig:antsBot} illustriert.
+Die Klasse BaseBot wurde in erster Linie eingeführt, um möglichst einfach verschiedene Bot Implementierungen zu Testzwecken schreiben zu können (s. Kapitel \ref{sec:testCenter.Testbots}).
 
+Die Bot Implementierungen verfügen jeweils über die Einsprungs-Methode \texttt{main()}, die im einfachsten Fall aus einer einzelnen Zeile besteht (z.B. \texttt{new FlockBot().readSystemInput();}). Listing \ref{lst:mainMethod} zeigt die \texttt{main()}-Methode von MyBot.
 
+\lstset{language=Java, tabsize=4}
+\begin{lstlisting}[caption=Main-Methode von MyBot, label=lst:mainMethod]
+public static void main(String[] args) throws IOException {
+        // we only support one arg, and that is assumed to be the profile name
+        String profile = args.length == 1 ? args[0] : null;
+        initLogging(profile);
+        new MyBot(profile).readSystemInput();
+    }
+		
+\end{lstlisting}
 
 \subsection{BaseBot}
 \label{sec:module.Bot.BaseBot}
 
-Die abstrakte Klasse BaseBot erbt vom Bot. Hier haben wird die Struktur unseres Spielzuges definiert.
+Die abstrakte Klasse BaseBot erbt von Bot. Hier haben wir die Struktur unseres Spielzuges definiert.
 
 \subsection{Ablauf eines Zugs} 
 \label{sec:implementation.Bot.Turn}
@@ -43,13 +55,12 @@ Abbildung \ref{fig:firstTurn} zeigt den Ablauf des ersten Zugs, während Abbildun
 
 Jeder Zug beginnt mit dem Einlesen des Inputs vom SystemInputStream. Wenn der Bot das Signal ''READY`` (1. Zug) oder ''GO`` (alle weiteren Züge) erhält, kann er den gesammelten Input verarbeiten (Methode \texttt{parseSetup()} respektiv \texttt{parseUpdate()}). Danach wird die eigentliche Logik des Bots in der Methode \texttt{doTurn(...)} ausgeführt.
 
-Im 1. Zug werden dabei Instanzen der Tasks erstellt. Abgesehen davon unterscheidet sich der 1. Zug von diesem Punkt an nicht mehr von allen nachfolgenden Zügen. Die Tasks werden vorbereitet. (Aufruf der jeweiligen \texttt{setup()} Methode. Danach werden einige statistische Werte aktualisiert und in jedem 10. Zug auch geloggt. Dann werden die Tasks in der definierten Reihenfolge aufgerufen. Hier wird der Löwenanteil der Zeit verbracht, denn die Tasks enthalten die eigentliche Logik unserer Ameisen.
+Im 1. Zug werden dabei Instanzen der Tasks erstellt. Abgesehen davon unterscheidet sich der 1. Zug von diesem Punkt an nicht mehr von allen nachfolgenden Zügen. Die Tasks werden vorbereitet (Aufruf der jeweiligen \texttt{setup()} Methode. Danach werden einige statistische Werte aktualisiert und in jedem 10. Zug auch geloggt. Dann werden die Tasks in der definierten Reihenfolge aufgerufen. Hier wird der Löwenanteil der Zeit verbracht, denn die Tasks enthalten die eigentliche Logik unserer Ameisen.
 
 Zum Schluss werden dann mit \texttt{issueOrders()} die Züge der Ameisen über den SystemOutputStream an die Spielengine übergeben. Im Code sieht das ganze folgendermassen aus.
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}[caption=Der Ablauf des Spielzuges]
-\label{lst:ablaufspielzug}
+\begin{lstlisting}[caption=Der Ablauf des Spielzuges, label=lst:ablaufspielzug]
 @Override
 /*
  * This is the main loop of the bot. All the actual work is
@@ -77,8 +88,8 @@ public void doTurn() {
 \subsection{MyBot}
 \label{sec:module.Bot.MyBot}
 
-Wie bereits im Listining \ref{lst:ablaufspielzug} sichtbar, ist die Methode \texttt{initTasks()} in BaseBot abstrakt und muss von MyBot implementiert werden. \texttt{initTasks()} definiert welche Tasks, oder besser gesagt Fähigkeiten der Bot hat. Dies wurde ausgelagert, da nicht nur MyBot von BaseBot erbt, sondern auch weiter Bots die wir zu Testzwecken erstellt haben um nur gewisse Funktionalitäten zu testen. (Siehe dazu \ref{sec:testCenter.Testbots}) Weiter wird in MyBot \texttt{initLogging(...)} aufgerufen. Hier definieren wir welche Logkategorien mit welchem Loglevel ins Logfile geschrieben werden. (Mehr zum Thema Logging, siehe Kapitel \ref{sec:module.Logging}) Je nach Modul das gerade getestet wird kann die Anzahl Logeinträge justiert werden.\\
-MyBot initialisiert folgende Tasks; es sind die Tasks die sich während der Arbeit bewährt haben. Die detaillierte Beschreibung der Tasks ist im nachfolgenden Kapitel \ref{sec:module.Tasks} zu finden.
+Wie bereits im Listing \ref{lst:ablaufspielzug} ersichtlich, ist die Methode \texttt{initTasks()} in BaseBot abstrakt und muss von MyBot implementiert werden. \texttt{initTasks()} definiert welche Tasks, oder besser gesagt Fähigkeiten der Bot hat. Dies wurde ausgelagert, da nicht nur MyBot von BaseBot erbt, sondern auch weiter Bots die wir zu Testzwecken erstellt haben um nur gewisse Funktionalitäten zu testen. (Siehe dazu \ref{sec:testCenter.Testbots}) Weiter wird in der \texttt{main()}-Methode von MyBot \texttt{initLogging(...)} aufgerufen. Hier definieren wir, welche Logkategorien mit welchem Loglevel ins Logfile geschrieben werden. (Mehr zum Thema Logging siehe Kapitel \ref{sec:module.Logging}). Je nach Modul, das gerade getestet wird kann die Anzahl Logeinträge justiert werden.\\
+MyBot initialisiert die folgend aufgeführten Tasks; es sind die Tasks, die sich im Lauf der Arbeit bewährt haben. Die detaillierte Beschreibung der Tasks ist im nachfolgenden Kapitel \ref{sec:module.Tasks} zu finden.
 
 \begin{itemize}
 		\item GatherFoodTask
