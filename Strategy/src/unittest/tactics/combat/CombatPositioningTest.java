@@ -121,8 +121,8 @@ public class CombatPositioningTest {
         final Unit unit2 = new TestUnit(0, new Tile(2, 5));
 
         CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myUnits, enemyUnits, null);
-        assertEquals(new Tile(3, 3), pos.getNextTile(unit1));
-        assertEquals(new Tile(3, 5), pos.getNextTile(unit2));
+        assertEquals(new Tile(2, 4), pos.getNextTile(unit1));
+        assertEquals(new Tile(2, 5), pos.getNextTile(unit2));
     }
 
     @Test
@@ -179,7 +179,7 @@ public class CombatPositioningTest {
 
         CombatPositioning pos = new DefaultCombatPositioning(map, iMap, myUnits, enemyUnits, null);
         assertEquals(new Tile(2, 9), pos.getNextTile(unit1));
-        assertEquals(new Tile(2, 10), pos.getNextTile(unit2));
+        assertEquals(new Tile(3, 9), pos.getNextTile(unit2));
         assertEquals(new Tile(4, 9), pos.getNextTile(unit3));
     }
 }

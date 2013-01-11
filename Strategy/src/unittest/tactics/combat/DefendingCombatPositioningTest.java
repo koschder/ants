@@ -125,10 +125,10 @@ public class DefendingCombatPositioningTest {
         final Unit myUnit4 = new TestUnit(0, new Tile(5, 4));
 
         CombatPositioning pos = new DefendingCombatPositioning(map, iMap, myUnits, enemyUnits, new Tile(5, 3));
-        assertEquals(new Tile(4, 2), pos.getNextTile(myUnit1));
+        assertEquals(new Tile(4, 3), pos.getNextTile(myUnit1));
         assertEquals(new Tile(4, 4), pos.getNextTile(myUnit2));
-        assertEquals(new Tile(6, 2), pos.getNextTile(myUnit3));
-        assertEquals(new Tile(6, 4), pos.getNextTile(myUnit4));
+        assertEquals(new Tile(5, 2), pos.getNextTile(myUnit3));
+        assertEquals(new Tile(5, 3), pos.getNextTile(myUnit4));
     }
 
     @Test
