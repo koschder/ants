@@ -231,7 +231,7 @@ Das Clustering wird während dem ClusteringTask ausgeführt, Dabei wird die Landka
 \centering
 \includegraphics[height=50mm]{bilder/clusteredMap.png}
 \caption[Clustereinteilung auf der Landkarte.]{Clustereinteilung auf der Landkarte. Clustergrösse 4x4, Landkarte 16x16}
-\label{fig.clusteredMap}
+\label{fig.impl.clusteredMap}
 \end{figure}
 
 Danach werden für jeden Cluster und einen Nachbar-Cluster aus der Vierer-Nachbarschaft die Verbindungskanten berechnet. Dies kann natürlich nur für Clusters gemacht werden die auf einem sichtbaren Teil der Landkarte liegen, was zu Begin des Spiel nicht gegeben ist. Deshalb wird der ClusteringTask in jedem Spielzug aufgerufen, in der Hoffnung ein Cluster komplett verbinden zu können. Sobald eine beliebige Seite eines Clusters berechnet ist, wird diese Aussenkante im Cluster und dem anliegenden Nachbar gespeichert und nicht mehr neu berechnet.
@@ -240,7 +240,7 @@ Danach werden für jeden Cluster und einen Nachbar-Cluster aus der Vierer-Nachbar
 \centering
 \includegraphics[height=50mm]{bilder/clusteredMap2.png}
 \caption[Cluster mit berechneten Kanten]{Die Kanten jedes Clusters wurden berechnet}
-\label{fig.clusteredMap2}
+\label{fig.impl.clusteredMap2}
 \end{figure}
 
 Sobald ein Cluster zwei oder mehrere Aussenkanten kennt berechnet er die Innenkanten mit A* welche die Knoten der Aussenkanten verbinden. Dies ergibt nun ein Pfadnetz über die Gesamtkarte. Im nachfolgenden Bild sind die Innenkanten (gelb) ersichtlich, die bei den ersten 8 Cluster berechnet wurden.
@@ -249,16 +249,16 @@ Sobald ein Cluster zwei oder mehrere Aussenkanten kennt berechnet er die Innenka
 \centering
 \includegraphics[height=50mm]{bilder/clusteredMap3.png}
 \caption[Cluster mit Innenkanten]{Darstellung der Innenkanten}
-\label{fig.clusteredMap3}
+\label{fig.impl.clusteredMap3}
 \end{figure}
 
-In der Abbildung \ref{fig.clusteredMap4} wird ein Pfad vom Pixel (3,9) nach (13,9) mittels HPA* gesucht (grüne Punkte). Zuerst wird eruiert in welchem Cluster sich das Start- bzw Zielpixel befindet. Danach wird in dem gefundenen Cluster ein Weg zu einem beliebigen Knoten auf der Clusterseite gesucht. Sind diese Knoten erreicht (blaue Pfade), wird nun das vorberechnete Pfadnetz mittels bereits beschrieben A* Algorithmus verwendet um die beiden Knoten auf dem kürzesten möglichen Pfad (gelb) zu verbinden.\footnote{Der resultierende Pfad könnte mittels Pathsmoothing verkürzt werden. Dies wurde aber in unserer Arbeit nicht implementiert.}
+In der Abbildung \ref{fig.impl.clusteredMap4} wird ein Pfad vom Pixel (3,9) nach (13,9) mittels HPA* gesucht (grüne Punkte). Zuerst wird eruiert in welchem Cluster sich das Start- bzw Zielpixel befindet. Danach wird in dem gefundenen Cluster ein Weg zu einem beliebigen Knoten auf der Clusterseite gesucht. Sind diese Knoten erreicht (blaue Pfade), wird nun das vorberechnete Pfadnetz mittels bereits beschrieben A* Algorithmus verwendet um die beiden Knoten auf dem kürzesten möglichen Pfad (gelb) zu verbinden.\footnote{Der resultierende Pfad könnte mittels Pathsmoothing verkürzt werden. Dies wurde aber in unserer Arbeit nicht implementiert.}
 
 \begin{figure}[H]
 \centering
 \includegraphics[height=50mm]{bilder/clusteredMap4.png}
 \caption{Errechneter Weg mittels HPA*}
-\label{fig.clusteredMap4}
+\label{fig.impl.clusteredMap4}
 \end{figure}
 
 \section{JavaScript Addon für HMTL-Gameviewer}
