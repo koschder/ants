@@ -39,8 +39,8 @@ public class CompareStrategyTest {
     @Test
     public void compareThem() {
 
-        Tile start = new Tile(25, 74);
-        Tile end = new Tile(85, 20);
+        Tile start = new Tile(44, 78);
+        Tile end = new Tile(82, 22);
         SearchableMap map = initMap();
         for (SearchTest s : SearchTest.values()) {
 
@@ -50,7 +50,7 @@ public class CompareStrategyTest {
             putGlobal.setMap(map);
             put.setMap(map);
             if (s == SearchTest.HpaCent10 || s == SearchTest.HpaCorn10)
-                put.setClusterSize(10);
+                put.setClusterSize(14);
             if (s == SearchTest.HpaCent20 || s == SearchTest.HpaCorn20)
                 put.setClusterSize(20);
 
