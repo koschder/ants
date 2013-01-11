@@ -258,7 +258,7 @@ public void execute() {
 Bei \texttt{checkAntsRoutes()} wird geprüft, ob die Pfade aller Ameisen in der Mission noch gültig sind. Ungültige Pfade sind, wenn die Futterzelle von der eigenen Ameise oder einer gegnerischen Ameise gefressen wurde. Ameisen mit einem ungültigen Pfad werden von der Mission entlassen, können aber in der nächsten Methode \texttt{gatherAnts()}, falls eine geeignete Aufgabe für die Ameise gefunden wird, der Mission wieder beitreten. Die Logik der \texttt{gatherAnts()} Methode ist in Listing \ref{lst:gatherAnts} vereinfacht dargestellt.
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}[caption=Berechnung, welche Ameise welches Futter einsammelt., label=lst:gatherAnts]
+\begin{lstlisting}[caption=Berechnung welche Ameise welches Futter einsammelt., label=lst:gatherAnts]
 foreach(food on map){
 	if(there is an ant gathering this food tile with a path smaller than 5)
 		continue;
