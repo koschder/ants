@@ -48,11 +48,11 @@ Abbildung \ref{fig:antsEntities} zeigt die wichtigsten Klassen, die die Elemente
 \label{sec:implementation.Entities.Ant}
 Eine Ant (Ameise) gehört immer zu einem Spieler; über die Methode \texttt{isMine()} können unsere eigenen Ameisen identifiziert werden. 
 Die Ant Klasse implementiert das Interface Unit aus der AITools-API, welches eine Abstraktion bietet, die die Verwendung der Ameisen in den generischen Modulen erlaubt.
-Eine Ameise weiss jeweils, in welcher Zelle sie steht. Das Feld \texttt{nextTile} dient der Verfolgung einer Ameise über mehrere Züge. Der Wert des Feld wird jeweils gesetzt, wenn der Ameise ein nächster Zug zugewiesen wird. Im nächsten Spielzug wird die Position der Ameise durch diese Information aktualisiert.
+Eine Ameise weiss jeweils, in welcher Zelle sie steht. Das Feld \texttt{nextTile} dient der Verfolgung einer Ameise über mehrere Züge. Der Wert des Felds wird jeweils gesetzt, wenn der Ameise ein nächster Zug zugewiesen wird. Im nächsten Spielzug wird die Position der Ameise durch diese Information aktualisiert.
 
 \subsection{Route}
 \label{sec:implementation.Entities.Route}
-Eine Route repräsentiert eine einfache Verbindung zwischen zwei \gls{Tile}s. Die Distanz wird zwischen den \gls{Tile}s wird mit der Luftliniendistanz gemessen.
+Eine Route repräsentiert eine einfache Verbindung zwischen zwei \gls{Tile}s. Die Distanz zwischen den \gls{Tile}s wird mit der Luftliniendistanz gemessen.
 
 \subsection{Ilk}
 \label{sec:implementation.Entities.Ilk}

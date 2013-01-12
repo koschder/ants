@@ -22,10 +22,10 @@ Die \gls{InfluenceMap} haben wir grundsätzlich nach den Beschreibungen in \cite{
 \begin{table}[H]
 	\centering
 	%weird hack to enable footnotes in the table
-	\begin{minipage}{8cm}
+	\begin{minipage}{10cm}
     \centering
 \begin{tabular}{l | r r}
- \textbf{Radius} & \textbf{Wert} & \textbf{Radius in Tiles}\footnote{Der Radius kann je nach Spieleinstellungen ändern. Angegeben sind die Standardwerte.} \\
+ \textbf{Radius} & \textbf{Zugewiesener Wert} & \textbf{Radius in Tiles}\footnote{Der Radius kann je nach Spieleinstellungen ändern. Angegeben sind die Standardwerte.} \\
 \hline
  Angriffsradius & 50 & 2.2 \\
  Erweiterter Angriffsradius & 30 & 5  \\
@@ -70,10 +70,10 @@ In folgenden Modulen berücksichtigen wir Werte aus der \gls{InfluenceMap}, um En
 \item
 \textbf{Combat Positioning}: Müssen wir die Flucht ergreifen, bewegen wir unsere Ameise auf das sicherste \gls{Tile} in der Nachbarschaft.
 \item
-\textbf{Abbruch Mission}: Falls eine Ameise auf einer andere Mission als einer GatherFoodMission ist und ein Nahrungs-\gls{Tile} in seiner Nähe antrifft, wird abgewogen ob die Mission zu Gunsten von Futter sammeln abgebrochen werden soll. Dabei ist ein Entscheidungsfaktor auch die 'Sicherheit' des Futters. Falls das Futter nicht auf einem sicheren Weg geholt werden kann, wird die Mission nicht abgebrochen.
+\textbf{Abbruch Mission}: Falls eine Ameise auf einer andere Mission als einer GatherFoodMission ist und ein Nahrungs-\gls{Tile} in seiner Nähe antrifft, wird abgewogen ob die Mission zu Gunsten von Futter sammeln abgebrochen werden soll. Dabei ist ein Entscheidungsfaktor auch die ''Sicherheit`` des Futters. Falls das Futter nicht auf einem sicheren Weg geholt werden kann, wird die Mission nicht abgebrochen.
 \end{itemize}
 
-Natürlich könnte man die \gls{InfluenceMap} noch für diverse weitere Entscheidungen verwenden. Auch der Einsatz einer Spannungskarte (Tension Map), welche auch auf den Werten \gls{InfluenceMap} aufbaut, wäre denkbar. Dies wurde während dieser Arbeit nicht angeschaut bzw. implementiert.
+Natürlich könnte man die \gls{InfluenceMap} noch für diverse weitere Entscheidungen verwenden. Auch der Einsatz einer Spannungskarte (Tension Map), welche auch auf den Werten der \gls{InfluenceMap} aufbaut, wäre denkbar. Dies wurde während dieser Arbeit abern nicht angeschaut bzw. implementiert.
 
 
 \section{Combat Positioning}
@@ -86,7 +86,7 @@ Natürlich könnte man die \gls{InfluenceMap} noch für diverse weitere Entscheidun
 \label{fig.strategyTacticsCombat}
 \end{figure}
 
-Kampfsituationen treten immer dann auf wenn gegnerische Ameisen auf unsere Ameisen treffen. Die entscheidendsten Kämpfe ereignen sich, wenn ein gegnerischer Hügel angegriffen wird oder der eigene Hügel verteidigt werden muss. Eine Kampfsituation kann sich aber auch sonst irgendwo auf der Karte ereignen.
+Kampfsituationen treten immer dann auf, wenn gegnerische Ameisen auf unsere Ameisen treffen. Die entscheidendsten Kämpfe ereignen sich, wenn ein gegnerischer Hügel angegriffen wird oder der eigene Hügel verteidigt werden muss. Eine Kampfsituation kann sich aber auch sonst irgendwo auf der Karte ereignen.
 
 \subsection{Klassen des Combat Positioning}
 \label{sec:module.CombatSituation.DefaultCombatPositioning}
@@ -198,9 +198,9 @@ Das ClusterCenter des Gegners dient als Kreismittelpunkt (siehe schwarzer Kreis 
 
 Abbildung \ref{fig.DefaultCombatPositioning} zeigt wie die \gls{Tile}s zur Positionierung für die südliche und die nördliche Verteidigung berechnet werden. Die schwarzen Kreise bezeichnen jeweils die ClusterCenter der Kontrahenten. Die gefundenen Positionierungstiles für die nördliche Verteidigung liegen auf dem grauen Kreis und werden in der Abbildung hellorange dargestellt. Zu sehen ist auch, dass auf dem eigenen Hügel keine Positionierung möglich ist, hier sollen neue Ameisen schlüpfen können.
 
-Die Idee dieser Positionierung ist, dass so alle eigene Ameisen gleich weit vom Zentrum des Gegners entfernt sind. Sobald der Gegner vorrückt muss er gegen alle Ameisen gleichzeitig kämpfen. Nachteil dieser Positionierung ist, dass wenn der Gegner nicht kompakt angreift und nicht eine gleichförmige Angriffsformation hat, richten wir uns nur nach dem ClusterCenter aus, die einzelnen Gruppierungen der gegnerischen Ameisen werden nicht berücksichtigt, was einen Nachteil bei der Verteidigung darstellt.
+Die Idee dieser Positionierung ist, dass so alle eigene Ameisen gleich weit vom Zentrum des Gegners entfernt sind. Sobald der Gegner vorrückt, muss er gegen alle Ameisen gleichzeitig kämpfen. Nachteil dieser Positionierung ist, dass wenn der Gegner nicht kompakt angreift und nicht eine gleichförmige Angriffsformation hat, richten wir uns nur nach dem ClusterCenter aus, die einzelnen Gruppierungen der gegnerischen Ameisen werden nicht berücksichtigt, was einen Nachteil bei der Verteidigung darstellt.
 
-Wir haben uns überlegt, dass eine Positionierung mit Hilfe der \gls{InfluenceMap} diesen Nachteil beheben würde. Man könnte die neutralen \gls{Tile}s die sich zwischen den Kontrahenten befindet mittels \gls{InfluenceMap} herausfinden und als Front anschauen. Nach dieser Frontlinie würden wir uns dann unsere Einheiten ausrichten Leider fehlte uns hier die Zeit dies nachträglich noch zu programmieren und auszuprobieren.
+Wir haben uns überlegt, dass eine Positionierung mit Hilfe der \gls{InfluenceMap} diesen Nachteil beheben würde. Man könnte die neutralen \gls{Tile}s die sich zwischen den Kontrahenten befindet mittels \gls{InfluenceMap} herausfinden und als Front anschauen. Nach dieser Frontlinie würden wir uns dann unsere Einheiten ausrichten. Leider fehlte uns hier die Zeit, dies nachträglich noch zu programmieren und auszuprobieren.
 
 \subsubsection{ATTACK}
 \label{sec:module.CombatSituation.DefaultCombatPositioning.Attack}
@@ -222,3 +222,14 @@ Wir haben uns überlegt, dass eine Positionierung mit Hilfe der \gls{InfluenceMap
 \end{lstlisting}
 
 Im Verhalten ATTACK werden die \gls{Tile}s zur Positionierung genau gleich berechnet wie vorhin im DEFEND-Modus. Nach der Berechnung wird geschaut, wie viele unserer Angreifer schon auf diesen \gls{Tile}s sind. Falls sich ein definierter Anteil der Ameisen bereits auf den \gls{Tile}s befindet, gehen wir davon aus das sich unsere Ameisen formiert haben und der Radius wird verkürzt. Durch den verkürzten Radius werden \gls{Tile}s berechnet die um eine Zelle näher beim Gegner sind. Danach folgt die Positionierung (Vorrücken) der Ameisen auf die berechneten \gls{Tile}s.
+
+\subsubsection{DEFAULT}
+\label{sec:module.CombatSituation.DefaultCombatPositioning.Default}
+
+Der DEFAULT Verhaltensmodus kommt beim Kampf im freien Feld (ohne Ziele zur Verteidigung oder Angriff) zum Zug. Er entspricht weitestgehend dem Modus ATTACK, mit dem Unterschied, dass alle gegnerischen Einheiten in die Positionierung mit einbezogen werden, statt nur die Gegner zwischen unseren Einheiten und dem Ziel.
+
+\section{MinMax Situationsbewertung (nicht verwendet)}
+\label{sec:module.MinMax}
+In einem ersten Ansatz, die Kampfsituationen dynamisch zu bewerten, adaptierten wir den bereits im Rahmen des Moduls ''Spieltheorie`` implementierten MinMax-Algorithmus. (Auf den Algorithmus soll hier nicht näher eingegangen werden; eine gute Beschreibung findet sich in \cite[S.~161-171]{AIMA}.) Die Idee dabei war, eine Kampfsituation als einen Spielstand darzustellen und mit dem MinMax-Algorithmus die besten nächsten Züge für unsere Ameisen zu errechnen. Aufgrund des hohen Branching-Faktors dieser Kampfsituationen und der beschränkten Rechenzeit, die uns im Spiel während eines Zugs zur Verfügung steht, ist es uns aber nicht gelungen, den Algorithmus genügend performant zu implementieren.
+
+Der Code befindet sich noch im Projekt (in den Packages \texttt{ants.tactics} resp. \texttt{tactics.minmax}), er ist aber als \gls{Deprecated} markiert und wird nicht mehr verwendet.

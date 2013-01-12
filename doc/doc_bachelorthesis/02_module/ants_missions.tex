@@ -81,8 +81,8 @@ Die Pathmission ist eine abstrakte Klasse die von ExploreMission und als anonyme
 
 Diese Mission unterscheidet zwischen den drei verschiedenen Modi ControlEnemyHill, DestroyHill und AttackEnemyHill. Der Modus wird zu Beginn jeder Runde durch die Methode \texttt{determineState()} definiert.
 
-\textbf{ControlEnemyHill}\\
-Der Modus ist aktiv, wenn zwei oder mehr eigene Ameisen in der Nähe des gegnerischen Hügel sind, der Gegner aber nur eine Ameise zur Verteidigung hat.
+\paragraph{ControlEnemyHill:}
+Dieser Modus ist aktiv, wenn zwei oder mehr eigene Ameisen in der Nähe des gegnerischen Hügel sind, der Gegner aber nur eine Ameise zur Verteidigung hat.
 
 In diesem Moduls braucht die Mission nur zwei Ameisen, jene die am nächsten beim gegnerischen Hügel sind, die anderen werden entlassen. Die übrigen zwei Ameisen positionieren sich auf einer der vier diagonal gelegenen Zellen. Dank dieser Positionierung werden alle gegnerischen Ameisen, die neu aus dem Hügel schlüpfen, sofort vernichtet. Der Gegner kann sich so nur durch Ameisen vermehren, die aus einem anderen Hügel schlüpfen. (Die Ameisen schlüpfen zufällig aus einem Hügel.) Der Hügel wird erst zerstört wenn das Spiel endet, oder sich der Gegner mit anderen Ameisen dem Hügel nähert.
 
@@ -93,12 +93,12 @@ In diesem Moduls braucht die Mission nur zwei Ameisen, jene die am nächsten beim
 \label{fig:ControlEnemyHill}
 \end{figure}
 
-\textbf{DestroyHill}\\
-Der Modus ist aktiv, wenn das Spiel 5 Züge vor Spielende ist.
+\paragraph{DestroyHill:}
+Dieser Modus ist aktiv, wenn das Spiel 5 Züge vor Spielende ist.
 Wenn dieser Modus eintrifft ist, das Spiel fast zu Ende. Deshalb wird versucht, um jeden Preis den Hügel zu erobern, indem die Ameisen auf dem kürzesten Weg und ohne Positionierung in Richtung des Hügels geschickt werden.
 
-\textbf{AttackEnemyHill}\\
-Der Modus ist aktiv in allen anderen Fällen.
+\paragraph{AttackEnemyHill:}
+Dieser Modus ist aktiv in allen anderen Fällen.
 Alle Angreifer werden anhand ihrer Position in lokalen Gruppen zusammen gefasst. Für jede Gruppe wird ein Pfad zum gegnerischen Hügel berechnet. Falls der Pfad länger ist als fünf Tiles wird ein Meilenstein (Milestone) definiert. Nun werden mittels Breitensuche die Gegner zwischen dem Meilenstein und der Gruppe ermittelt. Mit dieser Ausgangslage wird eine AttackingCombatPositioning-Klasse initialisiert. Als Parameter werden die Gruppe, die gegnerischen Ameisen sowie der Meilenstein mitgegeben. Die Klasse berechnet die nächsten Bewegungen der Gruppe. (Details siehe zur Berechnung \ref{sec:module.CombatSituation})
        
 \begin{figure}[H]

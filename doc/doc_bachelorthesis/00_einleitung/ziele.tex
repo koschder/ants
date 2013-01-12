@@ -50,7 +50,7 @@ Die Auswahl von Taktik und Strategie basiert auf der Bewertung der Situation auf
 	\end{itemize}
 	
 \subparagraph{Implementiert durch:}
-Die Bewertung der Situation auf dem Spielfeld wurde hauptsächlich mit Influence Mapping realisiert (s. Kapitel \ref{sec:module.InfluenceMap}). Die Influence Map kann mit geringem Rechenaufwand zu Beginn jedes Zugs aktualisiert werden und liefert eine Vielzahl von Informationen, die aus den unterschiedlichen Einflüssen der Spieler auf das Spielfeld gewonnen werden können.
+Die Bewertung der Situation auf dem Spielfeld wurde hauptsächlich mit Influence Mapping realisiert (s. Kapitel \ref{sec:module.InfluenceMap}). Die \gls{InfluenceMap} kann mit geringem Rechenaufwand zu Beginn jedes Zugs aktualisiert werden und liefert eine Vielzahl von Informationen, die aus den unterschiedlichen Einflüssen der Spieler auf das Spielfeld gewonnen werden können.
 
 \subparagraph{Bewertung:}
 Dieses Ziel wurde erreicht; die Entscheidung, Influence Mapping einzusetzen, wurde aufgrund der Recherchen zum Thema von Lukas Kuster im Rahmen des Informatik-Seminars an der BFH getroffen und die Technik hat sich bewährt.
@@ -61,7 +61,7 @@ Anhand der Situationsberteilung werden die unterschiedlichen Aufgaben entspreche
 \subparagraph{Implementiert durch:}
 Basierend auf den verschiedenen Aufgabentypen und den Informationen aus der Influence Map haben wir ein Ressourcen-Managementsystem implementiert, das auf Regeln basiert (s. Kapitel \ref{sec:module.resourceMgmt}). Verschiedene Regeln werten die Situation aus und erhöhen resp. verringern anhand der gewonnenen Informationen die Zuweisung von Ressourcen auf die einzelnen Aufgabentypen. Tasks und Missionen können jeweils nur so viel Ameisen beschäftigen, wie der zugehörigen Aufgabe zugewiesen sind.
 \subparagraph{Bewertung:}
-Das Ziel wurde erreicht; Das Regelsystem zur Situationsbeurteilung ist modular aufgebaut, so dass mit minimalem Aufwand weitere Regeln erstellt werden können, um das Gesamtverhalten noch raffinierter zu gestalten.
+Das Ziel wurde erreicht. Das Regelsystem zur Situationsbeurteilung ist modular aufgebaut, so dass mit minimalem Aufwand weitere Regeln erstellt werden können, um das Gesamtverhalten noch raffinierter zu gestalten.
 
 \rule{1cm}{0.4pt}
 \paragraph{Ziel:}
@@ -80,7 +80,7 @@ Dieses Ziel wurde grösstenteils erreicht, weist aber noch Verbesserungspotenzial
 \label{sec:einleitung.Ziele.FunktionaleAnforderungen.Kannkriterien}
 
 \paragraph{Ziel:}
-Das Verhalten des Bots ist konfigurierbar, so dass zum Beispiel ein “agressiver” Bot gegen einen defensiven Bot antreten kann.
+Das Verhalten des Bots ist konfigurierbar, so dass zum Beispiel ein ''agressiver`` Bot gegen einen ''defensiven`` Bot antreten kann.
 \subparagraph{Implementiert durch:}
 Das Verhalten des Bots kann durch Profile beeinflusst werden (s. Kapitel  \ref{sec:module.Profile}). 
 \subparagraph{Bewertung:}

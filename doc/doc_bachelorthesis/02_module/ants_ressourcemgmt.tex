@@ -27,7 +27,7 @@ new ResourceAllocator().allocateResources();
 \end{lstlisting}
 Diese Ressourcenzuteilung wird von unserem Bot jeweils zu Beginn des Zugs vorgenommen. Dazu stellt er als erstes die allozierten Ressourcen pro Aufgabe auf einen definierten Standardwert zurück. Diese Werte können über Profile (Kap. \ref{sec:module.Profile}) konfiguriert werden. Dann werden der Reihe nach die konfigurierten Regeln aufgerufen, die jeweils nach ihrer eigenen Logik die Ressourcen für bestimmte Aufgaben erhöhen oder verringern. Am Ende entsteht so eine dynamische Ressourcenverteilung, die den verschiedensten Gesichtspunkten Rechnung tragen kann.
 
-\section{Implementierte Regeln}
+\subsection{Implementierte Regeln}
 \label{sec:module.resourceMgmt.Regeln}
 Wir haben 4 verschiedene Regeln implementiert, die alle von einer gemeinsamen Basisklasse ableiten. Die Basisklasse \texttt{BaseResourceAllocationRule} stellt die Methode \texttt{incrementResources(Type taskType, int increment, Type... tasksToDecrement)} zur Verfügung, die ein gegebenes Inkrement (Ressourcen-Plus) für eine Aufgabe mit gleichmässig verteilten Dekrementen (Ressourcen-Minus) auf die angegebenen anderen Aufgaben ausgleicht.
 

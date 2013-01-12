@@ -9,18 +9,18 @@ Bereits zu Beginn der Arbeit an ''Projekt 2`` haben wir die wichtigsten Aufgaben
 \caption{Tasks}
 \label{fig:tasks}
 \end{figure}
-Das Interface Task\footnote{Das Interface ist im Code unter ants.tasks.Task.Java auffindbar.} definiert eine \texttt{setup()}-Methode welche den Task initialisiert, sowie eine \texttt{perform()}-Methode welche den Task ausführt. Im Programm werden die Tasks nach deren Wichtigkeit ausgeführt, was auch der nachfolgenden Reihenfolge entspricht. Jedem Task stehen nur die unbeschäftigten Ameisen zur Verfügung, d.h. jene welchen noch keine Aufgabe zugeteilt wurde. Die zentrale Aufgabe der Tasks ist es den Ameisen Aufträge zu verteilen. Für Aufträge, die länger als ein Spielzug dauern erstellt der Task eine entsprechende Mission. (siehe Abschnitt \ref{sec:module.Missionen})
+Das Interface Task definiert eine \texttt{setup()}-Methode, welche den Task initialisiert, sowie eine \texttt{perform()}-Methode welche den Task ausführt. Im Programm werden die Tasks nach deren Wichtigkeit ausgeführt, was auch der nachfolgenden Reihenfolge entspricht. Jedem Task stehen nur die unbeschäftigten Ameisen zur Verfügung, d.h. jene welchen noch keine Aufgabe zugeteilt wurde. Die zentrale Aufgabe der Tasks ist es den Ameisen Aufträge zu verteilen. Für Aufträge, die länger als ein Spielzug dauern erstellt der Task eine entsprechende Mission. (siehe Abschnitt \ref{sec:module.Missionen})
 
 Jedem Task ist jeweils ein Task.Type zugeordnet. Dieser entspricht dem Aufgabentyp und wird für die Ressourcenverwaltung verwendet.
 
 \subsection{MissionTask}
 \label{subsec:implementation.Tasks.MissionTask}
 
-\textbf{setup()}
+\paragraph{setup():}
 
 Der MissionTask führt alle bestehenden Missionen aus. In der \texttt{setup()}-Methode werden die bestehenden Missionen initialisiert, indem die \texttt{setup()}-Methoden der vorhandenen Missionen aufgerufen werden. Diese löscht alle Ameisen aus der Mission welche den letzten Zug nicht überlebt haben. Die überlebenden Ameisen werden als ''beschäftigt`` markiert, damit Sie nicht von anderen Missionen verwendet werden. Zudem werden die Ameisen, abhängig vom letzten Zug, auf ihre neue Spielfeldzelle gesetzt.
 
-\textbf{execute()}
+\paragraph{execute():}
 
 Nun, da alle Missionen inklusive Ameisen initialisiert wurde, werden diese ausgeführt. Für die Ausführungen haben wir die Missionen nach Typ in der Reihenfolge EXPLORE, COMBAT, DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS sortiert. Zuerst sollen die Missionen EXPLORE und COMBAT ausgeführt werden, aus dem Grund, dass diese Missionen keine neue Ameisen verlangen. Sie kommen mit den Ameisen aus, die sie zu Beginn der Mission zugeteilt bekamen. Falls nun das Missionsziel von EXPLORE oder COMBAT erreicht wurde (\texttt{mission.isComplete()}), die Mission nicht mehr gültig ist (\texttt{!mission.isValid()}) oder keine Züge für die Mission errechnet werden konnten (\texttt{mission.isAbandoned()}), so wird die Mission aufgelöst und die Ameisen werden für die nachfolgenden Missionen DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS freigegeben.
 

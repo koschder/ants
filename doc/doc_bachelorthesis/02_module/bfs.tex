@@ -11,7 +11,7 @@ Der Algorithmus für die Breitensuche ist in \cite{AIMA} beschrieben und wurde na
 \label{fig:BFS}
 \end{figure}
 
-Die Breitensuche wurde generisch implementiert, so dass sie vielseitig einsetzbar ist. So können zum Beispiel mittels 'GoalTest' je nach Anwendungsfall die Tiles beschrieben werden die gesucht sind. Folgende Breitensuche findet die Ameise welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Die Suche wird initialisiert indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 Zellen entspricht. Falls keine Ameise gefunden wird gibt der Algorithmus NULL zurück.
+Die Breitensuche wurde generisch implementiert, so dass sie vielseitig einsetzbar ist. So können zum Beispiel mittels 'GoalTest' je nach Anwendungsfall die Tiles beschrieben werden, die gesucht sind. Folgende Breitensuche findet die Ameise welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Die Suche wird initialisiert, indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 Zellen entspricht. Falls keine Ameise gefunden wird gibt der Algorithmus NULL zurück.
 
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}[caption={Anwendungsbeispiel Breitensuche}]
@@ -25,11 +25,11 @@ Tile antClosestToFood = bfs.findSingleClosestTile(food, 40, new GoalTest() {
   });
 \end{lstlisting}
 
-Es ist auch möglich mehrere Tiles zurück zu bekommen. Dazu wird die Methode \texttt{findClosestTiles(...)} aufgerufen.\\
-\\
-Der gleiche Algorithmus kann aber auch alle passierbaren Tiles in einem gewissen Umkreis zurückgeben. Dies haben wir unter anderem beim Initialisieren der DefendHillMission verwendet. Wir berechnen beim Erstellen der Mission die passierbaren Zellen rund um den Hügel. Runde für Runde prüfen wir diese Tiles auf gegnerische Ameisen um die entsprechenden Verteidigungsmassnahmen zu ergreifen. Der Parameter controlAreaRadius2 definiert den Radius des 'Radars' und kann je nach Profil unterschiedlich eingestellt werden.
+Es ist auch möglich mehrere Tiles zurück zu bekommen. Dazu wird die Methode \texttt{findClosestTiles()} aufgerufen.
 
-Dieser Flood Fill Algorithmus ist praktisch identisch mit der Breitensuche. Eine Beschreibung von Flood Fill befindet sich in \cite{ARTIFICIALINTELLIGENCEFORGAMES}.
+Der gleiche Algorithmus kann aber auch alle passierbaren Tiles in einem gewissen Umkreis zurückgeben. Dies haben wir unter anderem beim Initialisieren der DefendHillMission verwendet. Wir berechnen beim Erstellen der Mission die passierbaren Zellen rund um den Hügel. Runde für Runde prüfen wir diese Tiles auf gegnerische Ameisen um die entsprechenden Verteidigungsmassnahmen zu ergreifen. Der Parameter \texttt{controlAreaRadius2} definiert den Radius des ''Radars`` und kann je nach Profil unterschiedlich eingestellt werden.
+
+Unser Flood Fill Algorithmus ist praktisch identisch mit der Breitensuche. Eine allgemeine Beschreibung von Flood Fill befindet sich in \cite{ARTIFICIALINTELLIGENCEFORGAMES}.
 
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}[caption={Anwendungsbeispiel FloodFill}]
@@ -41,7 +41,7 @@ public DefendHillMission(Tile myhill) {
 \end{lstlisting}
 
 
-Um die Aufrufe der Suche im Ants-Umfeld einfacher zu gestalten haben wir die Breitensuche für unseren Bot mit folgenden selbst-sprechenden Methoden erweitert.
+Um die Aufrufe der Suche im Ants-Umfeld einfacher zu gestalten, haben wir die Breitensuche für unseren Bot mit folgenden selbst-sprechenden Methoden erweitert.
 
 \begin{figure}[H]
 \centering
@@ -52,7 +52,7 @@ Um die Aufrufe der Suche im Ants-Umfeld einfacher zu gestalten haben wir die Bre
 
 \subsection{Warum Breitensuche?}
 \label{subsec:module.Suchalgorithmen.Breitensuche.Alternativen}
-Bei der Wahl des Suchalgorithmus orientierten wir uns stark an \cite[S.~64-109]{AIMA}, wo die wichtigsten Suchalgorithmen beschrieben und nach verschiedenen Kriterien beurteilt werden. Für eine detailliere Diskussion über die Eigenschaften der Algorithmen sei auf diese Seiten verwiesen; an dieser Stelle wollen wir nur kurz aufzeigen, nach welchen Kriterien wir uns für die Breitensuche entschieden haben.
+Bei der Wahl des Suchalgorithmus orientierten wir uns stark an \cite[S.~64-109]{AIMA}, wo die wichtigsten Suchalgorithmen beschrieben und nach verschiedenen Kriterien beurteilt werden. Für eine detaillierte Diskussion über die Eigenschaften der Algorithmen sei auf diese Seiten verwiesen; an dieser Stelle wollen wir nur kurz aufzeigen, nach welchen Kriterien wir uns für die Breitensuche entschieden haben.
 
 Abgesehen von der Pfadsuche, bei der wir auf die heuristischen Algorithmen A* und HPA* setzten, waren unsere Anforderungen bei der Suche meist so geartet, dass eine Heuristik entweder nicht existiert, oder keine Vorteile bringt. Wenn wir beispielsweise für ein Nahrungs-\gls{Tile} die nächste Ameise suchen wollen, ist das Ziel der Suche ja nicht bekannt, und daher kann keine sinnvolle Heuristik definiert werden. Es blieb also nur die Frage, welche der verfügbaren nicht-heuristischen Algorithmen wir einsetzen wollten. 
 
@@ -63,7 +63,7 @@ Was für unsere Entscheidung keine Rolle spielte, waren die Zeit- und Raum-Komple
 \subsection{Barrier (Sperre)}
 \label{subsec:module.Suchalgorithmen.Breitensuche.Barrier}
 
-Eine Erweiterung der Breitensuche ermöglicht uns eine Sperre in der Umgebung eines Ortes zu finden. Diese Verwenden wir in der DefendHillMission zum Verteidigen des eigenen Hügels. Es kann nur eine Sperre (engl. Barrier) gefunden werden wenn das Gelände dazu passt. Die Abbildung \ref{fig:search.barrier} zeigt eine solche gefundene Sperre. Auf dieser Höhe wird der Hügel verteidigt.
+Eine spezielle Anwendung der Breitensuche ermöglicht uns, eine Sperre in der Umgebung eines Ortes zu finden. Diese verwenden wir in der DefendHillMission zum Verteidigen des eigenen Hügels. Es kann nur eine Sperre (engl. Barrier) gefunden werden, wenn das Gelände dazu passt. Die Abbildung \ref{fig:search.barrier} zeigt eine solche gefundene Sperre. Auf dieser Höhe wird der Hügel verteidigt.
 
 \begin{figure}[H]
 \centering
@@ -72,7 +72,7 @@ Eine Erweiterung der Breitensuche ermöglicht uns eine Sperre in der Umgebung ein
 \label{fig:search.barrier}
 \end{figure}
 
-Der Algorithmus ist in der Methode \texttt{getBarrier(...)} implementiert. Diese wird aufgerufen mit den Parametern \texttt{tileToProtect} (Ort der durch eine Sperre geschützt werden soll), \texttt{viewRadiusSquared} (den Sichtradius der Einheiten), denn die Sperre soll weiter entfernt sein als der Sichtradius, damit die gegnerischen Einheiten nicht sehen was sich dahinter verbirgt. Der dritte Parameter \texttt{maximumBarrierSize} definiert, welche Breite die Sperre maximal haben darf.
+Der Algorithmus ist in der Methode \texttt{getBarrier()} implementiert. Diese wird aufgerufen mit den Parametern \texttt{tileToProtect} (Ort der durch eine Sperre geschützt werden soll), \texttt{viewRadiusSquared} (den Sichtradius der Einheiten), denn die Sperre soll weiter entfernt sein als der Sichtradius, damit die gegnerischen Einheiten nicht sehen was sich dahinter verbirgt. Der dritte Parameter \texttt{maximumBarrierSize} definiert, welche Breite die Sperre maximal haben darf.
 
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}[caption={Algorithmus für Barrier-Suche}]

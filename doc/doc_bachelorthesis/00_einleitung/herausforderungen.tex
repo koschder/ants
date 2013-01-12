@@ -5,7 +5,7 @@ An dieser Stelle sollen einige Herausforderungen, die wir während der Arbeit ang
 \subsection{Module testen}
 \label{sec:einleitung.Herausforderungen.ModuleTesten}
 
-Ein neuer Algorithmus oder eine neue Idee ist schnell mal in den Bot integriert, doch bringen die geschriebenen Zeilen den gewünschten Erfolg? Was wenn der neue Codeabschnitt äusserst selten durchlaufen wird und dann noch fehlschlägt? Wie wissen wir ob die Ameise ihre zugeteilten Aufgaben korrekt ausführen?
+Ein neuer Algorithmus oder eine neue Idee ist schnell mal in den Bot integriert, doch bringen die geschriebenen Zeilen den gewünschten Erfolg? Was wenn der neue Codeabschnitt äusserst selten durchlaufen wird und dann noch fehlschlägt? Wie wissen wir ob die Ameisen ihre zugeteilten Aufgaben korrekt ausführen?
 
 Um diese Probleme zu bewältigen haben wir ein ausgeklügeltes Logging auf die Beine gestellt, in welchem wir schnell an die gewünschten Informationen gelangen. (siehe Kapitel \ref{sec:module.Logging})  Zudem können wir dank der Erweiterung des HTML-Viewer sofort sehen, welches die akutelle Aufgabe jeder einzelen Ameise ist. (siehe \ref{sec:module.Logging.Addon}) Weitergeholfen haben uns auch etliche Unittests und visuelle Tests, mit welchen wir neu geschriebenen Code testen und auf dessen Richtigkeit prüfen konnten. (siehe Kapitel \ref{sec:testCenter.UnitTests} und \ref{sec:testCenter.VisuelleTests})
 
@@ -15,6 +15,7 @@ Die Beurteilung von Kampfsituationen stellte sich wie erwartet als Knacknuss her
 So verfolgt die aktuelle Implementierung der Kampfsituationen nun einen weniger rechenintensiven Ansatz; im Gegensatz zum MinMax Algorithmus kann sie aber keine optimale Lösung finden.
 
 
+
 \subsection{Vergleich mit Bots aus dem Wettbewerb}
 \label{sec:einleitung.Herausforderungen.VergleichBots}
-Nach Ablauf des Wettbewerbs im Januar 2012, haben einige der Teilnehmer ihren Bot zugänglich gemacht. Dadurch war es uns möglich unseren Bot gegen Bots antreten zu lassen die tatsächlich am Wettbewerb teilgenommen haben. So konnten wir auch eine vage Einschätzung machen wir stark unser Bot ist. Mehr dazu siehe Kapitel \ref{sec:testCenter.TestreportProfile}.
+Da der Wettbewerb zum Zeitpunkt dieser Arbeit nicht mehr am Laufen war, konnten wir unseren Bot nicht unter Wettbewerbsbedingungen gegen alle Gegner antreten lassen. Nach Ablauf des Wettbewerbs im Januar 2012 haben allerdings einige der Teilnehmer, darunter auch der Sieger, ihren Bot öffentlich zugänglich gemacht. Dadurch war es uns in eingeschränktem Rahmen möglich, unseren Bot gegen Bots antreten zu lassen, die tatsächlich am Wettbewerb teilgenommen haben. So konnten wir auch eine vage Einschätzung machen, wie stark unser Bot ist. Mehr dazu siehe Kapitel \ref{sec:testCenter.TestreportProfile}.

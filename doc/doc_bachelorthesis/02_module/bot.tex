@@ -29,17 +29,17 @@ public static void main(String[] args) throws IOException {
 		
 \end{lstlisting}
 
-\subsection{BaseBot}
+\subsection{Klasse BaseBot}
 \label{sec:module.Bot.BaseBot}
 
 Die abstrakte Klasse BaseBot erbt von Bot. Hier haben wir die Struktur unseres Spielzuges definiert.
 
-\subsection{Ablauf eines Zugs} 
+\subsubsection{Ablauf eines Zugs} 
 \label{sec:implementation.Bot.Turn}
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{91_bilder/FirstTurn}
+\includegraphics[width=0.8\textwidth]{91_bilder/FirstTurn}
 \caption{Ablauf des ersten Zugs des Spiels}
 \label{fig:firstTurn}
 \end{figure}
@@ -48,7 +48,7 @@ Abbildung \ref{fig:firstTurn} zeigt den Ablauf des ersten Zugs, während Abbildun
 
 \begin{figure}[H]
 \centering
-\includegraphics[width=0.9\textwidth]{91_bilder/Turn}
+\includegraphics[width=0.8\textwidth]{91_bilder/Turn}
 \caption{Ablauf der weiteren Züge des Spiels}
 \label{fig:turn}
 \end{figure}
@@ -60,7 +60,7 @@ Im 1. Zug werden dabei Instanzen der Tasks erstellt. Abgesehen davon unterscheid
 Zum Schluss werden dann mit \texttt{issueOrders()} die Züge der Ameisen über den SystemOutputStream an die Spielengine übergeben. Im Code sieht das ganze folgendermassen aus.
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}[caption=Der Ablauf des Spielzuges, label=lst:ablaufspielzug]
+\begin{lstlisting}[caption=Der Ablauf des Spielzugs, label=lst:ablaufspielzug]
 @Override
 /*
  * This is the main loop of the bot. All the actual work is
@@ -85,7 +85,7 @@ public void doTurn() {
 \end{lstlisting}
 
 
-\subsection{MyBot}
+\subsection{Klasse MyBot}
 \label{sec:module.Bot.MyBot}
 
 Wie bereits im Listing \ref{lst:ablaufspielzug} ersichtlich, ist die Methode \texttt{initTasks()} in BaseBot abstrakt und muss von MyBot implementiert werden. \texttt{initTasks()} definiert welche Tasks, oder besser gesagt Fähigkeiten der Bot hat. Dies wurde ausgelagert, da nicht nur MyBot von BaseBot erbt, sondern auch weiter Bots die wir zu Testzwecken erstellt haben um nur gewisse Funktionalitäten zu testen. (Siehe dazu \ref{sec:testCenter.Testbots}) Weiter wird in der \texttt{main()}-Methode von MyBot \texttt{initLogging(...)} aufgerufen. Hier definieren wir, welche Logkategorien mit welchem Loglevel ins Logfile geschrieben werden. (Mehr zum Thema Logging siehe Kapitel \ref{sec:module.Logging}). Je nach Modul, das gerade getestet wird kann die Anzahl Logeinträge justiert werden.\\
