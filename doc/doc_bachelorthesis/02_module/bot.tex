@@ -9,7 +9,7 @@ Dieses Kapitel beschreibt die Klassenhierarchie unserer Bot Implementation.
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.7\textwidth]{91_bilder/antsBot}
-\caption[Bot Klassenhierarchie]{Vererbung der Bots wobei auf Stufe impl (Implementation) nur MyBot verwendet wird.}
+\caption[Bot Klassenhierarchie]{Vererbung der Bots}
 \label{fig:antsBot}
 \end{figure}
 
@@ -55,7 +55,7 @@ Abbildung \ref{fig:firstTurn} zeigt den Ablauf des ersten Zugs, während Abbildun
 
 Jeder Zug beginnt mit dem Einlesen des Inputs vom SystemInputStream. Wenn der Bot das Signal ''READY`` (1. Zug) oder ''GO`` (alle weiteren Züge) erhält, kann er den gesammelten Input verarbeiten (Methode \texttt{parseSetup()} respektiv \texttt{parseUpdate()}). Danach wird die eigentliche Logik des Bots in der Methode \texttt{doTurn(...)} ausgeführt.
 
-Im 1. Zug werden dabei Instanzen der Tasks erstellt. Abgesehen davon unterscheidet sich der 1. Zug von diesem Punkt an nicht mehr von allen nachfolgenden Zügen. Die Tasks werden vorbereitet (Aufruf der jeweiligen \texttt{setup()} Methode. Danach werden einige statistische Werte aktualisiert und in jedem 10. Zug auch geloggt. Dann werden die Tasks in der definierten Reihenfolge aufgerufen. Hier wird der Löwenanteil der Zeit verbracht, denn die Tasks enthalten die eigentliche Logik unserer Ameisen.
+Im 1. Zug werden dabei Instanzen der Tasks erstellt. Abgesehen davon unterscheidet sich der 1. Zug von diesem Punkt an nicht mehr von allen nachfolgenden Zügen. Die Tasks werden vorbereitet (Aufruf der jeweiligen \texttt{setup()} Methode). Danach werden einige statistische Werte aktualisiert und in jedem 10. Zug auch geloggt. Dann werden die Tasks in der definierten Reihenfolge aufgerufen. Hier wird der Löwenanteil der Zeit verbracht, denn die Tasks enthalten die eigentliche Logik unserer Ameisen.
 
 Zum Schluss werden dann mit \texttt{issueOrders()} die Züge der Ameisen über den SystemOutputStream an die Spielengine übergeben. Im Code sieht das ganze folgendermassen aus.
 
@@ -88,7 +88,7 @@ public void doTurn() {
 \subsection{Klasse MyBot}
 \label{sec:module.Bot.MyBot}
 
-Wie bereits im Listing \ref{lst:ablaufspielzug} ersichtlich, ist die Methode \texttt{initTasks()} in BaseBot abstrakt und muss von MyBot implementiert werden. \texttt{initTasks()} definiert welche Tasks, oder besser gesagt Fähigkeiten der Bot hat. Dies wurde ausgelagert, da nicht nur MyBot von BaseBot erbt, sondern auch weiter Bots die wir zu Testzwecken erstellt haben um nur gewisse Funktionalitäten zu testen. (Siehe dazu \ref{sec:testCenter.Testbots}) Weiter wird in der \texttt{main()}-Methode von MyBot \texttt{initLogging(...)} aufgerufen. Hier definieren wir, welche Logkategorien mit welchem Loglevel ins Logfile geschrieben werden. (Mehr zum Thema Logging siehe Kapitel \ref{sec:module.Logging}). Je nach Modul, das gerade getestet wird kann die Anzahl Logeinträge justiert werden.\\
+Wie bereits im Listing \ref{lst:ablaufspielzug} ersichtlich, ist die Methode \texttt{initTasks()} in BaseBot abstrakt und muss von MyBot implementiert werden. \texttt{initTasks()} definiert welche Tasks, oder besser gesagt Fähigkeiten der Bot hat. Dies wurde ausgelagert, da nicht nur MyBot von BaseBot erbt, sondern auch weiter Bots die wir zu Testzwecken erstellt haben um nur gewisse Funktionalitäten zu testen. (Siehe dazu \ref{sec:testCenter.Testbots}) Weiter wird in der \texttt{main()}-Methode von MyBot \texttt{initLogging(...)} aufgerufen. Hier definieren wir, welche Logkategorien mit welchem Loglevel ins Logfile geschrieben werden. (Mehr zum Thema Logging siehe Kapitel \ref{sec:module.Logging}). Je nach Modul, das gerade getestet wird kann so die Anzahl Logeinträge justiert werden.\\
 MyBot initialisiert die folgend aufgeführten Tasks; es sind die Tasks, die sich im Lauf der Arbeit bewährt haben. Die detaillierte Beschreibung der Tasks ist im nachfolgenden Kapitel \ref{sec:module.Tasks} zu finden.
 
 \begin{itemize}

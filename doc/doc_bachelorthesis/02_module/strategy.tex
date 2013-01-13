@@ -68,12 +68,12 @@ In folgenden Modulen berücksichtigen wir Werte aus der \gls{InfluenceMap}, um En
 \item
 \textbf{Pfadsuche mit \gls{InfluenceMap} Berücksichtigung}: Siehe Kapitel \ref{subsec:module.Suchalgorithmen.Pfadsuche.WithInfluenceMap}
 \item
-\textbf{Combat Positioning}: Müssen wir die Flucht ergreifen, bewegen wir unsere Ameise auf das sicherste \gls{Tile} in der Nachbarschaft.
+\textbf{Combat Positioning}: Müssen wir die Flucht ergreifen, bewegen wir unsere Ameise auf das nächste sicherste \gls{Tile} in der Nachbarschaft.
 \item
 \textbf{Abbruch Mission}: Falls eine Ameise auf einer andere Mission als einer GatherFoodMission ist und ein Nahrungs-\gls{Tile} in seiner Nähe antrifft, wird abgewogen ob die Mission zu Gunsten von Futter sammeln abgebrochen werden soll. Dabei ist ein Entscheidungsfaktor auch die ''Sicherheit`` des Futters. Falls das Futter nicht auf einem sicheren Weg geholt werden kann, wird die Mission nicht abgebrochen.
 \end{itemize}
 
-Natürlich könnte man die \gls{InfluenceMap} noch für diverse weitere Entscheidungen verwenden. Auch der Einsatz einer Spannungskarte (Tension Map), welche auch auf den Werten der \gls{InfluenceMap} aufbaut, wäre denkbar. Dies wurde während dieser Arbeit abern nicht angeschaut bzw. implementiert.
+Natürlich könnte man die \gls{InfluenceMap} noch für diverse weitere Entscheidungen verwenden. Auch der Einsatz einer Spannungskarte (Tension Map), welche auch auf den Werten der \gls{InfluenceMap} aufbaut, wäre denkbar. Dies wurde während dieser Arbeit aber nicht angeschaut bzw. implementiert.
 
 
 \section{Combat Positioning}
@@ -86,14 +86,14 @@ Natürlich könnte man die \gls{InfluenceMap} noch für diverse weitere Entscheidun
 \label{fig.strategyTacticsCombat}
 \end{figure}
 
-Kampfsituationen treten immer dann auf, wenn gegnerische Ameisen auf unsere Ameisen treffen. Die entscheidendsten Kämpfe ereignen sich, wenn ein gegnerischer Hügel angegriffen wird oder der eigene Hügel verteidigt werden muss. Eine Kampfsituation kann sich aber auch sonst irgendwo auf der Karte ereignen.
+Kampfsituationen treten immer dann auf, wenn gegnerische Ameisen auf unsere Ameisen treffen. Die entscheidendsten Kämpfe ereignen sich, wenn ein gegnerischer Hügel angegriffen wird oder der eigene Hügel verteidigt werden muss. Eine Kampfsituation kann sich aber auch sonst irgendwo auf der Karte ereignen. Wie wir uns in solchen Situationen formieren, berechnet das Combat Positioning. Wir unterscheiden zwischen den Verhalten \texttt{DEFAULT},\texttt{ATTACK},\texttt{DEFEND} und \texttt{FLEE}.
 
 \subsection{Klassen des Combat Positioning}
 \label{sec:module.CombatSituation.DefaultCombatPositioning}
 
 \subsubsection{DefaultCombatPositioning} 
 
-DefaultCombatPositioning implementiert das Interface CombatPositioning, was bedeutet, dass über die Methode \texttt{getNextTile(Unit)} für alle Einheiten, die in die Berechnung einbezogen werden, jeweils der nächste Spielzug zurückgegeben werden muss. Das DefaultCombatPositioning unterstützt die verschiedenen Positionierungs-Verhalten (\texttt{Mode}); welches Verhalten jeweils zum Einsatz kommt, wird durch die Methode \texttt{determineMode()} bestimmt.
+DefaultCombatPositioning implementiert das Interface CombatPositioning. Nach der Initialisierung und der Berechnung der Positionen, kann über die Methode \texttt{getNextTile(Unit)} für alle Einheiten, die in die Berechnung einbezogen wurden, jeweils der nächste Spielzug geholt werden. Das DefaultCombatPositioning unterstützt die verschiedenen Positionierungs-Verhalten (\texttt{Mode}); welches Verhalten jeweils zum Einsatz kommt, wird durch die Methode \texttt{determineMode()} bestimmt.
 
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}[caption={Standard-Implementierung von determineMode()}]
@@ -109,7 +109,7 @@ Die \texttt{determineMode()}-Methode ist jeweils in den Unterklassen von Default
 
 \subsubsection{DefendingCombatPositioning}
 
-Hier wird immer das ''DEFEND`` Verhalten ausgewählt, aus dem Grund, dass die Verteidiger sich nicht zu weit vom Hügel entfernen dürfen, indem sie den Gegner attackieren, da sonst der Hügel von einer anderen Seite eingenommen werden kann. In Unterzahl sollen die Verteidiger auch nicht flüchten, sondern trotzdem versuchen den Hügel zu verteidigen. Hier könnte man sich Gedanken machen ob die Verteidiger, falls in Überzahl, die Gegner nicht bis zu einem gewissen Punkt angreifen sollen. Dieser Möglichkeit sind wir aber nicht weiter nach gegangen.
+Hier wird immer das ''DEFEND`` Verhalten ausgewählt, aus dem Grund, dass die Verteidiger sich nicht zu weit vom Hügel entfernen dürfen, indem sie die Angreifer attackieren, da sonst der Hügel von einer anderen Seite eingenommen werden kann. In Unterzahl sollen die Verteidiger auch nicht flüchten, sondern trotzdem versuchen den Hügel zu verteidigen. Hier könnte man sich Gedanken machen ob die Verteidiger, falls in Überzahl, die Gegner nicht bis zu einem gewissen Punkt angreifen sollen. Dieser Möglichkeit sind wir aber nicht weiter nach gegangen.
 
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}[caption={determineMode() im DefendingCombatPositioning}]
@@ -120,7 +120,7 @@ protected Mode determineMode() {
 
 \subsubsection{AttackingCombatPositioning}
 
-Die Bestimmung des Verhaltens unserer Angreifer in der AttackingCombatPositioning-Klasse ist da schon komplexer. Mittels Breitensuche werden die Gegner zwischen uns und dem Ziel ermittelt. Falls der Gegner in Unterzahl ist, wird angegriffen, indem der Modus auf ATTACK gesetzt wird. Andernfalls greift die \texttt{determineMode()} des DefaultCombatPositioning.
+Die Bestimmung des Verhaltens unserer Angreifer in der AttackingCombatPositioning-Klasse ist da schon komplexer. Mittels Breitensuche werden die Gegner zwischen uns und dem Angriffsziel ermittelt. Falls der Gegner in Unterzahl ist, wird angegriffen, indem der Modus auf ATTACK gesetzt wird. Andernfalls greift die \texttt{determineMode()} des DefaultCombatPositioning.
 
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}[caption={determineMode() im AttackingCombatPositioning}]
@@ -198,9 +198,9 @@ Das ClusterCenter des Gegners dient als Kreismittelpunkt (siehe schwarzer Kreis 
 
 Abbildung \ref{fig.DefaultCombatPositioning} zeigt wie die \gls{Tile}s zur Positionierung für die südliche und die nördliche Verteidigung berechnet werden. Die schwarzen Kreise bezeichnen jeweils die ClusterCenter der Kontrahenten. Die gefundenen Positionierungstiles für die nördliche Verteidigung liegen auf dem grauen Kreis und werden in der Abbildung hellorange dargestellt. Zu sehen ist auch, dass auf dem eigenen Hügel keine Positionierung möglich ist, hier sollen neue Ameisen schlüpfen können.
 
-Die Idee dieser Positionierung ist, dass so alle eigene Ameisen gleich weit vom Zentrum des Gegners entfernt sind. Sobald der Gegner vorrückt, muss er gegen alle Ameisen gleichzeitig kämpfen. Nachteil dieser Positionierung ist, dass wenn der Gegner nicht kompakt angreift und nicht eine gleichförmige Angriffsformation hat, richten wir uns nur nach dem ClusterCenter aus, die einzelnen Gruppierungen der gegnerischen Ameisen werden nicht berücksichtigt, was einen Nachteil bei der Verteidigung darstellt.
+Die Idee dieser Positionierung ist, dass so alle eigene Ameisen gleich weit vom Zentrum des Gegners entfernt sind. Sobald der Gegner vorrückt, muss er gegen alle Ameisen gleichzeitig kämpfen. Nachteil dieser Positionierung ist, wenn der Gegner nicht kompakt angreift und nicht eine gleichförmige Angriffsformation hat, richten wir uns nur nach dem ClusterCenter aus, die einzelnen Gruppierungen der gegnerischen Ameisen werden nicht berücksichtigt, was einen Nachteil bei der Verteidigung darstellt.
 
-Wir haben uns überlegt, dass eine Positionierung mit Hilfe der \gls{InfluenceMap} diesen Nachteil beheben würde. Man könnte die neutralen \gls{Tile}s die sich zwischen den Kontrahenten befindet mittels \gls{InfluenceMap} herausfinden und als Front anschauen. Nach dieser Frontlinie würden wir uns dann unsere Einheiten ausrichten. Leider fehlte uns hier die Zeit, dies nachträglich noch zu programmieren und auszuprobieren.
+Wir haben uns überlegt, dass eine Positionierung mit Hilfe der \gls{InfluenceMap} diesen Nachteil beheben würde. Man könnte die neutralen \gls{Tile}s die sich zwischen den Kontrahenten befindet mittels \gls{InfluenceMap} herausfinden und als Front anschauen. Nach dieser Frontlinie würden wir uns dann unsere Einheiten ausrichten. Leider fehlte uns hier die Zeit, diese Variante nachträglich noch zu programmieren und auszuprobieren.
 
 \subsubsection{ATTACK}
 \label{sec:module.CombatSituation.DefaultCombatPositioning.Attack}
@@ -221,7 +221,7 @@ Wir haben uns überlegt, dass eine Positionierung mit Hilfe der \gls{InfluenceMap
  }
 \end{lstlisting}
 
-Im Verhalten ATTACK werden die \gls{Tile}s zur Positionierung genau gleich berechnet wie vorhin im DEFEND-Modus. Nach der Berechnung wird geschaut, wie viele unserer Angreifer schon auf diesen \gls{Tile}s sind. Falls sich ein definierter Anteil der Ameisen bereits auf den \gls{Tile}s befindet, gehen wir davon aus das sich unsere Ameisen formiert haben und der Radius wird verkürzt. Durch den verkürzten Radius werden \gls{Tile}s berechnet die um eine Zelle näher beim Gegner sind. Danach folgt die Positionierung (Vorrücken) der Ameisen auf die berechneten \gls{Tile}s.
+Im Verhalten ATTACK werden die \gls{Tile}s zur Positionierung genau gleich berechnet wie vorhin im DEFEND-Modus. Nach der Berechnung wird geschaut, wie viele unserer Angreifer schon auf diesen \gls{Tile}s sind. Falls sich ein definierter Anteil der Ameisen bereits auf den \gls{Tile}s befindet, gehen wir davon aus das sich unsere Ameisen formiert haben; der Radius wird verkürzt. Durch den verkürzten Radius werden \gls{Tile}s berechnet die um eine Zelle näher beim Gegner sind. Danach folgt die Positionierung (Vorrücken) der Ameisen auf die berechneten \gls{Tile}s.
 
 \subsubsection{DEFAULT}
 \label{sec:module.CombatSituation.DefaultCombatPositioning.Default}
@@ -230,6 +230,6 @@ Der DEFAULT Verhaltensmodus kommt beim Kampf im freien Feld (ohne Ziele zur Vert
 
 \section{MinMax Situationsbewertung (nicht verwendet)}
 \label{sec:module.MinMax}
-In einem ersten Ansatz, die Kampfsituationen dynamisch zu bewerten, adaptierten wir den bereits im Rahmen des Moduls ''Spieltheorie`` implementierten MinMax-Algorithmus. (Auf den Algorithmus soll hier nicht näher eingegangen werden; eine gute Beschreibung findet sich in \cite[S.~161-171]{AIMA}.) Die Idee dabei war, eine Kampfsituation als einen Spielstand darzustellen und mit dem MinMax-Algorithmus die besten nächsten Züge für unsere Ameisen zu errechnen. Aufgrund des hohen Branching-Faktors dieser Kampfsituationen und der beschränkten Rechenzeit, die uns im Spiel während eines Zugs zur Verfügung steht, ist es uns aber nicht gelungen, den Algorithmus genügend performant zu implementieren.
+In einem ersten Ansatz, die Kampfsituationen dynamisch zu bewerten, adaptierten wir den bereits im Rahmen des Moduls ''Spieltheorie`` implementierten MinMax Algorithmus. (Auf den Algorithmus soll hier nicht näher eingegangen werden; eine gute Beschreibung findet sich in \cite[S.~161-171]{AIMA}.) Die Idee dabei war, eine Kampfsituation als einen Spielstand darzustellen und mit dem MinMax-Algorithmus die besten nächsten Züge für unsere Ameisen zu errechnen. Aufgrund des hohen Branching-Faktors dieser Kampfsituationen und der beschränkten Rechenzeit, die uns im Spiel während eines Zugs zur Verfügung steht, ist es uns aber nicht gelungen, den Algorithmus genügend performant zu implementieren.
 
 Der Code befindet sich noch im Projekt (in den Packages \texttt{ants.tactics} resp. \texttt{tactics.minmax}), er ist aber als \gls{Deprecated} markiert und wird nicht mehr verwendet.

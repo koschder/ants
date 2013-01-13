@@ -17,7 +17,7 @@ Abbildung \ref{fig:StateClasses} zeigt eine \"{U}bersicht über der Spielzustands
 
 \subsection{Ants}
 \label{sec:module.Ants.State.Ants}
-Die Ants Klasse ist die zentrale State-Klasse. Sie bietet auch einfachen Zugriff auf die anderen State-Klassen. Ursprünglich hatten wir alle Methoden, die mit dem Zugriff auf den Spielzustand zu tun hatten, direkt in der Ants Klasse implementiert, haben aber schnell gemerkt, dass das unhandlich wird. Die Ants Klasse dient jetzt vor allem als Container für die anderen State-Klassen und implementiert nur noch einige Methoden, die Zustandsänderungen in verschiedenen Bereichen vornehmen.
+Die Ants Klasse ist die zentrale State-Klasse. Sie bietet einfachen Zugriff auf die anderen State-Klassen. Ursprünglich hatten wir alle Methoden, die mit dem Zugriff auf den Spielzustand zu tun hatten, direkt in der Ants Klasse implementiert, haben aber schnell gemerkt, dass das unhandlich wird und haben die Zustände in die Klassen World, Population und Orders aufgeteilt. Die Ants Klasse dient jetzt vor allem als Container für die anderen State-Klassen und implementiert nur noch einige Methoden, die Zustandsänderungen in verschiedenen Bereichen vornehmen.
 
 \subsection{World}
 \label{sec:module.Ants.State.World}
@@ -56,4 +56,4 @@ Eine Route repräsentiert eine einfache Verbindung zwischen zwei \gls{Tile}s. Die
 
 \subsection{Ilk}
 \label{sec:implementation.Entities.Ilk}
-Ilk ist der Typ einer Zelle. Der Ilk einer \gls{Tile}-Instanz gibt an, was sich gerade in der Zelle befindet. Dies kann ein Geländetyp sein, wenn die Zelle nicht besetzt ist, oder es kann eine Ameise, Nahrung, oder ein Hügel sein; in diesem Fall ist der Geländetyp implizit ''Land``, da Wasser-\gls{Tile}s nicht besetzt sein können. Die Ilk-Enumeration bietet Hilfsmethoden, um festzustellen, ob eine Zelle passierbar oder besetzt ist.
+Ilk ist der Typ einer Spielfeldzelle. Der Ilk einer \gls{Tile}-Instanz gibt an, was sich gerade in der Zelle befindet. Dies kann ein Geländetyp sein, wenn die Zelle nicht besetzt ist, oder es kann eine Ameise, Nahrung, oder ein Hügel sein; in diesem Fall ist der Geländetyp implizit ''Land``, da Wasser-\gls{Tile}s nicht besetzt sein können. Die Ilk-Enumeration bietet Hilfsmethoden, um festzustellen, ob eine Zelle passierbar oder besetzt ist.

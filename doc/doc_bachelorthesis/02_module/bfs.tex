@@ -2,7 +2,7 @@
 \label{subsec:module.Suchalgorithmen.Breitensuche}
 Die Breitensuche (engl. Breadth First Search (\gls{BFS})) war eine der Neuimplementierungen während der Bachelorarbeit. Wir verwenden diese Suche um die Umgebung einer Ameise oder eines Hügels nach Futter, Gegnern usw. zu scannen. Man könnte die \gls{BFS} auch für die Pfadsuche verwenden, dies wäre aber sehr ineffizient. Im Klassendiagramm ist zu sehen auf welchen drei Methoden die Breitensuche aufbaut.
 
-Der Algorithmus für die Breitensuche ist in \cite{AIMA} beschrieben und wurde nach dieser Beschreibung implementiert.
+Der Algorithmus für die Breitensuche ist im Buch \cite{AIMA} beschrieben und wurde nach dieser Beschreibung implementiert.
 
 \begin{figure}[H]
 \centering
@@ -11,7 +11,7 @@ Der Algorithmus für die Breitensuche ist in \cite{AIMA} beschrieben und wurde na
 \label{fig:BFS}
 \end{figure}
 
-Die Breitensuche wurde generisch implementiert, so dass sie vielseitig einsetzbar ist. So können zum Beispiel mittels 'GoalTest' je nach Anwendungsfall die Tiles beschrieben werden, die gesucht sind. Folgende Breitensuche findet die Ameise welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Die Suche wird initialisiert, indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 Zellen entspricht. Falls keine Ameise gefunden wird gibt der Algorithmus NULL zurück.
+Die Breitensuche wurde generisch implementiert, so dass sie vielseitig einsetzbar ist. Es können zum Beispiel mittels 'GoalTest' je nach Anwendungsfall die Tiles beschrieben werden, die gesucht sind. Folgende Breitensuche findet die Ameise welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Die Suche wird initialisiert, indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 Zellen entspricht. Falls keine Ameise gefunden wird gibt der Algorithmus NULL zurück.
 
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}[caption={Anwendungsbeispiel Breitensuche}]
@@ -27,7 +27,7 @@ Tile antClosestToFood = bfs.findSingleClosestTile(food, 40, new GoalTest() {
 
 Es ist auch möglich mehrere Tiles zurück zu bekommen. Dazu wird die Methode \texttt{findClosestTiles()} aufgerufen.
 
-Der gleiche Algorithmus kann aber auch alle passierbaren Tiles in einem gewissen Umkreis zurückgeben. Dies haben wir unter anderem beim Initialisieren der DefendHillMission verwendet. Wir berechnen beim Erstellen der Mission die passierbaren Zellen rund um den Hügel. Runde für Runde prüfen wir diese Tiles auf gegnerische Ameisen um die entsprechenden Verteidigungsmassnahmen zu ergreifen. Der Parameter \texttt{controlAreaRadius2} definiert den Radius des ''Radars`` und kann je nach Profil unterschiedlich eingestellt werden.
+Der gleiche Algorithmus kann aber auch alle passierbaren Tiles in einem gewissen Umkreis zurückgeben. Dies haben wir unter anderem beim Initialisieren der DefendHillMission verwendet. Wir berechnen beim Erstellen der Mission die passierbaren Zellen rund um den Hügel. Runde für Runde prüfen wir diese vorberechneten Tiles auf gegnerische Ameisen um die entsprechenden Verteidigungsmassnahmen zu ergreifen. Der Parameter \texttt{controlAreaRadius2} definiert den Radius des ''Radars`` und kann je nach Profil unterschiedlich eingestellt werden.
 
 Unser Flood Fill Algorithmus ist praktisch identisch mit der Breitensuche. Eine allgemeine Beschreibung von Flood Fill befindet sich in \cite{ARTIFICIALINTELLIGENCEFORGAMES}.
 
@@ -56,14 +56,14 @@ Bei der Wahl des Suchalgorithmus orientierten wir uns stark an \cite[S.~64-109]{
 
 Abgesehen von der Pfadsuche, bei der wir auf die heuristischen Algorithmen A* und HPA* setzten, waren unsere Anforderungen bei der Suche meist so geartet, dass eine Heuristik entweder nicht existiert, oder keine Vorteile bringt. Wenn wir beispielsweise für ein Nahrungs-\gls{Tile} die nächste Ameise suchen wollen, ist das Ziel der Suche ja nicht bekannt, und daher kann keine sinnvolle Heuristik definiert werden. Es blieb also nur die Frage, welche der verfügbaren nicht-heuristischen Algorithmen wir einsetzen wollten. 
 
-Die wichtigsten Anforderungen an den Such-Algorithmus waren die Vollständigkeit (Wenn eine Lösung existiert, muss sie gefunden werden), und die Optimalität (Eine gefundene Lösung muss die kleinsten Kosten aller existierenden Lösungen haben). Damit fiel bereits die Tiefensuche weg. Die Uniform-Cost Suche machte im Kontext von Ants keinen Sinn, da in diesem Spiel jeder Schritt immer die Kosten 1 hat. Eine Bidirektionale Suche war ebenfalls nicht praktikabel, da wir ja das Ziel der Suche meist nicht kennen. Daher mussten wir uns lediglich noch zwischen der Iterativen Tiefensuche und der Breitensuche entscheiden; die Entscheidung fiel zugunsten der Breitensuche aus, weil sie einfacher zu implementieren ist, und weil wir damit auch gleich einen geeigneten Flood Fill Algorithmus implementieren konnten.
+Die wichtigsten Anforderungen an den Suchalgorithmus waren die Vollständigkeit (Wenn eine Lösung existiert, muss sie gefunden werden), und die Optimalität (Eine gefundene Lösung muss die kleinsten Kosten aller existierenden Lösungen haben). Damit fiel bereits die Tiefensuche weg. Die Uniform-Cost Suche machte im Kontext von Ants keinen Sinn, da in diesem Spiel jeder Schritt immer die Kosten 1 hat. Eine Bidirektionale Suche war ebenfalls nicht praktikabel, da wir ja das Ziel der Suche meist nicht kennen. Daher mussten wir uns lediglich noch zwischen der Iterativen Tiefensuche und der Breitensuche entscheiden; die Entscheidung fiel zugunsten der Breitensuche aus, weil sie einfacher zu implementieren ist, und weil wir damit auch gleich einen geeigneten Flood Fill Algorithmus implementieren konnten.
 
 Was für unsere Entscheidung keine Rolle spielte, waren die Zeit- und Raum-Komplexität der Algorithmen; die konkreten Anwendungsfälle für die Suche waren klein genug, dass die Unterschiede vernachlässigbar waren.
 
 \subsection{Barrier (Sperre)}
 \label{subsec:module.Suchalgorithmen.Breitensuche.Barrier}
 
-Eine spezielle Anwendung der Breitensuche ermöglicht uns, eine Sperre in der Umgebung eines Ortes zu finden. Diese verwenden wir in der DefendHillMission zum Verteidigen des eigenen Hügels. Es kann nur eine Sperre (engl. Barrier) gefunden werden, wenn das Gelände dazu passt. Die Abbildung \ref{fig:search.barrier} zeigt eine solche gefundene Sperre. Auf dieser Höhe wird der Hügel verteidigt.
+Eine spezielle Anwendung der Breitensuche ermöglicht uns, eine Sperre in der Umgebung eines Ortes zu finden. Diese verwenden wir in der DefendHillMission zum Verteidigen des eigenen Hügels. Es kann nur eine Sperre (engl. Barrier) gefunden werden, wenn das Gelände dazu passt. Die Abbildung \ref{fig:search.barrier} zeigt eine gefundene Sperre. Dort werden wir unsere Ameisen zur Verteidigung aufstellen.
 
 \begin{figure}[H]
 \centering
@@ -122,6 +122,6 @@ public Barrier getBarrier(final Tile tileToProtect, int viewRadiusSquared, int m
 }
 \end{lstlisting}
 
-Dank dem Abspeichern der ungültigen Tiles aller zu breiten Sperren in die Listen \texttt{barrierHorizontalInvalid} und \texttt{barrierVerticalInvalid} konnte der Algorithmus markant schneller gemacht werden. Für diese Tiles muss nicht nochmals eine Sperre berechnet werden. Auch die if-Abfrage \texttt{barrier is the only exit out of the location to defend} muss nicht mehr oft aufgerufen werden, den hinter dieser Abfrage steht nämlich wiederum ein Test mit der Breitensuche. Dieser zusätzliche Test mit der Breitensuche ist viel teurer als das Zwischenspeichern der Tiles aus welchen keine gültige Sperre gemacht werden konnte.\\
+Dank dem Abspeichern der ungültigen Tiles aller zu breiten Sperren in die Listen \texttt{barrierHorizontalInvalid} und \texttt{barrierVerticalInvalid} konnte der Algorithmus markant schneller gemacht werden. Für diese Tiles muss nicht nochmals eine Sperre berechnet werden. Auch die if-Abfrage ''\texttt{barrier is the only exit out of the location to defend}`` muss nicht mehr oft aufgerufen werden, den hinter dieser Abfrage steht nämlich wiederum ein Test mit der Breitensuche. Dieser zusätzliche Test mit der Breitensuche wäre viel teurer als das Zwischenspeichern der Tiles aus welchen keine gültige Sperre gemacht werden konnte.\\
 \\
-Im Nachhinein hat sich ergeben, dass nicht unbedingt die schmalste Sperre die Beste wäre, sondern jede bei welche der Gegner, geländebedingt, weniger Einheiten aufstellen kann. So wäre in Abbildung \ref{fig:search.barrier} eine Sperre zwei Zellen östlicher besser, den der Gegner könnte beim Angriff nur mit vier Einheiten vorrücken, die Verteidigung wäre aber mit sechs Einheiten auf einer Linie deutlich stärker. Die Zeit hat aber hier leider nicht gereicht, den Algorithmus weiter zu verfeinern.
+Im Nachhinein hat sich ergeben, dass nicht unbedingt die schmalste Sperre die Beste wäre, sondern jede bei welche der Gegner, geländebedingt, weniger Einheiten aufstellen kann. So wäre in Abbildung \ref{fig:search.barrier} eine Sperre zwei Zellen östlicher besser, denn der Gegner könnte beim Angriff nur mit vier Einheiten vorrücken, die Verteidigung wäre aber mit sechs Einheiten auf einer Linie deutlich stärker. Die Zeit hat aber hier leider nicht gereicht, den Algorithmus weiter zu verfeinern.

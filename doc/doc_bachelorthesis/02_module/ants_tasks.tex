@@ -1,7 +1,7 @@
 \section{Tasks}
 \label{sec:module.Tasks}
 
-Bereits zu Beginn der Arbeit an ''Projekt 2`` haben wir die wichtigsten Aufgaben der Ameisen identifiziert. Diese Aufgaben wurden als Tasks in eigenen Klassen implementiert, von denen die meisten während der Bachelorarbeit noch einmal stark überarbeitet wurden. Abbildung \ref{fig:tasks} zeigt die verschiedenen Tasks.
+Bereits zu Beginn der Arbeiten an ''Projekt 2`` haben wir die wichtigsten Aufgaben der Ameisen identifiziert. Diese Aufgaben wurden als Tasks in eigenen Klassen implementiert, von denen die meisten während der Bachelorarbeit noch einmal stark überarbeitet wurden. Abbildung \ref{fig:tasks} zeigt die verschiedenen Tasks.
 
 \begin{figure}[H]
 \centering
@@ -16,21 +16,23 @@ Jedem Task ist jeweils ein Task.Type zugeordnet. Dieser entspricht dem Aufgabent
 \subsection{MissionTask}
 \label{subsec:implementation.Tasks.MissionTask}
 
+Der MissionTask führt alle laufenden Mission, welche in der Klasse Orders gespeichert sind, aus.
+
 \paragraph{setup():}
 
-Der MissionTask führt alle bestehenden Missionen aus. In der \texttt{setup()}-Methode werden die bestehenden Missionen initialisiert, indem die \texttt{setup()}-Methoden der vorhandenen Missionen aufgerufen werden. Diese löscht alle Ameisen aus der Mission welche den letzten Zug nicht überlebt haben. Die überlebenden Ameisen werden als ''beschäftigt`` markiert, damit Sie nicht von anderen Missionen verwendet werden. Zudem werden die Ameisen, abhängig vom letzten Zug, auf ihre neue Spielfeldzelle gesetzt.
+In der \texttt{setup()}-Methode des MissionTask werden die bestehenden Missionen initialisiert, indem die \texttt{setup()}-Methoden der vorhandenen Missionen aufgerufen werden. Diese löscht alle Ameisen aus der Mission welche den letzten Zug nicht überlebt haben. Die überlebenden Ameisen werden als ''beschäftigt`` markiert, damit Sie nicht von anderen Missionen verwendet werden. Zudem werden die Ameisen, abhängig vom letzten Zug, auf ihre neue Spielfeldzelle gesetzt.
 
 \paragraph{execute():}
 
-Nun, da alle Missionen inklusive Ameisen initialisiert wurde, werden diese ausgeführt. Für die Ausführungen haben wir die Missionen nach Typ in der Reihenfolge EXPLORE, COMBAT, DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS sortiert. Zuerst sollen die Missionen EXPLORE und COMBAT ausgeführt werden, aus dem Grund, dass diese Missionen keine neue Ameisen verlangen. Sie kommen mit den Ameisen aus, die sie zu Beginn der Mission zugeteilt bekamen. Falls nun das Missionsziel von EXPLORE oder COMBAT erreicht wurde (\texttt{mission.isComplete()}), die Mission nicht mehr gültig ist (\texttt{!mission.isValid()}) oder keine Züge für die Mission errechnet werden konnten (\texttt{mission.isAbandoned()}), so wird die Mission aufgelöst und die Ameisen werden für die nachfolgenden Missionen DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS freigegeben.
+Nun, da alle Missionen inklusive Ameisen initialisiert wurde, werden die Missionen ausgeführt. Für die Ausführungen haben wir die Missionen nach Typ in der Reihenfolge EXPLORE, COMBAT, DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS sortiert. Zuerst sollen die Missionen EXPLORE und COMBAT ausgeführt werden, aus dem Grund, dass diese Missionen keine neue Ameisen verlangen. Sie kommen mit den Ameisen aus, die sie zu Beginn der Mission zugeteilt bekamen. Falls nun das Missionsziel von EXPLORE oder COMBAT erreicht wurde (\texttt{mission.isComplete()}), die Mission nicht mehr gültig ist (\texttt{!mission.isValid()}) oder keine Züge für die Mission errechnet werden konnten (\texttt{mission.isAbandoned()}), so wird die Mission aufgelöst und die Ameisen werden für die nachfolgenden Missionen DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS freigegeben.
 
-Die Missionen DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS sind auch überlegt angeordnet. Falls die DEFEND\_HILL Missionen Verstärkung bei der Verteidigung brauchen, sind sie darauf angewiesen, dass sie Ameisen rekrutieren können, die möglichst schnell zum Hügel gelangen. Es wäre ungünstig, wenn die nahe gelegenen Ameisen einer ATTACK\_HILLS- oder einer GATHER\_FOOD-Mission beitreten und so die DEFEND\_HILL-Mission Ameisen von weiter weg herbeirufen müsste. GATHER\_FOOD wird vor ATTACK\_HILLS aufgerufen, da Ameisen, die nahe bei einer Futterzelle sind das Futter einsammeln sollen und nicht, oder erst später, am Angriff teilnehmen.
+Die Missionen DEFEND\_HILL, GATHER\_FOOD, ATTACK\_HILLS sind auch überlegt angeordnet. Falls die DEFEND\_HILL Missionen Verstärkung bei der Verteidigung brauchen, sind sie darauf angewiesen, dass sie Ameisen rekrutieren können, die möglichst schnell zum Hügel gelangen. Es wäre ungünstig, wenn die nahe gelegenen Ameisen einer ATTACK\_HILLS- oder einer GATHER\_FOOD-Mission beitreten und so die DEFEND\_HILL-Mission Ameisen zur Verteidigung von weiter weg herbeirufen müsste. GATHER\_FOOD wird vor ATTACK\_HILLS aufgerufen, da Ameisen, die nahe bei einer Futterzelle sind das Futter einsammeln sollen und nicht, oder erst später, am Angriff teilnehmen.
 
 Je nach Spielsituation oder Profil des Bots könnte man in Erwägung ziehen, die Reihenfolge vor dem Spiel oder dynamisch zu ändern. Dies wurde aber nicht näher betrachtet.
 
 \subsection{GatherFoodTask}
 \label{subsec:implementation.Tasks.GatherFoodTask}
-Im ersten Zug wird genau eine GatherFoodMission durch den GatherFoodTask erstellt. Diese Mission  koordiniert die Futtersuche und verwaltet die Ameisen, welche Futter einsammeln.
+In der ersten Spielrunde wird genau eine GatherFoodMission durch den GatherFoodTask erstellt. Diese Mission  koordiniert die Futtersuche und verwaltet die Ameisen, welche Futter einsammeln.
 
 \subsection{DefendHillTask}
 \label{subsec:implementation.Tasks.DefendHillTask}
@@ -52,7 +54,7 @@ In diesem Task landen alle Ameisen, bei jenen die vorgängigen Missionen abgebroc
 
 \subsection{ClearHillTask}
 \label{subsec:implementation.Tasks.ClearHillTask}
-Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel ''schlüpfen``, vom Hügel weg. Die meisten dieser Ameisen werden zwar bereits von anderen Tasks mit Arbeit versorgt, aber dieser Task stellt sicher, dass nachfolgende Ameisen nicht blockiert werden. Es wird keine Mission erstellt, der Task bewegt die Ameise nur eine Zelle vom Hügel weg.
+Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel ''schlüpfen``, vom Hügel weg. Die meisten dieser Ameisen werden zwar bereits von anderen Tasks mit Arbeit versorgt, aber dieser Task stellt sicher, dass sich die Ameise fortbewegt und den Hügel nicht blockiert wird. Es wird keine Mission erstellt, der Task bewegt die Ameise nur eine Zelle vom Hügel weg.
 
 \subsection{ClusteringTask}
 \label{subsec:implementation.Tasks.ClusteringTask}

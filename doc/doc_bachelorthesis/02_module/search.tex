@@ -21,9 +21,9 @@ Abbildung \ref{fig:pathfinderEntities} zeigt die wichtigsten Klassen, die für di
 \item
 \textbf{DirectedEdge}: Erweitert die Klasse Edge, indem die Kante in dieser Klasse gerichtet ist.
 \item
-\textbf{Cluster}: Der Cluster ist ein Kartenabschnitt und wird vom HPA* Algorithmus (Kapitel \ref{subsec:module.Suchalgorithmen.Pfadsuche.HPAstar}) genutzt, indem er die Pfade kennt, die durch diesen Kartenabschnitt führen.
+\textbf{Cluster}: Der Cluster ist ein Kartenausschnitt und wird vom HPA* Algorithmus (Kapitel \ref{subsec:module.Suchalgorithmen.Pfadsuche.HPAstar}) genutzt, indem er die Pfade kennt, die durch diesen Kartenabschnitt führen.
 \item
-\textbf{Vertex}: Eine Vertex ist ein Knoten der Teil bei Pfadsuche ist. Er verbindet weitere Konten durch Katen (Edges).
+\textbf{Vertex}: Eine Vertex ist ein Knoten der Teil bei der Pfadsuche ist. Er verbindet weitere Konten durch Katen (Edge).
 \item
 \textbf{Clustering}: Das Clustering ist auch Teil des HPA* Algorithmus. Es ist für die Aufteilung der Karte in mehrere Clusters zuständig.
 \end{itemize}
@@ -38,11 +38,11 @@ Abbildung \ref{fig:pathfinderEntities} zeigt die wichtigsten Klassen, die für di
 
 Das Interface PathFinder definiert eine einfache \texttt{search()} Methode, die die Angabe von Start, Ziel und einer Suchstrategie erlaubt. Die \texttt{update()} Methode ermöglicht ein Aktualisieren der Berechnungsgrundlagen für die Pfadsuche (z.B. das Clustering).
 
-Die Klasse SimplePathFinder ist die Standard-Implementierung des PathFinder Interfaces und kann verschiedene Suchstrategien ausführen. Für den HPA* Algorithmus wurde diese Klasse durch ClusteringPathFinder erweitert. Diese beinhaltet zusätzlich, wie der Name schon sagt, das Clustering.
+Die Klasse SimplePathFinder ist die Standard-Implementierung des PathFinder Interfaces und führt verschiedene Suchstrategien aus. Für den HPA* Algorithmus wurde diese Klasse durch ClusteringPathFinder erweitert. Diese beinhaltet zusätzlich, wie der Name schon sagt, das Clustering.
 
 \section{Pfadsuche}
 \label{sec:module.Suchalgorithmen.Pfadsuche}
-Wir haben drei unterschiedliche Pfadalgorithmen in unserem Code eingebaut. Via PathFinder-Klasse kann für die Pfadsuche der Algorithmus ausgewählt werden.
+Wir haben drei unterschiedliche Pfadalgorithmen in unserem Code eingebaut. Via PathFinder-Klasse wird für die Pfadsuche der Algorithmus ausgewählt.
 
 \begin{figure}[H]
 \centering
@@ -54,7 +54,7 @@ Wir haben drei unterschiedliche Pfadalgorithmen in unserem Code eingebaut. Via P
 \subsection{Simple Algorithmus}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.Simple}
 
-Der Simple Algorithmus versucht das Ziel zu erreichen indem zuerst die eine Achse, danach die andere Achse abläuft. Sobald ein Hindernis in den Weg kommt, bricht der Algorithmus ab. In der Abbildung \ref{fig:SimplePath} sucht der Algorithmus zuerst den vertikal-horizontal Pfad. Da dieser Pfad wegen dem Wasserhindernis (blau) nicht ans Ziel führt, wird der Pfad horizontal-vertikal gesucht. In dieser Reihenfolge wird ein Pfad gefunden. Dieser Algorithmus ist, wie der Name bereits aussagt, sehr einfach aufgebaut und kostet wenig Rechenzeit. Er ist nur für kurze Distanzen praktikabel, da er keinen Hindernissen ausweichen kann.
+Der Simple Algorithmus versucht das Ziel zu erreichen indem zuerst die eine Achse, danach die andere Achse abläuft. Sobald ein Hindernis in den Weg kommt, bricht der Algorithmus ab. In der Abbildung \ref{fig:SimplePath} sucht der Algorithmus zuerst den vertikal-horizontal Pfad. Da dieser Pfad wegen dem Wasserhindernis (blau) nicht ans Ziel führt, wird der Pfad horizontal-vertikal gesucht. In dieser Richtungsreihenfolge wird ein Pfad gefunden. Dieser Algorithmus ist, wie der Name bereits aussagt, sehr einfach aufgebaut und kostet wenig Rechenzeit. Er ist nur für kurze Distanzen praktikabel, da er keinen Hindernissen ausweichen kann.
 
 \begin{figure}[H]
 \centering
@@ -64,7 +64,7 @@ Der Simple Algorithmus versucht das Ziel zu erreichen indem zuerst die eine Achs
 \label{fig:SimplePath}
 \end{figure}
 
-Listing \ref{lst:pathFinder.simple} zeigt auf, wie ein Pfad mittels Pfadsuche Simple gefunden wird. Ein SimplePathFinder wird mit der Karte initialisiert. Danach kann die Suche mit \texttt{pf.search()} gestartet werden. Als Parameter wird der Suchalgorithmus Strategy.Simple, der Startpunkt (Position der Ameise) und Endpunkt (Position des Futters), sowie die maximalen Pfadkosten (hier: 16) mitgegeben.
+Listing \ref{lst:pathFinder.simple} zeigt auf, wie ein Pfad mittels Pfadsuche Simple gefunden wird. Ein SimplePathFinder wird mit der Karte (\texttt{map}) initialisiert. Danach kann die Suche mit \texttt{pf.search(...)} gestartet werden. Als Parameter wird der Suchalgorithmus \texttt{Strategy.Simple}, der Startpunkt (Position der Ameise) und Endpunkt (Position des Futters), sowie die maximalen Pfadkosten (hier: 16) mitgegeben.
 
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}[caption=Pfadsuche mit der Simple-Strategie, label=lst:pathFinder.simple]
@@ -74,9 +74,9 @@ List<Tile> path = pf.search(PathFinder.Strategy.Simple, ant.getTile(), food,16);
 
 \subsection{A* Algorithmus}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.Astar}
-Den A* Algorithmus haben wir nach dem Beschrieb im \cite{AIMA} implementiert. A* ist wahrscheinlich der meist verbreitete und bekannteste heuristische Suchalgorithmus, und hat sich bereits vielfach bewährt.
+Den A* Algorithmus haben wir nach dem Beschrieb im Buch \cite{AIMA} implementiert. A* ist wahrscheinlich der meist verbreitete und bekannteste heuristische Suchalgorithmus, und hat sich bereits vielfach bewährt.
 
-Beim A* Algorithmus werden für jeden expandierten Knoten die geschätzten Kosten f(x) für die gesamte Pfadlänge berechnet. f(x) besteht aus einem Teil g(x) welches die effektiven Kosten vom Startknoten zum aktuellen Knoten berechnet. Der andere Teil h(x) ist ein heuristischer Wert, der die Pfadkosten bis zum Zielknoten approximiert. Dieser Wert muss die effektiven Kosten zum Ziel immer unterschätzen um zu gewähren, dass der kürzeste Pfad gefunden wird. Dies ist in unserem Spiel dadurch gegeben, dass sich die Ameisen nicht diagonal bewegen können, wir aber für den heuristischen Wert die Luftlinie zum Ziel verwenden. Die Pfadsuche wird immer bei dem Knoten fortgesetzt welcher die kleinsten Kosten f(x) hat. Da wir eine TileMap verwenden, definiert jede begehbare Zelle ein Knoten. 
+Beim A* Algorithmus werden für jeden expandierten Knoten die geschätzten Kosten f(x) für die gesamte Pfadlänge berechnet. f(x) besteht aus einem Teil g(x) welches die effektiven Kosten vom Startknoten zum aktuellen Knoten sind. Der andere Teil h(x) ist ein heuristischer Wert, der die Pfadkosten bis zum Zielknoten approximiert. Dieser Wert muss die effektiven Kosten zum Ziel immer unterschätzen um zu gewähren, dass der kürzeste Pfad gefunden wird. Dies ist in unserem Spiel dadurch gegeben, dass sich die Ameisen nicht diagonal bewegen können, wir aber für den heuristischen Wert die Luftlinie zum Ziel verwenden. Die Pfadsuche wird immer bei dem Knoten fortgesetzt welcher die kleinsten Kosten f(x) hat. Da wir eine TileMap verwenden, definiert jede begehbare Zelle auf der Spielkarte ein Knoten. 
 
 Die Abbildung \ref{fig:heuristicAstar} zeigt den effektiven Pfad (grau) vom zu expandierenden roten Knoten mit den minimalen Kosten von 10 \gls{Tile}s. Die Luftlinie (blau) als heuristischer Wert hat aber nur eine Länge von 7.6 \gls{Tile}s. Damit erfüllt unsere Heuristik die Anforderungen des Algorithmus.
 
@@ -87,7 +87,7 @@ Die Abbildung \ref{fig:heuristicAstar} zeigt den effektiven Pfad (grau) vom zu e
 \label{fig:heuristicAstar}
 \end{figure}
 
-Eine Pfadsuche mit A* wird gleich ausgelöst wie die Suche mit dem Simple-Algorithmus, ausser dass als Parameter die Strategy AStar gewählt wird.
+Eine Pfadsuche mit A* wird gleich ausgelöst wie die Suche mit dem Simple-Algorithmus, ausser dass als Parameter die Strategy \texttt{AStar} gewählt wird.
 
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}[caption=Pfadsuche mit der A*-Strategie, label=lst:pathFinder.astar]
@@ -100,34 +100,34 @@ List<Tile> path = pf.search(PathFinder.Strategy.AStar, ant.getTile(), foodTile,1
 \subsection{HPA* Algorithmus}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.HPAstar}
 
-Eine Pfadsuche A* über alle Zellen der Spielkarte ist ziemlich teuer, da es viele Pfade gibt, die zum Teil nur ein oder wenige \gls{Tile}s nebeneinander liegen. Es werden bis zum Schluss verschiedenen Pfaden nachgegangen, die sehr ähnlich sind. Abhilfe zu dieser sehr feinmaschigen Pfadsuche bietet der Hierarchical Pathfinding A* bei welchem die Karte in Regionen (Cluster) aufgeteilt wird. Von Cluster zu Cluster werden Verbindungspfade vorberechnet, welche der Algorithmus bei der Pfadsuche verwendet.
+Eine Pfadsuche A* über alle Zellen der Spielkarte ist ziemlich teuer, da es viele Pfade gibt, die zum Teil nur ein oder wenige \gls{Tile}s nebeneinander liegen. Es werden bis zum Schluss verschiedenen Pfaden nachgegangen, die sehr ähnlich sind. Abhilfe zu dieser sehr feinmaschigen Pfadsuche bietet das Hierarchical Pathfinding A* bei welchem die Karte in Regionen (Cluster) aufgeteilt wird. Von Cluster zu Cluster werden Verbindungspfade vorberechnet, welche der Algorithmus bei der Pfadsuche verwendet.
 
 \subsubsection{Warum HPA*?}
-Die Suche mit A* geht so lange gut, wie wir noch nicht so viele Ameisen haben und uns nur beschränkt auf der Karte bewegen. Sobald aber das Spiel fortgeschritten ist, wir viele Ameisen haben und uns auf der ganzen Karte bewegen, geht zu viel Zeit in der Pfadsuche verloren. Dies wollten wir verbessern und stiessen auf den HPA* Algorithmus. Dieser passt gut in unser Spiel, denn so können wir in den Anfangsphasen des Spiel, wo wir noch Zeit zur Verfügung haben, die Pfade dank dem Clustering vorberechnen und können so später im Spiel diese Zeit sparen.\\
+Die Suche mit A* geht so lange gut, wie wir noch nicht so viele Ameisen haben und uns nur beschränkt auf der Karte bewegen. Sobald aber das Spiel fortgeschritten ist, wir viele Ameisen haben und uns auf der ganzen Karte bewegen, geht zu viel Zeit in der Pfadsuche verloren. Dies wollten wir verbessern und stiessen auf den HPA* Algorithmus. Dieser passt gut in unser Spiel, denn so können wir in den Anfangsphasen des Spiel, wo wir noch Zeit zur Verfügung haben, die Pfadabschnitte dank dem Clustering vorberechnen und so später im Spiel diese Zeit bei der Berechnung sparen.\\
 Die Implementation erfolgte nach Anlehnung an das Paper \cite{nohpa:IM}, wobei sich im Gegensatz zum Paper unsere Clusters um eine Zelle überschneiden. Zudem wird im Paper nur die Clusterart die wir später ''Corner`` nennen beschrieben. Die Clusterart ''Centered`` haben wir dazu programmiert.
 
 \subsubsection{Clustering}
-Das Clustering wird während dem ClusteringTask (siehe \ref{sec:module.Tasks}) ausgeführt, Dabei wird die Landkarte, wie bereits erwähnt, in sogenannte Clusters unterteilt. Auf der Abbildung \ref{fig.clusteredMap} wurde die Karte in 16 Clusters aufgeteilt.
+Das Clustering wird während dem ClusteringTask (siehe \ref{sec:module.Tasks}) ausgeführt, Dabei wird die Spielkarte, wie bereits erwähnt, in sogenannte Clusters unterteilt. Auf der Abbildung \ref{fig.clusteredMap} wurde die Karte in 16 Clusters aufgeteilt.
 
 \begin{figure}[H]
 \centering
 \includegraphics[height=50mm]{91_bilder/clusteredMap}
-\caption[Clustereinteilung auf der Landkarte]{Clustereinteilung auf der Landkarte. Clustergrösse 4x4, Landkarte 16x16}
+\caption[Clustereinteilung auf der Landkarte]{Clustereinteilung auf der Landkarte. Clustergrösse 4x4, Spielkarte 16x16}
 \label{fig.clusteredMap}
 \end{figure}
 
-Wir unterschieden zwischen den zwei Clusterarten \textit{Centered} und \textit{Corner}. Die Variante Corner wurde bereits im Vormodule ''Projekt 2`` implementiert, während die Variante Center im Laufe dieser Arbeit dazu kam. Folgendes Bild zeigt den Unterschied der Varianten. Corner generiert zwei Übergangspunkte plus eine Verbindung auf der Kante zwischen zwei Clusters. Die Variante Centered generiert nur einen Übergangspunkt in der Kantenmitte der aneinander grenzenden Clusters. Die Variante Centered hat den Vorteil, dass es weniger dichtes Pfadnetz gibt, da weniger Übergangspunkte erzeugt werden, aber sie hat auch den Nachteil, dass der gefundene Pfad nicht in jedem Fall der Kürzeste ist. Es empfiehlt sich, zusätzlich ein Pathsmoothing anzuwenden.
+Wir unterschieden zwischen den zwei Clusterarten \texttt{Centered} und \texttt{Corner}. Die Variante \texttt{Corner} wurde bereits im Vormodule ''Projekt 2`` implementiert, während die Variante Center im Laufe dieser Arbeit dazu kam. Folgendes Bild zeigt den Unterschied der Varianten. \texttt{Corner} generiert zwei Übergangspunkte plus eine Verbindung auf der Kante zwischen zwei Clusters. Die Variante \texttt{Centered} generiert nur einen Übergangspunkt in der Kantenmitte der aneinander grenzenden Clusters. Die Variante \texttt{Centered} hat den Vorteil, dass es ein weniger dichtes Pfadnetz gibt, da weniger Übergangspunkte erzeugt werden, aber sie hat auch den Nachteil, dass der gefundene Pfad meistens länger ist als der \texttt{Corner}-Pfad. Da die gefunden Pfade meistens nicht optimal sind, empfiehlt es sich zusätzlich ein Pathsmoothing anzuwenden.
 
 \begin{figure}[H]
 \centering
 \includegraphics[height=50mm]{91_bilder/clusterArten}
-\caption[Vergleich der Clusterarten]{Vergleich der Clusterarten: Links der Typ \textit{Centered}, Rechts der Typ \textit{Corner}}
+\caption[Vergleich der Clusterarten]{Vergleich der Clusterarten: Links der Typ \texttt{Centered}, Rechts der Typ \texttt{Corner}}
 \label{fig.clusteredKinds}
 \end{figure}
 
-Nachfolgend wird erläutert, wie das Clustering vonstatten geht, verwendet wird die Custeringart Corner.
+Nachfolgend wird erläutert, wie das Clustering vonstatten geht, verwendet wird die Custeringart \texttt{Corner}.
 
-Nach dem Einteilen der Cluster werden für jeden Cluster und einen Nachbar-Cluster aus der Vierer-Nachbarschaft die Verbindungskanten berechnet. Dies kann natürlich nur für Clusters gemacht werden, die auf einem sichtbaren Teil der Landkarte liegen, was zu Beginn des Spiels nicht unbedingt gegeben ist. Deshalb wird der ClusteringTask in jedem Spielzug aufgerufen, in der Hoffnung, dass der Cluster komplett sichtbar ist. Sobald eine beliebige Seite eines Clusters berechnet ist, wird diese Aussenkante im Cluster und dem anliegenden Nachbarn gespeichert und nicht mehr neu berechnet.
+Nach dem Einteilen der Cluster werden für jeden Cluster und einen Nachbarcluster aus der Vierer-Nachbarschaft die Verbindungskanten berechnet. Dies kann natürlich nur für Clusters gemacht werden, die auf einem sichtbaren Teil der Landkarte liegen, was zu Beginn des Spiels nicht unbedingt gegeben ist. Deshalb wird der ClusteringTask in jedem Spielzug aufgerufen, in der Hoffnung, dass der Cluster komplett sichtbar ist. Sobald eine beliebige Seite eines Clusters berechnet ist, wird diese Aussenkante im Cluster und dem anliegenden Nachbarn als ''berechnet`` gespeichert und nicht mehr neu berechnet.
 
 \begin{figure}[H]
 \centering
@@ -154,7 +154,7 @@ Angenommen, das Clustering wurde über die ganze Karte vorgenommen, kann wie in d
 \label{fig.clusteredMap4}
 \end{figure}
 
-Um im Code mit einer Pfadsuche per HPA* zu suchen, muss ein ClusteringPathFinder instanziert werden. Als Parameter erwartet der Konstruktor die Karte, auf welcher das Clustering und die Pfadsuche gemacht wird, sowie die Clustergrösse (hier: 10) und den Clustertyp. Das Clustering wird mit \texttt{pf.update()} durchgeführt. Danach kann die Pfadsuche gemacht werden. Falls nicht alle nötigen Clusters zur Verfügung stehen, weil es noch unbekannte Flecke auf der Karte gibt, wird als Ausweichlösung versucht, mit A* einen Pfad zu finden.
+Um im Code mit einer Pfadsuche mit dem  HPA* Alogrithmus zu suchen, muss ein ClusteringPathFinder instanziert werden. Als Parameter erwartet der Konstruktor die Karte, auf welcher das Clustering und die Pfadsuche gemacht wird, sowie die Clustergrösse (hier: 10) und den Clustertyp. Das Clustering wird mit \texttt{pf.update()} durchgeführt. Danach kann die Pfadsuche gemacht werden. Falls nicht alle nötigen Clusters zur Verfügung stehen, weil es noch unbekannte Flecke auf der Karte gibt, wird als Ausweichlösung versucht, mit A* einen Pfad zu finden.
 
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}[caption=Pfadsuche mit der HPA*-Strategie, label=lst:pathFinder.hpastar]
@@ -218,7 +218,7 @@ Ein Vergleich der Pfadkosten macht deutlich, dass je nach Berücksichtigung der \
 \subsection{Pathsmoothing}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.Pathsmoothing}
 
-Um unser Search-Framework zu komplettieren, bietet die Pfadsuche auch ein PathSmoothing, das ''Glätten`` eines Pfades an. Wie im Abschnitt Clustering schon erwähnt, kann es sein, dass ein Pfad, der vom HPA* Algorithmus gefunden wurde, nicht zwingend der Kürzeste ist. Abbildung \ref{fig.pathsmoothingOne} veranschaulicht, wie der gefundene Pfad von Cluster zu Cluster (weisse Markierung), stets über die vorberechneten Verbindungspunkte (blau) verläuft. Dies ist nicht der optimale Pfad, er kann mit PathSmoothing verkürzt werden.
+Um unser Search-Framework zu komplettieren, bietet wir auch ein PathSmoothing, das ''Glätten`` eines Pfades an. Wie im Abschnitt Clustering schon erwähnt, kann es sein, dass ein Pfad, der vom HPA* Algorithmus gefunden wurde, nicht zwingend der Kürzeste ist. Abbildung \ref{fig.pathsmoothingOne} veranschaulicht, wie der gefundene Pfad von Cluster zu Cluster (weisse Markierung), stets über die vorberechneten Verbindungspunkte (blau) verläuft. Dies ist nicht der optimale Pfad, er kann mit PathSmoothing verkürzt werden.
 
 \begin{figure}[H]
 \centering
@@ -227,7 +227,7 @@ Um unser Search-Framework zu komplettieren, bietet die Pfadsuche auch ein PathSm
 \label{fig.pathsmoothingOne}
 \end{figure}
 
-Der Algorithmus des Pathsmoothing ist (vereinfacht) wie folgt definiert. Vom Pfad, der gekürzt werden soll, wird ein erster Abschnitt mit der Länge \texttt{size} genommen. Mittels manhattanDistance wird geprüft, ob ein kürzerer Weg für diesen Abschnitt möglich wäre. Falls ja wird mit A* ein neuer Pfad gesucht, sonst wird der alte Pfad (\texttt{subPath}) übernommen. Dieses Verfahren wird für alle nachfolgenden Pfadabschnitte gemacht, bis der ganze Pfad durchlaufen ist.
+Der Algorithmus des Pathsmoothing wurde nach \cite{ARTIFICIALINTELLIGENCEFORGAMES} programmiert und definiert sich (vereinfacht) wie folgt. Vom Pfad, der gekürzt werden soll, wird ein erster Abschnitt mit der Länge \texttt{size} genommen. Mittels manhattanDistance wird geprüft, ob ein kürzerer Weg für diesen Abschnitt möglich wäre. Falls ja wird mit A* ein neuer Pfad gesucht, sonst wird der alte Pfad (\texttt{subPath}) übernommen. Dieses Verfahren wird für alle nachfolgenden Pfadabschnitte gemacht, bis der ganze Pfad durchlaufen ist.
 
 \paragraph{Rekursion:} Der beschriebene Algorithmus hat nicht in jedem Fall den kürzesten Pfad als Output. So sind zwar alle Pfadabschnitte optimal gekürzt, es kann aber sein, dass wenn zwei Abschnitte zusammen gefügt werden, der Pfad nicht mehr der kürzeste ist. Als Beispiel: Die Wegabschnitte Zürich-Thun und Thun-Genf mögen optimal gekürzt sein. Zusammengefügt zur Strecke Zürich-Genf, braucht es den Umweg über Thun nicht. Um den Umweg zu entfernen, wird der Algorithmus rekursiv aufgerufen, indem \texttt{smoothPath()} mit einer grösseren \texttt{size} als Parameter für die zusammengesetzten Abschnitte nochmals aufgerufen wird.
 
@@ -248,7 +248,7 @@ public List<Tile> smoothPath(List<Tile> path, int size, boolean recursive) {
 	    if (newSubPath != null) {
 	        smoothedPath.addAll(newSubPath);
 	        if (recursive && newSubPath.size() < subPath.size()) {
-	            smoothedPath = smoothPath(smoothedPath, smoothedPath.size(), true);
+	            smoothedPath = smoothPath(smoothedPath, size*2, true);
 	        }
 	    } else {
 	        smoothedPath.addAll(subPath);

@@ -1,12 +1,12 @@
 \chapter{API}
 \label{sec:module.API}
 
-Unsere AITools \gls{API} dient als Grundbaustein aller \gls{AI} Komponenten und entkapselt die Interfaces zu unseren \gls{AI} Modulen und bietet den \gls{AI} Modulen sowie dem Ants Package die Basisklassen an, welche überall verwendet werden (s.a. Abbildung \ref{fig:modulesOverview}). Der Inhalt ist wie folgt:
+Unsere AITools \gls{API} dient als Grundbaustein aller \gls{AI} Komponenten, entkapselt die Interfaces zu unseren \gls{AI} Modulen und bietet den \gls{AI} Modulen sowie dem Ants Package die Basisklassen an, welche überall verwendet werden (s.a. Abbildung \ref{fig:modulesOverview}). Der Inhalt ist wie folgt:
 
 \section{Entities}
 \label{sec:mocule.API.Entities}
 
-Das Package Entities beinhaltet alle Klassen, die von den Such- und Strategiealgorithmen sowie vom \gls{Bot} verwendet werden.
+Das Package Entities beinhaltet die Klassen, die von den Such- und Strategiealgorithmen sowie vom \gls{Bot} verwendet werden.
 
 \begin{figure}[H]
 \centering
@@ -46,8 +46,8 @@ Im Map-Package sind verschiedene Karten-Typen definiert, die die Interaktion mit
 \item
 \textbf{AbstractWraparoundMap}: Implementiert das Interface SearchableMap (s. \ref{sec:module.API.Search}). Hier sind alle Methoden implementiert, welche die Karte anbieten muss, damit sie mit den Suchalgorithmen verwendet werden kann. Zudem sind einige der vordefinierten Methoden aus TileMap implementiert.
 \item
-\textbf{WorldType}: WorldType ist ein Enum und definiert die Art der Karte. Der Typ \textit{Globus} hat keine Kartenränder, ist also ringsum begehbar. Von diesem Typ ist auch die AbstractWraparoundMap Klasse, welche diverse Methoden des TileMap Interfaces bereits implementiert und als Basisklasse unserer World-Karte\footnote{s. Kapitel 
-\ref{sec:module.Ants.State.World}} dient. Folglich sind auch die Karten  der Ants Challenge ''WrapAround``-Karten. Der zweite Enumtyp ist \textit{Pizza} und definiert eine Welt wie man sich unsere Erde vor 500 Jahren noch vorstellte, eine Scheibe mit Rändern, welche die Welt begrenzen. Dieser zweite Typ wurde provisorisch erstellt. Falls unsere \gls{API} eine Weiterverwendung findet, kann dieser Typ zusätzlich implementiert werden.
+\textbf{WorldType}: WorldType ist ein Enum und definiert die Art der Karte. Der Typ \texttt{Globus} hat keine Kartenränder, ist also ringsum begehbar. Von diesem Typ ist auch die AbstractWraparoundMap Klasse, welche als Basisklasse unserer World-Karte\footnote{s. Kapitel 
+\ref{sec:module.Ants.State.World}} dient. Folglich sind auch die Karten  der Ants Challenge ''WrapAround``-Karten. Der zweite Enumtyp ist \texttt{Pizza} und definiert eine Welt wie man sich unsere Erde vor 500 Jahren noch vorstellte, eine Scheibe mit Rändern, welche die Welt begrenzen. Dieser zweite Typ wurde provisorisch erstellt. Falls unsere \gls{API} eine Weiterverwendung findet, kann dieser Typ zusätzlich implementiert werden.
 \end{itemize}
 
 
