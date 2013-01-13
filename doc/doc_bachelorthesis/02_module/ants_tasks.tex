@@ -16,7 +16,7 @@ Jedem Task ist jeweils ein Task.Type zugeordnet. Dieser entspricht dem Aufgabent
 \subsection{MissionTask}
 \label{subsec:implementation.Tasks.MissionTask}
 
-Der MissionTask führt alle laufenden Mission, welche in der Klasse Orders gespeichert sind, aus.
+Der MissionTask führt alle laufenden Mission aus, welche in der Klasse Orders gespeichert sind.
 
 \paragraph{setup():}
 
@@ -54,7 +54,7 @@ In diesem Task landen alle Ameisen, bei jenen die vorgängigen Missionen abgebroc
 
 \subsection{ClearHillTask}
 \label{subsec:implementation.Tasks.ClearHillTask}
-Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel ''schlüpfen``, vom Hügel weg. Die meisten dieser Ameisen werden zwar bereits von anderen Tasks mit Arbeit versorgt, aber dieser Task stellt sicher, dass sich die Ameise fortbewegt und den Hügel nicht blockiert wird. Es wird keine Mission erstellt, der Task bewegt die Ameise nur eine Zelle vom Hügel weg.
+Dieser Task bewegt alle Ameisen, welche neu aus unserem Hügel ''schlüpfen``, vom Hügel weg. Die meisten dieser Ameisen werden zwar bereits von anderen Tasks mit Arbeit versorgt, aber dieser Task stellt sicher, dass sich die Ameise in jedem Fall fortbewegt und den Hügel nicht blockiert. Es wird keine Mission erstellt, der Task bewegt die Ameise nur eine Zelle vom Hügel weg.
 
 \subsection{ClusteringTask}
 \label{subsec:implementation.Tasks.ClusteringTask}

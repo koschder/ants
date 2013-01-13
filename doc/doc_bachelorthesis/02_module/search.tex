@@ -21,7 +21,7 @@ Abbildung \ref{fig:pathfinderEntities} zeigt die wichtigsten Klassen, die für di
 \item
 \textbf{DirectedEdge}: Erweitert die Klasse Edge, indem die Kante in dieser Klasse gerichtet ist.
 \item
-\textbf{Cluster}: Der Cluster ist ein Kartenausschnitt und wird vom HPA* Algorithmus (Kapitel \ref{subsec:module.Suchalgorithmen.Pfadsuche.HPAstar}) genutzt, indem er die Pfade kennt, die durch diesen Kartenabschnitt führen.
+\textbf{Cluster}: Der Cluster ist ein Kartenausschnitt und wird vom HPA* Algorithmus (Kapitel \ref{subsec:module.Suchalgorithmen.Pfadsuche.HPAstar}) genutzt, indem er die Pfade kennt, die durch diesen Kartenausschnitt führen.
 \item
 \textbf{Vertex}: Eine Vertex ist ein Knoten der Teil bei der Pfadsuche ist. Er verbindet weitere Konten durch Katen (Edge).
 \item
@@ -116,7 +116,7 @@ Das Clustering wird während dem ClusteringTask (siehe \ref{sec:module.Tasks}) au
 \label{fig.clusteredMap}
 \end{figure}
 
-Wir unterschieden zwischen den zwei Clusterarten \texttt{Centered} und \texttt{Corner}. Die Variante \texttt{Corner} wurde bereits im Vormodule ''Projekt 2`` implementiert, während die Variante Center im Laufe dieser Arbeit dazu kam. Folgendes Bild zeigt den Unterschied der Varianten. \texttt{Corner} generiert zwei Übergangspunkte plus eine Verbindung auf der Kante zwischen zwei Clusters. Die Variante \texttt{Centered} generiert nur einen Übergangspunkt in der Kantenmitte der aneinander grenzenden Clusters. Die Variante \texttt{Centered} hat den Vorteil, dass es ein weniger dichtes Pfadnetz gibt, da weniger Übergangspunkte erzeugt werden, aber sie hat auch den Nachteil, dass der gefundene Pfad meistens länger ist als der \texttt{Corner}-Pfad. Da die gefunden Pfade meistens nicht optimal sind, empfiehlt es sich zusätzlich ein Pathsmoothing anzuwenden.
+Wir unterschieden zwischen den zwei Clusterarten \texttt{Centered} und \texttt{Corner}. Die Variante \texttt{Corner} wurde bereits im Vormodule ''Projekt 2`` implementiert, während die Variante Center im Laufe dieser Arbeit dazu kam. Folgendes Bild zeigt den Unterschied der Varianten. \texttt{Corner} generiert zwei Übergangspunkte plus eine Verbindung auf der Kante zwischen zwei Clusters. Die Variante \texttt{Centered} generiert nur einen Übergangspunkt in der Kantenmitte der aneinander grenzenden Clusters. Die Variante \texttt{Centered} hat den Vorteil, dass es ein weniger dichtes Pfadnetz gibt, da weniger Übergangspunkte erzeugt werden, aber sie hat auch den Nachteil, dass der gefundene Pfad meistens länger ist als der \texttt{Corner}-Pfad. Die gefundenen Pfade sind meistens nicht optimal, empfiehlt es sich zusätzlich ein Pathsmoothing anzuwenden.
 
 \begin{figure}[H]
 \centering
@@ -154,7 +154,7 @@ Angenommen, das Clustering wurde über die ganze Karte vorgenommen, kann wie in d
 \label{fig.clusteredMap4}
 \end{figure}
 
-Um im Code mit einer Pfadsuche mit dem  HPA* Alogrithmus zu suchen, muss ein ClusteringPathFinder instanziert werden. Als Parameter erwartet der Konstruktor die Karte, auf welcher das Clustering und die Pfadsuche gemacht wird, sowie die Clustergrösse (hier: 10) und den Clustertyp. Das Clustering wird mit \texttt{pf.update()} durchgeführt. Danach kann die Pfadsuche gemacht werden. Falls nicht alle nötigen Clusters zur Verfügung stehen, weil es noch unbekannte Flecke auf der Karte gibt, wird als Ausweichlösung versucht, mit A* einen Pfad zu finden.
+Um eine Pfadsuche mit dem  HPA* Alogrithmus durchzuführen, muss ein ClusteringPathFinder instanziert werden. Als Parameter erwartet der Konstruktor die Karte, auf welcher das Clustering und die Pfadsuche gemacht wird, sowie die Clustergrösse (hier: 10) und den Clustertyp. Das Clustering wird mit \texttt{pf.update()} durchgeführt. Danach kann die Pfadsuche gemacht werden. Falls nicht alle nötigen Clusters zur Verfügung stehen, weil es noch unbekannte Flecke auf der Karte gibt, wird als Ausweichlösung versucht, mit A* einen Pfad zu finden.
 
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}[caption=Pfadsuche mit der HPA*-Strategie, label=lst:pathFinder.hpastar]
