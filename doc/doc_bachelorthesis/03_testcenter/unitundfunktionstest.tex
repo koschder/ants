@@ -6,14 +6,14 @@ Dieses Kapitel beschreibt, wie wir unseren Bot und dessen Komponenten getestet h
 \section{UnitTests}
 \label{sec:testCenter.UnitTests}
 
-Dank dem modularen Aufbau des Java-Codes war es uns gut möglich, einzelne Module zu testen. Für unsere UnitTests verwendeten wir die JUnit 4 Library. So findet man in jedem Java Project das Code-Package und ein UnitTest-Package, welches den Code auf dessen Richtigkeit prüft. Die Module wurden erst nach den erfolgreichen UnitTests in den Bot eingebaut. Dies hat den Vorteil, dass die Fehlern nicht im laufenden Spiel auftraten und wir die Ursachen  mühsam suchen mussten.
+Dank dem modularen Aufbau des Java-Codes war es uns gut möglich, einzelne Module zu testen. Für unsere UnitTests verwendeten wir die JUnit 4 Library. So findet man in jedem Java Project das Code-Package und ein UnitTest-Package, welches den Code auf dessen Richtigkeit prüft. Die Module wurden erst nach den erfolgreichen UnitTests in den Bot eingebaut. Dies hatte den Vorteil, dass die Fehler nicht im laufenden Spiel auftraten und wir die Ursachen  mühsam suchen mussten.
 
 Beim Combat Positioning\footnote{siehe Kapitel \ref{sec:module.CombatSituation}} haben wir uns am meisten an Test Driven Development orientiert. Wir haben im Test verschiedenste Szenarien eingegeben, die im Kampf auftauchen könnten, und haben dann den Code so erweitert, dass für diese Szenarien gute Lösungen gefunden wurden. Auf diese Weise sind wir bei der jetzigen Implementierung des Combat Positioning angekommen, die eine ganz gute Näherung an eine optimale Kampfformation darstellt.
 
 \section{Visuelle Tests}
 \label{sec:testCenter.VisuelleTests}
 
-In Form eines UnitTest haben wir auch unsere visuellen Tests geschrieben. Eine visuelle Überprüfung des Resultats ist meistens, vor allem bei der Pfadsuche, einfacher zu kontrollieren. Im Gegensatz zu JUnit wo das zu erwartende Resultat mit Assertions (z.B. \texttt{assertEquals()}) geprüft wird, haben die visuellen Test ein HTML-File als Output. In das HTML-File wird die Karte in Tabellenform gespeichert. In jeder Zelle der Tabelle können Objekte (Einheiten, Hügel, Wegpunkte etc.) durch farbige Punkte dargestellt werden. Diese Funktionalitäten bietet die extra dafür geschriebene Klasse MapOutput. Nachfolgend ist ein HTML-File abgebildet mit welchem wir die Korrektheit des Clustering und des HPA* Algorithmus visuell überprüft haben. 
+In Form eines UnitTest haben wir auch unsere visuellen Tests geschrieben. Eine visuelle Überprüfung des Resultats ist meistens, vor allem bei der Pfadsuche, einfacher zu kontrollieren. Im Gegensatz zu JUnit wo das zu erwartende Resultat mit Assertions (z.B. \texttt{assertEquals()}) geprüft wird, haben die visuellen Test ein HTML-File als Output. In das HTML-File wird die Karte in Tabellenform gespeichert. In jeder Zelle der Tabelle können Objekte (Einheiten, Hügel, Wegpunkte etc.) durch farbige Punkte dargestellt werden. Diese Funktionalitäten bietet die extra dafür geschriebene Klasse MapOutput. Nachfolgend ist ein HTML-File abgebildet, mit welchem wir die Korrektheit des Clustering und des HPA* Algorithmus visuell überprüft haben. 
 
 \begin{figure}[H]
 \centering

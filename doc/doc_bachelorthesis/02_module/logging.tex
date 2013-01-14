@@ -12,11 +12,11 @@ Für eine gründliche Analyse der Spiele sind ausführliche und konfigurierbare Log
 Abbildung \ref{fig:Logging} zeigt die wichtigsten Klassen des Logging-Frameworks. 
 \begin{itemize}
 \item
-\textbf{Logger:} Das Logger Interface definiert die Methoden, die aus dem Applikations-Code heraus zum Logging verwendet werden können. Die Methodennamen (\texttt{debug(...)},\texttt{error(...)} etc.) bezeichnen den LogLevel, als Argumente übergeben werden ein String mit der Logmeldung sowie eine Liste von zusätzlichen Parametern, die in die Logmeldung eingefügt werden. Die Methoden unterstützen alle die Java String Formatter Syntax. \footnote{\url{http://docs.oracle.com/javase/6/docs/api/java/util/Formatter.html\#syntax}}
+\textbf{Logger:} Das Logger Interface definiert die Methoden, die aus dem Applikations-Code heraus zum Logging verwendet werden können. Die Methodennamen (\texttt{debug(...)},\texttt{error(...)} etc.) bezeichnen den LogLevel, als Argumente übergeben werden ein String mit der Logmeldung sowie eine Liste von zusätzlichen Parametern, die in die Logmeldung eingefügt werden. Die Methoden unterstützen alle die Java String Formatter Syntax.\footnote{\url{http://docs.oracle.com/javase/6/docs/api/java/util/Formatter.html\#syntax}}
 \item
 \textbf{DefaultLogger:} Unsere Standardimplementierung des Logger Interfaces. Der DefaultLogger hat jeweils eine LogCategory und ein LogFile, in das er seine Meldungen schreibt.
 \item
-\textbf{LogFile:} Das LogFile ist für eine einzelne Log-Datei zuständig; alle Logger, die in eine bestimmte Log-Datei schreiben wollen, greifen auf dieselbe LogFile Instanz zu. Die ''physische`` Datei auf dem Dateisystem wird von der LogFile Instanz erst erstellt, wenn die erste Log-Meldung geschrieben wird.
+\textbf{LogFile:} Das LogFile ist für eine einzelne Log-Datei zuständig; alle Logger, die in eine bestimmte Log-Datei schreiben wollen, greifen auf dieselbe LogFile Instanz zu. Die ''physische`` Datei auf dem Dateisystem wird von der LogFile Instanz erst erstellt, wenn die erste Log-Meldung geschrieben wird (\gls{LazyInitialization}).
 \item
 \textbf{LogCategory:} Jede Log-Meldung gehört zu einer Kategorie. Dieses Interface bietet den verwendenden Modulen die Möglichkeit, eigene Kategorien zu definieren; das Logging-Framework selber definiert keine Kategorien. Mit der Methode useCustomLogFile() kann für eine Kategorie bestimmt werden, ob sie in das globale LogFile oder ein eigenes loggt. Dadurch kann die \"Ubersichtlichkeit in den Log-Dateien gesteigert werden.
 \item
@@ -64,14 +64,13 @@ LOGGER.info("AttackHillMission:new ants gathered for hill %s amount %s Ants: %s"
 
 \section{JavaScript Addon für HMTL-Gameviewer}
 \label{sec:module.Logging.Addon}
-Das Codepaket welches von den Challenge-Organisatoren mitgeliefert wird, bietet bereits eine hilfreiche 2D-Visualisierung des Spiels, mit welchem das Spielgeschehen mitverfolgt werden kann. Die Visualisierung wurde mit HMTL und Javascript implementiert. Leider ist es nicht möglich zusätzliche Informationen auf die Seite zu projizieren. Deshalb haben wir den Viewer bereits im Projekt 2 mit einer solchen Funktion erweitert. Mit der Codezeile \texttt{LiveInfo.liveInfo(...)} kann eine Zusatzinformation geschrieben werden, welche wir später im Game-Viewer anzeigen können. Es muss definiert werden mit welchem Zug und wo auf dem Spielfeld die Information angezeigt werden soll. Im Beispiel wird an der Position der Ameise (\texttt{ant.getTile()}) ausgegeben welchen Task die Ameise hat.
+Das Codepaket, welches von den Challenge-Organisatoren mitgeliefert wird, bietet bereits eine hilfreiche 2D-Visualisierung des Spiels, mit welcher das Spielgeschehen mitverfolgt werden kann. Die Visualisierung wurde mit HMTL und Javascript implementiert. Leider ist es nicht ohne weiteres möglich, zusätzliche Informationen auf die Seite zu projizieren. Deshalb haben wir den Viewer bereits im Projekt 2 mit einer solchen Funktion erweitert. Mit der Codezeile \texttt{LiveInfo.liveInfo(...)} kann eine Zusatzinformation geschrieben werden, welche wir später im Game-Viewer anzeigen können. Es muss definiert werden mit welchem Zug und wo auf dem Spielfeld die Information angezeigt werden soll. Im Beispiel wird an der Position der Ameise (\texttt{ant.getTile()}) ausgegeben, welchen Task die Ameise hat.
 \lstset{language=Java, tabsize=4}
 \begin{lstlisting}
-LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), 
-                "Task: %s ant: %s", issuer, ant.getTile());
+LiveInfo.liveInfo(Ants.getAnts().getTurn(), ant.getTile(), "Task: %s ant: %s", issuer, ant.getTile());
 \end{lstlisting}
 
-Klick man nun auf der Karte während dem entsprechenden Zug auf die Zelle zu welcher ein zusätzlich Information gespeichert wurde, erscheint ein einfaches aber praktisches Popup mit den Informationen. Dank solcher Zusatzinformationen muss nicht mühsam im Log nachgeschaut werden, welcher Ameise wann und wo welcher Aufgabe nachgeht.
+Klick man nun auf der Karte während dem entsprechenden Zug auf die Zelle zu welcher eine zusätzliche Information gespeichert wurde, erscheint ein einfaches aber praktisches Popup mit den Informationen. Dank solcher Zusatzinformationen muss nicht mühsam im Log nachgeschaut werden, welcher Ameise wann und wo welcher Aufgabe nachgeht.
 
 \begin{figure}[H]
 \centering
@@ -81,7 +80,7 @@ Klick man nun auf der Karte während dem entsprechenden Zug auf die Zelle zu welc
 \end{figure}
 
 
-Das angezeigte Popup zeigt welchen Task (GatherFoodTask) die Ameise hat, wo sie sich befindet <r:28 c:14>, welches Futterzelle angesteuert wird <r:35 c:13> und welchen Pfad dazu berechnet wurde.\\Im Rahmen der Bachelorarbeit wurde dieses Addon erweitert. Nun werden alle Pixel welche in dem Popup ausgegeben werden auf der Karte markiert. (Siehe Abb \ref{fig:javascriptAddonPath}) So müssen die im Popup ausgegebenen Zellen nicht auf der Karte gesucht werden.
+Das angezeigte Popup zeigt, welchen Task (GatherFoodTask) die Ameise hat, wo sie sich befindet <r:28 c:14>, welche Futterzelle angesteuert wird <r:35 c:13> und welcher Pfad dazu berechnet wurde. Im Rahmen der Bachelorarbeit wurde dieses Addon erweitert. Nun werden alle Pixel, welche in dem Popup ausgegeben werden, auf der Karte markiert (Siehe Abb \ref{fig:javascriptAddonPath}). So müssen die im Popup ausgegebenen Zellen nicht auf der Karte gesucht werden.
 
 \begin{figure}[H]
 \centering

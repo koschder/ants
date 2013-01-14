@@ -11,7 +11,7 @@ Abbildung \ref{fig:pathfinderEntities} zeigt die wichtigsten Klassen, die für di
 \begin{figure}[H]
 \centering
 \includegraphics[width=0.9\textwidth]{91_bilder/pathfinderEntities}
-\caption{Spiel-Elemente für die Suche (vereinfacht)}
+\caption{Spiel-Elemente für die Suche}
 \label{fig:pathfinderEntities}
 \end{figure}
 
@@ -42,7 +42,7 @@ Die Klasse SimplePathFinder ist die Standard-Implementierung des PathFinder Inte
 
 \section{Pfadsuche}
 \label{sec:module.Suchalgorithmen.Pfadsuche}
-Wir haben drei unterschiedliche Pfadalgorithmen in unserem Code eingebaut. Via PathFinder-Klasse wird für die Pfadsuche der Algorithmus ausgewählt.
+Wir haben drei unterschiedliche Pfadsuchalgorithmen in unserem Code eingebaut. Via PathFinder-Klasse wird für die Pfadsuche der Algorithmus ausgewählt.
 
 \begin{figure}[H]
 \centering
@@ -54,7 +54,7 @@ Wir haben drei unterschiedliche Pfadalgorithmen in unserem Code eingebaut. Via P
 \subsection{Simple Algorithmus}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.Simple}
 
-Der Simple Algorithmus versucht das Ziel zu erreichen indem zuerst die eine Achse, danach die andere Achse abläuft. Sobald ein Hindernis in den Weg kommt, bricht der Algorithmus ab. In der Abbildung \ref{fig:SimplePath} sucht der Algorithmus zuerst den vertikal-horizontal Pfad. Da dieser Pfad wegen dem Wasserhindernis (blau) nicht ans Ziel führt, wird der Pfad horizontal-vertikal gesucht. In dieser Richtungsreihenfolge wird ein Pfad gefunden. Dieser Algorithmus ist, wie der Name bereits aussagt, sehr einfach aufgebaut und kostet wenig Rechenzeit. Er ist nur für kurze Distanzen praktikabel, da er keinen Hindernissen ausweichen kann.
+Der Simple Algorithmus versucht das Ziel zu erreichen, indem er zuerst die eine Achse, danach die andere Achse abläuft. Sobald ein Hindernis in den Weg kommt, bricht der Algorithmus ab. In der Abbildung \ref{fig:SimplePath} sucht der Algorithmus zuerst den vertikal-horizontalen Pfad. Da dieser Pfad wegen dem Wasserhindernis (blau) nicht ans Ziel führt, wird der Pfad horizontal-vertikal gesucht. In dieser Richtungsreihenfolge wird ein Pfad gefunden. Dieser Algorithmus ist, wie der Name bereits aussagt, sehr einfach aufgebaut und kostet wenig Rechenzeit. Er ist nur für kurze Distanzen praktikabel, da er keinen Hindernissen ausweichen kann.
 
 \begin{figure}[H]
 \centering
@@ -100,11 +100,11 @@ List<Tile> path = pf.search(PathFinder.Strategy.AStar, ant.getTile(), foodTile,1
 \subsection{HPA* Algorithmus}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.HPAstar}
 
-Eine Pfadsuche A* über alle Zellen der Spielkarte ist ziemlich teuer, da es viele Pfade gibt, die zum Teil nur ein oder wenige \gls{Tile}s nebeneinander liegen. Es werden bis zum Schluss verschiedenen Pfaden nachgegangen, die sehr ähnlich sind. Abhilfe zu dieser sehr feinmaschigen Pfadsuche bietet das Hierarchical Pathfinding A* bei welchem die Karte in Regionen (Cluster) aufgeteilt wird. Von Cluster zu Cluster werden Verbindungspfade vorberechnet, welche der Algorithmus bei der Pfadsuche verwendet.
+Eine Pfadsuche A* über alle Zellen der Spielkarte ist ziemlich teuer, da es viele Pfade gibt, die zum Teil nur ein oder wenige \gls{Tile}s nebeneinander liegen. Es wird bis zum Schluss verschiedenen Pfaden nachgegangen, die sehr ähnlich sind. Abhilfe zu dieser sehr feinmaschigen Pfadsuche bietet das Hierarchical Pathfinding A* bei welchem die Karte in Regionen (Cluster) aufgeteilt wird. Von Cluster zu Cluster werden Verbindungspfade vorberechnet, welche der Algorithmus bei der Pfadsuche verwendet.
 
 \subsubsection{Warum HPA*?}
 Die Suche mit A* geht so lange gut, wie wir noch nicht so viele Ameisen haben und uns nur beschränkt auf der Karte bewegen. Sobald aber das Spiel fortgeschritten ist, wir viele Ameisen haben und uns auf der ganzen Karte bewegen, geht zu viel Zeit in der Pfadsuche verloren. Dies wollten wir verbessern und stiessen auf den HPA* Algorithmus. Dieser passt gut in unser Spiel, denn so können wir in den Anfangsphasen des Spiel, wo wir noch Zeit zur Verfügung haben, die Pfadabschnitte dank dem Clustering vorberechnen und so später im Spiel diese Zeit bei der Berechnung sparen.\\
-Die Implementation erfolgte nach Anlehnung an das Paper \cite{nohpa:IM}, wobei sich im Gegensatz zum Paper unsere Clusters um eine Zelle überschneiden. Zudem wird im Paper nur die Clusterart die wir später ''Corner`` nennen beschrieben. Die Clusterart ''Centered`` haben wir dazu programmiert.
+Die Implementation erfolgte in Anlehnung an das Paper \cite{nohpa:IM}, wobei sich im Gegensatz zum Paper unsere Clusters um eine Zelle überschneiden. Zudem wird im Paper nur die Clusterart die wir später ''Corner`` nennen beschrieben. Die Clusterart ''Centered`` haben wir dazu programmiert.
 
 \subsubsection{Clustering}
 Das Clustering wird während dem ClusteringTask (siehe \ref{sec:module.Tasks}) ausgeführt, Dabei wird die Spielkarte, wie bereits erwähnt, in sogenannte Clusters unterteilt. Auf der Abbildung \ref{fig.clusteredMap} wurde die Karte in 16 Clusters aufgeteilt.
@@ -116,7 +116,7 @@ Das Clustering wird während dem ClusteringTask (siehe \ref{sec:module.Tasks}) au
 \label{fig.clusteredMap}
 \end{figure}
 
-Wir unterschieden zwischen den zwei Clusterarten \texttt{Centered} und \texttt{Corner}. Die Variante \texttt{Corner} wurde bereits im Vormodule ''Projekt 2`` implementiert, während die Variante Center im Laufe dieser Arbeit dazu kam. Folgendes Bild zeigt den Unterschied der Varianten. \texttt{Corner} generiert zwei Übergangspunkte plus eine Verbindung auf der Kante zwischen zwei Clusters. Die Variante \texttt{Centered} generiert nur einen Übergangspunkt in der Kantenmitte der aneinander grenzenden Clusters. Die Variante \texttt{Centered} hat den Vorteil, dass es ein weniger dichtes Pfadnetz gibt, da weniger Übergangspunkte erzeugt werden, aber sie hat auch den Nachteil, dass der gefundene Pfad meistens länger ist als der \texttt{Corner}-Pfad. Die gefundenen Pfade sind meistens nicht optimal, empfiehlt es sich zusätzlich ein Pathsmoothing anzuwenden.
+Wir unterschieden zwischen den zwei Clusterarten \texttt{Centered} und \texttt{Corner}. Die Variante \texttt{Corner} wurde bereits im Vormodule ''Projekt 2`` implementiert, während die Variante Center im Laufe dieser Arbeit dazu kam. Folgendes Bild zeigt den Unterschied der Varianten. \texttt{Corner} generiert zwei Übergangspunkte plus eine Verbindung auf der Kante zwischen zwei Clusters. Die Variante \texttt{Centered} generiert nur einen Übergangspunkt in der Kantenmitte der aneinander grenzenden Clusters. Die Variante \texttt{Centered} hat den Vorteil, dass es ein weniger dichtes Pfadnetz gibt, da weniger Übergangspunkte erzeugt werden, aber sie hat auch den Nachteil, dass der gefundene Pfad meistens länger ist als der \texttt{Corner}-Pfad. Die gefundenen Pfade sind meistens nicht optimal, daher empfiehlt es sich, zusätzlich ein Pathsmoothing anzuwenden.
 
 \begin{figure}[H]
 \centering
@@ -145,7 +145,7 @@ Wenn ein Cluster zwei oder mehrere Aussenkanten kennt, berechnet er die Innenkan
 \label{fig.clusteredMap3}
 \end{figure}
 
-Angenommen, das Clustering wurde über die ganze Karte vorgenommen, kann wie in der Abbildung \ref{fig.clusteredMap4} ersichtlich ein Pfad vom \gls{Tile} <3,9> nach <13,9> (grüne Punkte) mittels HPA* gesucht  werden. Zuerst wird eruiert, in welchem Cluster sich das Start- bzw Zieltile befindet. Danach wird in dem gefundenen Cluster ein Weg zu einem beliebigen Knoten auf der Clusterseite gesucht. Sind diese Knoten erreicht (blaue Pfade), wird nun das vorberechnete Pfadnetz mittels A* Heuristik verwendet um die beiden Knoten auf dem kürzesten möglichen Pfad (gelb) zu verbinden. Der resultierende Pfad könnte nun via Pathsmoothing noch verkürzt werden.
+Angenommen, das Clustering wurde über die ganze Karte vorgenommen, kann wie in der Abbildung \ref{fig.clusteredMap4} ersichtlich ein Pfad vom \gls{Tile} <3,9> nach <13,9> (grüne Punkte) mittels HPA* gesucht  werden. Zuerst wird eruiert, in welchem Cluster sich das Start- bzw Zieltile befindet. Danach wird in dem gefundenen Cluster ein Weg zu einem beliebigen Knoten auf der Clusterseite gesucht. Sind diese Knoten erreicht (blaue Pfade), wird nun das vorberechnete Pfadnetz mittels A* Heuristik verwendet, um die beiden Knoten auf dem kürzesten möglichen Pfad (gelb) zu verbinden. Der resultierende Pfad könnte nun via Pathsmoothing noch verkürzt werden.
 
 \begin{figure}[H]
 \centering
@@ -166,7 +166,7 @@ List<Tile> path = pf.search(PathFinder.Strategy.HpaStar, start, end, -1);
 \subsection{Pfadsuche mit Hilfe der Influence Map}
 \label{subsec:module.Suchalgorithmen.Pfadsuche.WithInfluenceMap}
 
-Die \gls{InfluenceMap}, welche wir während der Bachelorarbeit neu implementiert haben, kann auch für die Pfadsuche verwendet werden. Dabei sind die Pfadkosten für Gebiete, die vom Gegner kontrolliert sind höher als für neutrale Gebiete, und tiefer für Gebiete die, von unseren Ameisen kontrolliert werden. (Details zur Implementierung der \gls{InfluenceMap} siehe Kapitel \ref{sec:module.InfluenceMap}). 
+Die \gls{InfluenceMap}, welche wir während der Bachelorarbeit neu implementiert haben, kann auch für die Pfadsuche verwendet werden. Dabei sind die Pfadkosten für Gebiete, die vom Gegner kontrolliert sind höher als für neutrale Gebiete, und tiefer für Gebiete, die von unseren Ameisen kontrolliert werden. (Details zur Implementierung der \gls{InfluenceMap} siehe Kapitel \ref{sec:module.InfluenceMap}). 
 
 Die Methode \texttt{getActualCost()} in der Klasse SearchStrategy wurde erweitert. Falls die Suche mit einer InfluenceMap initialisiert wurde, sind die Kosten nicht eine Einheit pro Pfadtile, sondern können zwischen 1 (sicheres Gebiet) und 4 (gefährliches Gebiet) Einheiten variieren. (Die Pfadkosten dürfen nicht negativ sein, sonst würde der A* Algorithmus nicht mehr korrekt funktionieren.) Die Kosten für jedes Pfadtile werden durch die Methode \texttt{getPathCosts()} der \gls{InfluenceMap} berechnet.
 

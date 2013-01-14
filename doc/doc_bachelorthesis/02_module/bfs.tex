@@ -11,10 +11,10 @@ Der Algorithmus für die Breitensuche ist im Buch \cite{AIMA} beschrieben und wur
 \label{fig:BFS}
 \end{figure}
 
-Die Breitensuche wurde generisch implementiert, so dass sie vielseitig einsetzbar ist. Es können zum Beispiel mittels 'GoalTest' je nach Anwendungsfall die Tiles beschrieben werden, die gesucht sind. Folgende Breitensuche findet die Ameise welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Die Suche wird initialisiert, indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 Zellen entspricht. Falls keine Ameise gefunden wird gibt der Algorithmus NULL zurück.
+Die Breitensuche wurde generisch implementiert, so dass sie vielseitig einsetzbar ist. Es können zum Beispiel mittels ''GoalTest`` je nach Anwendungsfall die Tiles beschrieben werden, die gesucht sind. Das Anwendungsbeispiel im Listing \ref{lst:usageBFS} findet die Ameise, welche am nächsten bei einem Food-Tile <r:20,c:16> ist. Die Suche wird initialisiert, indem im Konstruktor die Spielkarte mitgegeben wird, welche durchforscht wird. Zusätzlich gilt die Einschränkung das die Breitensuche nur 40 Tiles durchsuchen darf, was einem Radius von zirka 7 Zellen entspricht. Falls keine Ameise gefunden wird gibt der Algorithmus NULL zurück.
 
 \lstset{language=Java, tabsize=4}
-\begin{lstlisting}[caption={Anwendungsbeispiel Breitensuche}]
+\begin{lstlisting}[caption={Anwendungsbeispiel Breitensuche}, label=lst:usageBFS]
 AntsBreadthFirstSearch bfs = new AntsBreadthFirstSearch(Ants.getWorld());
 Tile food = new Tile(20,16);
 Tile antClosestToFood = bfs.findSingleClosestTile(food, 40, new GoalTest() {
@@ -27,7 +27,7 @@ Tile antClosestToFood = bfs.findSingleClosestTile(food, 40, new GoalTest() {
 
 Es ist auch möglich mehrere Tiles zurück zu bekommen. Dazu wird die Methode \texttt{findClosestTiles()} aufgerufen.
 
-Der gleiche Algorithmus kann aber auch alle passierbaren Tiles in einem gewissen Umkreis zurückgeben. Dies haben wir unter anderem beim Initialisieren der DefendHillMission verwendet. Wir berechnen beim Erstellen der Mission die passierbaren Zellen rund um den Hügel. Runde für Runde prüfen wir diese vorberechneten Tiles auf gegnerische Ameisen um die entsprechenden Verteidigungsmassnahmen zu ergreifen. Der Parameter \texttt{controlAreaRadius2} definiert den Radius des ''Radars`` und kann je nach Profil unterschiedlich eingestellt werden.
+Der gleiche Algorithmus kann aber auch alle passierbaren Tiles in einem gewissen Umkreis zurückgeben (FloodFill). Dies haben wir unter anderem beim Initialisieren der DefendHillMission verwendet. Wir berechnen beim Erstellen der Mission die passierbaren Zellen rund um den Hügel. Runde für Runde prüfen wir diese vorberechneten Tiles auf gegnerische Ameisen um die entsprechenden Verteidigungsmassnahmen zu ergreifen. Der Parameter \texttt{controlAreaRadius2} definiert den Radius des ''Radars`` und kann je nach Profil unterschiedlich eingestellt werden.
 
 Unser Flood Fill Algorithmus ist praktisch identisch mit der Breitensuche. Eine allgemeine Beschreibung von Flood Fill befindet sich in \cite{ARTIFICIALINTELLIGENCEFORGAMES}.
 

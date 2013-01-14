@@ -73,7 +73,7 @@ public void doTurn() {
 	calculateInfluence();
 		// write some statistics about our population
 	doStatistics();
-		// initialize the task (abstract method) must be implemented by the inherited class
+		// initialize the task (abstract method); this is implemented in the subclasses
 	initTasks();
 		// execute all task (main work to do here)
 	executeTask();
@@ -88,7 +88,7 @@ public void doTurn() {
 \subsection{Klasse MyBot}
 \label{sec:module.Bot.MyBot}
 
-Wie bereits im Listing \ref{lst:ablaufspielzug} ersichtlich, ist die Methode \texttt{initTasks()} in BaseBot abstrakt und muss von MyBot implementiert werden. \texttt{initTasks()} definiert welche Tasks, oder besser gesagt Fähigkeiten der Bot hat. Dies wurde ausgelagert, da nicht nur MyBot von BaseBot erbt, sondern auch weiter Bots die wir zu Testzwecken erstellt haben um nur gewisse Funktionalitäten zu testen. (Siehe dazu \ref{sec:testCenter.Testbots}) Weiter wird in der \texttt{main()}-Methode von MyBot \texttt{initLogging(...)} aufgerufen. Hier definieren wir, welche Logkategorien mit welchem Loglevel ins Logfile geschrieben werden. (Mehr zum Thema Logging siehe Kapitel \ref{sec:module.Logging}). Je nach Modul, das gerade getestet wird kann so die Anzahl Logeinträge justiert werden.\\
+Wie bereits im Listing \ref{lst:ablaufspielzug} ersichtlich, ist die Methode \texttt{initTasks()} in BaseBot abstrakt und muss von MyBot implementiert werden. \texttt{initTasks()} definiert welche Tasks, oder besser gesagt Fähigkeiten der Bot hat. Dies wurde ausgelagert, da nicht nur MyBot von BaseBot erbt, sondern auch weitere Bots, die wir zu Testzwecken erstellt haben um bestimmte Funktionalitäten isoliert zu testen. (Siehe dazu \ref{sec:testCenter.Testbots}) Weiter wird in der \texttt{main()}-Methode von MyBot \texttt{initLogging(...)} aufgerufen. Hier definieren wir, welche Logkategorien mit welchem Loglevel ins Logfile geschrieben werden. (Mehr zum Thema Logging siehe Kapitel \ref{sec:module.Logging}). Je nach Modul, das gerade getestet wird kann so die Anzahl Logeinträge justiert werden.\\
 MyBot initialisiert die folgenden aufgeführten Tasks; es sind die Tasks, die sich im Lauf der Arbeit bewährt haben. Die detaillierte Beschreibung der Tasks ist im nachfolgenden Kapitel \ref{sec:module.Tasks} zu finden.
 
 \begin{itemize}
